@@ -8,7 +8,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | --- | --- |
 | `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`), and `hammer_json.h`, a JSON reader that needs no allocation |
 | `c/plaintext` | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`); `build.sh` builds `plaintext.hammerplugin` |
-| `c/style` | Style report: readability, adverbs, dialogue, and repetition per scene and for the whole story, saved as a note from the project menu (`[[actions]]`); `build.sh` builds `style.hammerplugin` |
+| `c/style` | Style report: readability, adverbs, dialogue, and repetition per scene and for the whole story, shown from the project menu (`[[actions]]` with document output) and cached per scene; `build.sh` builds `style.hammerplugin` |
 | `c/wordfreq` | Word frequency export, in freestanding C |
 | `c/upper` | Upper-cases its input: the C twin of `kotlin/upper`, for benchmarks |
 | `kotlin/upper` | Upper-cases its input, in Kotlin/Wasm |

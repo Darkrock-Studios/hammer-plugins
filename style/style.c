@@ -1,5 +1,5 @@
 // Style report: readability, adverbs, dialogue, and repetition, per scene and for the whole story,
-// saved as a note. Run from a project's menu, through the `action` export.
+// shown as a document. Run from a project's menu, through the `action` export.
 //
 // English only: the syllable, adverb, and common-word rules assume it. Letters outside Latin,
 // Greek, and Cyrillic are told apart roughly, and only those scripts are lower-cased.
@@ -7,7 +7,6 @@
 #include "../include/hammer.h"
 #include "../include/hammer_json.h"
 
-#define MAX_NOTE_LENGTH 10000 // Hammer's note size limit, in UTF-16 code units
 #define SCENE_REPEAT_THRESHOLD 3
 #define SCENE_REPEATS_SHOWN 5
 #define TOTAL_REPEAT_THRESHOLD 5
@@ -865,27 +864,6 @@ static void put_raw_string(Buffer *out, const char *raw, uint64_t length) {
   put_char(out, '"');
 }
 
-static void put_json_string(Buffer *out, const char *text, uint64_t length) {
-  static const char hex[] = "0123456789abcdef";
-  put_char(out, '"');
-  for (uint64_t i = 0; i < length; i++) {
-    unsigned char c = (unsigned char)text[i];
-    if (c == '"' || c == '\\') {
-      put_char(out, '\\');
-      put_char(out, (char)c);
-    } else if (c == '\n') {
-      put_text(out, "\\n");
-    } else if (c < 0x20) {
-      put_text(out, "\\u00");
-      put_char(out, hex[c >> 4]);
-      put_char(out, hex[c & 15]);
-    } else {
-      put_char(out, (char)c);
-    }
-  }
-  put_char(out, '"');
-}
-
 typedef struct {
   const char *name; // raw JSON string contents
   uint64_t name_length;
@@ -967,44 +945,8 @@ static void merge(Map *into, const Map *from, int32_t minimum) {
   }
 }
 
-// Appends a scene's section to [note], then a blank line, or, when that would not leave room for
-// the notice of how many scenes are left out, appends the notice instead and returns 0.
-static Buffer omission;
-
-static int append_scene(Buffer *note, uint64_t *note_units, const Buffer *text, uint64_t remaining) {
-  omission.length = 0;
-  put_text(&omission, "_\xE2\x80\xA6" "and ");
-  put_number(&omission, (int64_t)remaining);
-  put_text(&omission, remaining == 1 ? " more scene._" : " more scenes._");
-  uint64_t text_units = utf16_length(text->data, text->length);
-  uint64_t omission_units = utf16_length(omission.data, omission.length);
-  if (*note_units + text_units + 2 + omission_units > MAX_NOTE_LENGTH) {
-    put(note, omission.data, omission.length);
-    *note_units += omission_units;
-    return 0;
-  }
-  put(note, text->data, text->length);
-  put_text(note, "\n\n");
-  *note_units += text_units + 2;
-  return 1;
-}
-
-// Cuts [note] to at most [units] UTF-16 code units, at a character boundary.
-static void cut(Buffer *note, uint64_t units) {
-  uint64_t at = 0, counted = 0;
-  while (at < note->length) {
-    uint64_t next = at;
-    uint32_t c = decode(note->data, note->length, &next);
-    uint64_t size = c >= 0x10000 ? 2 : 1;
-    if (counted + size > units) break;
-    counted += size;
-    at = next;
-  }
-  note->length = at;
-}
-
-static void trim_end(Buffer *note) {
-  while (note->length && is_space((unsigned char)note->data[note->length - 1])) note->length--;
+static void trim_end(Buffer *report) {
+  while (report->length && is_space((unsigned char)report->data[report->length - 1])) report->length--;
 }
 
 static Map empty_map(Pool *keys) { return (Map){0, 0, 0, 0, 1, keys}; }
@@ -1016,7 +958,7 @@ static void reset(void) {
   common_words = not_adverbs = empty_map(&list_keys);
   scene_adverbs = scene_words = scene_phrases = empty_map(&scene_keys);
   total_adverbs = total_words = total_phrases = empty_map(&total_keys);
-  line = sentence_text = phrase = omission = cached = (Buffer){0};
+  line = sentence_text = phrase = cached = (Buffer){0};
   word_starts = 0;
   word_capacity = 0;
   scenes = 0;
@@ -1109,51 +1051,37 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     }
   }
 
-  Buffer note = {0};
-  put_text(&note, "# Style report\n\n## Whole story\n\n");
-  put_story_summary(&note, &total, map_total(&total_adverbs));
+  Buffer report = {0};
+  put_text(&report, "# Style report\n\n## Whole story\n\n");
+  put_story_summary(&report, &total, map_total(&total_adverbs));
   const Slot *top[TOTAL_LIST_SIZE];
   int found = map_top(&total_adverbs, 1, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&note, "- **Most used adverbs:** ");
-    put_list(&note, top, found);
-    put_char(&note, '\n');
+    put_text(&report, "- **Most used adverbs:** ");
+    put_list(&report, top, found);
+    put_char(&report, '\n');
   }
   found = map_top(&total_words, TOTAL_REPEAT_THRESHOLD, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&note, "- **Repeated words:** ");
-    put_list(&note, top, found);
-    put_char(&note, '\n');
+    put_text(&report, "- **Repeated words:** ");
+    put_list(&report, top, found);
+    put_char(&report, '\n');
   }
   found = map_top(&total_phrases, 2, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&note, "- **Repeated phrases:** ");
-    put_list(&note, top, found);
-    put_char(&note, '\n');
+    put_text(&report, "- **Repeated phrases:** ");
+    put_list(&report, top, found);
+    put_char(&report, '\n');
   }
-  if (scene_count) put_text(&note, "\n## Scenes\n\n");
+  if (scene_count) put_text(&report, "\n## Scenes\n\n");
 
-  uint64_t note_units = utf16_length(note.data, note.length);
-  if (note_units > MAX_NOTE_LENGTH) {
-    // Only the lists can make the head this long; cut rather than have note.create refuse it.
-    cut(&note, MAX_NOTE_LENGTH);
-  } else {
-    for (uint64_t i = 0; i < scene_count; i++) {
-      if (!append_scene(&note, &note_units, &lines[i], scene_count - i)) break;
-    }
+  for (uint64_t i = 0; i < scene_count; i++) {
+    put(&report, lines[i].data, lines[i].length);
+    put_text(&report, "\n\n");
   }
-  trim_end(&note);
+  trim_end(&report);
 
-  request.length = 0;
-  put_text(&request, "{\"project\":");
-  put_raw_string(&request, project, project_length);
-  put_text(&request, ",\"content\":");
-  put_json_string(&request, note.data, note.length);
-  put_text(&request, ",\"tags\":[\"style-report\"]}");
-  put_char(&request, 0);
-  if (!call("note.create", request.data, &reply_length, &reply)) goto failed;
-
-  extism_output_buf_from_sz("Style report saved to Notes");
+  extism_output_buf(report.data, report.length);
   return 0;
 
 failed:

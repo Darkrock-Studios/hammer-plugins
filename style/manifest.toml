@@ -4,8 +4,9 @@ version = "0.1.0"
 api = 1
 
 [permissions]
-operations = ["scene.tree", "scene.read", "note.create"]
+operations = ["scene.tree", "scene.read"]
 
 [[actions]]
 name = "report"
 label = "Style report"
+output = "document"
