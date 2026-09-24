@@ -1,0 +1,38 @@
+[[setting]]
+key = "sceneBreak"
+type = "choice"
+label = "Scene break"
+default = "Hash"
+options = [
+	{ value = "Hash", label = "#" },
+	{ value = "Asterisks", label = "* * *" },
+	{ value = "Blank", label = "Blank line" },
+]
+
+[[setting]]
+key = "italics"
+type = "choice"
+label = "Italics"
+default = "Underscores"
+options = [
+	{ value = "Underscores", label = "_Underscores_" },
+	{ value = "Asterisks", label = "*Asterisks*" },
+	{ value = "Dropped", label = "Removed" },
+]
+
+[[setting]]
+key = "paragraphs"
+type = "choice"
+label = "Paragraphs"
+default = "BlankLine"
+options = [
+	{ value = "BlankLine", label = "Blank line between" },
+	{ value = "Indented", label = "Indented" },
+]
+
+[[setting]]
+key = "chapterHeadings"
+type = "bool"
+label = "Chapter headings"
+default = true
+hint = "Only when top-level scenes are exported as chapters."

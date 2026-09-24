@@ -1,0 +1,11 @@
+id = "plaintext"
+name = "Plain Text"
+version = "1.0.0"
+api = 1
+
+[[exporters]]
+format = "plaintext.txt"
+extension = "txt"
+mime = "text/plain"
+label = "Plain Text (TXT)"
+input = "prose"

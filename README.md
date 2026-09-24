@@ -6,7 +6,8 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 
 | Directory | What |
 | --- | --- |
-| `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`) |
+| `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`), and `hammer_json.h`, a JSON reader that needs no allocation |
+| `c/plaintext` | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`); `build.sh` builds `plaintext.hammerplugin` |
 | `c/wordfreq` | Word frequency export, in freestanding C |
 | `c/upper` | Upper-cases its input: the C twin of `kotlin/upper`, for benchmarks |
 | `kotlin/upper` | Upper-cases its input, in Kotlin/Wasm |
@@ -15,7 +16,8 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 
 ## Building
 
-- C: clang with the wasm32 target and lld (`sudo apt install clang lld`), then `c/wordfreq/build.sh`.
+- C: clang with the wasm32 target and lld (`sudo apt install clang lld`), then a plugin's `build.sh`, such
+  as `c/plaintext/build.sh`.
 - Kotlin: `./gradlew compileProductionExecutableKotlinWasmWasiOptimize` in a plugin's directory, with any
   Gradle 9. The optimized build is a tenth to a fiftieth the size and two to three times faster than the
   development one.
