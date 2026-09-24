@@ -619,6 +619,101 @@ static void count_scene(Counts *counts, const char *markdown, uint64_t length) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// Cached counts: a scene's counts are kept under a hash of its text, so unchanged scenes are not
+// counted again. The value is the Counts, then the scene's adverbs, words, and phrases seen at least
+// twice, each as an entry count followed by entries of a count, a length, and the text.
+
+#define CACHE_KEY_PREFIX "counts/1/"
+
+static char cache_key[64];
+static uint64_t cache_key_length;
+static Buffer cached;
+
+static void put_u32(Buffer *buffer, uint32_t value) { put(buffer, (const char *)&value, 4); }
+
+static void set_cache_key(const Buffer *text) {
+  static const char hex[] = "0123456789abcdef";
+  uint64_t hash = 14695981039346656037ull;
+  for (uint64_t i = 0; i < text->length; i++) hash = (hash ^ (unsigned char)text->data[i]) * 1099511628211ull;
+  Buffer key = {cache_key, 0, sizeof(cache_key)};
+  put_text(&key, CACHE_KEY_PREFIX);
+  for (int shift = 60; shift >= 0; shift -= 4) put_char(&key, hex[(hash >> shift) & 15]);
+  put_char(&key, '/');
+  put_number(&key, (int64_t)text->length);
+  cache_key_length = key.length;
+}
+
+static void put_map(Buffer *out, const Map *map, int32_t minimum) {
+  uint64_t size_at = out->length;
+  uint32_t size = 0;
+  put_u32(out, 0);
+  for (uint32_t i = 0; i < map->size; i++) {
+    const Slot *slot = &map->slots[map->used[i]];
+    if (slot->count < minimum) continue;
+    put_u32(out, (uint32_t)slot->count);
+    put_u32(out, slot->length);
+    put(out, slot->key, slot->length);
+    size++;
+  }
+  memcpy(out->data + size_at, &size, 4);
+}
+
+static void save_counts(const Counts *counts) {
+  cached.length = 0;
+  put(&cached, (const char *)counts, sizeof(Counts));
+  put_map(&cached, &scene_adverbs, 1);
+  put_map(&cached, &scene_words, 1);
+  put_map(&cached, &scene_phrases, 2);
+  hammer_cache_write(cache_key, cache_key_length, cached.data, cached.length);
+}
+
+static int read_u32(const char **at, const char *end, uint32_t *value) {
+  if (end - *at < 4) return 0;
+  memcpy(value, *at, 4);
+  *at += 4;
+  return 1;
+}
+
+static int read_map(const char **at, const char *end, Map *map) {
+  uint32_t size, count, length;
+  if (!read_u32(at, end, &size)) return 0;
+  for (uint32_t i = 0; i < size; i++) {
+    if (!read_u32(at, end, &count) || !read_u32(at, end, &length) || (uint64_t)(end - *at) < length) return 0;
+    map_add(map, *at, length, (int32_t)count);
+    *at += length;
+  }
+  return 1;
+}
+
+// Fills [counts] and the scene maps from the cache; 0, leaving them empty, on a miss.
+static int load_counts(Counts *counts) {
+  ExtismHandle value = hammer_cache_read(cache_key, cache_key_length);
+  if (!value) return 0;
+  uint64_t length = extism_length(value);
+  cached.length = 0;
+  buffer_reserve(&cached, length);
+  extism_load_from_handle(value, 0, cached.data, length);
+  extism_free(value);
+  cached.length = length;
+
+  const char *at = cached.data, *end = cached.data + length;
+  if (length >= sizeof(Counts)) {
+    memcpy(counts, at, sizeof(Counts));
+    at += sizeof(Counts);
+    if (read_map(&at, end, &scene_adverbs) && read_map(&at, end, &scene_words) &&
+        read_map(&at, end, &scene_phrases) && at == end) {
+      return 1;
+    }
+  }
+  *counts = (Counts){0};
+  pool_reset(&scene_keys);
+  map_clear(&scene_adverbs);
+  map_clear(&scene_words);
+  map_clear(&scene_phrases);
+  return 0;
+}
+
+// ---------------------------------------------------------------------------------------------
 // Figures
 
 // Java's Math.round: the nearest integer, halves up.
@@ -921,7 +1016,7 @@ static void reset(void) {
   common_words = not_adverbs = empty_map(&list_keys);
   scene_adverbs = scene_words = scene_phrases = empty_map(&scene_keys);
   total_adverbs = total_words = total_phrases = empty_map(&total_keys);
-  line = sentence_text = phrase = omission = (Buffer){0};
+  line = sentence_text = phrase = omission = cached = (Buffer){0};
   word_starts = 0;
   word_capacity = 0;
   scenes = 0;
@@ -986,7 +1081,11 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     map_clear(&scene_words);
     map_clear(&scene_phrases);
     Counts counts = {0};
-    count_scene(&counts, markdown.data, markdown.length);
+    set_cache_key(&markdown);
+    if (!load_counts(&counts)) {
+      count_scene(&counts, markdown.data, markdown.length);
+      save_counts(&counts);
+    }
     total.words += counts.words;
     total.sentences += counts.sentences;
     total.syllables += counts.syllables;
