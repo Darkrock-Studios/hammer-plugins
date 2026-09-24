@@ -22,6 +22,11 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
   `kotlin/wordcount/package.sh` also zips the package (set `GRADLE` to a Gradle launcher if `gradle`
   is not on the path).
 
+## Performance
+
+See [PERFORMANCE.md](PERFORMANCE.md): C against Kotlin/Wasm on the same jobs, and what it means for
+choosing a language.
+
 ## Installing
 
 In Hammer on desktop: Settings, Plugins, Install plugin, pick the `.hammerplugin`, approve its
