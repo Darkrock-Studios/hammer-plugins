@@ -637,25 +637,84 @@ static void put_list(Buffer *out, const Slot **top, int count) {
   }
 }
 
-static void put_summary(Buffer *out, const Counts *counts, int32_t adverbs) {
-  put_number(out, counts->words);
-  put_text(out, " words in ");
-  put_number(out, counts->sentences);
-  put_text(out, " sentences.");
-  if (counts->words > 0 && counts->sentences > 0) {
+typedef struct {
+  int has_prose;
+  int64_t ease, grade, adverbs_per_thousand; // in tenths
+  int64_t dialogue_percent;
+} Figures;
+
+static Figures figures_of(const Counts *counts, int32_t adverbs) {
+  Figures figures = {0};
+  figures.has_prose = counts->words > 0 && counts->sentences > 0;
+  if (figures.has_prose) {
     double words_per_sentence = (double)counts->words / (double)counts->sentences;
     double syllables_per_word = (double)counts->syllables / (double)counts->words;
+    figures.ease = round_half_up((206.835 - 1.015 * words_per_sentence - 84.6 * syllables_per_word) * 10);
+    figures.grade = round_half_up((0.39 * words_per_sentence + 11.8 * syllables_per_word - 15.59) * 10);
+  }
+  if (counts->words > 0) {
+    figures.adverbs_per_thousand = round_half_up((double)adverbs * 1000.0 / (double)counts->words * 10);
+    figures.dialogue_percent = round_half_up((double)counts->dialogue_words / (double)counts->words * 100);
+  }
+  return figures;
+}
+
+static void put_count(Buffer *out, int64_t count, const char *one, const char *many) {
+  put_number(out, count);
+  put_char(out, ' ');
+  put_text(out, count == 1 ? one : many);
+}
+
+// One line: "9 words in 2 sentences. Reading ease 89.5, grade 1.9. ..."
+static void put_scene_summary(Buffer *out, const Counts *counts, int32_t adverbs) {
+  Figures figures = figures_of(counts, adverbs);
+  put_count(out, counts->words, "word", "words");
+  put_text(out, " in ");
+  put_count(out, counts->sentences, "sentence", "sentences");
+  put_char(out, '.');
+  if (figures.has_prose) {
     put_text(out, " Reading ease ");
-    put_tenths(out, round_half_up((206.835 - 1.015 * words_per_sentence - 84.6 * syllables_per_word) * 10));
+    put_tenths(out, figures.ease);
     put_text(out, ", grade ");
-    put_tenths(out, round_half_up((0.39 * words_per_sentence + 11.8 * syllables_per_word - 15.59) * 10));
+    put_tenths(out, figures.grade);
     put_char(out, '.');
   }
   put_char(out, ' ');
-  put_tenths(out, counts->words > 0 ? round_half_up((double)adverbs * 1000.0 / (double)counts->words * 10) : 0);
+  put_tenths(out, figures.adverbs_per_thousand);
   put_text(out, " adverbs per 1,000 words. ");
-  put_number(out, counts->words > 0 ? round_half_up((double)counts->dialogue_words / (double)counts->words * 100) : 0);
+  put_number(out, figures.dialogue_percent);
   put_text(out, "% dialogue.");
+}
+
+// [text] as it should read, with the characters that would format it escaped.
+static void put_markdown_text(Buffer *out, const char *text, uint64_t length) {
+  for (uint64_t i = 0; i < length; i++) {
+    char c = text[i];
+    if (c == '\\' || c == '*' || c == '_' || c == '`' || c == '[' || c == ']' || c == '<' || c == '>') put_char(out, '\\');
+    put_char(out, c);
+  }
+}
+
+// The whole story's figures, a markdown list item each.
+static void put_story_summary(Buffer *out, const Counts *counts, int32_t adverbs) {
+  Figures figures = figures_of(counts, adverbs);
+  put_text(out, "- **Words:** ");
+  put_number(out, counts->words);
+  put_text(out, " in ");
+  put_count(out, counts->sentences, "sentence", "sentences");
+  put_char(out, '\n');
+  if (figures.has_prose) {
+    put_text(out, "- **Reading ease:** ");
+    put_tenths(out, figures.ease);
+    put_text(out, ", grade ");
+    put_tenths(out, figures.grade);
+    put_char(out, '\n');
+  }
+  put_text(out, "- **Adverbs:** ");
+  put_tenths(out, figures.adverbs_per_thousand);
+  put_text(out, " per 1,000 words\n- **Dialogue:** ");
+  put_number(out, figures.dialogue_percent);
+  put_text(out, "%\n");
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -813,25 +872,25 @@ static void merge(Map *into, const Map *from, int32_t minimum) {
   }
 }
 
-// Appends [text] to [note] with a line break, or, when that would not leave room for the notice of
-// how many scenes are left out, appends the notice instead and returns 0.
+// Appends a scene's section to [note], then a blank line, or, when that would not leave room for
+// the notice of how many scenes are left out, appends the notice instead and returns 0.
 static Buffer omission;
 
-static int append_scene_line(Buffer *note, uint64_t *note_units, const Buffer *text, uint64_t remaining) {
+static int append_scene(Buffer *note, uint64_t *note_units, const Buffer *text, uint64_t remaining) {
   omission.length = 0;
-  put_text(&omission, "\xE2\x80\xA6" "and ");
+  put_text(&omission, "_\xE2\x80\xA6" "and ");
   put_number(&omission, (int64_t)remaining);
-  put_text(&omission, remaining == 1 ? " more scene." : " more scenes.");
+  put_text(&omission, remaining == 1 ? " more scene._" : " more scenes._");
   uint64_t text_units = utf16_length(text->data, text->length);
   uint64_t omission_units = utf16_length(omission.data, omission.length);
-  if (*note_units + text_units + 1 + omission_units > MAX_NOTE_LENGTH) {
+  if (*note_units + text_units + 2 + omission_units > MAX_NOTE_LENGTH) {
     put(note, omission.data, omission.length);
     *note_units += omission_units;
     return 0;
   }
   put(note, text->data, text->length);
-  put_char(note, '\n');
-  *note_units += text_units + 1;
+  put_text(note, "\n\n");
+  *note_units += text_units + 2;
   return 1;
 }
 
@@ -939,42 +998,41 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     Buffer *text = &lines[i];
     *text = (Buffer){0};
     char *name = must_alloc(scenes[i].name_length);
-    put(text, name, hammer_json_unescape(scenes[i].name, scenes[i].name_length, name));
-    put_text(text, ": ");
-    put_summary(text, &counts, map_total(&scene_adverbs));
+    put_text(text, "### ");
+    put_markdown_text(text, name, hammer_json_unescape(scenes[i].name, scenes[i].name_length, name));
+    put_char(text, '\n');
+    put_scene_summary(text, &counts, map_total(&scene_adverbs));
     const Slot *top[SCENE_REPEATS_SHOWN];
     int repeats = map_top(&scene_words, SCENE_REPEAT_THRESHOLD, SCENE_REPEATS_SHOWN, top);
     if (repeats) {
-      put_text(text, " Repeats: ");
+      put_text(text, "\n\nRepeats: ");
       put_list(text, top, repeats);
-      put_char(text, '.');
     }
   }
 
   Buffer note = {0};
-  put_text(&note, "Style report\n\nWhole story: ");
-  put_summary(&note, &total, map_total(&total_adverbs));
-  put_char(&note, '\n');
+  put_text(&note, "# Style report\n\n## Whole story\n\n");
+  put_story_summary(&note, &total, map_total(&total_adverbs));
   const Slot *top[TOTAL_LIST_SIZE];
   int found = map_top(&total_adverbs, 1, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&note, "Adverbs: ");
+    put_text(&note, "- **Most used adverbs:** ");
     put_list(&note, top, found);
     put_char(&note, '\n');
   }
   found = map_top(&total_words, TOTAL_REPEAT_THRESHOLD, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&note, "Repeated words: ");
+    put_text(&note, "- **Repeated words:** ");
     put_list(&note, top, found);
     put_char(&note, '\n');
   }
   found = map_top(&total_phrases, 2, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&note, "Repeated phrases: ");
+    put_text(&note, "- **Repeated phrases:** ");
     put_list(&note, top, found);
     put_char(&note, '\n');
   }
-  if (scene_count) put_text(&note, "\nScenes\n");
+  if (scene_count) put_text(&note, "\n## Scenes\n\n");
 
   uint64_t note_units = utf16_length(note.data, note.length);
   if (note_units > MAX_NOTE_LENGTH) {
@@ -982,7 +1040,7 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     cut(&note, MAX_NOTE_LENGTH);
   } else {
     for (uint64_t i = 0; i < scene_count; i++) {
-      if (!append_scene_line(&note, &note_units, &lines[i], scene_count - i)) break;
+      if (!append_scene(&note, &note_units, &lines[i], scene_count - i)) break;
     }
   }
   trim_end(&note);
