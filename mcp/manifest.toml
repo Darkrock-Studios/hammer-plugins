@@ -1,0 +1,11 @@
+id = "mcp"
+name = "MCP server"
+version = "0.1.0"
+api = 1
+
+[permissions]
+operations = ["content:read", "content:write"]
+
+[[commands]]
+name = "mcp"
+help = "Serves your projects to AI agents over MCP, on standard input and output."

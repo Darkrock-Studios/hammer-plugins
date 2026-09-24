@@ -1,0 +1,6 @@
+[[setting]]
+key = "liveEdits"
+type = "bool"
+label = "Let AI agents change scenes directly"
+hint = "Otherwise their scene edits are saved as drafts for you to review."
+default = false

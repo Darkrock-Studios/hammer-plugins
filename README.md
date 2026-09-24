@@ -11,6 +11,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | `c/wordfreq` | Word frequency export, in freestanding C |
 | `c/upper` | Upper-cases its input: the C twin of `kotlin/upper`, for benchmarks |
 | `kotlin/upper` | Upper-cases its input, in Kotlin/Wasm |
+| `kotlin/mcp` | An MCP server for AI agents, as the `hammer mcp` command: offers every operation it is granted (`content:read` and `content:write`) as a tool, with scene edits as drafts unless live edits are allowed in its settings; `package.sh` builds `mcp.hammerplugin` |
 | `kotlin/wordcount` | Word count report export with declared settings, calling back into Hammer; `package.sh` builds `wordcount.hammerplugin` |
 | `host-tests` | WAT sources of hammer-editor's host test fixtures |
 
