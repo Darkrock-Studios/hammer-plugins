@@ -1,0 +1,11 @@
+id = "style"
+name = "Style report"
+version = "0.1.0"
+api = 1
+
+[permissions]
+operations = ["scene.tree", "scene.read", "note.create"]
+
+[[actions]]
+name = "report"
+label = "Style report"
