@@ -8,6 +8,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | --- | --- |
 | `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`) |
 | `c/wordfreq` | Word frequency export, in freestanding C |
+| `c/upper` | Upper-cases its input: the C twin of `kotlin/upper`, for benchmarks |
 | `kotlin/upper` | Upper-cases its input, in Kotlin/Wasm |
 | `kotlin/wordcount` | Word count report export with declared settings, calling back into Hammer; `package.sh` builds `wordcount.hammerplugin` |
 | `host-tests` | WAT sources of hammer-editor's host test fixtures |
