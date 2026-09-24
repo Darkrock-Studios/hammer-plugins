@@ -16,7 +16,9 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 ## Building
 
 - C: clang with the wasm32 target and lld (`sudo apt install clang lld`), then `c/wordfreq/build.sh`.
-- Kotlin: `./gradlew compileDevelopmentExecutableKotlinWasmWasi` in a plugin's directory, with any Gradle 9.
+- Kotlin: `./gradlew compileProductionExecutableKotlinWasmWasiOptimize` in a plugin's directory, with any
+  Gradle 9. The optimized build is a tenth to a fiftieth the size and two to three times faster than the
+  development one.
   `kotlin/wordcount/package.sh` also zips the package (set `GRADLE` to a Gradle launcher if `gradle`
   is not on the path).
 
