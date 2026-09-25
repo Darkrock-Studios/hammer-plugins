@@ -96,9 +96,10 @@ private class Tool(val name: String, val op: Operation, val input: JsonObject, v
 private var operations: List<Operation>? = null
 
 private fun tools(settings: Settings): List<Tool> {
-	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), callJson("ops.list", JsonObject(emptyMap())))
+	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), callJson(OPS_LIST, JsonObject(emptyMap())))
 		.operations.also { operations = it }
-	return ops.mapNotNull { if (settings.liveEdits) Tool(toolName(it.name), it, it.input, emptyMap()) else withoutLiveEdits(it) }
+	// tools/list already describes every tool, filtered by the live edits setting, which ops.list is not.
+	return ops.filter { it.name != OPS_LIST }.mapNotNull { if (settings.liveEdits) Tool(toolName(it.name), it, it.input, emptyMap()) else withoutLiveEdits(it) }
 		.groupBy { it.name }
 		.mapNotNull { (_, tools) -> tools.singleOrNull() }
 }
@@ -176,6 +177,8 @@ private fun toolName(operation: String): String = operation.replace('.', '_')
 /** Newest first; an unknown version the client asks for gets the newest. */
 private val PROTOCOL_VERSIONS = listOf("2025-06-18", "2025-03-26", "2024-11-05")
 private const val SERVER_VERSION = "1"
+
+private const val OPS_LIST = "ops.list"
 
 /** Marks input that changes a scene's text in place: see hammer-editor's `@LiveEdit`. */
 private const val LIVE_EDIT_KEY = "x-hammer-live"
