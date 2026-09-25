@@ -26,7 +26,7 @@ import kotlinx.serialization.json.putJsonObject
 private val json = Json { ignoreUnknownKeys = true }
 
 @Serializable
-private class Settings(val liveEdits: Boolean = false)
+private class Settings(val liveEdits: Boolean = false, val deletes: Boolean = false)
 
 @Serializable
 private class OperationList(val operations: List<Operation>)
@@ -86,7 +86,7 @@ private class Tool(val name: String, val op: Operation, val input: JsonObject, v
 		put("inputSchema", input)
 		putJsonObject("annotations") {
 			put("readOnlyHint", op.access == "read")
-			put("destructiveHint", op.access == "destructive")
+			put("destructiveHint", op.access == DESTRUCTIVE)
 			put("openWorldHint", false)
 		}
 	}
@@ -98,8 +98,8 @@ private var operations: List<Operation>? = null
 private fun tools(settings: Settings): List<Tool> {
 	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), callJson(OPS_LIST, JsonObject(emptyMap())))
 		.operations.also { operations = it }
-	// tools/list already describes every tool, filtered by the live edits setting, which ops.list is not.
-	return ops.filter { it.name != OPS_LIST }.mapNotNull { if (settings.liveEdits) Tool(toolName(it.name), it, it.input, emptyMap()) else withoutLiveEdits(it) }
+	// tools/list already describes every tool, filtered by the settings, which ops.list is not.
+	return ops.filter { it.name != OPS_LIST && (settings.deletes || it.access != DESTRUCTIVE) }.mapNotNull { if (settings.liveEdits) Tool(toolName(it.name), it, it.input, emptyMap()) else withoutLiveEdits(it) }
 		.groupBy { it.name }
 		.mapNotNull { (_, tools) -> tools.singleOrNull() }
 }
@@ -179,6 +179,7 @@ private val PROTOCOL_VERSIONS = listOf("2025-06-18", "2025-03-26", "2024-11-05")
 private const val SERVER_VERSION = "1"
 
 private const val OPS_LIST = "ops.list"
+private const val DESTRUCTIVE = "destructive"
 
 /** Marks input that changes a scene's text in place: see hammer-editor's `@LiveEdit`. */
 private const val LIVE_EDIT_KEY = "x-hammer-live"

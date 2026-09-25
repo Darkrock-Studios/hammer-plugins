@@ -4,7 +4,17 @@ version = "0.1.0"
 api = 1
 
 [permissions]
-operations = ["content:read", "content:write"]
+# Deletes are named, since a scope never grants them; the plugin offers them only when its settings allow.
+operations = [
+	"content:read",
+	"content:write",
+	"scene.delete",
+	"draft.delete",
+	"note.delete",
+	"entry.delete",
+	"timeline.delete",
+	"idea.delete",
+]
 
 [[commands]]
 name = "mcp"

@@ -6,8 +6,8 @@ offers Hammer's operations to it as tools. Desktop only, since it runs as a `ham
 
 ## What it can do
 
-Every operation the plugin is granted (`content:read` and `content:write`) is a tool, named with
-underscores (`scene_read` for `scene.read`):
+Every operation the plugin is granted (`content:read`, `content:write`, and deletes) is a tool, named
+with underscores (`scene_read` for `scene.read`):
 
 - **Projects:** list, show, create, rename, import, and export them in any export format.
 - **Scenes:** read the scene tree, and read, write, create, move, rename, archive, and restore scenes and
@@ -17,9 +17,14 @@ underscores (`scene_read` for `scene.read`):
   can have images, ideas can be archived, and events can be reordered.
 - **Everything else:** search, tags, writing stats, and backups.
 
-Scene edits are saved as drafts for you to review, unless you turn on **Let AI agents change scenes
-directly** in the plugin's settings. The setting applies right away, even to an agent that is already
-connected.
+Two settings, both off by default, keep an agent from losing your work:
+
+- **Let AI agents change scenes directly.** While off, scene edits are saved as drafts for you to review.
+- **Let AI agents delete things.** While off, agents can't delete anything. When on, they can delete
+  scenes, drafts, notes, encyclopedia entries, timeline events, and ideas, marked as destructive so your
+  client can ask first. Whole projects are never deletable.
+
+Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it reconnects.
 
 It works whether Hammer is open or not: with the app running, calls go through it, so an agent's changes
 show up in the open project.
