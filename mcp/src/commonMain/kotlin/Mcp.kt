@@ -1,6 +1,7 @@
 import hammer.CommandRequest
 import hammer.OperationException
 import hammer.callJson
+import hammer.callJsonText
 import hammer.settings
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.Serializable
@@ -136,7 +137,7 @@ private fun call(params: JsonObject, settings: Settings): JsonObject {
 		return toolResult("Live edits are off in Hammer's settings, so $field cannot be ${arguments[field]}.", isError = true)
 	}
 	return try {
-		toolResult(callJson(tool.op.name, arguments).toString(), isError = false)
+		toolResult(callJsonText(tool.op.name, arguments), isError = false)
 	} catch (e: OperationException) {
 		toolResult(e.message.orEmpty(), isError = true)
 	}
