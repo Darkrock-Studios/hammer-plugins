@@ -1,0 +1,49 @@
+id = "name-generator"
+name = "Name generator"
+version = "0.1.0"
+api = 1
+
+[permissions]
+operations = ["entry.create"]
+
+[[actions]]
+name = "names"
+label = "Generate names"
+output = "interactive"
+places = ["project", "entry"]
+
+[[actions.field]]
+key = "style"
+type = "choice"
+label = "Style"
+default = "everyday"
+options = [
+	{ value = "everyday", label = "Everyday English" },
+	{ value = "norse", label = "Norse" },
+	{ value = "elvish", label = "Elvish" },
+]
+
+[[actions.field]]
+key = "gender"
+type = "choice"
+label = "Given names"
+default = "any"
+options = [
+	{ value = "any", label = "Any" },
+	{ value = "feminine", label = "Feminine" },
+	{ value = "masculine", label = "Masculine" },
+]
+
+[[actions.field]]
+key = "count"
+type = "int"
+label = "How many"
+default = 8
+min = 1
+max = 20
+
+[[actions.field]]
+key = "surnames"
+type = "bool"
+label = "With surnames"
+default = true
