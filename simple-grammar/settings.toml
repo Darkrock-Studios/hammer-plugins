@@ -1,0 +1,56 @@
+[[setting]]
+key = "mistakes"
+type = "bool"
+label = "Word mistakes"
+hint = "Repeated words, “a” and “an”, and mixed-up words and phrases"
+default = true
+
+[[setting]]
+key = "punctuation"
+type = "bool"
+label = "Punctuation and capitalization"
+hint = "Spacing, doubled marks, parentheses, and capitals"
+default = true
+
+[[setting]]
+key = "dialogue"
+type = "bool"
+label = "Dialogue"
+hint = "Commas, capitals, and spaces around dialogue and its tags"
+default = true
+
+[[setting]]
+key = "wordiness"
+type = "bool"
+label = "Wordy phrases"
+hint = "Such as “in order to” for “to”"
+default = false
+
+[[setting]]
+key = "redundancy"
+type = "bool"
+label = "Redundant phrases"
+hint = "Such as “free gift” for “gift”"
+default = false
+
+[[setting]]
+key = "repeatedMarks"
+type = "bool"
+label = "Repeated marks"
+hint = "Such as “!!” and “?!?”"
+default = false
+
+[[setting]]
+key = "longSentences"
+type = "bool"
+label = "Long sentences"
+default = false
+
+[[setting]]
+key = "longSentenceWords"
+type = "int"
+label = "Words in a long sentence"
+hint = "More than this many; needs Long sentences on"
+default = 40
+min = 10
+max = 200

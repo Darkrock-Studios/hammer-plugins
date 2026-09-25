@@ -9,7 +9,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`); `hammer_json.h`, a JSON reader that needs no allocation; `hammer_out.h` for output, `hammer_text.h` for words, `hammer_diagnose.h` for checks underlined in the editor, and `hammer_test.h` for native unit tests |
 | `c/plaintext` | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`) |
 | `c/style` | Style report: readability, adverbs, dialogue, and repetition per scene and for the whole story, shown from the project menu (`[[actions]]` with document output) and cached per scene |
-| `c/simple-grammar` | Common slips in English prose, underlined in the editor (`[[diagnostics]]`): repeated words, "a" and "an", "could of", spacing, and sentence capitals; a few KB, with native tests |
+| `c/simple-grammar` | English slips a spell checker passes, underlined in the editor (`[[diagnostics]]`): mixed-up words and phrases, punctuation, dialogue tags, and, when turned on in its settings, wordy and redundant phrases, repeated marks, and long sentences; a 14 KB package, with native tests |
 | `c/wordfreq` | Word frequency export, in freestanding C |
 | `c/upper` | Upper-cases its input: the C twin of `kotlin/upper`, for benchmarks |
 | `assemblyscript/hammer` | The AssemblyScript plugin kit: Hammer's imports, operations, the cache, and a JSON reader and writer |
