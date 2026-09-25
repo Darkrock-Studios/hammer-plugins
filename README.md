@@ -6,7 +6,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 
 | Directory | What |
 | --- | --- |
-| `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`); `hammer_json.h`, a JSON reader that needs no allocation; `hammer_out.h` for output, `hammer_text.h` for words, `hammer_diagnose.h` for checks underlined in the editor, and `hammer_test.h` for native unit tests |
+| `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`); `hammer_json.h`, a JSON reader that needs no allocation; `hammer_out.h` for output, `hammer_text.h` for words, `hammer_action.h` for actions' requests and interactive replies, `hammer_diagnose.h` for checks underlined in the editor, `hammer_progress` for long actions, and `hammer_test.h` for native unit tests |
 | `c/plaintext` | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`) |
 | `c/style` | Style report: readability, adverbs, dialogue, and repetition per scene and for the whole story, shown from the project menu (`[[actions]]` with document output) for the whole story or the scenes chosen, with progress, and cached per scene |
 | `c/name-generator` | Names in a chosen style, each with a button adding it to the encyclopedia as a person (`interactive` output, fields, and `entry.create`) |
@@ -15,7 +15,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | `c/upper` | Upper-cases its input: the C twin of `kotlin/upper`, for benchmarks |
 | `assemblyscript/hammer` | The AssemblyScript plugin kit: Hammer's imports, operations, the cache, and a JSON reader and writer |
 | `assemblyscript/style`, `wordfreq`, `wordcount`, `upper` | AssemblyScript twins of `c/style`, `c/wordfreq`, `kotlin/wordcount`, and `c/upper`, for comparing languages |
-| `rust/hammer` | The Rust plugin kit: Hammer's imports, operations, and the cache, with serde for JSON; `diagnose` types, byte offsets, an optional `getrandom` backend, and a zeroing allocator for Wizer builds |
+| `rust/hammer` | The Rust plugin kit: Hammer's imports, operations, and the cache, with serde for JSON; `action` and `diagnose` types, `progress`, byte offsets, an optional `getrandom` backend, and a zeroing allocator for Wizer builds |
 | `rust/english-grammar` | English grammar on [Harper](https://github.com/Automattic/harper), underlined in the editor, with settings for each category of check and for long sentences; pre-initialized with Wizer; its own `build.sh` builds `english-grammar.hammerplugin` |
 | `rust/names` | Names from the encyclopedia: underlines slips of a name and names in lower case in the editor, and reports each entry's mentions, likely misspellings, and names with no entry; carries SCOWL's word list (`data/SCOWL-COPYRIGHT`) |
 | `rust/tools/finish.py` | Makes a module built from crates written for the browser loadable by Hammer: drops wasm-bindgen's leftovers and checks the imports |
