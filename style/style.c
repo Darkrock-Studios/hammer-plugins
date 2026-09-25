@@ -4,8 +4,10 @@
 // English only: the syllable, adverb, and common-word rules assume it. Letters outside Latin,
 // Greek, and Cyrillic are told apart roughly, and only those scripts are lower-cased.
 #define HAMMER_IMPLEMENTATION
+#define HAMMER_OUT_OF_MEMORY "The story is too long for a style report"
 #include "../include/hammer.h"
 #include "../include/hammer_json.h"
+#include "../include/hammer_out.h"
 
 #define SCENE_REPEAT_THRESHOLD 3
 #define SCENE_REPEATS_SHOWN 5
@@ -16,57 +18,17 @@
 #define PHRASE_LENGTH 3
 #define MAX_TITLE_CLOSERS 8
 
+// A number rounded to tenths, written as Kotlin writes a Double: at least one decimal.
+static void put_tenths(HammerBuffer *buffer, int64_t tenths) {
+  uint64_t magnitude = tenths < 0 ? (uint64_t)(-tenths) : (uint64_t)tenths;
+  if (tenths < 0) hammer_put_char(buffer, '-');
+  hammer_put_int(buffer, (int64_t)(magnitude / 10));
+  hammer_put_char(buffer, '.');
+  hammer_put_char(buffer, (char)('0' + magnitude % 10));
+}
+
 // ---------------------------------------------------------------------------------------------
 // Memory: hammer_alloc only grows, so what lives for one scene is reused rather than reallocated.
-
-static void *must_alloc(uint64_t size);
-
-typedef struct {
-  char *data;
-  uint64_t length;
-  uint64_t capacity;
-} Buffer;
-
-static void buffer_reserve(Buffer *buffer, uint64_t extra) {
-  if (buffer->length + extra <= buffer->capacity) return;
-  uint64_t capacity = buffer->capacity ? buffer->capacity * 2 : 4096;
-  while (capacity < buffer->length + extra) capacity *= 2;
-  char *data = must_alloc(capacity);
-  if (buffer->length) memcpy(data, buffer->data, buffer->length);
-  buffer->data = data;
-  buffer->capacity = capacity;
-}
-
-static void put(Buffer *buffer, const char *text, uint64_t length) {
-  buffer_reserve(buffer, length);
-  memcpy(buffer->data + buffer->length, text, length);
-  buffer->length += length;
-}
-
-static void put_text(Buffer *buffer, const char *text) { put(buffer, text, strlen(text)); }
-
-static void put_char(Buffer *buffer, char c) { put(buffer, &c, 1); }
-
-static void put_number(Buffer *buffer, int64_t n) {
-  char digits[20];
-  int length = 0;
-  uint64_t magnitude = n < 0 ? (uint64_t)(-n) : (uint64_t)n;
-  do {
-    digits[length++] = (char)('0' + magnitude % 10);
-    magnitude /= 10;
-  } while (magnitude);
-  if (n < 0) put_char(buffer, '-');
-  while (length) put(buffer, &digits[--length], 1);
-}
-
-// A number rounded to tenths, written as Kotlin writes a Double: at least one decimal.
-static void put_tenths(Buffer *buffer, int64_t tenths) {
-  uint64_t magnitude = tenths < 0 ? (uint64_t)(-tenths) : (uint64_t)tenths;
-  if (tenths < 0) put_char(buffer, '-');
-  put_number(buffer, (int64_t)(magnitude / 10));
-  put_char(buffer, '.');
-  put_char(buffer, (char)('0' + magnitude % 10));
-}
 
 // Key text that must outlive the buffer it came from: chunks, so earlier keys never move.
 typedef struct Chunk {
@@ -90,7 +52,7 @@ static const char *pool_add(Pool *pool, const char *text, uint64_t length) {
       continue;
     }
     uint64_t capacity = length > 65536 ? length : 65536;
-    Chunk *fresh = must_alloc(sizeof(Chunk) + capacity);
+    Chunk *fresh = hammer_must_alloc(sizeof(Chunk) + capacity);
     fresh->next = 0;
     fresh->used = 0;
     fresh->capacity = capacity;
@@ -159,9 +121,9 @@ static uint32_t find_slot(const Map *map, const char *key, uint64_t length, uint
 static void map_grow(Map *map) {
   Map grown = *map;
   grown.capacity = map->capacity ? map->capacity * 2 : 1024;
-  grown.slots = must_alloc((uint64_t)grown.capacity * sizeof(Slot));
+  grown.slots = hammer_must_alloc((uint64_t)grown.capacity * sizeof(Slot));
   memset(grown.slots, 0, (uint64_t)grown.capacity * sizeof(Slot));
-  grown.used = must_alloc((uint64_t)grown.capacity * sizeof(uint32_t));
+  grown.used = hammer_must_alloc((uint64_t)grown.capacity * sizeof(uint32_t));
   grown.generation = 1;
   for (uint32_t i = 0; i < map->size; i++) {
     Slot *old = &map->slots[map->used[i]];
@@ -249,7 +211,7 @@ static uint32_t peek_at(const char *text, uint64_t end, uint64_t at) {
   return at < end ? decode(text, end, &at) : 0;
 }
 
-static void encode(Buffer *buffer, uint32_t c) {
+static void encode(HammerBuffer *buffer, uint32_t c) {
   char bytes[4];
   int length;
   if (c < 0x80) {
@@ -271,7 +233,7 @@ static void encode(Buffer *buffer, uint32_t c) {
     bytes[3] = (char)(0x80 | (c & 0x3F));
     length = 4;
   }
-  put(buffer, bytes, (uint64_t)length);
+  hammer_put(buffer, bytes, (uint64_t)length);
 }
 
 // How long Kotlin measures the text: UTF-16 code units.
@@ -374,9 +336,9 @@ static Pool scene_keys, total_keys;
 static Map scene_adverbs, scene_words, scene_phrases;
 static Map total_adverbs, total_words, total_phrases;
 
-static Buffer line;          // one line, markdown stripped
-static Buffer sentence_text; // the lower-cased words of one sentence, one after another
-static Buffer phrase;
+static HammerBuffer line;          // one line, markdown stripped
+static HammerBuffer sentence_text; // the lower-cased words of one sentence, one after another
+static HammerBuffer phrase;
 static uint64_t *word_starts;
 static uint64_t word_capacity;
 
@@ -428,8 +390,8 @@ static void count_phrases(uint64_t words) {
       const char *word = sentence_text.data + word_starts[i];
       uint64_t word_length = word_starts[i + 1] - word_starts[i];
       if (!contains(&common_words, word, word_length)) uncommon = 1;
-      if (i > first) put_char(&phrase, ' ');
-      put(&phrase, word, word_length);
+      if (i > first) hammer_put_char(&phrase, ' ');
+      hammer_put(&phrase, word, word_length);
     }
     if (uncommon) map_add(&scene_phrases, phrase.data, phrase.length, 1);
   }
@@ -504,7 +466,7 @@ static void count_line(Counts *counts, const char *text, uint64_t length) {
     if (is_word_char(c)) {
       if (words + 2 > word_capacity) {
         uint64_t capacity = word_capacity ? word_capacity * 2 : 256;
-        uint64_t *starts = must_alloc(capacity * sizeof(uint64_t));
+        uint64_t *starts = hammer_must_alloc(capacity * sizeof(uint64_t));
         if (words) memcpy(starts, word_starts, words * sizeof(uint64_t));
         word_starts = starts;
         word_capacity = capacity;
@@ -591,14 +553,14 @@ static void strip_markdown(const char *text, uint64_t length) {
         while (end < length && text[end] != ')') end++;
         if (end < length) {
           for (uint64_t i = at + 1; i < close; i++) {
-            if (text[i] != '*' && text[i] != '_' && text[i] != '~' && text[i] != '`') put_char(&line, text[i]);
+            if (text[i] != '*' && text[i] != '_' && text[i] != '~' && text[i] != '`') hammer_put_char(&line, text[i]);
           }
           at = end + 1;
           continue;
         }
       }
     }
-    if (c != '*' && c != '_' && c != '~' && c != '`') put_char(&line, c);
+    if (c != '*' && c != '_' && c != '~' && c != '`') hammer_put_char(&line, c);
     at++;
   }
 }
@@ -626,23 +588,23 @@ static void count_scene(Counts *counts, const char *markdown, uint64_t length) {
 
 static char cache_key[64];
 static uint64_t cache_key_length;
-static Buffer cached;
+static HammerBuffer cached;
 
-static void put_u32(Buffer *buffer, uint32_t value) { put(buffer, (const char *)&value, 4); }
+static void put_u32(HammerBuffer *buffer, uint32_t value) { hammer_put(buffer, (const char *)&value, 4); }
 
-static void set_cache_key(const Buffer *text) {
+static void set_cache_key(const HammerBuffer *text) {
   static const char hex[] = "0123456789abcdef";
   uint64_t hash = 14695981039346656037ull;
   for (uint64_t i = 0; i < text->length; i++) hash = (hash ^ (unsigned char)text->data[i]) * 1099511628211ull;
-  Buffer key = {cache_key, 0, sizeof(cache_key)};
-  put_text(&key, CACHE_KEY_PREFIX);
-  for (int shift = 60; shift >= 0; shift -= 4) put_char(&key, hex[(hash >> shift) & 15]);
-  put_char(&key, '/');
-  put_number(&key, (int64_t)text->length);
+  HammerBuffer key = {cache_key, 0, sizeof(cache_key)};
+  hammer_put_text(&key, CACHE_KEY_PREFIX);
+  for (int shift = 60; shift >= 0; shift -= 4) hammer_put_char(&key, hex[(hash >> shift) & 15]);
+  hammer_put_char(&key, '/');
+  hammer_put_int(&key, (int64_t)text->length);
   cache_key_length = key.length;
 }
 
-static void put_map(Buffer *out, const Map *map, int32_t minimum) {
+static void put_map(HammerBuffer *out, const Map *map, int32_t minimum) {
   uint64_t size_at = out->length;
   uint32_t size = 0;
   put_u32(out, 0);
@@ -651,7 +613,7 @@ static void put_map(Buffer *out, const Map *map, int32_t minimum) {
     if (slot->count < minimum) continue;
     put_u32(out, (uint32_t)slot->count);
     put_u32(out, slot->length);
-    put(out, slot->key, slot->length);
+    hammer_put(out, slot->key, slot->length);
     size++;
   }
   memcpy(out->data + size_at, &size, 4);
@@ -659,7 +621,7 @@ static void put_map(Buffer *out, const Map *map, int32_t minimum) {
 
 static void save_counts(const Counts *counts) {
   cached.length = 0;
-  put(&cached, (const char *)counts, sizeof(Counts));
+  hammer_put(&cached, (const char *)counts, sizeof(Counts));
   put_map(&cached, &scene_adverbs, 1);
   put_map(&cached, &scene_words, 1);
   put_map(&cached, &scene_phrases, 2);
@@ -690,7 +652,7 @@ static int load_counts(Counts *counts) {
   if (!value) return 0;
   uint64_t length = extism_length(value);
   cached.length = 0;
-  buffer_reserve(&cached, length);
+  hammer_reserve(&cached, length);
   extism_load_from_handle(value, 0, cached.data, length);
   extism_free(value);
   cached.length = length;
@@ -721,13 +683,13 @@ static int64_t round_half_up(double value) {
   return (int64_t)floor + (value - floor >= 0.5 ? 1 : 0);
 }
 
-static void put_list(Buffer *out, const Slot **top, int count) {
+static void put_list(HammerBuffer *out, const Slot **top, int count) {
   for (int i = 0; i < count; i++) {
-    if (i) put_text(out, ", ");
-    put(out, top[i]->key, top[i]->length);
-    put_text(out, " (");
-    put_number(out, top[i]->count);
-    put_char(out, ')');
+    if (i) hammer_put_text(out, ", ");
+    hammer_put(out, top[i]->key, top[i]->length);
+    hammer_put_text(out, " (");
+    hammer_put_int(out, top[i]->count);
+    hammer_put_char(out, ')');
   }
 }
 
@@ -753,62 +715,62 @@ static Figures figures_of(const Counts *counts, int32_t adverbs) {
   return figures;
 }
 
-static void put_count(Buffer *out, int64_t count, const char *one, const char *many) {
-  put_number(out, count);
-  put_char(out, ' ');
-  put_text(out, count == 1 ? one : many);
+static void put_count(HammerBuffer *out, int64_t count, const char *one, const char *many) {
+  hammer_put_int(out, count);
+  hammer_put_char(out, ' ');
+  hammer_put_text(out, count == 1 ? one : many);
 }
 
 // One line: "9 words in 2 sentences. Reading ease 89.5, grade 1.9. ..."
-static void put_scene_summary(Buffer *out, const Counts *counts, int32_t adverbs) {
+static void put_scene_summary(HammerBuffer *out, const Counts *counts, int32_t adverbs) {
   Figures figures = figures_of(counts, adverbs);
   put_count(out, counts->words, "word", "words");
-  put_text(out, " in ");
+  hammer_put_text(out, " in ");
   put_count(out, counts->sentences, "sentence", "sentences");
-  put_char(out, '.');
+  hammer_put_char(out, '.');
   if (figures.has_prose) {
-    put_text(out, " Reading ease ");
+    hammer_put_text(out, " Reading ease ");
     put_tenths(out, figures.ease);
-    put_text(out, ", grade ");
+    hammer_put_text(out, ", grade ");
     put_tenths(out, figures.grade);
-    put_char(out, '.');
+    hammer_put_char(out, '.');
   }
-  put_char(out, ' ');
+  hammer_put_char(out, ' ');
   put_tenths(out, figures.adverbs_per_thousand);
-  put_text(out, " adverbs per 1,000 words. ");
-  put_number(out, figures.dialogue_percent);
-  put_text(out, "% dialogue.");
+  hammer_put_text(out, " adverbs per 1,000 words. ");
+  hammer_put_int(out, figures.dialogue_percent);
+  hammer_put_text(out, "% dialogue.");
 }
 
 // [text] as it should read, with the characters that would format it escaped.
-static void put_markdown_text(Buffer *out, const char *text, uint64_t length) {
+static void put_markdown_text(HammerBuffer *out, const char *text, uint64_t length) {
   for (uint64_t i = 0; i < length; i++) {
     char c = text[i];
-    if (c == '\\' || c == '*' || c == '_' || c == '`' || c == '[' || c == ']' || c == '<' || c == '>') put_char(out, '\\');
-    put_char(out, c);
+    if (c == '\\' || c == '*' || c == '_' || c == '`' || c == '[' || c == ']' || c == '<' || c == '>') hammer_put_char(out, '\\');
+    hammer_put_char(out, c);
   }
 }
 
 // The whole story's figures, a markdown list item each.
-static void put_story_summary(Buffer *out, const Counts *counts, int32_t adverbs) {
+static void put_story_summary(HammerBuffer *out, const Counts *counts, int32_t adverbs) {
   Figures figures = figures_of(counts, adverbs);
-  put_text(out, "- **Words:** ");
-  put_number(out, counts->words);
-  put_text(out, " in ");
+  hammer_put_text(out, "- **Words:** ");
+  hammer_put_int(out, counts->words);
+  hammer_put_text(out, " in ");
   put_count(out, counts->sentences, "sentence", "sentences");
-  put_char(out, '\n');
+  hammer_put_char(out, '\n');
   if (figures.has_prose) {
-    put_text(out, "- **Reading ease:** ");
+    hammer_put_text(out, "- **Reading ease:** ");
     put_tenths(out, figures.ease);
-    put_text(out, ", grade ");
+    hammer_put_text(out, ", grade ");
     put_tenths(out, figures.grade);
-    put_char(out, '\n');
+    hammer_put_char(out, '\n');
   }
-  put_text(out, "- **Adverbs:** ");
+  hammer_put_text(out, "- **Adverbs:** ");
   put_tenths(out, figures.adverbs_per_thousand);
-  put_text(out, " per 1,000 words\n- **Dialogue:** ");
-  put_number(out, figures.dialogue_percent);
-  put_text(out, "%\n");
+  hammer_put_text(out, " per 1,000 words\n- **Dialogue:** ");
+  hammer_put_int(out, figures.dialogue_percent);
+  hammer_put_text(out, "%\n");
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -816,20 +778,11 @@ static void put_story_summary(Buffer *out, const Counts *counts, int32_t adverbs
 
 static const char *failure;
 
-static void *must_alloc(uint64_t size) {
-  void *memory = hammer_alloc(size);
-  if (!memory) {
-    extism_error_set_buf_from_sz("The story is too long for a style report");
-    __builtin_trap();
-  }
-  return memory;
-}
-
 // Runs an operation and loads its reply; null, with [failure] set, when it failed.
 static char *call(const char *operation, const char *input, uint64_t *length, HammerJson *output) {
   ExtismHandle handle = hammer_call(operation, input);
   uint64_t size = extism_length(handle);
-  char *reply = must_alloc(size);
+  char *reply = hammer_must_alloc(size);
   extism_load_from_handle(handle, 0, reply, size);
   extism_free(handle);
   *length = size;
@@ -843,7 +796,7 @@ static char *call(const char *operation, const char *input, uint64_t *length, Ha
     if (hammer_json_key_is(key, key_length, "error") && hammer_json_enter_object(output)) {
       while (hammer_json_next_key(output, &key, &key_length)) {
         if (hammer_json_key_is(key, key_length, "message") && hammer_json_string(output, &raw, &raw_length)) {
-          char *message = must_alloc(raw_length + 1);
+          char *message = hammer_must_alloc(raw_length + 1);
           message[hammer_json_unescape(raw, raw_length, message)] = 0;
           failure = message;
         } else {
@@ -858,10 +811,10 @@ static char *call(const char *operation, const char *input, uint64_t *length, Ha
 }
 
 // Appends [raw], already escaped, as a JSON string.
-static void put_raw_string(Buffer *out, const char *raw, uint64_t length) {
-  put_char(out, '"');
-  put(out, raw, length);
-  put_char(out, '"');
+static void put_raw_string(HammerBuffer *out, const char *raw, uint64_t length) {
+  hammer_put_char(out, '"');
+  hammer_put(out, raw, length);
+  hammer_put_char(out, '"');
 }
 
 typedef struct {
@@ -876,7 +829,7 @@ static uint64_t scene_count, scene_capacity;
 static void add_scene(const char *name, uint64_t name_length, int64_t id) {
   if (scene_count == scene_capacity) {
     uint64_t capacity = scene_capacity ? scene_capacity * 2 : 64;
-    Scene *grown = must_alloc(capacity * sizeof(Scene));
+    Scene *grown = hammer_must_alloc(capacity * sizeof(Scene));
     if (scene_count) memcpy(grown, scenes, scene_count * sizeof(Scene));
     scenes = grown;
     scene_capacity = capacity;
@@ -922,14 +875,14 @@ static void read_nodes(HammerJson *json) {
 }
 
 // The markdown from scene.read's reply, decoded into [text].
-static int read_markdown(HammerJson *json, Buffer *text) {
+static int read_markdown(HammerJson *json, HammerBuffer *text) {
   const char *key, *raw;
   uint64_t key_length, raw_length;
   if (!hammer_json_enter_object(json)) return 0;
   while (hammer_json_next_key(json, &key, &key_length)) {
     if (hammer_json_key_is(key, key_length, "markdown") && hammer_json_string(json, &raw, &raw_length)) {
       text->length = 0;
-      buffer_reserve(text, raw_length);
+      hammer_reserve(text, raw_length);
       text->length = hammer_json_unescape(raw, raw_length, text->data);
       return 1;
     }
@@ -945,7 +898,7 @@ static void merge(Map *into, const Map *from, int32_t minimum) {
   }
 }
 
-static void trim_end(Buffer *report) {
+static void trim_end(HammerBuffer *report) {
   while (report->length && is_space((unsigned char)report->data[report->length - 1])) report->length--;
 }
 
@@ -958,7 +911,7 @@ static void reset(void) {
   common_words = not_adverbs = empty_map(&list_keys);
   scene_adverbs = scene_words = scene_phrases = empty_map(&scene_keys);
   total_adverbs = total_words = total_phrases = empty_map(&total_keys);
-  line = sentence_text = phrase = cached = (Buffer){0};
+  line = sentence_text = phrase = cached = (HammerBuffer){0};
   word_starts = 0;
   word_capacity = 0;
   scenes = 0;
@@ -972,7 +925,7 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   reset();
 
   uint64_t size = extism_input_length();
-  char *input = must_alloc(size);
+  char *input = hammer_must_alloc(size);
   extism_load_input(0, input, size);
 
   HammerJson json;
@@ -990,11 +943,11 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     return 1;
   }
 
-  Buffer request = {0};
-  put_text(&request, "{\"project\":");
+  HammerBuffer request = {0};
+  hammer_put_text(&request, "{\"project\":");
   put_raw_string(&request, project, project_length);
-  put_char(&request, '}');
-  put_char(&request, 0);
+  hammer_put_char(&request, '}');
+  hammer_put_char(&request, 0);
   uint64_t reply_length;
   HammerJson reply;
   if (!call("scene.tree", request.data, &reply_length, &reply)) goto failed;
@@ -1006,16 +959,16 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   }
 
   Counts total = {0};
-  Buffer markdown = {0};
-  Buffer *lines = must_alloc((scene_count ? scene_count : 1) * sizeof(Buffer));
+  HammerBuffer markdown = {0};
+  HammerBuffer *lines = hammer_must_alloc((scene_count ? scene_count : 1) * sizeof(HammerBuffer));
   for (uint64_t i = 0; i < scene_count; i++) {
     request.length = 0;
-    put_text(&request, "{\"project\":");
+    hammer_put_text(&request, "{\"project\":");
     put_raw_string(&request, project, project_length);
-    put_text(&request, ",\"id\":");
-    put_number(&request, scenes[i].id);
-    put_char(&request, '}');
-    put_char(&request, 0);
+    hammer_put_text(&request, ",\"id\":");
+    hammer_put_int(&request, scenes[i].id);
+    hammer_put_char(&request, '}');
+    hammer_put_char(&request, 0);
     if (!call("scene.read", request.data, &reply_length, &reply) || !read_markdown(&reply, &markdown)) goto failed;
 
     pool_reset(&scene_keys);
@@ -1036,48 +989,48 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     merge(&total_words, &scene_words, 1);
     merge(&total_phrases, &scene_phrases, 2);
 
-    Buffer *text = &lines[i];
-    *text = (Buffer){0};
-    char *name = must_alloc(scenes[i].name_length);
-    put_text(text, "### ");
+    HammerBuffer *text = &lines[i];
+    *text = (HammerBuffer){0};
+    char *name = hammer_must_alloc(scenes[i].name_length);
+    hammer_put_text(text, "### ");
     put_markdown_text(text, name, hammer_json_unescape(scenes[i].name, scenes[i].name_length, name));
-    put_char(text, '\n');
+    hammer_put_char(text, '\n');
     put_scene_summary(text, &counts, map_total(&scene_adverbs));
     const Slot *top[SCENE_REPEATS_SHOWN];
     int repeats = map_top(&scene_words, SCENE_REPEAT_THRESHOLD, SCENE_REPEATS_SHOWN, top);
     if (repeats) {
-      put_text(text, "\n\nRepeats: ");
+      hammer_put_text(text, "\n\nRepeats: ");
       put_list(text, top, repeats);
     }
   }
 
-  Buffer report = {0};
-  put_text(&report, "# Style report\n\n## Whole story\n\n");
+  HammerBuffer report = {0};
+  hammer_put_text(&report, "# Style report\n\n## Whole story\n\n");
   put_story_summary(&report, &total, map_total(&total_adverbs));
   const Slot *top[TOTAL_LIST_SIZE];
   int found = map_top(&total_adverbs, 1, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&report, "- **Most used adverbs:** ");
+    hammer_put_text(&report, "- **Most used adverbs:** ");
     put_list(&report, top, found);
-    put_char(&report, '\n');
+    hammer_put_char(&report, '\n');
   }
   found = map_top(&total_words, TOTAL_REPEAT_THRESHOLD, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&report, "- **Repeated words:** ");
+    hammer_put_text(&report, "- **Repeated words:** ");
     put_list(&report, top, found);
-    put_char(&report, '\n');
+    hammer_put_char(&report, '\n');
   }
   found = map_top(&total_phrases, 2, TOTAL_LIST_SIZE, top);
   if (found) {
-    put_text(&report, "- **Repeated phrases:** ");
+    hammer_put_text(&report, "- **Repeated phrases:** ");
     put_list(&report, top, found);
-    put_char(&report, '\n');
+    hammer_put_char(&report, '\n');
   }
-  if (scene_count) put_text(&report, "\n## Scenes\n\n");
+  if (scene_count) hammer_put_text(&report, "\n## Scenes\n\n");
 
   for (uint64_t i = 0; i < scene_count; i++) {
-    put(&report, lines[i].data, lines[i].length);
-    put_text(&report, "\n\n");
+    hammer_put(&report, lines[i].data, lines[i].length);
+    hammer_put_text(&report, "\n\n");
   }
   trim_end(&report);
 

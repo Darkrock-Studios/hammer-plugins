@@ -6,9 +6,10 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 
 | Directory | What |
 | --- | --- |
-| `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`), and `hammer_json.h`, a JSON reader that needs no allocation |
-| `c/plaintext` | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`); `build.sh` builds `plaintext.hammerplugin` |
-| `c/style` | Style report: readability, adverbs, dialogue, and repetition per scene and for the whole story, shown from the project menu (`[[actions]]` with document output) and cached per scene; `build.sh` builds `style.hammerplugin` |
+| `c/include` | The C plugin kit: `hammer.h`, on top of Extism's `extism-pdk.h` (BSD-3, see `EXTISM-PDK-LICENSE`); `hammer_json.h`, a JSON reader that needs no allocation; `hammer_out.h` for output, `hammer_text.h` for words, `hammer_diagnose.h` for checks underlined in the editor, and `hammer_test.h` for native unit tests |
+| `c/plaintext` | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`) |
+| `c/style` | Style report: readability, adverbs, dialogue, and repetition per scene and for the whole story, shown from the project menu (`[[actions]]` with document output) and cached per scene |
+| `c/grammar` | Common slips in English prose, underlined in the editor (`[[diagnostics]]`): repeated words, "a" and "an", "could of", spacing, and sentence capitals; a few KB, with native tests |
 | `c/wordfreq` | Word frequency export, in freestanding C |
 | `c/upper` | Upper-cases its input: the C twin of `kotlin/upper`, for benchmarks |
 | `assemblyscript/hammer` | The AssemblyScript plugin kit: Hammer's imports, operations, the cache, and a JSON reader and writer |
@@ -30,8 +31,8 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 
 ## Building
 
-- C: clang with the wasm32 target and lld (`sudo apt install clang lld`), then a plugin's `build.sh`, such
-  as `c/plaintext/build.sh`.
+- C: clang with the wasm32 target and lld (`sudo apt install clang lld`), then `c/build.sh`, or
+  `c/build.sh plaintext` for one plugin. `c/test.sh` runs the plugins' native unit tests.
 - AssemblyScript: Node.js 20 or later and `npm install` in `assemblyscript/`, then `assemblyscript/build.sh`
   for every plugin there, or `assemblyscript/build.sh style` for one.
 - Rust: [rustup](https://rustup.rs) and `rustup target add wasm32-unknown-unknown`, then `rust/build.sh`.
