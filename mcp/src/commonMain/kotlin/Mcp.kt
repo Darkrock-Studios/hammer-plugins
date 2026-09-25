@@ -14,19 +14,18 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
 // An MCP server over stdio (https://modelcontextprotocol.io): Hammer hands `command` each line of
 // standard input, a JSON-RPC message, and writes back what it returns. Every operation this plugin is
-// granted is offered as a tool.
+// granted is offered as a tool, writes and deletes only when its settings allow. Its manifest asks for no
+// operation that writes a scene's prose: Hammer's AI is a tool for the writer, not a replacement.
 
 private val json = Json { ignoreUnknownKeys = true }
 
 @Serializable
-private class Settings(val liveEdits: Boolean = false, val deletes: Boolean = false)
+private class Settings(val changes: Boolean = false, val deletes: Boolean = false)
 
 @Serializable
 private class OperationList(val operations: List<Operation>)
@@ -78,14 +77,14 @@ private fun initialize(params: JsonObject): JsonObject {
 	}
 }
 
-/** An operation offered as a tool, and the values of its input fields it refuses. */
-private class Tool(val name: String, val op: Operation, val input: JsonObject, val refused: Map<String, Set<JsonElement>>) {
+/** An operation offered as a tool. */
+private class Tool(val name: String, val op: Operation) {
 	fun toJson() = buildJsonObject {
 		put("name", name)
 		put("description", op.description)
-		put("inputSchema", input)
+		put("inputSchema", op.input)
 		putJsonObject("annotations") {
-			put("readOnlyHint", op.access == "read")
+			put("readOnlyHint", op.access == READ)
 			put("destructiveHint", op.access == DESTRUCTIVE)
 			put("openWorldHint", false)
 		}
@@ -99,44 +98,22 @@ private fun tools(settings: Settings): List<Tool> {
 	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), callJson(OPS_LIST, JsonObject(emptyMap())))
 		.operations.also { operations = it }
 	// tools/list already describes every tool, filtered by the settings, which ops.list is not.
-	return ops.filter { it.name != OPS_LIST && (settings.deletes || it.access != DESTRUCTIVE) }.mapNotNull { if (settings.liveEdits) Tool(toolName(it.name), it, it.input, emptyMap()) else withoutLiveEdits(it) }
+	return ops.filter { it.name != OPS_LIST && settings.allows(it.access) }
+		.map { Tool(toolName(it.name), it) }
 		.groupBy { it.name }
 		.mapNotNull { (_, tools) -> tools.singleOrNull() }
 }
 
-/**
- * [op] without its live edits: null when its input, or a field's object, is one; otherwise with the
- * live values of its enum fields dropped from its schema and refused when called. Only top-level
- * fields are looked at.
- */
-private fun withoutLiveEdits(op: Operation): Tool? {
-	if (op.input[LIVE_EDIT_KEY] == JsonPrimitive(true)) return null
-	val name = toolName(op.name)
-	val properties = op.input["properties"] as? JsonObject ?: return Tool(name, op, op.input, emptyMap())
-	val markers = properties.mapNotNull { (field, schema) -> schema.jsonObject[LIVE_EDIT_KEY]?.let { field to it } }.toMap()
-	if (markers.values.any { it !is JsonArray }) return null
-	val refused = markers.mapValues { (_, values) -> (values as JsonArray).toSet() }
-	if (refused.isEmpty()) return Tool(name, op, op.input, emptyMap())
-
-	val narrowed = properties.mapValues { (field, schema) ->
-		val live = refused[field] ?: return@mapValues schema
-		val allowed = (schema.jsonObject["enum"] as JsonArray).filter { it !in live }
-		JsonObject(schema.jsonObject - LIVE_EDIT_KEY + ("enum" to JsonArray(allowed)))
-	}
-	val note = refused.keys.joinToString(" ") { field ->
-		"Live edits are off, so $field can only be ${(narrowed.getValue(field).jsonObject["enum"] as JsonArray).joinToString(" or ")}."
-	}
-	val described = Operation(op.name, "${op.description} $note", op.access, op.input)
-	return Tool(name, described, JsonObject(op.input + ("properties" to JsonObject(narrowed))), refused)
+private fun Settings.allows(access: String): Boolean = when (access) {
+	READ -> true
+	DESTRUCTIVE -> deletes
+	else -> changes
 }
 
 private fun call(params: JsonObject, settings: Settings): JsonObject {
 	val name = (params["name"] as? JsonPrimitive)?.contentOrNull ?: throw RpcException(INVALID_PARAMS, "No tool name")
 	val tool = tools(settings).firstOrNull { it.name == name } ?: throw RpcException(INVALID_PARAMS, "Unknown tool '$name'")
 	val arguments = params["arguments"] as? JsonObject ?: JsonObject(emptyMap())
-	tool.refused.entries.firstOrNull { (field, values) -> arguments[field] in values }?.let { (field, _) ->
-		return toolResult("Live edits are off in Hammer's settings, so $field cannot be ${arguments[field]}.", isError = true)
-	}
 	return try {
 		toolResult(callJsonText(tool.op.name, arguments), isError = false)
 	} catch (e: OperationException) {
@@ -179,10 +156,8 @@ private val PROTOCOL_VERSIONS = listOf("2025-06-18", "2025-03-26", "2024-11-05")
 private const val SERVER_VERSION = "1"
 
 private const val OPS_LIST = "ops.list"
+private const val READ = "read"
 private const val DESTRUCTIVE = "destructive"
-
-/** Marks input that changes a scene's text in place: see hammer-editor's `@LiveEdit`. */
-private const val LIVE_EDIT_KEY = "x-hammer-live"
 
 private const val PARSE_ERROR = -32700
 private const val INVALID_REQUEST = -32600

@@ -1,8 +1,8 @@
 [[setting]]
-key = "liveEdits"
+key = "changes"
 type = "bool"
-label = "Let AI agents change scenes directly"
-hint = "Otherwise their scene edits are saved as drafts for you to review."
+label = "Let AI agents make changes"
+hint = "Organize scenes and edit outlines, notes, encyclopedia entries, the timeline, and ideas. Never your prose."
 default = false
 
 [[setting]]

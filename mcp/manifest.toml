@@ -4,10 +4,34 @@ version = "0.1.0"
 api = 1
 
 [permissions]
-# Deletes are named, since a scope never grants them; the plugin offers them only when its settings allow.
+# No operation that writes a scene's prose (scene.write, scene.append, draft.apply, project.import):
+# Hammer's AI is a tool for the writer, not a replacement. Writes and deletes are offered as tools only
+# when the plugin's settings allow them.
 operations = [
 	"content:read",
-	"content:write",
+	"project.create",
+	"project.rename",
+	"backup.create",
+	"scene.create",
+	"scene.rename",
+	"scene.move",
+	"scene.archive",
+	"scene.unarchive",
+	"scene.meta.write",
+	"draft.create",
+	"note.create",
+	"note.update",
+	"entry.create",
+	"entry.update",
+	"entry.image.set",
+	"entry.image.remove",
+	"timeline.create",
+	"timeline.update",
+	"timeline.move",
+	"idea.create",
+	"idea.update",
+	"idea.archive",
+	"idea.unarchive",
 	"scene.delete",
 	"draft.delete",
 	"note.delete",

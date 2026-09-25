@@ -25,7 +25,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | `go/style`, `wordfreq`, `wordcount`, `upper` | Go twins of the same plugins |
 | `kotlin/hammer` | The Kotlin plugin kit: typed requests, operations, the cache, and a fake Hammer for JVM tests |
 | `kotlin/gradle-plugin` | The `hammer.plugin` Gradle plugin: sets up a plugin project and builds its `.hammerplugin` |
-| `kotlin/mcp` | An MCP server for AI agents, as the `hammer mcp` command: offers every operation it is granted (`content:read` and `content:write`) as a tool, with scene edits as drafts unless live edits are allowed in its settings |
+| `kotlin/mcp` | An MCP server for AI agents, as the `hammer mcp` command: reads your projects and, when its settings allow, organizes and edits the material around the prose, but never writes the prose itself; see its [README](kotlin/mcp/README.md) |
 | `kotlin/wordcount` | Word count report export with declared settings, calling back into Hammer |
 | `kotlin/style`, `wordfreq`, `upper` | Kotlin twins of `c/style`, `c/wordfreq`, and `c/upper`; `style` has JVM unit tests |
 | `host-tests` | WAT sources of hammer-editor's host test fixtures |

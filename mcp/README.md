@@ -6,25 +6,27 @@ offers Hammer's operations to it as tools. Desktop only, since it runs as a `ham
 
 ## What it can do
 
-Every operation the plugin is granted (`content:read`, `content:write`, and deletes) is a tool, named
-with underscores (`scene_read` for `scene.read`):
+It helps around your writing, and never writes it: no tool changes a scene's text. Hammer's stance is AI
+as a tool for the writer, not a replacement.
 
-- **Projects:** list, show, create, rename, import, and export them in any export format.
-- **Scenes:** read the scene tree, and read, write, create, move, rename, archive, and restore scenes and
-  their metadata.
-- **Drafts:** list, read, and create them.
-- **Notes, encyclopedia entries, ideas, and timeline events:** list, read, add, and change them. Entries
-  can have images, ideas can be archived, and events can be reordered.
-- **Everything else:** search, tags, writing stats, and backups.
+Every operation the plugin is granted is a tool, named with underscores (`scene_read` for `scene.read`).
+It can always read:
 
-Two settings, both off by default, keep an agent from losing your work:
+- **Projects:** list and show them, and export them in any export format.
+- **Scenes:** the scene tree, scene text, metadata, and drafts.
+- **Notes, encyclopedia entries, ideas, and timeline events.**
+- **Everything else:** search, tags, and writing stats.
 
-- **Let AI agents change scenes directly.** While off, scene edits are saved as drafts for you to review.
-- **Let AI agents delete things.** While off, agents can't delete anything. When on, they can delete
-  scenes, drafts, notes, encyclopedia entries, timeline events, and ideas, marked as destructive so your
-  client can ask first. Whole projects are never deletable.
+Two settings, both off by default, let it do more:
 
-Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it reconnects.
+- **Let AI agents make changes:** create, rename, move, and archive scenes; edit scene outlines and tags;
+  snapshot drafts; add and edit notes, encyclopedia entries and their images, timeline events, and ideas;
+  create and rename projects; and make backups.
+- **Let AI agents delete things:** scenes, drafts, notes, encyclopedia entries, timeline events, and
+  ideas, marked as destructive so your client can ask first. Whole projects are never deletable.
+
+Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it
+reconnects.
 
 It works whether Hammer is open or not: with the app running, calls go through it, so an agent's changes
 show up in the open project.
