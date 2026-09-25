@@ -13,6 +13,10 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | `c/upper` | Upper-cases its input: the C twin of `kotlin/upper`, for benchmarks |
 | `assemblyscript/hammer` | The AssemblyScript plugin kit: Hammer's imports, operations, the cache, and a JSON reader and writer |
 | `assemblyscript/style`, `wordfreq`, `wordcount`, `upper` | AssemblyScript twins of `c/style`, `c/wordfreq`, `kotlin/wordcount`, and `c/upper`, for comparing languages |
+| `rust/hammer` | The Rust plugin kit: Hammer's imports, operations, and the cache, with serde for JSON |
+| `rust/style`, `wordfreq`, `wordcount`, `upper` | Rust twins of the same plugins |
+| `go/hammer` | The Go plugin kit, for TinyGo: Hammer's imports, operations, and the cache |
+| `go/style`, `wordfreq`, `wordcount`, `upper` | Go twins of the same plugins |
 | `kotlin/upper` | Upper-cases its input, in Kotlin/Wasm |
 | `kotlin/mcp` | An MCP server for AI agents, as the `hammer mcp` command: offers every operation it is granted (`content:read` and `content:write`) as a tool, with scene edits as drafts unless live edits are allowed in its settings; `package.sh` builds `mcp.hammerplugin` |
 | `kotlin/wordcount` | Word count report export with declared settings, calling back into Hammer; `package.sh` builds `wordcount.hammerplugin` |
@@ -24,6 +28,9 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
   as `c/plaintext/build.sh`.
 - AssemblyScript: Node.js 20 or later and `npm install` in `assemblyscript/`, then `assemblyscript/build.sh`
   for every plugin there, or `assemblyscript/build.sh style` for one.
+- Rust: [rustup](https://rustup.rs) and `rustup target add wasm32-unknown-unknown`, then `rust/build.sh`.
+- Go: [TinyGo](https://tinygo.org) and the Go it builds with, then `go/build.sh`, or `go/build.sh style` for
+  one plugin.
 - Kotlin: `./gradlew compileProductionExecutableKotlinWasmWasiOptimize` in a plugin's directory, with any
   Gradle 9. The optimized build is a tenth to a fiftieth the size and two to three times faster than the
   development one.
@@ -32,8 +39,8 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 
 ## Choosing a language
 
-See [LANGUAGES.md](LANGUAGES.md): C, AssemblyScript, and Kotlin/Wasm compared on speed, size, setup,
-and what writing a plugin in each is like.
+See [LANGUAGES.md](LANGUAGES.md): C, Rust, AssemblyScript, Go, and Kotlin/Wasm compared on speed, size,
+setup, and what writing a plugin in each is like.
 
 ## Installing
 
