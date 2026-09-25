@@ -10,3 +10,9 @@ operations = ["scene.tree", "scene.read"]
 name = "report"
 label = "Style report"
 output = "document"
+
+[[actions.field]]
+key = "scenes"
+type = "scenes"
+label = "Scenes"
+hint = "Leave empty to report on the whole story."

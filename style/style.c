@@ -904,6 +904,20 @@ static void trim_end(HammerBuffer *report) {
 
 static Map empty_map(Pool *keys) { return (Map){0, 0, 0, 0, 1, keys}; }
 
+// Drops the scenes whose ids are not among the count in chosen, keeping story order.
+static void keep_chosen(const int64_t *chosen, uint64_t count) {
+  uint64_t kept = 0;
+  for (uint64_t i = 0; i < scene_count; i++) {
+    for (uint64_t c = 0; c < count; c++) {
+      if (chosen[c] == scenes[i].id) {
+        scenes[kept++] = scenes[i];
+        break;
+      }
+    }
+  }
+  scene_count = kept;
+}
+
 // Everything that pointed into memory from an earlier call, which hammer_alloc hands out again.
 static void reset(void) {
   hammer_alloc_reset();
@@ -932,10 +946,27 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   hammer_json_init(&json, input, size);
   const char *key, *project = 0;
   uint64_t key_length, project_length = 0;
+  // The ids of the scenes chosen, as int64s; none means the whole story.
+  HammerBuffer chosen = {0};
   if (hammer_json_enter_object(&json)) {
     while (hammer_json_next_key(&json, &key, &key_length)) {
-      if (hammer_json_key_is(key, key_length, "project")) hammer_json_string(&json, &project, &project_length);
-      else hammer_json_skip(&json);
+      if (hammer_json_key_is(key, key_length, "project")) {
+        hammer_json_string(&json, &project, &project_length);
+      } else if (hammer_json_key_is(key, key_length, "input") && hammer_json_enter_object(&json)) {
+        while (hammer_json_next_key(&json, &key, &key_length)) {
+          if (hammer_json_key_is(key, key_length, "scenes") && hammer_json_peek(&json) == '[') {
+            hammer_json_enter_array(&json);
+            while (hammer_json_next_item(&json)) {
+              int64_t id = hammer_json_int(&json);
+              hammer_put(&chosen, (const char *)&id, sizeof(id));
+            }
+          } else {
+            hammer_json_skip(&json);
+          }
+        }
+      } else {
+        hammer_json_skip(&json);
+      }
     }
   }
   if (!project) {
@@ -958,10 +989,20 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     }
   }
 
+  if (chosen.length) keep_chosen((const int64_t *)chosen.data, chosen.length / sizeof(int64_t));
+
   Counts total = {0};
   HammerBuffer markdown = {0};
   HammerBuffer *lines = hammer_must_alloc((scene_count ? scene_count : 1) * sizeof(HammerBuffer));
+  HammerBuffer status = {0};
   for (uint64_t i = 0; i < scene_count; i++) {
+    status.length = 0;
+    hammer_put_text(&status, "Scene ");
+    hammer_put_int(&status, (int64_t)i + 1);
+    hammer_put_text(&status, " of ");
+    hammer_put_int(&status, (int64_t)scene_count);
+    hammer_progress((double)i / (double)scene_count, hammer_terminated(&status));
+
     request.length = 0;
     hammer_put_text(&request, "{\"project\":");
     put_raw_string(&request, project, project_length);
@@ -1005,7 +1046,7 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   }
 
   HammerBuffer report = {0};
-  hammer_put_text(&report, "# Style report\n\n## Whole story\n\n");
+  hammer_put_text(&report, chosen.length ? "# Style report\n\n## Chosen scenes\n\n" : "# Style report\n\n## Whole story\n\n");
   put_story_summary(&report, &total, map_total(&total_adverbs));
   const Slot *top[TOTAL_LIST_SIZE];
   int found = map_top(&total_adverbs, 1, TOTAL_LIST_SIZE, top);
