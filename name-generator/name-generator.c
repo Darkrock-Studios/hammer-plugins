@@ -4,8 +4,7 @@
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "Too many names to list"
 #include "../include/hammer.h"
-#include "../include/hammer_json.h"
-#include "../include/hammer_out.h"
+#include "../include/hammer_action.h"
 
 #define MAX_NAMES 20
 
@@ -128,15 +127,6 @@ static uint64_t read_number(const char **text) {
   return value;
 }
 
-static void put_button(HammerBuffer *out, int *first, const char *id, const char *label) {
-  hammer_put_text(out, *first ? "{\"id\":" : ",{\"id\":");
-  *first = 0;
-  hammer_put_json_string(out, id, strlen(id));
-  hammer_put_text(out, ",\"label\":");
-  hammer_put_json_string(out, label, strlen(label));
-  hammer_put_char(out, '}');
-}
-
 // The reply for the names from seed, those in added marked, with a button to add each of the rest.
 static void put_reply(HammerBuffer *out, uint64_t seed, Options options, uint32_t added, const char *message) {
   HammerBuffer names = {0};
@@ -144,8 +134,8 @@ static void put_reply(HammerBuffer *out, uint64_t seed, Options options, uint32_
 
   HammerBuffer markdown = {0};
   hammer_put_text(&markdown, "Press a name to add it to the encyclopedia as a person.\n\n");
-  HammerBuffer buttons = {0};
-  int first = 1;
+  HammerButton buttons[MAX_NAMES + 1];
+  uint32_t count = 0;
   const char *name = names.data;
   for (int i = 0; i < options.count; i++) {
     hammer_put_text(&markdown, "- ");
@@ -160,23 +150,13 @@ static void put_reply(HammerBuffer *out, uint64_t seed, Options options, uint32_
       hammer_put_int(&id, i);
       hammer_put_char(&id, ':');
       hammer_put_int(&id, added);
-      put_button(&buttons, &first, hammer_terminated(&id), name);
+      buttons[count++] = (HammerButton){hammer_terminated(&id), name};
     }
     hammer_put_char(&markdown, '\n');
     name += strlen(name) + 1;
   }
-  put_button(&buttons, &first, "more", "More names");
-
-  hammer_put_text(out, "{\"markdown\":");
-  hammer_put_json_string(out, markdown.data, markdown.length);
-  hammer_put_text(out, ",\"buttons\":[");
-  hammer_put(out, buttons.data, buttons.length);
-  hammer_put_char(out, ']');
-  if (message) {
-    hammer_put_text(out, ",\"message\":");
-    hammer_put_json_string(out, message, strlen(message));
-  }
-  hammer_put_char(out, '}');
+  buttons[count++] = (HammerButton){"more", "More names"};
+  hammer_put_reply(out, markdown.data, markdown.length, buttons, count, message);
 }
 
 #ifndef HAMMER_NATIVE
@@ -228,42 +208,19 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   char *input = hammer_must_alloc(size);
   extism_load_input(0, input, size);
 
-  Options options = {EVERYDAY, ANY, 8, 1};
-  const char *key, *project = 0, *button = 0;
-  uint64_t key_length, project_length = 0, button_length = 0;
-  HammerJson json;
-  hammer_json_init(&json, input, size);
-  if (hammer_json_enter_object(&json)) {
-    while (hammer_json_next_key(&json, &key, &key_length)) {
-      if (hammer_json_key_is(key, key_length, "project")) {
-        hammer_json_string(&json, &project, &project_length);
-      } else if (hammer_json_key_is(key, key_length, "button") && hammer_json_peek(&json) == '"') {
-        hammer_json_string(&json, &button, &button_length);
-      } else if (hammer_json_key_is(key, key_length, "input") && hammer_json_enter_object(&json)) {
-        while (hammer_json_next_key(&json, &key, &key_length)) {
-          const char *value;
-          uint64_t value_length;
-          if (hammer_json_key_is(key, key_length, "style") && hammer_json_string(&json, &value, &value_length)) {
-            options.style = hammer_json_key_is(value, value_length, "norse") ? NORSE
-                            : hammer_json_key_is(value, value_length, "elvish") ? ELVISH : EVERYDAY;
-          } else if (hammer_json_key_is(key, key_length, "gender") && hammer_json_string(&json, &value, &value_length)) {
-            options.gender = hammer_json_key_is(value, value_length, "feminine") ? FEMININE
-                             : hammer_json_key_is(value, value_length, "masculine") ? MASCULINE : ANY;
-          } else if (hammer_json_key_is(key, key_length, "count")) {
-            int64_t count = hammer_json_int(&json);
-            options.count = count < 1 ? 1 : count > MAX_NAMES ? MAX_NAMES : (int)count;
-          } else if (hammer_json_key_is(key, key_length, "surnames")) {
-            options.surnames = hammer_json_bool(&json);
-          } else {
-            hammer_json_skip(&json);
-          }
-        }
-      } else {
-        hammer_json_skip(&json);
-      }
-    }
-  }
-  if (json.error || !project) hammer_fail("Hammer sent a request the name generator could not read");
+  HammerActionRequest request;
+  if (!hammer_action_read(input, size, &request)) hammer_fail("Hammer sent a request the name generator could not read");
+  HammerText style = hammer_input_string(&request, "style");
+  HammerText gender = hammer_input_string(&request, "gender");
+  int64_t count = hammer_input_int(&request, "count", 8);
+  Options options = {
+    hammer_text_is(style, "norse") ? NORSE : hammer_text_is(style, "elvish") ? ELVISH : EVERYDAY,
+    hammer_text_is(gender, "feminine") ? FEMININE : hammer_text_is(gender, "masculine") ? MASCULINE : ANY,
+    count < 1 ? 1 : count > MAX_NAMES ? MAX_NAMES : (int)count,
+    hammer_input_bool(&request, "surnames", 1),
+  };
+  const char *button = request.button.data;
+  uint64_t button_length = request.button.length;
 
   HammerBuffer reply = {0};
   // A button's id is "add:<seed>:<index>:<names added so far, as bits>", or "more".
@@ -283,7 +240,7 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
 
     const char *failure = 0;
     HammerBuffer message = {0};
-    if (add_entry(project, project_length, name, &failure)) {
+    if (add_entry(request.project.data, request.project.length, name, &failure)) {
       added |= 1u << index;
       hammer_put_text(&message, "Added ");
       hammer_put_text(&message, name);

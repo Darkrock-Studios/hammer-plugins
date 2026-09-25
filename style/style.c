@@ -6,8 +6,7 @@
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "The story is too long for a style report"
 #include "../include/hammer.h"
-#include "../include/hammer_json.h"
-#include "../include/hammer_out.h"
+#include "../include/hammer_action.h"
 
 #define SCENE_REPEAT_THRESHOLD 3
 #define SCENE_REPEATS_SHOWN 5
@@ -942,36 +941,21 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   char *input = hammer_must_alloc(size);
   extism_load_input(0, input, size);
 
-  HammerJson json;
-  hammer_json_init(&json, input, size);
-  const char *key, *project = 0;
-  uint64_t key_length, project_length = 0;
-  // The ids of the scenes chosen, as int64s; none means the whole story.
-  HammerBuffer chosen = {0};
-  if (hammer_json_enter_object(&json)) {
-    while (hammer_json_next_key(&json, &key, &key_length)) {
-      if (hammer_json_key_is(key, key_length, "project")) {
-        hammer_json_string(&json, &project, &project_length);
-      } else if (hammer_json_key_is(key, key_length, "input") && hammer_json_enter_object(&json)) {
-        while (hammer_json_next_key(&json, &key, &key_length)) {
-          if (hammer_json_key_is(key, key_length, "scenes") && hammer_json_peek(&json) == '[') {
-            hammer_json_enter_array(&json);
-            while (hammer_json_next_item(&json)) {
-              int64_t id = hammer_json_int(&json);
-              hammer_put(&chosen, (const char *)&id, sizeof(id));
-            }
-          } else {
-            hammer_json_skip(&json);
-          }
-        }
-      } else {
-        hammer_json_skip(&json);
-      }
-    }
-  }
-  if (!project) {
+  HammerActionRequest action;
+  if (!hammer_action_read(input, size, &action)) {
     extism_error_set_buf_from_sz("No project to report on");
     return 1;
+  }
+  const char *project = action.project.data;
+  uint64_t project_length = action.project.length;
+  // The ids of the scenes chosen, as int64s; none means the whole story.
+  HammerBuffer chosen = {0};
+  HammerJson json;
+  if (hammer_input(&action, "scenes", &json) && hammer_json_enter_array(&json)) {
+    while (hammer_json_next_item(&json)) {
+      int64_t id = hammer_json_int(&json);
+      hammer_put(&chosen, (const char *)&id, sizeof(id));
+    }
   }
 
   HammerBuffer request = {0};
@@ -979,7 +963,8 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   put_raw_string(&request, project, project_length);
   hammer_put_char(&request, '}');
   hammer_put_char(&request, 0);
-  uint64_t reply_length;
+  const char *key;
+  uint64_t key_length, reply_length;
   HammerJson reply;
   if (!call("scene.tree", request.data, &reply_length, &reply)) goto failed;
   if (hammer_json_enter_object(&reply)) {

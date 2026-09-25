@@ -46,6 +46,21 @@ int main(void) {
   HAMMER_CHECK(strstr(json, "\"id\":\"more\"") != 0);
   HAMMER_CHECK(strstr(json, "\"message\":\"Added\"") != 0);
 
+  const char *request_json =
+      "{\"action\":\"names\",\"project\":\"The \\\"Storm\\\"\",\"settings\":{},"
+      "\"input\":{\"style\":\"norse\",\"count\":3,\"surnames\":false},"
+      "\"context\":{\"place\":\"entry\",\"id\":12},\"button\":\"more\",\"locale\":\"fr-CA\"}";
+  HammerActionRequest request;
+  HAMMER_CHECK(hammer_action_read(request_json, strlen(request_json), &request));
+  HAMMER_CHECK(hammer_text_is(request.action, "names"));
+  HAMMER_CHECK(request.project.length == 13 && memcmp(request.project.data, "The \\\"Storm\\\"", 13) == 0);
+  HAMMER_CHECK(hammer_text_is(request.place, "entry") && request.has_id && request.id == 12);
+  HAMMER_CHECK(hammer_text_is(request.button, "more") && hammer_text_is(request.locale, "fr-CA"));
+  HAMMER_CHECK(hammer_text_is(hammer_input_string(&request, "style"), "norse"));
+  HAMMER_CHECK(hammer_input_int(&request, "count", 8) == 3 && hammer_input_int(&request, "missing", 8) == 8);
+  HAMMER_CHECK(hammer_input_bool(&request, "surnames", 1) == 0);
+  HAMMER_CHECK(!hammer_action_read("{\"project\":\"x\"}", 15, &request));
+
   free(a), free(b), free(c), free(elves), free(norsemen);
   return hammer_test_summary();
 }
