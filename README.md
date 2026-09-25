@@ -32,7 +32,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 
 ## Choosing a language
 
-See [PERFORMANCE.md](PERFORMANCE.md): C, AssemblyScript, and Kotlin/Wasm compared on speed, size, setup,
+See [LANGUAGES.md](LANGUAGES.md): C, AssemblyScript, and Kotlin/Wasm compared on speed, size, setup,
 and what writing a plugin in each is like.
 
 ## Installing
