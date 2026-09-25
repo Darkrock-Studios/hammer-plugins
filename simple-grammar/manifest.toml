@@ -1,0 +1,8 @@
+id = "simple-grammar"
+name = "Simple grammar"
+version = "0.1.0"
+api = 1
+
+[[diagnostics]]
+name = "grammar"
+label = "Simple grammar"
