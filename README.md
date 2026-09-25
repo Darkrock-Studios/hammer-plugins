@@ -19,9 +19,11 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | `zig/style`, `wordfreq`, `wordcount`, `upper` | Zig twins of the same plugins |
 | `go/hammer` | The Go plugin kit, for TinyGo: Hammer's imports, operations, and the cache |
 | `go/style`, `wordfreq`, `wordcount`, `upper` | Go twins of the same plugins |
-| `kotlin/upper` | Upper-cases its input, in Kotlin/Wasm |
-| `kotlin/mcp` | An MCP server for AI agents, as the `hammer mcp` command: offers every operation it is granted (`content:read` and `content:write`) as a tool, with scene edits as drafts unless live edits are allowed in its settings; `package.sh` builds `mcp.hammerplugin` |
-| `kotlin/wordcount` | Word count report export with declared settings, calling back into Hammer; `package.sh` builds `wordcount.hammerplugin` |
+| `kotlin/hammer` | The Kotlin plugin kit: typed requests, operations, the cache, and a fake Hammer for JVM tests |
+| `kotlin/gradle-plugin` | The `hammer.plugin` Gradle plugin: sets up a plugin project and builds its `.hammerplugin` |
+| `kotlin/mcp` | An MCP server for AI agents, as the `hammer mcp` command: offers every operation it is granted (`content:read` and `content:write`) as a tool, with scene edits as drafts unless live edits are allowed in its settings |
+| `kotlin/wordcount` | Word count report export with declared settings, calling back into Hammer |
+| `kotlin/style`, `wordfreq`, `upper` | Kotlin twins of `c/style`, `c/wordfreq`, and `c/upper`; `style` has JVM unit tests |
 | `host-tests` | WAT sources of hammer-editor's host test fixtures |
 
 ## Building
@@ -34,16 +36,14 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 - Zig: [Zig](https://ziglang.org/download/) 0.16, then `zig/build.sh`, or `zig/build.sh style` for one plugin.
 - Go: [TinyGo](https://tinygo.org) and the Go it builds with, then `go/build.sh`, or `go/build.sh style` for
   one plugin.
-- Kotlin: `./gradlew compileProductionExecutableKotlinWasmWasiOptimize` in a plugin's directory, with any
-  Gradle 9. The optimized build is a tenth to a fiftieth the size and two to three times faster than the
-  development one.
-  `kotlin/wordcount/package.sh` also zips the package (set `GRADLE` to a Gradle launcher if `gradle`
-  is not on the path).
+- Kotlin: a JDK and any Gradle 9, then `kotlin/build.sh` for every plugin's package (set `GRADLE` to a
+  Gradle launcher if `gradle` is not on the path), or `gradle :style:hammerPlugin` in `kotlin/` for one.
+  `gradle jvmTest` runs the plugins' unit tests.
 
 ## Choosing a language
 
-See [LANGUAGES.md](LANGUAGES.md): C, Zig, Rust, AssemblyScript, Go, and Kotlin/Wasm compared on speed,
-size, setup, and what writing a plugin in each is like.
+Hammer supports Kotlin and Rust for plugins. [LANGUAGES.md](LANGUAGES.md) shows why, comparing them with
+Zig, C, AssemblyScript, and Go on speed, size, setup, and what writing a plugin in each is like.
 
 ## Installing
 

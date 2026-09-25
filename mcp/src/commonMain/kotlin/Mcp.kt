@@ -1,4 +1,7 @@
-import kotlin.wasm.WasmExport
+import hammer.CommandRequest
+import hammer.OperationException
+import hammer.callJson
+import hammer.settings
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -22,9 +25,6 @@ import kotlinx.serialization.json.putJsonObject
 private val json = Json { ignoreUnknownKeys = true }
 
 @Serializable
-private class CommandRequest(val settings: Settings, val line: String)
-
-@Serializable
 private class Settings(val liveEdits: Boolean = false)
 
 @Serializable
@@ -33,13 +33,8 @@ private class OperationList(val operations: List<Operation>)
 @Serializable
 private class Operation(val name: String, val description: String, val access: String, val input: JsonObject)
 
-@OptIn(kotlin.wasm.ExperimentalWasmInterop::class)
-@WasmExport
-fun command(): Int {
-	val request = json.decodeFromString<CommandRequest>(readInput())
-	writeOutput(handle(request.line, request.settings)?.toString().orEmpty())
-	return 0
-}
+/** The line to answer [request] with, or null when it needs none. */
+fun mcpReply(request: CommandRequest): String? = handle(request.line, request.settings<Settings>())?.toString()
 
 /** The reply to [line], or null when it needs none, as for a notification. */
 private fun handle(line: String, settings: Settings): JsonObject? {
@@ -100,7 +95,7 @@ private class Tool(val name: String, val op: Operation, val input: JsonObject, v
 private var operations: List<Operation>? = null
 
 private fun tools(settings: Settings): List<Tool> {
-	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), dispatch("ops.list", JsonObject(emptyMap())))
+	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), callJson("ops.list", JsonObject(emptyMap())))
 		.operations.also { operations = it }
 	return ops.mapNotNull { if (settings.liveEdits) Tool(toolName(it.name), it, it.input, emptyMap()) else withoutLiveEdits(it) }
 		.groupBy { it.name }
@@ -141,8 +136,8 @@ private fun call(params: JsonObject, settings: Settings): JsonObject {
 		return toolResult("Live edits are off in Hammer's settings, so $field cannot be ${arguments[field]}.", isError = true)
 	}
 	return try {
-		toolResult(dispatch(tool.op.name, arguments).toString(), isError = false)
-	} catch (e: DispatchException) {
+		toolResult(callJson(tool.op.name, arguments).toString(), isError = false)
+	} catch (e: OperationException) {
 		toolResult(e.message.orEmpty(), isError = true)
 	}
 }
@@ -155,20 +150,6 @@ private fun toolResult(text: String, isError: Boolean) = buildJsonObject {
 		})
 	})
 	put("isError", isError)
-}
-
-private class DispatchException(message: String) : Exception(message)
-
-/** Runs a Hammer operation; throws [DispatchException] with Hammer's message when it fails. */
-private fun dispatch(operation: String, input: JsonElement): JsonElement {
-	val request = buildJsonObject {
-		put("operation", operation)
-		put("input", input)
-	}
-	val reply = json.parseToJsonElement(dispatch(request.toString())).jsonObject
-	reply["output"]?.let { return it }
-	val error = reply["error"]?.jsonObject
-	throw DispatchException(error?.get("message")?.jsonPrimitive?.contentOrNull ?: "Failed")
 }
 
 private class RpcException(val code: Int, message: String) : Exception(message)
@@ -204,4 +185,3 @@ private const val METHOD_NOT_FOUND = -32601
 private const val INVALID_PARAMS = -32602
 private const val INTERNAL_ERROR = -32603
 
-fun main() {}
