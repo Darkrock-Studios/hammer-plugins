@@ -27,9 +27,12 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | `kotlin/hammer` | The Kotlin plugin kit: typed requests, operations, the cache, and a fake Hammer for JVM tests |
 | `kotlin/gradle-plugin` | The `hammer.plugin` Gradle plugin: sets up a plugin project and builds its `.hammerplugin` |
 | `kotlin/mcp` | An MCP server for AI agents, as the `hammer mcp` command: reads your projects and, when its settings allow, organizes and edits the material around the prose, but never writes the prose itself; see its [README](kotlin/mcp/README.md) |
+| `kotlin/hello` | One small example of each kind of plugin, which [RECIPES.md](RECIPES.md) walks through: an export, actions with a message, a document, fields and progress, and buttons, a text check, and a command |
 | `kotlin/wordcount` | Word count report export with declared settings, calling back into Hammer |
 | `kotlin/style`, `wordfreq`, `upper` | Kotlin twins of `c/style`, `c/wordfreq`, and `c/upper`; `style` has JVM unit tests |
 | `host-tests` | WAT sources of hammer-editor's host test fixtures |
+
+New to writing plugins? [RECIPES.md](RECIPES.md) has a hello-world version of each kind, in Kotlin.
 
 ## Building
 

@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 	}
 }
 
-include("plugin-kit", "upper", "wordcount", "wordfreq", "style", "mcp")
+include("plugin-kit", "upper", "wordcount", "wordfreq", "style", "mcp", "hello")
 project(":plugin-kit").projectDir = file("hammer")
