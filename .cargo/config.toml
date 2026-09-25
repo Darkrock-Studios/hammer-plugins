@@ -1,2 +1,6 @@
 [build]
 target = "wasm32-unknown-unknown"
+
+# For plugins using the kit's `getrandom` feature, which supplies getrandom's backend.
+[target.wasm32-unknown-unknown]
+rustflags = ['--cfg', 'getrandom_backend="custom"']
