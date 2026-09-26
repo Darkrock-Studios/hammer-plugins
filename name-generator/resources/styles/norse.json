@@ -1,0 +1,12 @@
+{
+  "feminine": "{start}{feminine end}",
+  "masculine": "{start}{masculine end}",
+  "feminine surname": "{father}sdottir",
+  "masculine surname": "{father}sson",
+  "lists": {
+    "start": ["Ar", "Bjor", "Ei", "Frey", "Gun", "Hal", "Ing", "Rag", "Sig", "Sol", "Thor", "Ulf", "Vig"],
+    "feminine end": ["a", "dis", "hild", "run", "frid", "gerd", "ny"],
+    "masculine end": ["n", "mund", "rik", "vald", "stein", "geir", "leif"],
+    "father": ["Arn", "Bjorn", "Erik", "Gunnar", "Halvard", "Ivar", "Olaf", "Sigurd", "Thorvald", "Ulf"]
+  }
+}

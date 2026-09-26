@@ -1,14 +1,19 @@
 // Name generator: an interactive action that lists names in a chosen style, each with a button that
 // adds it to the project's encyclopedia as a person. The list comes from a seed carried in the
 // buttons' ids, so pressing one rebuilds the same list, marking the names already added.
+//
+// Each style is a resource, resources/styles/<style>.json, whose "lists" are named lists of words and
+// whose templates build names from them: "feminine", "masculine", and optionally "feminine surname"
+// and "masculine surname", such as "{start}{feminine end}" or "{father}sdottir". Adding a style is a
+// file and an option in the manifest's style field.
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "Too many names to list"
 #include "../include/hammer.h"
 #include "../include/hammer_action.h"
 
 #define MAX_NAMES 20
+#define MAX_STYLES 16
 
-enum { EVERYDAY, NORSE, ELVISH };
 enum { ANY, FEMININE, MASCULINE };
 
 // ---------------------------------------------------------------------------------------------
@@ -38,66 +43,124 @@ static uint32_t next(uint32_t below) {
   return (uint32_t)((state * 0x2545F4914F6CDD1Dull) >> 33) % below;
 }
 
-static const char *pick(const char *const *list) {
-  uint32_t n = 0;
-  while (list[n]) n++;
-  return list[next(n)];
-}
-
 // ---------------------------------------------------------------------------------------------
 // Styles
 
-static const char *const EVERYDAY_FEMININE[] = {
-  "Alice", "Beatrice", "Clara", "Daisy", "Eleanor", "Florence", "Grace", "Harriet", "Iris", "Josephine",
-  "Katherine", "Lucy", "Margaret", "Nora", "Olive", "Philippa", "Rose", "Sarah", "Theodora", "Violet", 0,
-};
-static const char *const EVERYDAY_MASCULINE[] = {
-  "Albert", "Benjamin", "Charles", "Daniel", "Edward", "Frederick", "George", "Henry", "Isaac", "James",
-  "Leonard", "Matthew", "Nathaniel", "Oliver", "Peter", "Robert", "Samuel", "Thomas", "Walter", "William", 0,
-};
-static const char *const EVERYDAY_SURNAMES[] = {
-  "Ashford", "Barlow", "Carter", "Dalton", "Ellison", "Fairfax", "Garner", "Hale", "Ingram", "Jarvis",
-  "Kendall", "Lowell", "Mercer", "Norwood", "Oakley", "Prescott", "Radcliffe", "Sutton", "Thorne", "Whitlock", 0,
-};
+typedef struct {
+  char name[32];
+  const char *text;
+  uint64_t length;
+  // The file's "lists" object.
+  HammerText lists;
+} Style;
 
-static const char *const NORSE_STARTS[] = {"Ar", "Bjor", "Ei", "Frey", "Gun", "Hal", "Ing", "Rag", "Sig", "Sol", "Thor", "Ulf", "Vig", 0};
-static const char *const NORSE_FEMININE_ENDS[] = {"a", "dis", "hild", "run", "frid", "gerd", "ny", 0};
-static const char *const NORSE_MASCULINE_ENDS[] = {"n", "mund", "rik", "vald", "stein", "geir", "leif", 0};
-static const char *const NORSE_FATHERS[] = {"Arn", "Bjorn", "Erik", "Gunnar", "Halvard", "Ivar", "Olaf", "Sigurd", "Thorvald", "Ulf", 0};
+// Styles read so far, kept between calls.
+static Style styles[MAX_STYLES];
+static int style_count;
 
-static const char *const ELVISH_STARTS[] = {"Ae", "Cae", "El", "Fin", "Gal", "Ith", "Lae", "Mel", "Nim", "Syl", "Tha", "Ver", 0};
-static const char *const ELVISH_MIDDLES[] = {"a", "e", "i", "ri", "la", "ne", "the", "wy", "", 0};
-static const char *const ELVISH_FEMININE_ENDS[] = {"wen", "riel", "lith", "nor", "iel", "anna", 0};
-static const char *const ELVISH_MASCULINE_ENDS[] = {"dor", "las", "thir", "ion", "mir", "ros", 0};
-static const char *const ELVISH_SURNAMES[] = {"Moonbrook", "Silverleaf", "Starwhisper", "Dawnmere", "Willowmere", "Nightbloom", 0};
+// Reads a style file's text into style; 0 when it has no lists.
+static int parse_style(Style *style, const char *text, uint64_t length) {
+  HammerJson json;
+  if (!hammer_json_find(text, length, "lists", &json) || hammer_json_peek(&json) != '{') return 0;
+  uint64_t start = json.at;
+  hammer_json_skip(&json);
+  style->text = text;
+  style->length = length;
+  style->lists = (HammerText){text + start, json.at - start};
+  return 1;
+}
 
-static void given_name(HammerBuffer *out, int style, int female) {
-  if (style == EVERYDAY) {
-    hammer_put_text(out, pick(female ? EVERYDAY_FEMININE : EVERYDAY_MASCULINE));
-  } else if (style == NORSE) {
-    hammer_put_text(out, pick(NORSE_STARTS));
-    hammer_put_text(out, pick(female ? NORSE_FEMININE_ENDS : NORSE_MASCULINE_ENDS));
-  } else {
-    hammer_put_text(out, pick(ELVISH_STARTS));
-    hammer_put_text(out, pick(ELVISH_MIDDLES));
-    hammer_put_text(out, pick(female ? ELVISH_FEMININE_ENDS : ELVISH_MASCULINE_ENDS));
+// The style named name, read from the package the first time it is asked for.
+static const Style *load_style(HammerText name) {
+  for (int i = 0; i < style_count; i++) {
+    if (hammer_json_key_is(name.data, name.length, styles[i].name)) return &styles[i];
+  }
+  if (name.length == 0 || name.length >= sizeof(styles[0].name)) hammer_fail("There is no such name style");
+  // On the stack, so hammer_alloc_keep does not keep it.
+  char path[64];
+  memcpy(path, "styles/", 7);
+  memcpy(path + 7, name.data, name.length);
+  memcpy(path + 7 + name.length, ".json", 6);
+  static Style unkept;
+  Style *style = style_count < MAX_STYLES ? &styles[style_count] : &unkept;
+  uint64_t length;
+  const char *text = hammer_resource_load(path, &length);
+  if (!text) hammer_fail("There is no such name style");
+  if (!parse_style(style, text, length)) hammer_fail("A name style has no lists");
+  memcpy(style->name, name.data, name.length);
+  style->name[name.length] = 0;
+  if (style != &unkept) {
+    hammer_alloc_keep();
+    style_count++;
+  }
+  return style;
+}
+
+// Writes the raw JSON string contents decoded. Names are kept apart by NULs, so a word may not hold one.
+static void put_unescaped(HammerBuffer *out, const char *raw, uint64_t raw_length) {
+  char *decoded = hammer_must_alloc(raw_length + 1);
+  uint64_t length = hammer_json_unescape(raw, raw_length, decoded);
+  for (uint64_t i = 0; i < length; i++) {
+    if (!decoded[i]) hammer_fail("A name style has a word with a NUL in it");
+  }
+  hammer_put(out, decoded, length);
+}
+
+// Writes a random word from the style's list named name.
+static void put_pick(HammerBuffer *out, const Style *style, const char *name, uint64_t length) {
+  char key[64];
+  if (length >= sizeof(key)) hammer_fail("A name style names a list it does not have");
+  memcpy(key, name, length);
+  key[length] = 0;
+  HammerJson json;
+  uint32_t count = 0;
+  if (!hammer_json_find(style->lists.data, style->lists.length, key, &json) || !hammer_json_enter_array(&json)) {
+    hammer_fail("A name style names a list it does not have");
+  }
+  while (hammer_json_next_item(&json)) {
+    if (hammer_json_peek(&json) != '"') hammer_fail("A name style has a word that is not a string");
+    hammer_json_skip(&json);
+    count++;
+  }
+  if (count == 0) hammer_fail("A name style has an empty list");
+  uint32_t chosen = next(count);
+  hammer_json_find(style->lists.data, style->lists.length, key, &json);
+  hammer_json_enter_array(&json);
+  for (uint32_t i = 0; hammer_json_next_item(&json); i++) {
+    const char *raw;
+    uint64_t raw_length;
+    if (i == chosen && hammer_json_string(&json, &raw, &raw_length)) {
+      put_unescaped(out, raw, raw_length);
+      return;
+    }
+    hammer_json_skip(&json);
   }
 }
 
-// A Norse surname follows the given name's gender: a son or a daughter of the father named.
-static void surname(HammerBuffer *out, int style, int female) {
-  if (style == EVERYDAY) {
-    hammer_put_text(out, pick(EVERYDAY_SURNAMES));
-  } else if (style == NORSE) {
-    hammer_put_text(out, pick(NORSE_FATHERS));
-    hammer_put_text(out, female ? "sdottir" : "sson");
-  } else {
-    hammer_put_text(out, pick(ELVISH_SURNAMES));
+// Writes the style's template named key with a word picked for each {list}; 0 when it has no such template.
+static int put_template(HammerBuffer *out, const Style *style, const char *key) {
+  HammerJson json;
+  const char *raw;
+  uint64_t raw_length;
+  if (!hammer_json_find(style->text, style->length, key, &json) || !hammer_json_string(&json, &raw, &raw_length)) return 0;
+  char *template = hammer_must_alloc(raw_length + 1);
+  uint64_t length = hammer_json_unescape(raw, raw_length, template);
+  for (uint64_t i = 0; i < length; i++) {
+    if (template[i] != '{') {
+      hammer_put_char(out, template[i]);
+      continue;
+    }
+    uint64_t end = i + 1;
+    while (end < length && template[end] != '}') end++;
+    if (end == length) hammer_fail("A name style has a template with an unclosed {");
+    put_pick(out, style, template + i + 1, end - i - 1);
+    i = end;
   }
+  return 1;
 }
 
 typedef struct {
-  int style;
+  const Style *style;
   int gender;
   int count;
   int surnames;
@@ -108,10 +171,11 @@ static void generate(uint64_t seed, Options options, HammerBuffer *out) {
   state = seed;
   for (int i = 0; i < options.count; i++) {
     int female = options.gender == ANY ? (int)next(2) : options.gender == FEMININE;
-    given_name(out, options.style, female);
+    if (!put_template(out, options.style, female ? "feminine" : "masculine")) hammer_fail("A name style is missing a template");
     if (options.surnames) {
+      uint64_t given = out->length;
       hammer_put_char(out, ' ');
-      surname(out, options.style, female);
+      if (!put_template(out, options.style, female ? "feminine surname" : "masculine surname")) out->length = given;
     }
     hammer_put_char(out, 0);
   }
@@ -214,7 +278,7 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   HammerText gender = hammer_input_string(&request, "gender");
   int64_t count = hammer_input_int(&request, "count", 8);
   Options options = {
-    hammer_text_is(style, "norse") ? NORSE : hammer_text_is(style, "elvish") ? ELVISH : EVERYDAY,
+    load_style(style.data ? style : (HammerText){"everyday", 8}),
     hammer_text_is(gender, "feminine") ? FEMININE : hammer_text_is(gender, "masculine") ? MASCULINE : ANY,
     count < 1 ? 1 : count > MAX_NAMES ? MAX_NAMES : (int)count,
     hammer_input_bool(&request, "surnames", 1),

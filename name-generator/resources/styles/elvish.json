@@ -1,0 +1,13 @@
+{
+  "feminine": "{start}{middle}{feminine end}",
+  "masculine": "{start}{middle}{masculine end}",
+  "feminine surname": "{surname}",
+  "masculine surname": "{surname}",
+  "lists": {
+    "start": ["Ae", "Cae", "El", "Fin", "Gal", "Ith", "Lae", "Mel", "Nim", "Syl", "Tha", "Ver"],
+    "middle": ["a", "e", "i", "ri", "la", "ne", "the", "wy", ""],
+    "feminine end": ["wen", "riel", "lith", "nor", "iel", "anna"],
+    "masculine end": ["dor", "las", "thir", "ion", "mir", "ros"],
+    "surname": ["Moonbrook", "Silverleaf", "Starwhisper", "Dawnmere", "Willowmere", "Nightbloom"]
+  }
+}
