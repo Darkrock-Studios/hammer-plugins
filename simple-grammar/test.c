@@ -1,7 +1,7 @@
 // For mkdtemp and setenv, which languages_test uses to make a language of its own.
 #define _POSIX_C_SOURCE 200809L
 #include "simple-grammar.c"
-#include "../include/hammer_test.h"
+#include "hammer_test.h"
 
 #define LQ "\xE2\x80\x9C"
 #define RQ "\xE2\x80\x9D"

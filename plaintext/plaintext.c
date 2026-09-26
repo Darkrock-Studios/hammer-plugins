@@ -6,8 +6,8 @@
 // chapter) is rolled back by resetting the length to a mark taken before it was written.
 
 #define HAMMER_IMPLEMENTATION
-#include "../include/hammer.h"
-#include "../include/hammer_json.h"
+#include "hammer.h"
+#include "hammer_json.h"
 
 enum { BREAK_HASH, BREAK_ASTERISKS, BREAK_BLANK };
 enum { ITALICS_UNDERSCORES, ITALICS_ASTERISKS, ITALICS_DROPPED };

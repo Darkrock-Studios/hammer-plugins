@@ -4,7 +4,7 @@ fr.txt, de.txt, es.txt, it.txt, and uk.txt hold the words among the 200,000 most
 subtitle frequency list that a spell-check dictionary accepts in lower case, sorted by byte. German
 also keeps the words its dictionary has capitalized as nouns: those whose entries have a noun's
 flags, or that no other language's dictionary knows only capitalized, as a name. Ukrainian keeps
-only words in Cyrillic. hammer-plugins' rust/name-checker/tools/word-lists.py builds them. Each list
+only words in Cyrillic. hammer-plugins' name-checker/tools/word-lists.py builds them. Each list
 is shared under the terms of both its sources.
 
 Frequency lists: FrequencyWords by Hermit Dave, from OpenSubtitles 2018,

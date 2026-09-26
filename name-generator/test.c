@@ -1,5 +1,5 @@
 #include "name-generator.c"
-#include "../include/hammer_test.h"
+#include "hammer_test.h"
 
 static char *names(uint64_t seed, Options options) {
   hammer_alloc_reset();

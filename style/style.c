@@ -8,8 +8,8 @@
 // apart roughly, and only those scripts are lower-cased.
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "The story is too long for a style report"
-#include "../include/hammer.h"
-#include "../include/hammer_action.h"
+#include "hammer.h"
+#include "hammer_action.h"
 #include "messages.h"
 
 #define SCENE_REPEATS_SHOWN 5

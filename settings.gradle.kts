@@ -1,7 +1,8 @@
-rootProject.name = "hammer-kotlin-plugins"
+rootProject.name = "hammer-plugins"
 
 pluginManagement {
-	includeBuild("gradle-plugin")
+	// The SDK is checked out beside this repo.
+	includeBuild("../hammer-plugin-sdk/kotlin/gradle-plugin")
 	repositories {
 		gradlePluginPortal()
 		mavenCentral()
@@ -14,5 +15,7 @@ dependencyResolutionManagement {
 	}
 }
 
-include("plugin-kit", "upper", "wordcount", "wordfreq", "style", "mcp", "hello")
-project(":plugin-kit").projectDir = file("hammer")
+// Supplies the kit in place of the published one.
+includeBuild("../hammer-plugin-sdk/kotlin")
+
+include("mcp")

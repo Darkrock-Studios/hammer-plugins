@@ -4180,15 +4180,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "style"
-version = "0.1.0"
-dependencies = [
- "hammer",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "subtle"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4705,13 +4696,6 @@ name = "unty"
 version = "0.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6d49784317cd0d1ee7ec5c716dd598ec5b4483ea832a2dced265471cc0f690ae"
-
-[[package]]
-name = "upper"
-version = "0.1.0"
-dependencies = [
- "hammer",
-]
 
 [[package]]
 name = "url"
@@ -5356,24 +5340,6 @@ name = "wit-bindgen"
 version = "0.57.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1ebf944e87a7c253233ad6766e082e3cd714b5d03812acc24c318f549614536e"
-
-[[package]]
-name = "wordcount"
-version = "0.1.0"
-dependencies = [
- "hammer",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "wordfreq"
-version = "0.1.0"
-dependencies = [
- "hammer",
- "serde",
- "serde_json",
-]
 
 [[package]]
 name = "writeable"

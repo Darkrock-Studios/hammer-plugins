@@ -1,7 +1,7 @@
 """Builds resources/<lang>/not-adverbs.txt for French, Spanish, and Italian: the frequent words ending
 in the language's adverb suffix ("-ment", "-mente") that are not adverbs, such as "moment" and
 "comente". Needs spylls (a Python Hunspell), importable or as spylls.whl in the working directory,
-and there each language's frequency list and LibreOffice dictionary, as rust/name-checker's
+and there each language's frequency list and LibreOffice dictionary, as name-checker's
 tools/word-lists.py describes.
 
     python3 not-adverbs.py <working directory> <resources directory>

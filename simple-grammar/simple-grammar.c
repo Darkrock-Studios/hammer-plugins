@@ -9,8 +9,8 @@
 // own rules; French's spacing and elision are its own. TYPOGRAPHY has each language's quotation marks.
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "The text is too long to check"
-#include "../include/hammer.h"
-#include "../include/hammer_diagnose.h"
+#include "hammer.h"
+#include "hammer_diagnose.h"
 #include "messages.h"
 
 static struct {

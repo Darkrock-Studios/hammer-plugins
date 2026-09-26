@@ -8,8 +8,8 @@
 // file and an option in the manifest's style field.
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "Too many names to list"
-#include "../include/hammer.h"
-#include "../include/hammer_action.h"
+#include "hammer.h"
+#include "hammer_action.h"
 
 #define MAX_NAMES 20
 #define MAX_STYLES 16
