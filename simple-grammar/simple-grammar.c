@@ -11,9 +11,7 @@
 #define HAMMER_OUT_OF_MEMORY "The text is too long to check"
 #include "../include/hammer.h"
 #include "../include/hammer_diagnose.h"
-
-#define OPEN_QUOTE "\xE2\x80\x9C"
-#define CLOSE_QUOTE "\xE2\x80\x9D"
+#include "messages.h"
 
 static struct {
   int mistakes;
@@ -248,11 +246,22 @@ static int abbreviated(uint64_t end) {
   return hammer_word_in(text, (HammerWord){start, end}, lists.abbreviations);
 }
 
-static const char *message(const char *before, const char *quoted, uint64_t length, const char *after) {
+// The UI language's messages, from messages.h.
+static const char *const *messages = MESSAGES[0].text;
+
+static const char *say(int id) { return messages[id]; }
+
+// A message with its %s given the first `length` bytes of `quoted`.
+static const char *say_with(int id, const char *quoted, uint64_t length) {
   HammerBuffer out = {0};
-  hammer_put_text(&out, before);
-  hammer_put(&out, quoted, length);
-  hammer_put_text(&out, after);
+  for (const char *c = messages[id]; *c; c++) {
+    if (c[0] == '%' && c[1] == 's') {
+      hammer_put(&out, quoted, length);
+      c++;
+    } else {
+      hammer_put_char(&out, *c);
+    }
+  }
   return hammer_terminated(&out);
 }
 
@@ -266,7 +275,7 @@ static void repeated_words(void) {
     if (!hammer_spaced(text, a, b) || !hammer_same_word(text, a, b) || hammer_word_in(text, a, lists.repeatable)) {
       continue;
     }
-    hammer_report_fix(a.start, b.end, "Repeated word", text.data + a.start, hammer_word_length(a));
+    hammer_report_fix(a.start, b.end, say(SAY_REPEATED_WORD), text.data + a.start, hammer_word_length(a));
   }
 }
 
@@ -294,11 +303,9 @@ static void articles(void) {
     }
     int capital = hammer_is_upper(text.data[article.start]);
     if (hammer_word_is(text, article, "a") && vowel_sound(next)) {
-      hammer_report_fix(article.start, article.end, "Use " OPEN_QUOTE "an" CLOSE_QUOTE " before a vowel sound",
-                        capital ? "An" : "an", 2);
+      hammer_report_fix(article.start, article.end, say(SAY_USE_AN), capital ? "An" : "an", 2);
     } else if (hammer_word_is(text, article, "an") && consonant_sound(next)) {
-      hammer_report_fix(article.start, article.end, "Use " OPEN_QUOTE "a" CLOSE_QUOTE " before a consonant sound",
-                        capital ? "A" : "a", 1);
+      hammer_report_fix(article.start, article.end, say(SAY_USE_A), capital ? "A" : "a", 1);
     }
   }
 }
@@ -336,7 +343,7 @@ static const char *fix_for(const char *phrase, const char *fix, uint64_t i) {
 }
 
 // `table` alternates a phrase and its fixes.
-static void phrases(const char *const *table, const char *before, const char *after) {
+static void phrases(const char *const *table, int said) {
   for (uint64_t i = 0; i < count; i++) {
     for (const char *const *entry = table; entry[0]; entry += 2) {
       uint64_t matched = match(entry[0], i);
@@ -356,7 +363,7 @@ static void phrases(const char *const *table, const char *before, const char *af
         if (!*end) break;
         at = end + 3;
       }
-      hammer_report(words[i].start, words[i + matched - 1].end, message(before, fixes[0].replacement, fixes[0].length, after),
+      hammer_report(words[i].start, words[i + matched - 1].end, say_with(said, fixes[0].replacement, fixes[0].length),
                     fixes, n);
       i += matched - 1;
       break;
@@ -404,7 +411,7 @@ static void elision(void) {
     hammer_put(&out, text.data + next.start, hammer_word_length(next));
     uint64_t length = out.length;
     const char *fix = hammer_terminated(&out);
-    hammer_report_fix(word.start, next.end, message("Did you mean " OPEN_QUOTE, fix, length, CLOSE_QUOTE "?"), fix, length);
+    hammer_report_fix(word.start, next.end, say_with(SAY_DID_YOU_MEAN, fix, length), fix, length);
     i++;
   }
 }
@@ -419,7 +426,7 @@ static void than(void) {
       continue;
     }
     const char *fix = hammer_is_upper(text.data[then.start]) ? "Than" : "than";
-    hammer_report_fix(then.start, then.end, "Did you mean " OPEN_QUOTE "than" CLOSE_QUOTE "?", fix, 4);
+    hammer_report_fix(then.start, then.end, say_with(SAY_DID_YOU_MEAN, "than", 4), fix, 4);
   }
 }
 
@@ -433,7 +440,7 @@ static void lone_i(void) {
     if (text.data[word.start] != 'i') continue;
     int alone = hammer_word_length(word) == 1 && byte(word.end) != '.' && (word.start == 0 || byte(word.start - 1) != '.');
     int contracted = hammer_apostrophe_at(text, word.start + 1) != 0;
-    if (alone || contracted) hammer_report_fix(word.start, word.start + 1, "Capitalize " OPEN_QUOTE "I" CLOSE_QUOTE, "I", 1);
+    if (alone || contracted) hammer_report_fix(word.start, word.start + 1, say(SAY_CAPITALIZE_I), "I", 1);
   }
 }
 
@@ -445,7 +452,7 @@ static void spacing(void) {
       while (byte(end) == ' ') end++;
       // Two spaces after a sentence is a typing habit, not a slip.
       if (end < text.length && !sentence_end(text.data[i - 1]) && !space_like(text.data[i - 1])) {
-        hammer_report_fix(i, end, "Extra spaces", " ", 1);
+        hammer_report_fix(i, end, say(SAY_EXTRA_SPACES), " ", 1);
       }
       i = end - 1;
     } else if (c == ' ' && i > 0 && !space_like(text.data[i - 1])) {
@@ -454,18 +461,18 @@ static void spacing(void) {
       int face = (next == ':' || next == ';') && (byte(i + 2) == ')' || byte(i + 2) == '(');
       int spaced = typography->french && (next == ':' || next == ';');
       if ((next == ',' || next == ';' || next == ':' || lone_period) && !face && !spaced) {
-        hammer_report_fix(i, i + 2, "Space before punctuation", &text.data[i + 1], 1);
+        hammer_report_fix(i, i + 2, say(SAY_SPACE_BEFORE_PUNCTUATION), &text.data[i + 1], 1);
       }
     } else if (c == ',' && hammer_letter_before(text, i) && hammer_letter_at(text, i + 1)) {
-      hammer_report_fix(i, i + 1, "Missing space after a comma", ", ", 2);
+      hammer_report_fix(i, i + 1, say(SAY_SPACE_AFTER_COMMA), ", ", 2);
     } else if (sentence_end(c) && i > 0 && hammer_lower_at(text, hammer_char_before(text, i)) &&
                hammer_letter_before(text, hammer_char_before(text, i)) && hammer_upper_at(text, i + 1)) {
       char fix[2] = {c, ' '};
-      hammer_report_fix(i, i + 1, "Missing space after a sentence", fix, 2);
+      hammer_report_fix(i, i + 1, say(SAY_SPACE_AFTER_SENTENCE), fix, 2);
     } else if (c == ':' && typography->french && hammer_letter_before(text, i) && (i + 1 == text.length || byte(i + 1) == ' ')) {
       // A no-break space, so the colon keeps to its word.
-      HammerFix fix = {"\xC2\xA0:", 3, "Add a space"};
-      hammer_report(i, i + 1, "Missing space before a colon", &fix, 1);
+      HammerFix fix = {"\xC2\xA0:", 3, say(SAY_ADD_A_SPACE)};
+      hammer_report(i, i + 1, say(SAY_SPACE_BEFORE_COLON), &fix, 1);
     }
   }
 }
@@ -486,7 +493,7 @@ static void sentence_starts(void) {
     }
     char fix[4];
     uint32_t letter = hammer_char_at(text, next, &length);
-    hammer_report_fix(next, next + length, "Capitalize the start of a sentence", fix, hammer_encode(hammer_upper(letter), fix));
+    hammer_report_fix(next, next + length, say(SAY_CAPITALIZE_SENTENCE), fix, hammer_encode(hammer_upper(letter), fix));
   }
 }
 
@@ -498,16 +505,16 @@ static void doubled_punctuation(void) {
     HammerFix fixes[2] = {{&text.data[i], 1, 0}, {&text.data[i + 1], 1, 0}};
     HammerFix swapped[2] = {fixes[1], fixes[0]};
     if ((c == ',' || c == ';') && next == c) {
-      hammer_report(i, i + 2, "Doubled punctuation", fixes, 1);
+      hammer_report(i, i + 2, say(SAY_DOUBLED_PUNCTUATION), fixes, 1);
     } else if (c == '.' && next == '.') {
       HammerFix ellipsis[2] = {{".", 1, 0}, {"...", 3, 0}};
-      hammer_report(i, i + 2, "Doubled punctuation", ellipsis, 2);
+      hammer_report(i, i + 2, say(SAY_DOUBLED_PUNCTUATION), ellipsis, 2);
     } else if (c == '.' && next == ',' && !abbreviated(i)) {
-      hammer_report(i, i + 2, "Doubled punctuation", &fixes[1], 1);
+      hammer_report(i, i + 2, say(SAY_DOUBLED_PUNCTUATION), &fixes[1], 1);
     } else if (c == ',' && next == '.') {
-      hammer_report(i, i + 2, "Doubled punctuation", swapped, 2);
+      hammer_report(i, i + 2, say(SAY_DOUBLED_PUNCTUATION), swapped, 2);
     } else if ((c == '!' || c == '?') && next == '.') {
-      hammer_report(i, i + 2, "Doubled punctuation", fixes, 1);
+      hammer_report(i, i + 2, say(SAY_DOUBLED_PUNCTUATION), fixes, 1);
     }
   }
 }
@@ -537,10 +544,10 @@ static void parentheses(void) {
     } else if (depth) {
       depth--;
     } else if (!list_marker(i)) {
-      hammer_report(i, i + 1, "Unmatched parenthesis", 0, 0);
+      hammer_report(i, i + 1, say(SAY_UNMATCHED_PARENTHESIS), 0, 0);
     }
   }
-  for (uint64_t k = 0; k < depth; k++) hammer_report(open[k], open[k] + 1, "Unclosed parenthesis", 0, 0);
+  for (uint64_t k = 0; k < depth; k++) hammer_report(open[k], open[k] + 1, say(SAY_UNCLOSED_PARENTHESIS), 0, 0);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -572,10 +579,10 @@ static void dialogue_tags(void) {
     char first = text.data[word.start];
     if (!dialogue_tag(k)) continue;
     if (hammer_is_lower(first) && after_quote(words[k - 1], word, '.') && !abbreviated(words[k - 1].end)) {
-      hammer_report_fix(words[k - 1].end, words[k - 1].end + 1, "Use a comma before a dialogue tag", ",", 1);
+      hammer_report_fix(words[k - 1].end, words[k - 1].end + 1, say(SAY_COMMA_BEFORE_TAG), ",", 1);
     } else if (hammer_is_upper(first) && after_quote(words[k - 1], word, ',')) {
       char fix = hammer_to_lower(first);
-      hammer_report_fix(word.start, word.start + 1, "A dialogue tag after a comma continues the sentence", &fix, 1);
+      hammer_report_fix(word.start, word.start + 1, say(SAY_TAG_CONTINUES), &fix, 1);
     }
   }
 }
@@ -596,8 +603,8 @@ static void quote_spacing(void) {
       char *spaced = hammer_must_alloc(length + 1);
       memcpy(spaced + ahead, text.data + i, length);
       spaced[ahead ? 0 : length] = ' ';
-      HammerFix fix = {spaced, length + 1, "Add a space"};
-      hammer_report(i, i + length, after ? "Missing space after a quote" : "Missing space before a quote", &fix, 1);
+      HammerFix fix = {spaced, length + 1, say(SAY_ADD_A_SPACE)};
+      hammer_report(i, i + length, say(after ? SAY_SPACE_AFTER_QUOTE : SAY_SPACE_BEFORE_QUOTE), &fix, 1);
     }
     if (byte(i) == '"') straight_open = !straight_open;
     uint64_t skip = quote ? quote : open;
@@ -622,10 +629,10 @@ static void quote_comma(void) {
       char *fix = hammer_must_alloc(length);
       fix[0] = ',';
       memcpy(fix + 1, text.data + i + 1, length - 1);
-      hammer_report_fix(i, at + quote + 1, "Use a comma before a dialogue tag", fix, length);
+      hammer_report_fix(i, at + quote + 1, say(SAY_COMMA_BEFORE_TAG), fix, length);
     } else {
-      HammerFix fix = {"", 0, "Remove the full stop"};
-      hammer_report(i, i + 1, "A quote followed by a comma ends without a full stop", &fix, 1);
+      HammerFix fix = {"", 0, say(SAY_REMOVE_FULL_STOP)};
+      hammer_report(i, i + 1, say(SAY_QUOTE_ENDS_WITHOUT_STOP), &fix, 1);
     }
   }
 }
@@ -646,7 +653,7 @@ static void repeated_marks(void) {
     }
     if (end - i >= 2 && !(bangs == 1 && questions == 1)) {
       const char *fix = bangs && questions ? "?!" : bangs ? "!" : "?";
-      hammer_report_fix(i, end, "Repeated punctuation", fix, strlen(fix));
+      hammer_report_fix(i, end, say(SAY_REPEATED_PUNCTUATION), fix, strlen(fix));
     }
     i = end - 1;
   }
@@ -673,11 +680,9 @@ static void long_sentences(void) {
     if (k + 1 < count && !sentence_break(words[k], words[k + 1])) continue;
     uint64_t length = k + 1 - first;
     if ((int64_t)length > settings.long_sentence_words) {
-      HammerBuffer note = {0};
-      hammer_put_text(&note, "Long sentence: ");
-      hammer_put_int(&note, (int64_t)length);
-      hammer_put_text(&note, " words");
-      hammer_report(words[first].start, words[k].end, hammer_terminated(&note), 0, 0);
+      HammerBuffer words_in = {0};
+      hammer_put_int(&words_in, (int64_t)length);
+      hammer_report(words[first].start, words[k].end, say_with(SAY_LONG_SENTENCE, words_in.data, words_in.length), 0, 0);
     }
     first = k + 1;
   }
@@ -697,6 +702,15 @@ int hammer_diagnose_begin(const HammerDiagnoseRequest *request) {
   settings.long_sentences = hammer_setting_bool(request, "longSentences", 0);
   settings.long_sentence_words = hammer_setting_int(request, "longSentenceWords", 40);
   if (settings.long_sentence_words < 1) settings.long_sentence_words = 1;
+  messages = MESSAGES[0].text;
+  for (uint64_t i = 0; i < sizeof(MESSAGES) / sizeof(MESSAGES[0]) && request->locale.data; i++) {
+    const char *code = MESSAGES[i].code;
+    if (request->locale.length >= 2 && hammer_to_lower(request->locale.data[0]) == code[0] &&
+        hammer_to_lower(request->locale.data[1]) == code[1] &&
+        (request->locale.length == 2 || request->locale.data[2] == '-' || request->locale.data[2] == '_')) {
+      messages = MESSAGES[i].text;
+    }
+  }
   if (!load_lists(request)) return 0;
   typography = &OTHER_TYPOGRAPHY;
   for (uint64_t i = 0; i < sizeof(TYPOGRAPHY) / sizeof(TYPOGRAPHY[0]); i++) {
@@ -723,7 +737,7 @@ void hammer_diagnose_paragraph(HammerText paragraph) {
     repeated_words();
     if (english) articles();
     elision();
-    phrases(lists.mistakes, "Did you mean " OPEN_QUOTE, CLOSE_QUOTE "?");
+    phrases(lists.mistakes, SAY_DID_YOU_MEAN);
     if (english) than();
   }
   if (settings.punctuation) {
@@ -738,8 +752,8 @@ void hammer_diagnose_paragraph(HammerText paragraph) {
     quote_spacing();
     quote_comma();
   }
-  if (settings.wordiness) phrases(lists.wordy, "Wordy; " OPEN_QUOTE, CLOSE_QUOTE " says the same");
-  if (settings.redundancy) phrases(lists.redundant, "Redundant; " OPEN_QUOTE, CLOSE_QUOTE " says the same");
+  if (settings.wordiness) phrases(lists.wordy, SAY_WORDY);
+  if (settings.redundancy) phrases(lists.redundant, SAY_REDUNDANT);
   if (settings.repeated_marks) repeated_marks();
   if (settings.long_sentences) long_sentences();
 }

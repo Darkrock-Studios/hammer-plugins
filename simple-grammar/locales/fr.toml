@@ -1,0 +1,36 @@
+name = "Grammaire simple"
+description = "Souligne les fautes qu’un correcteur orthographique laisse passer, comme « could of », « le arbre » et les mots répétés, ainsi que les espaces, les majuscules et la ponctuation des dialogues, en anglais, français, allemand, espagnol, italien et ukrainien. Léger et rapide."
+
+[diagnostics.grammar]
+label = "Grammaire simple"
+
+[settings.mistakes]
+label = "Fautes de mots"
+hint = "Mots répétés, élision et mots ou expressions confondus"
+
+[settings.punctuation]
+label = "Ponctuation et majuscules"
+hint = "Espaces, signes doublés, parenthèses et majuscules"
+
+[settings.dialogue]
+label = "Dialogues"
+hint = "Virgules, majuscules et espaces autour des dialogues et des incises"
+
+[settings.wordiness]
+label = "Expressions verbeuses"
+hint = "Comme « dans le but de » pour « pour »"
+
+[settings.redundancy]
+label = "Expressions redondantes"
+hint = "Comme « monter en haut » pour « monter »"
+
+[settings.repeatedMarks]
+label = "Signes répétés"
+hint = "Comme « !! » et « ?!? »"
+
+[settings.longSentences]
+label = "Phrases longues"
+
+[settings.longSentenceWords]
+label = "Mots d’une phrase longue"
+hint = "Au-delà de ce nombre ; nécessite Phrases longues"

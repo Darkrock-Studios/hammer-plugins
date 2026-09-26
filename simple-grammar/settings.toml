@@ -2,7 +2,7 @@
 key = "mistakes"
 type = "bool"
 label = "Word mistakes"
-hint = "Repeated words, “a” and “an”, and mixed-up words and phrases"
+hint = "Repeated words, “a” and “an”, French elision, and mixed-up words and phrases"
 default = true
 
 [[setting]]

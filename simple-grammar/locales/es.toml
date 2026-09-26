@@ -1,0 +1,36 @@
+name = "Gramática sencilla"
+description = "Subraya los errores que un corrector ortográfico deja pasar, como «a sido», «de el» y las palabras repetidas, además de los espacios, las mayúsculas y la puntuación de los diálogos, en inglés, francés, alemán, español, italiano y ucraniano. Ligero y rápido."
+
+[diagnostics.grammar]
+label = "Gramática sencilla"
+
+[settings.mistakes]
+label = "Errores de palabras"
+hint = "Palabras repetidas y palabras o expresiones confundidas"
+
+[settings.punctuation]
+label = "Puntuación y mayúsculas"
+hint = "Espacios, signos duplicados, paréntesis y mayúsculas"
+
+[settings.dialogue]
+label = "Diálogos"
+hint = "Comas, mayúsculas y espacios en los diálogos y sus acotaciones"
+
+[settings.wordiness]
+label = "Expresiones prolijas"
+hint = "Como «con el fin de» por «para»"
+
+[settings.redundancy]
+label = "Expresiones redundantes"
+hint = "Como «subir arriba» por «subir»"
+
+[settings.repeatedMarks]
+label = "Signos repetidos"
+hint = "Como «!!» y «?!?»"
+
+[settings.longSentences]
+label = "Oraciones largas"
+
+[settings.longSentenceWords]
+label = "Palabras de una oración larga"
+hint = "Más de esta cantidad; requiere Oraciones largas"

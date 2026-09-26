@@ -232,6 +232,27 @@ static void english_quote_comma_test(void) {
   HAMMER_EXPECT(0, "\"Wait.\", she said. " LQ "Go." RQ ", he said. \"U.S.\", it read.", "[.\",]>,\"; [." RQ ",]>," RQ);
 }
 
+static void ui_language_test(void) {
+  for (uint64_t i = 0; i < sizeof(MESSAGES) / sizeof(MESSAGES[0]); i++) {
+    for (int id = 0; id < MESSAGE_COUNT; id++) HAMMER_CHECK(MESSAGES[i].text[id] != 0);
+  }
+  char *reply = hammer_test_run("{\"language\":\"en\",\"locale\":\"fr-CA\",\"paragraphs\":[\"It a a dog, could of.\"]}");
+  HAMMER_CHECK(strstr(reply, "\"Mot répété\"") != 0);
+  HAMMER_CHECK(strstr(reply, "\"Vouliez-vous dire «" NO_BREAK_SPACE "could have" NO_BREAK_SPACE "»" NO_BREAK_SPACE "?\"") != 0);
+  free(reply);
+  reply = hammer_test_run("{\"language\":\"de\",\"locale\":\"uk\",\"settings\":{\"longSentences\":true,"
+                          "\"longSentenceWords\":10},\"paragraphs\":[\"Eins zwei drei vier fünf sechs sieben acht neun zehn elf.\"]}");
+  HAMMER_CHECK(strstr(reply, "\"Довге речення, слів: 11\"") != 0);
+  free(reply);
+  // An unknown UI language, and then none, get English.
+  reply = hammer_test_run("{\"language\":\"en\",\"locale\":\"pt-BR\",\"paragraphs\":[\"It a a dog.\"]}");
+  HAMMER_CHECK(strstr(reply, "\"Repeated word\"") != 0);
+  free(reply);
+  reply = hammer_test_run("{\"language\":\"en\",\"paragraphs\":[\"It a a dog.\"]}");
+  HAMMER_CHECK(strstr(reply, "\"Repeated word\"") != 0);
+  free(reply);
+}
+
 int main(void) {
   repeated_words_test();
   articles_test();
@@ -252,5 +273,6 @@ int main(void) {
   italian_test();
   ukrainian_test();
   english_quote_comma_test();
+  ui_language_test();
   return hammer_test_summary();
 }

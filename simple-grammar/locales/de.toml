@@ -1,0 +1,36 @@
+name = "Einfache Grammatik"
+description = "Unterstreicht Fehler, die eine Rechtschreibprüfung übersieht, etwa „seid wann“, „das selbe“ und doppelte Wörter, dazu Leerzeichen, Großschreibung und die Zeichensetzung in Dialogen, auf Englisch, Französisch, Deutsch, Spanisch, Italienisch und Ukrainisch. Klein und schnell."
+
+[diagnostics.grammar]
+label = "Einfache Grammatik"
+
+[settings.mistakes]
+label = "Wortfehler"
+hint = "Doppelte Wörter und verwechselte Wörter und Wendungen"
+
+[settings.punctuation]
+label = "Zeichensetzung und Großschreibung"
+hint = "Leerzeichen, doppelte Zeichen, Klammern und Großbuchstaben"
+
+[settings.dialogue]
+label = "Dialoge"
+hint = "Kommas, Großschreibung und Leerzeichen um Dialoge und Begleitsätze"
+
+[settings.wordiness]
+label = "Umständliche Wendungen"
+hint = "Etwa „zum jetzigen Zeitpunkt“ für „jetzt“"
+
+[settings.redundancy]
+label = "Redundante Wendungen"
+hint = "Etwa „bereits schon“ für „bereits“"
+
+[settings.repeatedMarks]
+label = "Wiederholte Satzzeichen"
+hint = "Etwa „!!“ und „?!?“"
+
+[settings.longSentences]
+label = "Lange Sätze"
+
+[settings.longSentenceWords]
+label = "Wörter in einem langen Satz"
+hint = "Mehr als so viele; nur mit „Lange Sätze“"
