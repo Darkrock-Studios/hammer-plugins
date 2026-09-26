@@ -1,0 +1,12 @@
+[package]
+name = "harper-grammar"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+hammer = { workspace = true, features = ["getrandom"] }
+serde_json.workspace = true
+harper-core = { version = "2.11.0", default-features = false }

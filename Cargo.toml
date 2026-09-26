@@ -1,7 +1,7 @@
 [workspace]
 resolver = "3"
-members = ["hammer", "upper", "wordfreq", "wordcount", "style", "names", "english-grammar"]
-# english-grammar builds Harper and runs Wizer, so only its own build.sh builds it.
+members = ["hammer", "upper", "wordfreq", "wordcount", "style", "names", "harper-grammar"]
+# harper-grammar builds Harper and runs Wizer, so only its own build.sh builds it.
 default-members = ["hammer", "upper", "wordfreq", "wordcount", "style", "names"]
 
 [workspace.dependencies]

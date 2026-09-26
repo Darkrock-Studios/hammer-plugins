@@ -1,0 +1,33 @@
+[[setting]]
+key = "grammar"
+type = "bool"
+label = "Grammar"
+hint = "Agreement, word order, “a” or “an”, and repeated words"
+default = true
+
+[[setting]]
+key = "wordChoice"
+type = "bool"
+label = "Word choice"
+hint = "Commonly confused words, misused phrases, and nonstandard forms"
+default = true
+
+[[setting]]
+key = "punctuation"
+type = "bool"
+label = "Punctuation and capitalization"
+default = true
+
+[[setting]]
+key = "style"
+type = "bool"
+label = "Style"
+hint = "Wordiness, redundancy, and readability"
+default = true
+
+[[setting]]
+key = "longSentences"
+type = "bool"
+label = "Long sentences"
+hint = "Sentences over 40 words; needs Style on"
+default = true

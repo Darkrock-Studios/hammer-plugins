@@ -1647,15 +1647,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "english-grammar"
-version = "0.1.0"
-dependencies = [
- "hammer",
- "harper-core",
- "serde_json",
-]
-
-[[package]]
 name = "entities"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2286,6 +2277,15 @@ dependencies = [
  "unicode-script",
  "unicode-width",
  "zip 8.6.0",
+]
+
+[[package]]
+name = "harper-grammar"
+version = "0.1.0"
+dependencies = [
+ "hammer",
+ "harper-core",
+ "serde_json",
 ]
 
 [[package]]

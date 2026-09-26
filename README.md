@@ -16,7 +16,7 @@ described in hammer-editor's `docs/CLIENT-PLUGINS.md`.
 | `assemblyscript/hammer` | The AssemblyScript plugin kit: Hammer's imports, operations, the cache, and a JSON reader and writer |
 | `assemblyscript/style`, `wordfreq`, `wordcount`, `upper` | AssemblyScript twins of `c/style`, `c/wordfreq`, `kotlin/wordcount`, and `c/upper`, for comparing languages |
 | `rust/hammer` | The Rust plugin kit: Hammer's imports, operations, and the cache, with serde for JSON; `action` and `diagnose` types, `progress`, byte offsets, an optional `getrandom` backend, and a zeroing allocator for Wizer builds |
-| `rust/english-grammar` | English grammar on [Harper](https://github.com/Automattic/harper), underlined in the editor, with settings for each category of check and for long sentences; pre-initialized with Wizer; its own `build.sh` builds `english-grammar.hammerplugin` |
+| `rust/harper-grammar` | Harper grammar: English grammar on [Harper](https://github.com/Automattic/harper), underlined in the editor, with settings for each category of check and for long sentences; pre-initialized with Wizer; its own `build.sh` builds `harper-grammar.hammerplugin` |
 | `rust/names` | Names from the encyclopedia: underlines slips of a name and names in lower case in the editor, and reports each entry's mentions, likely misspellings, and names with no entry; ships SCOWL's English word list as a resource (`resources/words/`), and checks any language with a list there |
 | `rust/tools/finish.py` | Makes a module built from crates written for the browser loadable by Hammer: drops wasm-bindgen's leftovers and checks the imports |
 | `rust/style`, `wordfreq`, `wordcount`, `upper` | Rust twins of the same plugins |
@@ -41,7 +41,7 @@ New to writing plugins? [RECIPES.md](RECIPES.md) has a hello-world version of ea
 - AssemblyScript: Node.js 20 or later and `npm install` in `assemblyscript/`, then `assemblyscript/build.sh`
   for every plugin there, or `assemblyscript/build.sh style` for one.
 - Rust: [rustup](https://rustup.rs) and `rustup target add wasm32-unknown-unknown`, then `rust/build.sh`.
-  `rust/english-grammar/build.sh` also needs wabt, Binaryen (on PATH, or its `bin` in `BINARYEN`), python3, and
+  `rust/harper-grammar/build.sh` also needs wabt, Binaryen (on PATH, or its `bin` in `BINARYEN`), python3, and
   `cargo install wizer --all-features`.
 - Zig: [Zig](https://ziglang.org/download/) 0.16, then `zig/build.sh`, or `zig/build.sh style` for one plugin.
 - Go: [TinyGo](https://tinygo.org) and the Go it builds with, then `go/build.sh`, or `go/build.sh style` for
