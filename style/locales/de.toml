@@ -1,0 +1,29 @@
+name = "Stilbericht"
+description = "Zeigt Lesbarkeit, Adverbien, Filterwörter, Dialog sowie wiederholte Wörter und Wendungen für jede Szene und die ganze Geschichte, als Dokument, das sich als Notiz behalten lässt. Funktioniert mit Projekten auf Englisch, Französisch, Deutsch, Spanisch, Italienisch und Ukrainisch."
+
+[actions.report]
+label = "Stilbericht"
+
+[actions.report.fields.scenes]
+label = "Szenen"
+hint = "Leer lassen für die ganze Geschichte."
+
+[settings.filterWords]
+label = "Filterwörter"
+hint = "Verben wie „fühlte“ und „sah“ zählen, die zwischen Leser und Szene stehen"
+
+[settings.scenes]
+label = "Jede Szene"
+hint = "Ein Abschnitt für jede Szene nach der ganzen Geschichte"
+
+[settings.sceneRepeats]
+label = "Wiederholungen in einer Szene"
+hint = "Wie oft ein Wort in einer Szene vorkommen muss, bevor sie es aufführt"
+
+[settings.storyRepeats]
+label = "Wiederholungen in der Geschichte"
+hint = "Wie oft ein Wort in der ganzen Geschichte vorkommen muss, bevor der Bericht es aufführt"
+
+[settings.listSize]
+label = "Listenlänge"
+hint = "Wie viele Adverbien, Filterwörter und Wiederholungen jede Liste zeigt"

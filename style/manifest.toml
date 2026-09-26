@@ -1,12 +1,12 @@
 id = "style"
 name = "Style report"
-version = "0.1.0"
+version = "0.2.0"
 api = 1
-description = "Reports readability, adverbs, dialogue, and repeated words and phrases for each scene and the whole story, as a document you can keep as a note."
-languages = ["en"]
+description = "Reports readability, adverbs, filter words, dialogue, and repeated words and phrases for each scene and the whole story, as a document you can keep as a note. Works with English, French, German, Spanish, Italian, and Ukrainian projects."
+languages = ["en", "fr", "de", "es", "it", "uk"]
 
 [permissions]
-operations = ["scene.tree", "scene.read"]
+operations = ["project.info", "scene.tree", "scene.read"]
 
 [[actions]]
 name = "report"

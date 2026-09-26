@@ -1,31 +1,127 @@
-// Style report: readability, adverbs, dialogue, and repetition, per scene and for the whole story,
-// shown as a document. Run from a project's menu, through the `action` export.
+// Style report: readability, adverbs, filter words, dialogue, and repetition, per scene and for the
+// whole story, shown as a document. Run from a project's menu, through the `action` export.
 //
-// English only: the syllable, adverb, and common-word rules assume it. Its word lists are resources,
-// in resources/en/. Letters outside Latin, Greek, and Cyrillic are told apart roughly, and only
-// those scripts are lower-cased.
+// It reads the project's language, and LANGUAGES has what each needs beyond its word lists, which
+// are resources in resources/<language>/: its vowels, adverb suffix, readability formula, and
+// dialogue marks. A language without lists gets words, sentences, and dialogue alone. The report is
+// written in the UI's language, from messages.h. Letters outside Latin, Greek, and Cyrillic are told
+// apart roughly, and only those scripts are lower-cased.
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "The story is too long for a style report"
 #include "../include/hammer.h"
 #include "../include/hammer_action.h"
+#include "messages.h"
 
-#define SCENE_REPEAT_THRESHOLD 3
 #define SCENE_REPEATS_SHOWN 5
-#define TOTAL_REPEAT_THRESHOLD 5
-#define TOTAL_LIST_SIZE 20
+#define MAX_LIST_SIZE 100
 #define MIN_REPEAT_LENGTH 4
 #define MIN_ADVERB_LENGTH 4
 #define PHRASE_LENGTH 3
 #define MAX_TITLE_CLOSERS 8
 
-// A number rounded to tenths, written as Kotlin writes a Double: at least one decimal.
+// The UI language's words, from messages.h.
+static const Messages *ui = &MESSAGES[0];
+
+// The report's settings, from settings.toml.
+static struct {
+  int filter_words;
+  int scenes;
+  int64_t scene_repeats;
+  int64_t story_repeats;
+  int64_t list_size;
+} settings;
+
+// A number rounded to tenths, with one decimal.
 static void put_tenths(HammerBuffer *buffer, int64_t tenths) {
   uint64_t magnitude = tenths < 0 ? (uint64_t)(-tenths) : (uint64_t)tenths;
   if (tenths < 0) hammer_put_char(buffer, '-');
   hammer_put_int(buffer, (int64_t)(magnitude / 10));
-  hammer_put_char(buffer, '.');
+  hammer_put_char(buffer, ui->decimal);
   hammer_put_char(buffer, (char)('0' + magnitude % 10));
 }
+
+// Writes a message's template with each %s given the next of `args`.
+static void say(HammerBuffer *out, const char *template, const char *const *args) {
+  for (const char *c = template; *c; c++) {
+    if (c[0] == '%' && c[1] == 's') {
+      hammer_put_text(out, *args++);
+      c++;
+    } else {
+      hammer_put_char(out, *c);
+    }
+  }
+}
+
+// "3 words": a count and its noun in the form the UI language gives that count.
+static const char *counted(int64_t count, const char *const forms[3]) {
+  int64_t n = count < 0 ? -count : count;
+  int form = 2;
+  if (ui->code[0] == 'u' && ui->code[1] == 'k') {
+    form = n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : 2;
+  } else if (n == 1 || (n == 0 && ui->code[0] == 'f' && ui->code[1] == 'r')) {
+    form = 0;
+  }
+  HammerBuffer out = {0};
+  hammer_put_int(&out, count);
+  hammer_put_char(&out, ' ');
+  hammer_put_text(&out, forms[form]);
+  return hammer_terminated(&out);
+}
+
+static const char *tenths_text(int64_t tenths) {
+  HammerBuffer out = {0};
+  put_tenths(&out, tenths);
+  return hammer_terminated(&out);
+}
+
+static const char *int_text(int64_t value) {
+  HammerBuffer out = {0};
+  hammer_put_int(&out, value);
+  return hammer_terminated(&out);
+}
+
+// ---------------------------------------------------------------------------------------------
+// Languages
+
+enum { READ_NONE, READ_FLESCH, READ_KANDEL_MOLES, READ_AMSTAD, READ_SZIGRISZT, READ_GULPEASE };
+
+// What a project language needs beyond its word lists.
+typedef struct {
+  const char *code;
+  // Its vowels, lower case, for counting syllables as vowel groups.
+  const char *vowels;
+  // Whether a final "e" after a consonant is silent, as in English "made" and French "table".
+  int silent_e;
+  // The ending that makes an adverb, as "-ly" does, or 0 where adverbs have none.
+  const char *adverb_suffix;
+  int readability;
+  // The readability formula's name, for the whole story's figure.
+  const char *formula;
+  // Whether an apostrophe ends a word, as French and Italian elide: "l'homme" counts "homme".
+  int split_apostrophes;
+  // Whether a line starting with a dash is dialogue, each later dash moving between speech and
+  // narration: "—Ven —dijo ella—. Ya."
+  int dash_dialogue;
+} Language;
+
+static const Language LANGUAGES[] = {
+  {"en", "aeiouy", 1, "ly", READ_FLESCH, "Flesch", 0, 0},
+  {"fr", "aeiouy\xC3\xA0\xC3\xA2\xC3\xA4\xC3\xA9\xC3\xA8\xC3\xAA\xC3\xAB\xC3\xAE\xC3\xAF\xC3\xB4\xC3\xB6\xC3\xB9\xC3\xBB\xC3\xBC\xC3\xBF\xC5\x93\xC3\xA6", 1, "ment",
+   READ_KANDEL_MOLES, "Kandel\xE2\x80\x93Moles", 1, 1},
+  {"de", "aeiouy\xC3\xA4\xC3\xB6\xC3\xBC", 0, 0, READ_AMSTAD, "Amstad", 0, 0},
+  {"es", "aeiou\xC3\xA1\xC3\xA9\xC3\xAD\xC3\xB3\xC3\xBA\xC3\xBC", 0, "mente", READ_SZIGRISZT, "Szigriszt-Pazos", 0, 1},
+  {"it", "aeiou\xC3\xA0\xC3\xA8\xC3\xA9\xC3\xAC\xC3\xAD\xC3\xB2\xC3\xB3\xC3\xB9", 0, "mente", READ_GULPEASE, "Gulpease", 1, 1},
+  {"uk", "\xD0\xB0\xD0\xB5\xD1\x94\xD0\xB8\xD1\x96\xD1\x97\xD0\xBE\xD1\x83\xD1\x8E\xD1\x8F", 0, 0, READ_NONE, 0, 0, 1},
+};
+
+// A language with no entry above: counted as words, sentences, and quoted dialogue.
+static const Language OTHER_LANGUAGE = {"", "aeiouy", 0, 0, READ_NONE, 0, 0, 0};
+
+static const Language *language = &LANGUAGES[0];
+// The project language's primary subtag, which names its folder of lists.
+static char language_code[9];
+// Whether that folder had lists, without which there is nothing to compare words with.
+static int has_lists;
 
 // ---------------------------------------------------------------------------------------------
 // Memory: hammer_alloc only grows, so what lives for one scene is reused rather than reallocated.
@@ -280,7 +376,10 @@ static uint32_t lowercase(uint32_t c) {
   return c;
 }
 
-static int is_closer(uint32_t c) { return c == '"' || c == 0x201D || c == 0x2019 || c == ')'; }
+// Marks that may close a sentence after its stop, German's “ and guillemets either way round among them.
+static int is_closer(uint32_t c) {
+  return c == '"' || c == 0x201D || c == 0x2019 || c == ')' || c == 0x201C || c == 0xBB || c == 0xAB;
+}
 
 static int is_sentence_end(uint32_t c) { return c == '.' || c == '!' || c == '?' || c == 0x2026; }
 
@@ -289,20 +388,24 @@ static int is_sentence_end(uint32_t c) { return c == '.' || c == '!' || c == '?'
 
 // Titles, after which a full stop does not end a sentence; read with the other lists.
 static const char *const *titles;
+static int lists_found;
 
 // A hash of the lists read, which cached counts are kept under with their scene's text.
 static uint64_t lists_hash;
 
-// Reads resources/en/<name>.txt for this call, in lower case; a missing or empty file lists nothing.
+// Reads resources/<language>/<name>.txt for this call, in lower case; a missing or empty file lists
+// nothing.
 static const char *const *read_list(const char *name) {
   static const char *const none[] = {0};
   char path[64];
-  uint64_t name_length = strlen(name), count;
-  memcpy(path, "en/", 3);
-  memcpy(path + 3, name, name_length);
-  memcpy(path + 3 + name_length, ".txt", 5);
+  uint64_t code_length = strlen(language_code), name_length = strlen(name), count;
+  memcpy(path, language_code, code_length);
+  path[code_length] = '/';
+  memcpy(path + code_length + 1, name, name_length);
+  memcpy(path + code_length + 1 + name_length, ".txt", 5);
   const char **list = hammer_resource_lines(path, &count);
   if (!list) return none;
+  lists_found = 1;
   for (uint64_t i = 0; i < count; i++) {
     // The lines are this call's, in hammer_alloc's memory.
     for (char *c = (char *)list[i]; *c; c++) {
@@ -315,7 +418,7 @@ static const char *const *read_list(const char *name) {
 }
 
 static Pool list_keys;
-static Map common_words, not_adverbs;
+static Map common_words, not_adverbs, filter_words;
 
 static void load_list(Map *map, const char *const *words) {
   for (int i = 0; words[i]; i++) map_add(map, words[i], strlen(words[i]), 1);
@@ -329,11 +432,12 @@ typedef struct {
   int64_t sentences;
   int64_t syllables;
   int64_t dialogue_words;
+  int64_t letters;
 } Counts;
 
 static Pool scene_keys, total_keys;
-static Map scene_adverbs, scene_words, scene_phrases;
-static Map total_adverbs, total_words, total_phrases;
+static Map scene_adverbs, scene_words, scene_phrases, scene_filters;
+static Map total_adverbs, total_words, total_phrases, total_filters;
 
 static HammerBuffer line;          // one line, markdown stripped
 static HammerBuffer sentence_text; // the lower-cased words of one sentence, one after another
@@ -341,47 +445,72 @@ static HammerBuffer phrase;
 static uint64_t *word_starts;
 static uint64_t word_capacity;
 
+static int is_vowel(uint32_t c) {
+  if (c < 0x80) {
+    for (const char *v = language->vowels; *v && (unsigned char)*v < 0x80; v++) {
+      if ((uint32_t)*v == c) return 1;
+    }
+    return 0;
+  }
+  uint64_t length = strlen(language->vowels);
+  for (uint64_t at = 0; at < length;) {
+    if (decode(language->vowels, length, &at) == c) return 1;
+  }
+  return 0;
+}
+
 // Vowel groups, less a silent final e; every word with a letter has at least one.
-static int syllables(const char *word, uint64_t length) {
+static int syllables(const char *word, uint64_t length, int64_t *letter_count) {
   uint32_t letters[4] = {0};         // the last three letters, newest in [0]
-  uint64_t letter_count = 0, letter_units = 0;
-  int count = 0, in_vowels = 0;
+  uint64_t count_of_letters = 0;
+  int count = 0, in_vowels = 0, last_vowel = 0, second_last_vowel = 0;
   for (uint64_t at = 0; at < length;) {
     uint32_t c = decode(word, length, &at);
     // Kotlin looks at UTF-16 units, where a letter outside the basic plane is two non-letters.
     if (c >= 0x10000 || !is_letter(c)) continue;
-    letter_count++;
-    letter_units++;
+    count_of_letters++;
     letters[2] = letters[1];
     letters[1] = letters[0];
     letters[0] = c;
-    int vowel = c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y';
+    int vowel = is_vowel(c);
+    second_last_vowel = last_vowel;
+    last_vowel = vowel;
     if (vowel && !in_vowels) count++;
     in_vowels = vowel;
   }
-  if (!letter_count) return 0;
-  int second_last_vowel = letters[1] == 'a' || letters[1] == 'e' || letters[1] == 'i' || letters[1] == 'o' ||
-    letters[1] == 'u' || letters[1] == 'y';
-  if (letter_units > 2 && letters[0] == 'e' && letters[1] != 'l' && !second_last_vowel) count--;
+  *letter_count += (int64_t)count_of_letters;
+  if (!count_of_letters) return 0;
+  // English says the e of "able" and "little".
+  int sounded = language == &LANGUAGES[0] && letters[1] == 'l';
+  if (language->silent_e && count_of_letters > 2 && letters[0] == 'e' && !sounded && !second_last_vowel) count--;
   return count < 1 ? 1 : count;
 }
 
-static int ends_with_ly(const char *word, uint64_t length) {
-  return length >= 2 && word[length - 2] == 'l' && word[length - 1] == 'y';
+static int ends_with(const char *word, uint64_t length, const char *suffix) {
+  uint64_t n = strlen(suffix);
+  if (length < n) return 0;
+  for (uint64_t i = 0; i < n; i++) {
+    if (word[length - n + i] != suffix[i]) return 0;
+  }
+  return 1;
 }
 
 static void count_word(Counts *counts, const char *word, uint64_t length, int in_dialogue) {
   uint64_t units = utf16_length(word, length);
   counts->words++;
-  counts->syllables += syllables(word, length);
+  counts->syllables += syllables(word, length, &counts->letters);
   if (in_dialogue) counts->dialogue_words++;
-  if (units > MIN_ADVERB_LENGTH && ends_with_ly(word, length) && !contains(&not_adverbs, word, length)) {
+  if (!has_lists) return;
+  const char *suffix = language->adverb_suffix;
+  if (suffix && units > MIN_ADVERB_LENGTH && ends_with(word, length, suffix) && !contains(&not_adverbs, word, length)) {
     map_add(&scene_adverbs, word, length, 1);
   }
+  if (contains(&filter_words, word, length)) map_add(&scene_filters, word, length, 1);
   if (units >= MIN_REPEAT_LENGTH && !contains(&common_words, word, length)) map_add(&scene_words, word, length, 1);
 }
 
 static void count_phrases(uint64_t words) {
+  if (!has_lists) return;
   for (uint64_t first = 0; first + PHRASE_LENGTH <= words; first++) {
     int uncommon = 0;
     phrase.length = 0;
@@ -401,16 +530,18 @@ static void count_phrases(uint64_t words) {
 static int ends_with_title(const char *text, uint64_t start, uint64_t end) {
   uint64_t at = end;
   while (at > start) {
-    unsigned char c = (unsigned char)text[at - 1];
-    if (!((c | 0x20) >= 'a' && (c | 0x20) <= 'z') && !(c >= '0' && c <= '9') && c != '_') break;
-    at--;
+    uint64_t before = at - 1;
+    while (before > start && ((unsigned char)text[before] & 0xC0) == 0x80) before--;
+    uint64_t probe = before;
+    uint32_t c = decode(text, at, &probe);
+    if (!is_word_char(c) && c != '_') break;
+    at = before;
   }
   for (int i = 0; titles[i]; i++) {
-    uint64_t length = strlen(titles[i]);
-    if (end - at != length) continue;
+    uint64_t length = strlen(titles[i]), t = 0, w = at;
     int match = 1;
-    for (uint64_t j = 0; j < length && match; j++) match = ((unsigned char)text[at + j] | 0x20) == titles[i][j];
-    if (match) return 1;
+    while (match && t < length && w < end) match = lowercase(decode(text, end, &w)) == decode(titles[i], length, &t);
+    if (match && t == length && w == end) return 1;
   }
   return 0;
 }
@@ -434,11 +565,14 @@ static int ends_sentence(const char *text, uint64_t sentence_start, uint64_t spa
   return 0;
 }
 
-enum { QUOTE_NONE, QUOTE_DOUBLE, QUOTE_CURLY_DOUBLE, QUOTE_CURLY_SINGLE };
+enum { QUOTE_NONE, QUOTE_DOUBLE, QUOTE_CURLY_DOUBLE, QUOTE_CURLY_SINGLE, QUOTE_LOW, QUOTE_LEFT_ANGLE, QUOTE_RIGHT_ANGLE,
+       QUOTE_DASH };
 
 // One line: tokens, quotation marks, and sentence ends.
 static void count_line(Counts *counts, const char *text, uint64_t length) {
   int opened = QUOTE_NONE;
+  // Whether the line has had anything but spaces, and whether it opened with a dialogue dash.
+  int started = 0, dash_line = 0;
   uint64_t sentence_start = 0;
   uint64_t words = 0;
   sentence_text.length = 0;
@@ -479,7 +613,7 @@ static void count_line(Counts *counts, const char *text, uint64_t length) {
         if (is_word_char(d)) {
           encode(&sentence_text, lowercase(d));
           at = next;
-        } else if ((d == '\'' || d == 0x2019) && is_word_char(peek_at(text, length, next))) {
+        } else if ((d == '\'' || d == 0x2019) && !language->split_apostrophes && is_word_char(peek_at(text, length, next))) {
           encode(&sentence_text, d);
           at = next;
         } else {
@@ -488,10 +622,21 @@ static void count_line(Counts *counts, const char *text, uint64_t length) {
       }
       count_word(counts, sentence_text.data + start, sentence_text.length - start, opened != QUOTE_NONE);
       words++;
+      started = 1;
       continue;
     }
 
-    if (c == 0x201C) opened = QUOTE_CURLY_DOUBLE;
+    if ((c == 0x2014 || c == 0x2013) && language->dash_dialogue && (dash_line || !started)) {
+      dash_line = 1;
+      opened = opened == QUOTE_DASH ? QUOTE_NONE : opened == QUOTE_NONE ? QUOTE_DASH : opened;
+    }
+    if (!is_space(c)) started = 1;
+    // „ opens a German quotation that “ closes; guillemets face either way, « » and » «.
+    if (c == 0x201E) opened = opened == QUOTE_NONE ? QUOTE_LOW : opened;
+    else if (c == 0x201C && opened == QUOTE_LOW) opened = QUOTE_NONE;
+    else if (c == 0xAB) opened = opened == QUOTE_RIGHT_ANGLE ? QUOTE_NONE : opened == QUOTE_NONE ? QUOTE_LEFT_ANGLE : opened;
+    else if (c == 0xBB) opened = opened == QUOTE_LEFT_ANGLE ? QUOTE_NONE : opened == QUOTE_NONE ? QUOTE_RIGHT_ANGLE : opened;
+    else if (c == 0x201C) opened = QUOTE_CURLY_DOUBLE;
     else if (c == 0x2018) opened = QUOTE_CURLY_SINGLE;
     else if (c == 0x201D) opened = opened == QUOTE_CURLY_DOUBLE ? QUOTE_NONE : opened;
     // A lone ’ is also a plural possessive, so it closes only a ‘ quotation.
@@ -579,12 +724,12 @@ static void count_scene(Counts *counts, const char *markdown, uint64_t length) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Cached counts: a scene's counts are kept under a hash of its text and the word lists, so
-// unchanged scenes are not counted again. The value is the Counts, then the scene's adverbs, words,
-// and phrases seen at least twice, each as an entry count followed by entries of a count, a length,
-// and the text.
+// Cached counts: a scene's counts are kept under a hash of its text, its language, and the word
+// lists, so unchanged scenes are not counted again. The value is the Counts, then the scene's adverbs,
+// words, phrases seen at least twice, and filter words, each as an entry count followed by entries of
+// a count, a length, and the text.
 
-#define CACHE_KEY_PREFIX "counts/1/"
+#define CACHE_KEY_PREFIX "counts/2/"
 
 static char cache_key[64];
 static uint64_t cache_key_length;
@@ -625,6 +770,7 @@ static void save_counts(const Counts *counts) {
   put_map(&cached, &scene_adverbs, 1);
   put_map(&cached, &scene_words, 1);
   put_map(&cached, &scene_phrases, 2);
+  put_map(&cached, &scene_filters, 1);
   hammer_cache_write(cache_key, cache_key_length, cached.data, cached.length);
 }
 
@@ -662,7 +808,7 @@ static int load_counts(Counts *counts) {
     memcpy(counts, at, sizeof(Counts));
     at += sizeof(Counts);
     if (read_map(&at, end, &scene_adverbs) && read_map(&at, end, &scene_words) &&
-        read_map(&at, end, &scene_phrases) && at == end) {
+        read_map(&at, end, &scene_phrases) && read_map(&at, end, &scene_filters) && at == end) {
       return 1;
     }
   }
@@ -671,6 +817,7 @@ static int load_counts(Counts *counts) {
   map_clear(&scene_adverbs);
   map_clear(&scene_words);
   map_clear(&scene_phrases);
+  map_clear(&scene_filters);
   return 0;
 }
 
@@ -694,52 +841,67 @@ static void put_list(HammerBuffer *out, const Slot **top, int count) {
 }
 
 typedef struct {
-  int has_prose;
-  int64_t ease, grade, adverbs_per_thousand; // in tenths
+  int has_ease, has_grade;
+  int64_t ease, grade, adverbs_per_thousand, filters_per_thousand; // in tenths
   int64_t dialogue_percent;
 } Figures;
 
-static Figures figures_of(const Counts *counts, int32_t adverbs) {
+static Figures figures_of(const Counts *counts, int32_t adverbs, int32_t filters) {
   Figures figures = {0};
-  figures.has_prose = counts->words > 0 && counts->sentences > 0;
-  if (figures.has_prose) {
-    double words_per_sentence = (double)counts->words / (double)counts->sentences;
-    double syllables_per_word = (double)counts->syllables / (double)counts->words;
-    figures.ease = round_half_up((206.835 - 1.015 * words_per_sentence - 84.6 * syllables_per_word) * 10);
-    figures.grade = round_half_up((0.39 * words_per_sentence + 11.8 * syllables_per_word - 15.59) * 10);
+  if (counts->words > 0 && counts->sentences > 0 && has_lists) {
+    double words = (double)counts->words, sentences = (double)counts->sentences;
+    double words_per_sentence = words / sentences;
+    double syllables_per_word = (double)counts->syllables / words;
+    double ease = 0;
+    figures.has_ease = 1;
+    switch (language->readability) {
+    case READ_FLESCH:
+      ease = 206.835 - 1.015 * words_per_sentence - 84.6 * syllables_per_word;
+      figures.has_grade = 1;
+      figures.grade = round_half_up((0.39 * words_per_sentence + 11.8 * syllables_per_word - 15.59) * 10);
+      break;
+    case READ_KANDEL_MOLES: ease = 207 - 1.015 * words_per_sentence - 73.6 * syllables_per_word; break;
+    case READ_AMSTAD: ease = 180 - words_per_sentence - 58.5 * syllables_per_word; break;
+    case READ_SZIGRISZT: ease = 206.835 - 62.3 * syllables_per_word - words_per_sentence; break;
+    case READ_GULPEASE: ease = 89 + (300 * sentences - 10 * (double)counts->letters) / words; break;
+    default: figures.has_ease = 0; break;
+    }
+    figures.ease = round_half_up(ease * 10);
   }
   if (counts->words > 0) {
     figures.adverbs_per_thousand = round_half_up((double)adverbs * 1000.0 / (double)counts->words * 10);
+    figures.filters_per_thousand = round_half_up((double)filters * 1000.0 / (double)counts->words * 10);
     figures.dialogue_percent = round_half_up((double)counts->dialogue_words / (double)counts->words * 100);
   }
   return figures;
 }
 
-static void put_count(HammerBuffer *out, int64_t count, const char *one, const char *many) {
-  hammer_put_int(out, count);
-  hammer_put_char(out, ' ');
-  hammer_put_text(out, count == 1 ? one : many);
+static const char *percent_text(int64_t percent) {
+  HammerBuffer out = {0};
+  const char *args[] = {int_text(percent)};
+  say(&out, ui->percent, args);
+  return hammer_terminated(&out);
 }
 
 // One line: "9 words in 2 sentences. Reading ease 89.5, grade 1.9. ..."
-static void put_scene_summary(HammerBuffer *out, const Counts *counts, int32_t adverbs) {
-  Figures figures = figures_of(counts, adverbs);
-  put_count(out, counts->words, "word", "words");
-  hammer_put_text(out, " in ");
-  put_count(out, counts->sentences, "sentence", "sentences");
-  hammer_put_char(out, '.');
-  if (figures.has_prose) {
-    hammer_put_text(out, " Reading ease ");
-    put_tenths(out, figures.ease);
-    hammer_put_text(out, ", grade ");
-    put_tenths(out, figures.grade);
-    hammer_put_char(out, '.');
+static void put_scene_summary(HammerBuffer *out, const Counts *counts, int32_t adverbs, int32_t filters) {
+  Figures figures = figures_of(counts, adverbs, filters);
+  const char *words[] = {counted(counts->words, ui->words), counted(counts->sentences, ui->sentences_in)};
+  say(out, ui->scene_words, words);
+  if (figures.has_ease) {
+    const char *ease[] = {tenths_text(figures.ease), tenths_text(figures.grade)};
+    say(out, figures.has_grade ? ui->scene_ease_grade : ui->scene_ease, ease);
   }
-  hammer_put_char(out, ' ');
-  put_tenths(out, figures.adverbs_per_thousand);
-  hammer_put_text(out, " adverbs per 1,000 words. ");
-  hammer_put_int(out, figures.dialogue_percent);
-  hammer_put_text(out, "% dialogue.");
+  if (has_lists && language->adverb_suffix) {
+    const char *adverb_figure[] = {tenths_text(figures.adverbs_per_thousand)};
+    say(out, ui->scene_adverbs, adverb_figure);
+  }
+  if (has_lists && settings.filter_words) {
+    const char *filter_figure[] = {tenths_text(figures.filters_per_thousand)};
+    say(out, ui->scene_filters, filter_figure);
+  }
+  const char *dialogue[] = {percent_text(figures.dialogue_percent)};
+  say(out, ui->scene_dialogue, dialogue);
 }
 
 // [text] as it should read, with the characters that would format it escaped.
@@ -752,25 +914,29 @@ static void put_markdown_text(HammerBuffer *out, const char *text, uint64_t leng
 }
 
 // The whole story's figures, a markdown list item each.
-static void put_story_summary(HammerBuffer *out, const Counts *counts, int32_t adverbs) {
-  Figures figures = figures_of(counts, adverbs);
-  hammer_put_text(out, "- **Words:** ");
-  hammer_put_int(out, counts->words);
-  hammer_put_text(out, " in ");
-  put_count(out, counts->sentences, "sentence", "sentences");
+static void put_story_summary(HammerBuffer *out, const Counts *counts, int32_t adverbs, int32_t filters) {
+  Figures figures = figures_of(counts, adverbs, filters);
+  const char *words[] = {int_text(counts->words), counted(counts->sentences, ui->sentences_in)};
+  say(out, ui->story_words, words);
   hammer_put_char(out, '\n');
-  if (figures.has_prose) {
-    hammer_put_text(out, "- **Reading ease:** ");
-    put_tenths(out, figures.ease);
-    hammer_put_text(out, ", grade ");
-    put_tenths(out, figures.grade);
+  if (figures.has_ease) {
+    const char *ease[] = {tenths_text(figures.ease), figures.has_grade ? tenths_text(figures.grade) : language->formula};
+    say(out, figures.has_grade ? ui->story_ease_grade : ui->story_ease, ease);
     hammer_put_char(out, '\n');
   }
-  hammer_put_text(out, "- **Adverbs:** ");
-  put_tenths(out, figures.adverbs_per_thousand);
-  hammer_put_text(out, " per 1,000 words\n- **Dialogue:** ");
-  hammer_put_int(out, figures.dialogue_percent);
-  hammer_put_text(out, "%\n");
+  if (has_lists && language->adverb_suffix) {
+    const char *adverb_figure[] = {tenths_text(figures.adverbs_per_thousand)};
+    say(out, ui->story_adverbs, adverb_figure);
+    hammer_put_char(out, '\n');
+  }
+  if (has_lists && settings.filter_words) {
+    const char *filter_figure[] = {tenths_text(figures.filters_per_thousand)};
+    say(out, ui->story_filters, filter_figure);
+    hammer_put_char(out, '\n');
+  }
+  const char *dialogue[] = {percent_text(figures.dialogue_percent)};
+  say(out, ui->story_dialogue, dialogue);
+  hammer_put_char(out, '\n');
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -922,19 +1088,109 @@ static void keep_chosen(const int64_t *chosen, uint64_t count) {
 static void reset(void) {
   hammer_alloc_reset();
   list_keys = scene_keys = total_keys = (Pool){0};
-  common_words = not_adverbs = empty_map(&list_keys);
-  scene_adverbs = scene_words = scene_phrases = empty_map(&scene_keys);
-  total_adverbs = total_words = total_phrases = empty_map(&total_keys);
+  common_words = not_adverbs = filter_words = empty_map(&list_keys);
+  scene_adverbs = scene_words = scene_phrases = scene_filters = empty_map(&scene_keys);
+  total_adverbs = total_words = total_phrases = total_filters = empty_map(&total_keys);
   line = sentence_text = phrase = cached = (HammerBuffer){0};
   word_starts = 0;
   word_capacity = 0;
   scenes = 0;
   scene_count = scene_capacity = 0;
   failure = 0;
+}
+
+// The primary subtag of a BCP 47 tag, as JSON sent it, in lower case; English's when it is missing
+// or not a plain one.
+static void set_language(const char *tag, uint64_t length) {
+  uint64_t n = 0;
+  while (tag && n < length && tag[n] != '-' && tag[n] != '_' && n + 1 < sizeof(language_code)) {
+    char c = hammer_to_lower(tag[n]);
+    if (c < 'a' || c > 'z') break;
+    language_code[n++] = c;
+  }
+  if (n < 2 || (tag && n < length && tag[n] != '-' && tag[n] != '_')) {
+    memcpy(language_code, "en", 3);
+  } else {
+    language_code[n] = 0;
+  }
+  language = &OTHER_LANGUAGE;
+  for (uint64_t i = 0; i < sizeof(LANGUAGES) / sizeof(LANGUAGES[0]); i++) {
+    if (hammer_json_key_is(language_code, strlen(language_code), LANGUAGES[i].code)) language = &LANGUAGES[i];
+  }
+}
+
+// The UI's words for a BCP 47 tag, English's for any language messages.h lacks.
+static void set_ui(HammerText locale) {
+  ui = &MESSAGES[0];
+  for (uint64_t i = 0; i < sizeof(MESSAGES) / sizeof(MESSAGES[0]) && locale.data; i++) {
+    const char *code = MESSAGES[i].code;
+    if (locale.length >= 2 && hammer_to_lower(locale.data[0]) == code[0] && hammer_to_lower(locale.data[1]) == code[1] &&
+        (locale.length == 2 || locale.data[2] == '-' || locale.data[2] == '_')) {
+      ui = &MESSAGES[i];
+    }
+  }
+}
+
+static int64_t setting_int(const HammerActionRequest *request, const char *key, int64_t fallback, int64_t min, int64_t max) {
+  HammerJson json;
+  if (!hammer_json_find(request->settings.data, request->settings.length, key, &json)) return fallback;
+  char c = hammer_json_peek(&json);
+  if (c != '-' && !hammer_is_digit(c)) return fallback;
+  int64_t value = hammer_json_int(&json);
+  return value < min ? min : value > max ? max : value;
+}
+
+static int setting_bool(const HammerActionRequest *request, const char *key, int fallback) {
+  HammerJson json;
+  if (!hammer_json_find(request->settings.data, request->settings.length, key, &json)) return fallback;
+  char c = hammer_json_peek(&json);
+  return c == 't' || c == 'f' ? hammer_json_bool(&json) : fallback;
+}
+
+// The project's language, from project.info; English when Hammer does not say, or the plugin may not ask.
+static void read_language(const char *project, uint64_t project_length) {
+  HammerBuffer request = {0};
+  hammer_put_text(&request, "{\"project\":");
+  put_raw_string(&request, project, project_length);
+  hammer_put_char(&request, '}');
+  hammer_put_char(&request, 0);
+  uint64_t length;
+  HammerJson reply;
+  const char *key, *tag = 0;
+  uint64_t key_length, tag_length = 0;
+  if (call("project.info", request.data, &length, &reply) && hammer_json_enter_object(&reply)) {
+    while (hammer_json_next_key(&reply, &key, &key_length)) {
+      if (hammer_json_key_is(key, key_length, "language") && hammer_json_peek(&reply) == '"') {
+        hammer_json_string(&reply, &tag, &tag_length);
+      } else {
+        hammer_json_skip(&reply);
+      }
+    }
+  }
+  failure = 0;
+  set_language(tag, tag_length);
+}
+
+// The project language's lists, which cached counts are kept under with the language.
+static void load_lists(void) {
   lists_hash = 14695981039346656037ull;
+  for (const char *c = language_code; *c; c++) lists_hash = (lists_hash ^ (unsigned char)*c) * 1099511628211ull;
+  lists_hash = (lists_hash ^ '/') * 1099511628211ull;
+  lists_found = 0;
   load_list(&common_words, read_list("common-words"));
   load_list(&not_adverbs, read_list("not-adverbs"));
+  load_list(&filter_words, read_list("filter-words"));
   titles = read_list("titles");
+  has_lists = lists_found;
+}
+
+static void put_top(HammerBuffer *report, const char *label, const Map *map, int32_t minimum) {
+  const Slot *top[MAX_LIST_SIZE];
+  int found = map_top(map, minimum, (int)settings.list_size, top);
+  if (!found) return;
+  hammer_put_text(report, label);
+  put_list(report, top, found);
+  hammer_put_char(report, '\n');
 }
 
 int32_t EXTISM_EXPORTED_FUNCTION(action) {
@@ -951,6 +1207,15 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   }
   const char *project = action.project.data;
   uint64_t project_length = action.project.length;
+  set_ui(action.locale);
+  settings.filter_words = setting_bool(&action, "filterWords", 1);
+  settings.scenes = setting_bool(&action, "scenes", 1);
+  settings.scene_repeats = setting_int(&action, "sceneRepeats", 3, 2, 1000);
+  settings.story_repeats = setting_int(&action, "storyRepeats", 5, 2, 100000);
+  settings.list_size = setting_int(&action, "listSize", 20, 1, MAX_LIST_SIZE);
+  read_language(project, project_length);
+  load_lists();
+
   // The ids of the scenes chosen, as int64s; none means the whole story.
   HammerBuffer chosen = {0};
   HammerJson json;
@@ -985,10 +1250,8 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   HammerBuffer status = {0};
   for (uint64_t i = 0; i < scene_count; i++) {
     status.length = 0;
-    hammer_put_text(&status, "Scene ");
-    hammer_put_int(&status, (int64_t)i + 1);
-    hammer_put_text(&status, " of ");
-    hammer_put_int(&status, (int64_t)scene_count);
+    const char *place[] = {int_text((int64_t)i + 1), int_text((int64_t)scene_count)};
+    say(&status, ui->progress, place);
     hammer_progress((double)i / (double)scene_count, hammer_terminated(&status));
 
     request.length = 0;
@@ -1004,6 +1267,7 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     map_clear(&scene_adverbs);
     map_clear(&scene_words);
     map_clear(&scene_phrases);
+    map_clear(&scene_filters);
     Counts counts = {0};
     set_cache_key(&markdown);
     if (!load_counts(&counts)) {
@@ -1014,50 +1278,52 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
     total.sentences += counts.sentences;
     total.syllables += counts.syllables;
     total.dialogue_words += counts.dialogue_words;
+    total.letters += counts.letters;
     merge(&total_adverbs, &scene_adverbs, 1);
     merge(&total_words, &scene_words, 1);
     merge(&total_phrases, &scene_phrases, 2);
+    merge(&total_filters, &scene_filters, 1);
 
     HammerBuffer *text = &lines[i];
     *text = (HammerBuffer){0};
+    if (!settings.scenes) continue;
     char *name = hammer_must_alloc(scenes[i].name_length);
     hammer_put_text(text, "### ");
     put_markdown_text(text, name, hammer_json_unescape(scenes[i].name, scenes[i].name_length, name));
     hammer_put_char(text, '\n');
-    put_scene_summary(text, &counts, map_total(&scene_adverbs));
+    put_scene_summary(text, &counts, map_total(&scene_adverbs), map_total(&scene_filters));
     const Slot *top[SCENE_REPEATS_SHOWN];
-    int repeats = map_top(&scene_words, SCENE_REPEAT_THRESHOLD, SCENE_REPEATS_SHOWN, top);
+    int repeats = map_top(&scene_words, (int32_t)settings.scene_repeats, SCENE_REPEATS_SHOWN, top);
     if (repeats) {
-      hammer_put_text(text, "\n\nRepeats: ");
+      hammer_put_text(text, "\n\n");
+      hammer_put_text(text, ui->repeats);
       put_list(text, top, repeats);
     }
   }
 
   HammerBuffer report = {0};
-  hammer_put_text(&report, chosen.length ? "# Style report\n\n## Chosen scenes\n\n" : "# Style report\n\n## Whole story\n\n");
-  put_story_summary(&report, &total, map_total(&total_adverbs));
-  const Slot *top[TOTAL_LIST_SIZE];
-  int found = map_top(&total_adverbs, 1, TOTAL_LIST_SIZE, top);
-  if (found) {
-    hammer_put_text(&report, "- **Most used adverbs:** ");
-    put_list(&report, top, found);
+  hammer_put_text(&report, ui->title);
+  hammer_put_text(&report, "\n\n");
+  hammer_put_text(&report, chosen.length ? ui->chosen_scenes : ui->whole_story);
+  hammer_put_text(&report, "\n\n");
+  put_story_summary(&report, &total, map_total(&total_adverbs), map_total(&total_filters));
+  if (has_lists) {
+    put_top(&report, ui->top_adverbs, &total_adverbs, 1);
+    if (settings.filter_words) put_top(&report, ui->top_filters, &total_filters, 1);
+    put_top(&report, ui->repeated_words, &total_words, (int32_t)settings.story_repeats);
+    put_top(&report, ui->repeated_phrases, &total_phrases, 2);
+  } else {
+    hammer_put_text(&report, "\n");
+    hammer_put_text(&report, ui->no_lists);
     hammer_put_char(&report, '\n');
   }
-  found = map_top(&total_words, TOTAL_REPEAT_THRESHOLD, TOTAL_LIST_SIZE, top);
-  if (found) {
-    hammer_put_text(&report, "- **Repeated words:** ");
-    put_list(&report, top, found);
-    hammer_put_char(&report, '\n');
+  if (scene_count && settings.scenes) {
+    hammer_put_text(&report, "\n");
+    hammer_put_text(&report, ui->scenes);
+    hammer_put_text(&report, "\n\n");
   }
-  found = map_top(&total_phrases, 2, TOTAL_LIST_SIZE, top);
-  if (found) {
-    hammer_put_text(&report, "- **Repeated phrases:** ");
-    put_list(&report, top, found);
-    hammer_put_char(&report, '\n');
-  }
-  if (scene_count) hammer_put_text(&report, "\n## Scenes\n\n");
 
-  for (uint64_t i = 0; i < scene_count; i++) {
+  for (uint64_t i = 0; i < scene_count && settings.scenes; i++) {
     hammer_put(&report, lines[i].data, lines[i].length);
     hammer_put_text(&report, "\n\n");
   }

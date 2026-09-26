@@ -1,0 +1,40 @@
+[[setting]]
+key = "filterWords"
+type = "bool"
+label = "Filter words"
+hint = "Count verbs such as “felt” and “saw” that stand between the reader and the scene"
+default = true
+
+[[setting]]
+key = "scenes"
+type = "bool"
+label = "Each scene"
+hint = "A section for every scene after the whole story"
+default = true
+
+[[setting]]
+key = "sceneRepeats"
+type = "int"
+label = "Repeats in a scene"
+hint = "How often a word comes up in one scene before that scene lists it"
+default = 3
+min = 2
+max = 50
+
+[[setting]]
+key = "storyRepeats"
+type = "int"
+label = "Repeats in the story"
+hint = "How often a word comes up in the whole story before the report lists it"
+default = 5
+min = 2
+max = 1000
+
+[[setting]]
+key = "listSize"
+type = "int"
+label = "List length"
+hint = "How many adverbs, filter words, and repeats each list shows"
+default = 20
+min = 1
+max = 100

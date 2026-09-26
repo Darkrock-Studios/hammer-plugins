@@ -1,0 +1,14 @@
+# Words ending in "mente" that are not adverbs, made by tools/not-adverbs.py.
+atormente
+aumente
+clemente
+comente
+complemente
+demente
+deprimente
+experimente
+inclemente
+incremente
+lamente
+mente
+vehemente

@@ -1,0 +1,29 @@
+name = "Informe de estilo"
+description = "Muestra la legibilidad, los adverbios, las palabras filtro, el diálogo y las palabras y frases repetidas de cada escena y de toda la historia, en un documento que puedes guardar como nota. Funciona con proyectos en inglés, francés, alemán, español, italiano y ucraniano."
+
+[actions.report]
+label = "Informe de estilo"
+
+[actions.report.fields.scenes]
+label = "Escenas"
+hint = "Déjalo vacío para toda la historia."
+
+[settings.filterWords]
+label = "Palabras filtro"
+hint = "Contar verbos como «sintió» y «vio» que se interponen entre el lector y la escena"
+
+[settings.scenes]
+label = "Cada escena"
+hint = "Una sección por escena después de toda la historia"
+
+[settings.sceneRepeats]
+label = "Repeticiones en una escena"
+hint = "Cuántas veces aparece una palabra en una escena antes de que esta la muestre"
+
+[settings.storyRepeats]
+label = "Repeticiones en la historia"
+hint = "Cuántas veces aparece una palabra en toda la historia antes de que el informe la muestre"
+
+[settings.listSize]
+label = "Longitud de las listas"
+hint = "Cuántos adverbios, palabras filtro y repeticiones muestra cada lista"

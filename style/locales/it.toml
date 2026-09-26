@@ -1,0 +1,29 @@
+name = "Rapporto di stile"
+description = "Mostra leggibilità, avverbi, parole filtro, dialogo e parole ed espressioni ripetute per ogni scena e per tutta la storia, in un documento da conservare come nota. Funziona con progetti in inglese, francese, tedesco, spagnolo, italiano e ucraino."
+
+[actions.report]
+label = "Rapporto di stile"
+
+[actions.report.fields.scenes]
+label = "Scene"
+hint = "Lascia vuoto per tutta la storia."
+
+[settings.filterWords]
+label = "Parole filtro"
+hint = "Contare verbi come «sentì» e «vide» che si mettono tra il lettore e la scena"
+
+[settings.scenes]
+label = "Ogni scena"
+hint = "Una sezione per ogni scena dopo tutta la storia"
+
+[settings.sceneRepeats]
+label = "Ripetizioni in una scena"
+hint = "Quante volte una parola ricorre in una scena prima che la scena la elenchi"
+
+[settings.storyRepeats]
+label = "Ripetizioni nella storia"
+hint = "Quante volte una parola ricorre in tutta la storia prima che il rapporto la elenchi"
+
+[settings.listSize]
+label = "Lunghezza degli elenchi"
+hint = "Quanti avverbi, parole filtro e ripetizioni mostra ogni elenco"

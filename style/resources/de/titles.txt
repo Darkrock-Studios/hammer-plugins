@@ -1,0 +1,24 @@
+# Titles and abbreviations, lower case and without their full stop, after which a full stop
+# does not end a sentence.
+hr
+fr
+frl
+dr
+prof
+st
+nr
+bzw
+ca
+usw
+vgl
+evtl
+ggf
+inkl
+sog
+z
+b
+d
+h
+u
+a
+s

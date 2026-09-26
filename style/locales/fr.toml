@@ -1,0 +1,29 @@
+name = "Rapport de style"
+description = "Indique la lisibilité, les adverbes, les mots-filtres, le dialogue et les mots et expressions répétés pour chaque scène et toute l’histoire, dans un document à garder comme note. Fonctionne avec les projets en anglais, français, allemand, espagnol, italien et ukrainien."
+
+[actions.report]
+label = "Rapport de style"
+
+[actions.report.fields.scenes]
+label = "Scènes"
+hint = "Laissez vide pour toute l’histoire."
+
+[settings.filterWords]
+label = "Mots-filtres"
+hint = "Compter les verbes comme « sentit » et « vit » qui s’interposent entre le lecteur et la scène"
+
+[settings.scenes]
+label = "Chaque scène"
+hint = "Une section par scène après toute l’histoire"
+
+[settings.sceneRepeats]
+label = "Répétitions dans une scène"
+hint = "Combien de fois un mot revient dans une scène avant qu’elle le signale"
+
+[settings.storyRepeats]
+label = "Répétitions dans l’histoire"
+hint = "Combien de fois un mot revient dans toute l’histoire avant que le rapport le signale"
+
+[settings.listSize]
+label = "Longueur des listes"
+hint = "Combien d’adverbes, de mots-filtres et de répétitions chaque liste montre"
