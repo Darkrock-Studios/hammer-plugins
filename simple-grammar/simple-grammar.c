@@ -63,37 +63,26 @@ static const char *const LIST_NAMES[LIST_COUNT] = {
   "repeatable",
 };
 
-// Copies a list file into the kept lists: its lines, trimmed, without blank ones and # comments. With
-// `pairs`, each line is `phrase = fix`, listed as the phrase, in lower case, and then the fix.
-static const char *const *keep_list(const char *file, uint64_t length, int pairs) {
+// Copies a list's lines, from hammer_resource_lines, into the kept lists. With `pairs`, each line is
+// `phrase = fix`, listed as the phrase, in lower case, and then the fix.
+static const char *const *keep_list(const char *const *lines, int pairs) {
   const char *const *list = &list_entries[entries_used];
-  if (file) {
-    if (length + 1 > LIST_BYTES - bytes_used) hammer_fail("simple-grammar's word lists are too long");
+  for (; lines && *lines; lines++) {
+    uint64_t length = strlen(*lines) + 1;
+    if (length > LIST_BYTES - bytes_used) hammer_fail("simple-grammar's word lists are too long");
     char *line = list_bytes + bytes_used;
-    memcpy(line, file, length);
-    line[length] = 0;
-    bytes_used += length + 1;
-    while (*line) {
-      char *end = line;
-      while (*end && *end != '\n') end++;
-      char *next = *end ? end + 1 : end;
-      while (end > line && (end[-1] == '\r' || end[-1] == ' ' || end[-1] == '\t')) end--;
-      *end = 0;
-      while (*line == ' ' || *line == '\t') line++;
-      if (*line && *line != '#') {
-        add_entry(line);
-        if (pairs) {
-          char *equals = line;
-          while (*equals && !(equals[0] == ' ' && equals[1] == '=' && equals[2] == ' ')) {
-            *equals = hammer_to_lower(*equals);
-            equals++;
-          }
-          if (!*equals) hammer_fail("A line of simple-grammar's phrase lists has no \" = \"");
-          *equals = 0;
-          add_entry(equals + 3);
-        }
+    memcpy(line, *lines, length);
+    bytes_used += length;
+    add_entry(line);
+    if (pairs) {
+      char *equals = line;
+      while (*equals && !(equals[0] == ' ' && equals[1] == '=' && equals[2] == ' ')) {
+        *equals = hammer_to_lower(*equals);
+        equals++;
       }
-      line = next;
+      if (!*equals) hammer_fail("A line of simple-grammar's phrase lists has no \" = \"");
+      *equals = 0;
+      add_entry(equals + 3);
     }
   }
   add_entry(0);
@@ -121,8 +110,7 @@ static int load_lists(const HammerDiagnoseRequest *request) {
     if (hammer_json_key_is(code, code_length, unlisted[i])) return 0;
   }
 
-  const char *files[LIST_COUNT];
-  uint64_t lengths[LIST_COUNT];
+  const char **files[LIST_COUNT];
   int any = 0;
   for (int i = 0; i < LIST_COUNT; i++) {
     char path[64];
@@ -131,7 +119,8 @@ static int load_lists(const HammerDiagnoseRequest *request) {
     path[code_length] = '/';
     memcpy(path + code_length + 1, LIST_NAMES[i], name_length);
     memcpy(path + code_length + 1 + name_length, ".txt", 5);
-    files[i] = hammer_resource_load(path, &lengths[i]);
+    uint64_t count;
+    files[i] = hammer_resource_lines(path, &count);
     any |= files[i] != 0;
   }
   if (!any) {
@@ -144,16 +133,16 @@ static int load_lists(const HammerDiagnoseRequest *request) {
   lists.loaded = 1;
   lists.found = 0;
   bytes_used = entries_used = 0;
-  lists.mistakes = keep_list(files[MISTAKES], lengths[MISTAKES], 1);
-  lists.wordy = keep_list(files[WORDY], lengths[WORDY], 1);
-  lists.redundant = keep_list(files[REDUNDANT], lengths[REDUNDANT], 1);
-  lists.possessives = keep_list(files[POSSESSIVES], lengths[POSSESSIVES], 0);
-  lists.comparatives = keep_list(files[COMPARATIVES], lengths[COMPARATIVES], 0);
-  lists.after_then = keep_list(files[AFTER_THEN], lengths[AFTER_THEN], 0);
-  lists.abbreviations = keep_list(files[ABBREVIATIONS], lengths[ABBREVIATIONS], 0);
-  lists.tag_verbs = keep_list(files[TAG_VERBS], lengths[TAG_VERBS], 0);
-  lists.pronouns = keep_list(files[PRONOUNS], lengths[PRONOUNS], 0);
-  lists.repeatable = keep_list(files[REPEATABLE], lengths[REPEATABLE], 0);
+  lists.mistakes = keep_list(files[MISTAKES], 1);
+  lists.wordy = keep_list(files[WORDY], 1);
+  lists.redundant = keep_list(files[REDUNDANT], 1);
+  lists.possessives = keep_list(files[POSSESSIVES], 0);
+  lists.comparatives = keep_list(files[COMPARATIVES], 0);
+  lists.after_then = keep_list(files[AFTER_THEN], 0);
+  lists.abbreviations = keep_list(files[ABBREVIATIONS], 0);
+  lists.tag_verbs = keep_list(files[TAG_VERBS], 0);
+  lists.pronouns = keep_list(files[PRONOUNS], 0);
+  lists.repeatable = keep_list(files[REPEATABLE], 0);
   lists.found = 1;
   return 1;
 }

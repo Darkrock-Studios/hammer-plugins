@@ -1,8 +1,9 @@
 // Style report: readability, adverbs, dialogue, and repetition, per scene and for the whole story,
 // shown as a document. Run from a project's menu, through the `action` export.
 //
-// English only: the syllable, adverb, and common-word rules assume it. Letters outside Latin,
-// Greek, and Cyrillic are told apart roughly, and only those scripts are lower-cased.
+// English only: the syllable, adverb, and common-word rules assume it. Its word lists are resources,
+// in resources/en/. Letters outside Latin, Greek, and Cyrillic are told apart roughly, and only
+// those scripts are lower-cased.
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "The story is too long for a style report"
 #include "../include/hammer.h"
@@ -286,33 +287,32 @@ static int is_sentence_end(uint32_t c) { return c == '.' || c == '!' || c == '?'
 // ---------------------------------------------------------------------------------------------
 // Word lists
 
-static const char *const NOT_ADVERBS[] = {
-  "family", "only", "early", "reply", "apply", "supply", "rely", "ally", "belly", "bully", "jelly",
-  "holy", "ugly", "july", "italy", "lily", "rally", "fly", "sly", "assembly", "anomaly", "butterfly",
-  "costly", "curly", "daily", "deadly", "elderly", "friendly", "ghostly", "hilly", "holly", "homely",
-  "jolly", "likely", "lively", "lonely", "lovely", "manly", "monthly", "oily", "orderly", "silly",
-  "smelly", "surly", "timely", "unlikely", "weekly", "wily", "woolly", "worldly", "yearly", "chilly",
-  "comely", "cowardly", "unruly", "burly", "dilly", "gully", "melancholy", "monopoly", "multiply",
-  "poly", "sully", "tally", "wobbly", 0,
-};
+// Titles, after which a full stop does not end a sentence; read with the other lists.
+static const char *const *titles;
 
-static const char *const COMMON_WORDS[] = {
-  "a", "about", "after", "again", "all", "also", "am", "an", "and", "any", "are", "as", "at", "back",
-  "be", "because", "been", "before", "being", "but", "by", "can", "could", "did", "do", "does", "down",
-  "even", "every", "for", "from", "get", "got", "had", "has", "have", "he", "her", "here", "hers",
-  "him", "his", "how", "i", "if", "in", "into", "is", "it", "its", "just", "know", "like", "me", "more",
-  "much", "my", "no", "not", "now", "of", "off", "on", "one", "only", "or", "our", "out", "over",
-  "said", "she", "so", "some", "than", "that", "the", "their", "them", "then", "there", "these",
-  "they", "this", "those", "through", "to", "too", "up", "very", "was", "we", "were", "what", "when",
-  "where", "which", "while", "who", "why", "will", "with", "would", "you", "your", "i'm", "it's",
-  "don't", "didn't", "that's", "he's", "she's", "i'd", "i'll", "you're", "they're", "we're", "can't",
-  "won't", "wasn't", "there's", "let", "going", "would've", "could've", "though", "still",
-  "around", "away", "other", "another", "each", "went", "come", "came", "make", "made", "want",
-  "look", "looked", "think", "thought", "well", "yes", "yeah", "okay", "good", "right", "never",
-  "always", "something", "nothing", "anything", "someone", "anyone", "time", "once", 0,
-};
+// A hash of the lists read, which cached counts are kept under with their scene's text.
+static uint64_t lists_hash;
 
-static const char *const TITLES[] = {"mr", "mrs", "ms", "dr", "st", "prof", "jr", "sr", "mt", "vs", "etc", 0};
+// Reads resources/en/<name>.txt for this call, in lower case; a missing or empty file lists nothing.
+static const char *const *read_list(const char *name) {
+  static const char *const none[] = {0};
+  char path[64];
+  uint64_t name_length = strlen(name), count;
+  memcpy(path, "en/", 3);
+  memcpy(path + 3, name, name_length);
+  memcpy(path + 3 + name_length, ".txt", 5);
+  const char **list = hammer_resource_lines(path, &count);
+  if (!list) return none;
+  for (uint64_t i = 0; i < count; i++) {
+    // The lines are this call's, in hammer_alloc's memory.
+    for (char *c = (char *)list[i]; *c; c++) {
+      *c = (char)((unsigned char)*c >= 'A' && (unsigned char)*c <= 'Z' ? *c | 0x20 : *c);
+      lists_hash = (lists_hash ^ (unsigned char)*c) * 1099511628211ull;
+    }
+    lists_hash = (lists_hash ^ '\n') * 1099511628211ull;
+  }
+  return list;
+}
 
 static Pool list_keys;
 static Map common_words, not_adverbs;
@@ -405,11 +405,11 @@ static int ends_with_title(const char *text, uint64_t start, uint64_t end) {
     if (!((c | 0x20) >= 'a' && (c | 0x20) <= 'z') && !(c >= '0' && c <= '9') && c != '_') break;
     at--;
   }
-  for (int i = 0; TITLES[i]; i++) {
-    uint64_t length = strlen(TITLES[i]);
+  for (int i = 0; titles[i]; i++) {
+    uint64_t length = strlen(titles[i]);
     if (end - at != length) continue;
     int match = 1;
-    for (uint64_t j = 0; j < length && match; j++) match = ((unsigned char)text[at + j] | 0x20) == TITLES[i][j];
+    for (uint64_t j = 0; j < length && match; j++) match = ((unsigned char)text[at + j] | 0x20) == titles[i][j];
     if (match) return 1;
   }
   return 0;
@@ -579,9 +579,10 @@ static void count_scene(Counts *counts, const char *markdown, uint64_t length) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Cached counts: a scene's counts are kept under a hash of its text, so unchanged scenes are not
-// counted again. The value is the Counts, then the scene's adverbs, words, and phrases seen at least
-// twice, each as an entry count followed by entries of a count, a length, and the text.
+// Cached counts: a scene's counts are kept under a hash of its text and the word lists, so
+// unchanged scenes are not counted again. The value is the Counts, then the scene's adverbs, words,
+// and phrases seen at least twice, each as an entry count followed by entries of a count, a length,
+// and the text.
 
 #define CACHE_KEY_PREFIX "counts/1/"
 
@@ -593,7 +594,7 @@ static void put_u32(HammerBuffer *buffer, uint32_t value) { hammer_put(buffer, (
 
 static void set_cache_key(const HammerBuffer *text) {
   static const char hex[] = "0123456789abcdef";
-  uint64_t hash = 14695981039346656037ull;
+  uint64_t hash = lists_hash;
   for (uint64_t i = 0; i < text->length; i++) hash = (hash ^ (unsigned char)text->data[i]) * 1099511628211ull;
   HammerBuffer key = {cache_key, 0, sizeof(cache_key)};
   hammer_put_text(&key, CACHE_KEY_PREFIX);
@@ -930,8 +931,10 @@ static void reset(void) {
   scenes = 0;
   scene_count = scene_capacity = 0;
   failure = 0;
-  load_list(&common_words, COMMON_WORDS);
-  load_list(&not_adverbs, NOT_ADVERBS);
+  lists_hash = 14695981039346656037ull;
+  load_list(&common_words, read_list("common-words"));
+  load_list(&not_adverbs, read_list("not-adverbs"));
+  titles = read_list("titles");
 }
 
 int32_t EXTISM_EXPORTED_FUNCTION(action) {
