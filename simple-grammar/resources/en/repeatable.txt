@@ -1,0 +1,3 @@
+# Words that may be written twice in a row: "had had", "that that".
+had
+that

@@ -1,8 +1,12 @@
-// Simple grammar: common slips in English prose, underlined in the editor through the `diagnose`
-// export. Every rule is a pass over one paragraph's words or bytes, with small tables, so checking is
+// Simple grammar: common slips in prose, underlined in the editor through the `diagnose` export.
+// Every rule is a pass over one paragraph's words or bytes, with small word lists, so checking is
 // fast and the module stays a few KB. The rules stay where they are sure, since every word involved
 // is a real one: a spell checker passes these slips and a writer should not be nagged. Settings turn
-// groups of rules on and off; projects in another language get no diagnostics.
+// groups of rules on and off.
+//
+// The lists are resources, in resources/<language>/ for each language it checks, and a project in a
+// language without them gets no diagnostics. A, an, a lone "i", and "then" for "than" are English's
+// own rules, and the punctuation rules assume English typography.
 #define HAMMER_IMPLEMENTATION
 #define HAMMER_OUT_OF_MEMORY "The text is too long to check"
 #include "../include/hammer.h"
@@ -21,6 +25,141 @@ static struct {
   int long_sentences;
   int64_t long_sentence_words;
 } settings;
+
+// ---------------------------------------------------------------------------------------------
+// Word lists
+
+// The lists of the language last checked, kept between calls; its files together must fit.
+#define LIST_BYTES (64 * 1024)
+#define LIST_ENTRIES 2048
+
+static char list_bytes[LIST_BYTES];
+static const char *list_entries[LIST_ENTRIES];
+static uint64_t bytes_used, entries_used;
+
+// Each ends with a 0. The phrase lists alternate a phrase and its fix.
+static struct {
+  char language[9];
+  // Whether `language` has been read, and whether its lists were read whole.
+  int loaded;
+  int found;
+  const char *const *mistakes, *const *wordy, *const *redundant, *const *possessives, *const *comparatives,
+      *const *after_then, *const *abbreviations, *const *tag_verbs, *const *pronouns, *const *repeatable;
+} lists;
+
+static void add_entry(const char *entry) {
+  if (entries_used == LIST_ENTRIES) hammer_fail("simple-grammar's word lists have too many lines");
+  list_entries[entries_used++] = entry;
+}
+
+// Languages found to have no lists, so checking one does not drop the lists kept.
+static char unlisted[8][sizeof(lists.language)];
+static int unlisted_count;
+
+enum { MISTAKES, WORDY, REDUNDANT, POSSESSIVES, COMPARATIVES, AFTER_THEN, ABBREVIATIONS, TAG_VERBS, PRONOUNS, REPEATABLE, LIST_COUNT };
+
+static const char *const LIST_NAMES[LIST_COUNT] = {
+  "mistakes", "wordy", "redundant", "possessives", "comparatives", "after-then", "abbreviations", "tag-verbs", "pronouns",
+  "repeatable",
+};
+
+// Copies a list file into the kept lists: its lines, trimmed, without blank ones and # comments. With
+// `pairs`, each line is `phrase = fix`, listed as the phrase, in lower case, and then the fix.
+static const char *const *keep_list(const char *file, uint64_t length, int pairs) {
+  const char *const *list = &list_entries[entries_used];
+  if (file) {
+    if (length + 1 > LIST_BYTES - bytes_used) hammer_fail("simple-grammar's word lists are too long");
+    char *line = list_bytes + bytes_used;
+    memcpy(line, file, length);
+    line[length] = 0;
+    bytes_used += length + 1;
+    while (*line) {
+      char *end = line;
+      while (*end && *end != '\n') end++;
+      char *next = *end ? end + 1 : end;
+      while (end > line && (end[-1] == '\r' || end[-1] == ' ' || end[-1] == '\t')) end--;
+      *end = 0;
+      while (*line == ' ' || *line == '\t') line++;
+      if (*line && *line != '#') {
+        add_entry(line);
+        if (pairs) {
+          char *equals = line;
+          while (*equals && !(equals[0] == ' ' && equals[1] == '=' && equals[2] == ' ')) {
+            *equals = hammer_to_lower(*equals);
+            equals++;
+          }
+          if (!*equals) hammer_fail("A line of simple-grammar's phrase lists has no \" = \"");
+          *equals = 0;
+          add_entry(equals + 3);
+        }
+      }
+      line = next;
+    }
+  }
+  add_entry(0);
+  return list;
+}
+
+// Reads the lists for the request's language, English when it has none, unless they are the ones
+// kept; 0 when the package has none for it. A language whose lists could not be read gets nothing.
+static int load_lists(const HammerDiagnoseRequest *request) {
+  char code[sizeof(lists.language)] = "en";
+  if (request->language.data) {
+    uint64_t n = 0;
+    while (n < request->language.length && request->language.data[n] != '-' && request->language.data[n] != '_') n++;
+    if (n == 0 || n >= sizeof(code)) return 0;
+    for (uint64_t i = 0; i < n; i++) {
+      char c = hammer_to_lower(request->language.data[i]);
+      if (c < 'a' || c > 'z') return 0;
+      code[i] = c;
+    }
+    code[n] = 0;
+  }
+  uint64_t code_length = strlen(code);
+  if (lists.loaded && hammer_json_key_is(code, code_length, lists.language)) return lists.found;
+  for (int i = 0; i < unlisted_count; i++) {
+    if (hammer_json_key_is(code, code_length, unlisted[i])) return 0;
+  }
+
+  const char *files[LIST_COUNT];
+  uint64_t lengths[LIST_COUNT];
+  int any = 0;
+  for (int i = 0; i < LIST_COUNT; i++) {
+    char path[64];
+    uint64_t name_length = strlen(LIST_NAMES[i]);
+    memcpy(path, code, code_length);
+    path[code_length] = '/';
+    memcpy(path + code_length + 1, LIST_NAMES[i], name_length);
+    memcpy(path + code_length + 1 + name_length, ".txt", 5);
+    files[i] = hammer_resource_load(path, &lengths[i]);
+    any |= files[i] != 0;
+  }
+  if (!any) {
+    if (unlisted_count < (int)(sizeof(unlisted) / sizeof(unlisted[0]))) memcpy(unlisted[unlisted_count++], code, sizeof(code));
+    return 0;
+  }
+
+  // Marked loaded and empty first, so lists that fail to read are not read again on every call.
+  memcpy(lists.language, code, sizeof(code));
+  lists.loaded = 1;
+  lists.found = 0;
+  bytes_used = entries_used = 0;
+  lists.mistakes = keep_list(files[MISTAKES], lengths[MISTAKES], 1);
+  lists.wordy = keep_list(files[WORDY], lengths[WORDY], 1);
+  lists.redundant = keep_list(files[REDUNDANT], lengths[REDUNDANT], 1);
+  lists.possessives = keep_list(files[POSSESSIVES], lengths[POSSESSIVES], 0);
+  lists.comparatives = keep_list(files[COMPARATIVES], lengths[COMPARATIVES], 0);
+  lists.after_then = keep_list(files[AFTER_THEN], lengths[AFTER_THEN], 0);
+  lists.abbreviations = keep_list(files[ABBREVIATIONS], lengths[ABBREVIATIONS], 0);
+  lists.tag_verbs = keep_list(files[TAG_VERBS], lengths[TAG_VERBS], 0);
+  lists.pronouns = keep_list(files[PRONOUNS], lengths[PRONOUNS], 0);
+  lists.repeatable = keep_list(files[REPEATABLE], lengths[REPEATABLE], 0);
+  lists.found = 1;
+  return 1;
+}
+
+// ---------------------------------------------------------------------------------------------
+// The paragraph
 
 static HammerText text;
 static HammerWord *words;
@@ -56,8 +195,7 @@ static void repeated_words(void) {
   for (uint64_t i = 0; i + 1 < count; i++) {
     HammerWord a = words[i], b = words[i + 1];
     // "had had" and "that that" are good English.
-    if (!hammer_spaced(text, a, b) || !hammer_same_word(text, a, b) || hammer_word_is(text, a, "had") ||
-        hammer_word_is(text, a, "that")) {
+    if (!hammer_spaced(text, a, b) || !hammer_same_word(text, a, b) || hammer_word_in(text, a, lists.repeatable)) {
       continue;
     }
     hammer_report_fix(a.start, b.end, "Repeated word", text.data + a.start, hammer_word_length(a));
@@ -97,109 +235,46 @@ static void articles(void) {
   }
 }
 
-// A phrase and what replaces it. A "*" in the phrase is a possessive ("my", "their"), kept in the fix.
-typedef struct {
-  const char *phrase;
-  const char *fix;
-} Phrase;
-
-static const Phrase MISTAKES[] = {
-  {"could of", "could have"}, {"should of", "should have"}, {"would of", "would have"},
-  {"must of", "must have"}, {"might of", "might have"}, {"alot", "a lot"},
-  {"irregardless", "regardless"}, {"per say", "per se"},
-  {"it's own", "its own"}, {"their is", "there is"}, {"their are", "there are"},
-  {"their was", "there was"}, {"their were", "there were"}, {"your welcome", "you're welcome"},
-  {"your a", "you're a"}, {"your an", "you're an"}, {"your the", "you're the"},
-  {"these kind of", "these kinds of"}, {"these sort of", "these sorts of"}, {"these type of", "these types of"},
-  {"those kind of", "those kinds of"}, {"those sort of", "those sorts of"}, {"those type of", "those types of"},
-  {"was suppose to", "was supposed to"}, {"were suppose to", "were supposed to"},
-  {"is suppose to", "is supposed to"}, {"are suppose to", "are supposed to"},
-  {"am suppose to", "am supposed to"}, {"be suppose to", "be supposed to"},
-  {"was use to", "was used to"}, {"were use to", "were used to"}, {"get use to", "get used to"},
-  {"got use to", "got used to"}, {"getting use to", "getting used to"},
-  {"for all intensive purposes", "for all intents and purposes"}, {"one in the same", "one and the same"},
-  {"case and point", "case in point"}, {"sneak peak", "sneak peek"}, {"sneak peaks", "sneak peeks"},
-  {"baited breath", "bated breath"}, {"free reign", "free rein"}, {"wreck havoc", "wreak havoc"},
-  {"wrecked havoc", "wreaked havoc"}, {"wrecking havoc", "wreaking havoc"}, {"tow the line", "toe the line"},
-  {"towed the line", "toed the line"}, {"towing the line", "toeing the line"}, {"mute point", "moot point"},
-  {"deep seeded", "deep-seated"}, {"shoe-in", "shoo-in"}, {"shoe-ins", "shoo-ins"},
-  {"nip it in the butt", "nip it in the bud"}, {"on tender hooks", "on tenterhooks"},
-  {"damp squid", "damp squib"}, {"statue of limitations", "statute of limitations"},
-  {"escape goat", "scapegoat"}, {"doggy dog world", "dog-eat-dog world"}, {"old wise tale", "old wives' tale"},
-  {"hunger pains", "hunger pangs"}, {"slight of hand", "sleight of hand"}, {"make due with", "make do with"},
-  {"beckon call", "beck and call"}, {"extract revenge", "exact revenge"},
-  {"peaked * interest", "piqued * interest"}, {"peaked * curiosity", "piqued * curiosity"},
-  {"peaks * interest", "piques * interest"}, {"peaks * curiosity", "piques * curiosity"},
-  {"wet * appetite", "whet * appetite"}, {"wets * appetite", "whets * appetite"},
-  {0, 0},
-};
-
-static const Phrase WORDY[] = {
-  {"in order to", "to"}, {"due to the fact that", "because"}, {"in light of the fact that", "because"},
-  {"despite the fact that", "although"}, {"in spite of the fact that", "although"},
-  {"at this point in time", "now"}, {"at the present time", "now"}, {"in the event that", "if"},
-  {"has the ability to", "can"}, {"have the ability to", "can"}, {"in the near future", "soon"},
-  {"in close proximity to", "near"}, {"a large number of", "many"}, {"the majority of", "most"},
-  {"each and every", "each"}, {"first and foremost", "first"}, {"with regard to", "about"},
-  {"in regard to", "about"}, {"until such time as", "until"}, {"for the purpose of", "for"},
-  {0, 0},
-};
-
-static const Phrase REDUNDANT[] = {
-  {"free gift", "gift"}, {"end result", "result"}, {"past history", "history"}, {"revert back", "revert"},
-  {"reverted back", "reverted"}, {"close proximity", "proximity"}, {"unexpected surprise", "surprise"},
-  {"final outcome", "outcome"}, {"true fact", "fact"}, {"added bonus", "bonus"}, {"join together", "join"},
-  {"joined together", "joined"}, {"merge together", "merge"}, {"mix together", "mix"},
-  {"absolutely essential", "essential"}, {"advance planning", "planning"}, {"basic fundamentals", "fundamentals"},
-  {"completely unanimous", "unanimous"}, {"future plans", "plans"}, {"new innovation", "innovation"},
-  {"past experience", "experience"}, {"personal opinion", "opinion"}, {"repeat again", "repeat"},
-  {"still remains", "remains"}, {"sum total", "total"}, {"atm machine", "ATM"}, {"pin number", "PIN"},
-  {"may possibly", "may"}, {"plan ahead", "plan"}, {"over exaggerate", "exaggerate"},
-  {"first began", "began"}, {"collaborate together", "collaborate"},
-  {0, 0},
-};
-
-static const char *const POSSESSIVES[] = {"my", "your", "his", "her", "its", "our", "their", 0};
-
 // The words a matched phrase covers: a "*" must be a possessive, and the last word must not run on
 // into a compound or abbreviation ("your A-list", "your a.m."). Returns how many, or 0.
 static uint64_t match(const char *phrase, uint64_t i) {
   // Most words start no phrase, and the first letter says so without the full match.
-  if (hammer_to_lower(text.data[words[i].start]) != phrase[0]) return 0;
+  if (hammer_is_ascii_letter(phrase[0]) && hammer_to_lower(text.data[words[i].start]) != phrase[0]) return 0;
   uint64_t matched = hammer_match_phrase(text, words, count, i, phrase);
   if (!matched) return 0;
   uint64_t end = words[i + matched - 1].end;
   if ((byte(end) == '-' || byte(end) == '.') && hammer_letter_at(text, end + 1)) return 0;
   uint64_t index = 0;
   for (const char *c = phrase; *c; c++) {
-    if (*c == '*' && !hammer_word_in(text, words[i + index], POSSESSIVES)) return 0;
+    if (*c == '*' && !hammer_word_in(text, words[i + index], lists.possessives)) return 0;
     if (*c == ' ' || *c == '-') index++;
   }
   return matched;
 }
 
 // A phrase's fix, with its "*" given the possessive the text has there.
-static const char *fix_for(const Phrase *entry, uint64_t i) {
-  const char *star = entry->fix;
+static const char *fix_for(const char *phrase, const char *fix, uint64_t i) {
+  const char *star = fix;
   while (*star && *star != '*') star++;
-  if (!*star) return entry->fix;
+  if (!*star) return fix;
   uint64_t index = 0;
-  for (const char *c = entry->phrase; *c != '*'; c++) index += *c == ' ' || *c == '-';
+  for (const char *c = phrase; *c && *c != '*'; c++) index += *c == ' ' || *c == '-';
   HammerWord possessive = words[i + index];
   HammerBuffer out = {0};
-  hammer_put(&out, entry->fix, (uint64_t)(star - entry->fix));
+  hammer_put(&out, fix, (uint64_t)(star - fix));
   for (uint64_t at = possessive.start; at < possessive.end; at++) hammer_put_char(&out, hammer_to_lower(text.data[at]));
   hammer_put_text(&out, star + 1);
   return hammer_terminated(&out);
 }
 
-static void phrases(const Phrase *table, const char *before, const char *after) {
+// `table` alternates a phrase and its fix.
+static void phrases(const char *const *table, const char *before, const char *after) {
   for (uint64_t i = 0; i < count; i++) {
-    for (const Phrase *entry = table; entry->phrase; entry++) {
-      uint64_t matched = match(entry->phrase, i);
+    for (const char *const *entry = table; entry[0]; entry += 2) {
+      uint64_t matched = match(entry[0], i);
       if (!matched) continue;
       uint64_t length;
-      const char *fix = styled(fix_for(entry, i), hammer_is_upper(text.data[words[i].start]), &length);
+      const char *fix = styled(fix_for(entry[0], entry[1], i), hammer_is_upper(text.data[words[i].start]), &length);
       hammer_report_fix(words[i].start, words[i + matched - 1].end, message(before, fix, length, after), fix, length);
       i += matched - 1;
       break;
@@ -207,24 +282,13 @@ static void phrases(const Phrase *table, const char *before, const char *after) 
   }
 }
 
-static const char *const COMPARATIVES[] = {
-  "more", "less", "fewer", "better", "worse", "rather", "larger", "smaller", "greater", "bigger", "higher",
-  "lower", "faster", "slower", "older", "younger", "longer", "shorter", "easier", "harder", "stronger", "weaker", 0,
-};
-
-// Words after "then" that make it the time: "we were happier then and".
-static const char *const AFTER_THEN[] = {
-  "and", "but", "or", "nor", "so", "yet", "too", "when", "while", "because", "as", "before", "after", "now",
-  "though", "although", "if", "since", "than", "to", 0,
-};
-
 // "more then", "better then": only mid-sentence, since "it was better then." is the time.
 static void than(void) {
   for (uint64_t i = 0; i + 2 < count; i++) {
     HammerWord then = words[i + 1];
-    if (!hammer_word_is(text, then, "then") || !hammer_word_in(text, words[i], COMPARATIVES) ||
+    if (!hammer_word_is(text, then, "then") || !hammer_word_in(text, words[i], lists.comparatives) ||
         !hammer_spaced(text, words[i], then) || !hammer_spaced(text, then, words[i + 2]) ||
-        hammer_word_in(text, words[i + 2], AFTER_THEN)) {
+        hammer_word_in(text, words[i + 2], lists.after_then)) {
       continue;
     }
     const char *fix = hammer_is_upper(text.data[then.start]) ? "Than" : "than";
@@ -278,11 +342,6 @@ static void spacing(void) {
   }
 }
 
-static const char *const ABBREVIATIONS[] = {
-  "e.g", "i.e", "etc", "vs", "cf", "approx", "a.m", "p.m", "viz", "ca",
-  "mr", "mrs", "ms", "dr", "st", "jr", "sr", "prof", "mt", 0,
-};
-
 // Whether the text before the full stop at `end` is an abbreviation, an initial, or an initialism
 // ("T.V."), after which a lower-case word is fine.
 static int abbreviated(uint64_t end) {
@@ -292,7 +351,7 @@ static int abbreviated(uint64_t end) {
     dotted |= text.data[--start] == '.';
   }
   if (end - start <= 1 || dotted) return 1;
-  return hammer_word_in(text, (HammerWord){start, end}, ABBREVIATIONS);
+  return hammer_word_in(text, (HammerWord){start, end}, lists.abbreviations);
 }
 
 static void sentence_starts(void) {
@@ -365,20 +424,6 @@ static void parentheses(void) {
 // ---------------------------------------------------------------------------------------------
 // Dialogue
 
-static const char *const TAG_VERBS[] = {
-  "said", "says", "asked", "asks", "replied", "replies", "whispered", "whispers", "shouted", "shouts", "yelled",
-  "yells", "muttered", "mutters", "murmured", "murmurs", "answered", "answers", "called", "calls", "cried",
-  "cries", "added", "adds", "continued", "continues", "exclaimed", "exclaims", "admitted", "admits", "agreed",
-  "agrees", "snapped", "snaps", "explained", "explains", "insisted", "insists", "repeated", "repeats",
-  "demanded", "demands", "begged", "begs", "pleaded", "pleads", "promised", "promises", "warned", "warns",
-  "suggested", "suggests", "offered", "offers", "began", "begins", "joked", "jokes", "teased", "teases",
-  "screamed", "screams", "hissed", "hisses", "growled", "growls", "sighed", "sighs", "stammered", "stammers",
-  "mumbled", "mumbles", "corrected", "corrects", "interrupted", "interrupts", "protested", "protests",
-  "announced", "announces", "remarked", "remarks", "wondered", "wonders", 0,
-};
-
-static const char *const PRONOUNS[] = {"he", "she", "they", "we", "you", "it", 0};
-
 // Bytes in the closing quote at i: straight or curly, double or single.
 static uint64_t closing_quote_at(uint64_t i) {
   if (byte(i) == '"' || byte(i) == '\'') return 1;
@@ -399,9 +444,9 @@ static int after_quote(HammerWord before, HammerWord word, char mark) {
 
 // Whether words[k] starts a dialogue tag: a speaking verb, or a pronoun and then one.
 static int dialogue_tag(uint64_t k) {
-  if (hammer_word_in(text, words[k], TAG_VERBS)) return 1;
-  return k + 1 < count && hammer_word_in(text, words[k], PRONOUNS) && hammer_spaced(text, words[k], words[k + 1]) &&
-         hammer_word_in(text, words[k + 1], TAG_VERBS);
+  if (hammer_word_in(text, words[k], lists.tag_verbs)) return 1;
+  return k + 1 < count && hammer_word_in(text, words[k], lists.pronouns) && hammer_spaced(text, words[k], words[k + 1]) &&
+         hammer_word_in(text, words[k + 1], lists.tag_verbs);
 }
 
 // "Wait." she said: a comma. "Wait," She said: lower case.
@@ -500,7 +545,7 @@ static void long_sentences(void) {
 // ---------------------------------------------------------------------------------------------
 // Export
 
-// English, or no language given.
+// A language the package has lists for, English when none is given.
 int hammer_diagnose_begin(const HammerDiagnoseRequest *request) {
   settings.mistakes = hammer_setting_bool(request, "mistakes", 1);
   settings.punctuation = hammer_setting_bool(request, "punctuation", 1);
@@ -511,7 +556,7 @@ int hammer_diagnose_begin(const HammerDiagnoseRequest *request) {
   settings.long_sentences = hammer_setting_bool(request, "longSentences", 0);
   settings.long_sentence_words = hammer_setting_int(request, "longSentenceWords", 40);
   if (settings.long_sentence_words < 1) settings.long_sentence_words = 1;
-  return !request->language.data || hammer_language_is(request, "en");
+  return load_lists(request);
 }
 
 void hammer_diagnose_paragraph(HammerText paragraph) {
@@ -521,14 +566,15 @@ void hammer_diagnose_paragraph(HammerText paragraph) {
   for (uint64_t i = 0; i < text.length && !curly; i++) {
     curly = hammer_char_is(text, i, 0x2019) || hammer_char_is(text, i, 0x201C) || hammer_char_is(text, i, 0x201D);
   }
+  int english = hammer_json_key_is(lists.language, strlen(lists.language), "en");
   if (settings.mistakes) {
     repeated_words();
-    articles();
-    phrases(MISTAKES, "Did you mean " OPEN_QUOTE, CLOSE_QUOTE "?");
-    than();
+    if (english) articles();
+    phrases(lists.mistakes, "Did you mean " OPEN_QUOTE, CLOSE_QUOTE "?");
+    if (english) than();
   }
   if (settings.punctuation) {
-    lone_i();
+    if (english) lone_i();
     spacing();
     sentence_starts();
     doubled_punctuation();
@@ -538,8 +584,8 @@ void hammer_diagnose_paragraph(HammerText paragraph) {
     dialogue_tags();
     quote_spacing();
   }
-  if (settings.wordiness) phrases(WORDY, "Wordy; " OPEN_QUOTE, CLOSE_QUOTE " says the same");
-  if (settings.redundancy) phrases(REDUNDANT, "Redundant; " OPEN_QUOTE, CLOSE_QUOTE " says the same");
+  if (settings.wordiness) phrases(lists.wordy, "Wordy; " OPEN_QUOTE, CLOSE_QUOTE " says the same");
+  if (settings.redundancy) phrases(lists.redundant, "Redundant; " OPEN_QUOTE, CLOSE_QUOTE " says the same");
   if (settings.repeated_marks) repeated_marks();
   if (settings.long_sentences) long_sentences();
 }

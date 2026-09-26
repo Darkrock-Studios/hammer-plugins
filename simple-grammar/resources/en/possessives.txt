@@ -1,0 +1,8 @@
+# Possessives, which a * in a phrase stands for.
+my
+your
+his
+her
+its
+our
+their

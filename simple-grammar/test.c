@@ -1,3 +1,5 @@
+// For mkdtemp and setenv, which languages_test uses to make a language of its own.
+#define _POSIX_C_SOURCE 200809L
 #include "simple-grammar.c"
 #include "../include/hammer_test.h"
 
@@ -114,6 +116,51 @@ static void languages_test(void) {
   reply = hammer_test_run("{\"language\":null,\"paragraphs\":[\"It a a dog.\"]}");
   HAMMER_CHECK(strstr(reply, "Repeated word") != 0);
   free(reply);
+
+  // Another language's lists, saved with Windows line endings and written loosely: its phrases and
+  // repeatable words apply, and English's own rules do not.
+  char directory[] = "/tmp/simple-grammar-XXXXXX";
+  HAMMER_CHECK(mkdtemp(directory) != 0);
+  char path[256];
+  snprintf(path, sizeof(path), "%s/xx", directory);
+  mkdir(path, 0700);
+  snprintf(path, sizeof(path), "%s/xx/mistakes.txt", directory);
+  FILE *file = fopen(path, "w");
+  fputs("# A comment\r\n  Foo Bar = baz\r\n\r\n", file);
+  fclose(file);
+  snprintf(path, sizeof(path), "%s/xx/repeatable.txt", directory);
+  file = fopen(path, "w");
+  fputs("a\n", file);
+  fclose(file);
+  char *english = strdup(getenv("HAMMER_RESOURCES"));
+  setenv("HAMMER_RESOURCES", directory, 1);
+  reply = hammer_test_run("{\"language\":\"xx-YY\",\"paragraphs\":[\"Foo bar, a a apple.\"]}");
+  HAMMER_CHECK(strstr(reply, "\"start\":0,\"end\":7,") != 0 && strstr(reply, "[\"Baz\"]") != 0);
+  HAMMER_CHECK(strstr(reply, "Repeated") == 0 && strstr(reply, "\"an\"") == 0);
+  free(reply);
+  setenv("HAMMER_RESOURCES", english, 1);
+  free(english);
+  remove(path);
+  snprintf(path, sizeof(path), "%s/xx/mistakes.txt", directory);
+  remove(path);
+  snprintf(path, sizeof(path), "%s/xx", directory);
+  remove(path);
+  remove(directory);
+  reply = hammer_test_run("{\"language\":\"en\",\"paragraphs\":[\"It a a apple.\"]}");
+  HAMMER_CHECK(strstr(reply, "Repeated word") != 0 && strstr(reply, "\"an\"") != 0);
+  free(reply);
+
+  // A language with no lists leaves English's kept: with the resources gone, English still checks.
+  english = strdup(getenv("HAMMER_RESOURCES"));
+  setenv("HAMMER_RESOURCES", "/nonexistent", 1);
+  reply = hammer_test_run("{\"language\":\"de\",\"paragraphs\":[\"Es war war gut.\"]}");
+  HAMMER_CHECK(strcmp(reply, "{\"diagnostics\":[]}") == 0);
+  free(reply);
+  reply = hammer_test_run("{\"language\":\"en\",\"paragraphs\":[\"It a a apple.\"]}");
+  HAMMER_CHECK(strstr(reply, "Repeated word") != 0);
+  free(reply);
+  setenv("HAMMER_RESOURCES", english, 1);
+  free(english);
 }
 
 int main(void) {

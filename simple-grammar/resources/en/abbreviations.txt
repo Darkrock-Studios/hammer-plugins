@@ -1,0 +1,20 @@
+# Abbreviations, without their last full stop, after which a lower-case word is fine.
+e.g
+i.e
+etc
+vs
+cf
+approx
+a.m
+p.m
+viz
+ca
+mr
+mrs
+ms
+dr
+st
+jr
+sr
+prof
+mt

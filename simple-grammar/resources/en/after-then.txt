@@ -1,0 +1,21 @@
+# Words after "then" that make it the time: "we were happier then and".
+and
+but
+or
+nor
+so
+yet
+too
+when
+while
+because
+as
+before
+after
+now
+though
+although
+if
+since
+than
+to

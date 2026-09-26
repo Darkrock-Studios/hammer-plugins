@@ -1,0 +1,7 @@
+# Pronouns that start a dialogue tag before a speaking verb: "she said".
+he
+she
+they
+we
+you
+it

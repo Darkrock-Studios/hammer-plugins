@@ -1,0 +1,23 @@
+# Comparatives, after which "then" is a slip for "than".
+more
+less
+fewer
+better
+worse
+rather
+larger
+smaller
+greater
+bigger
+higher
+lower
+faster
+slower
+older
+younger
+longer
+shorter
+easier
+harder
+stronger
+weaker
