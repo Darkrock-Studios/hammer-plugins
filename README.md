@@ -1,7 +1,7 @@
 # hammer-plugins
 
 Hammer's official runtime plugins for [Hammer](https://github.com/Wavesonics/hammer-editor), built on the
-kits in [hammer-plugin-sdk](../hammer-plugin-sdk). Each directory is one plugin.
+kits in hammer-plugin-sdk. Each directory is one plugin.
 
 | Plugin | Language | What |
 | --- | --- | --- |

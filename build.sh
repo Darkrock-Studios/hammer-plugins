@@ -7,7 +7,11 @@ sdk=../hammer-plugin-sdk
 plugins="$*"
 [ -n "$plugins" ] || plugins=$(for manifest in */manifest.toml; do dirname "$manifest"; done)
 for plugin in $plugins; do
-	if [ -f "$plugin/$plugin.c" ]; then
+	plugin="${plugin%/}"
+	if [ ! -f "$plugin/manifest.toml" ]; then
+		echo "No plugin named $plugin" >&2
+		exit 1
+	elif [ -f "$plugin/$plugin.c" ]; then
 		"$sdk/c/build.sh" "$plugin"
 	elif [ -f "$plugin/build.sh" ]; then
 		"$plugin/build.sh"
@@ -16,7 +20,7 @@ for plugin in $plugins; do
 		# Cargo names a crate's module with underscores for its hyphens.
 		"$sdk/tools/package.sh" "$plugin" "target/wasm32-unknown-unknown/release/$(printf %s "$plugin" | tr - _).wasm"
 		echo "Built $plugin"
-	else
+	elif [ -f "$plugin/build.gradle.kts" ]; then
 		"${GRADLE:-gradle}" -q ":$plugin:hammerPlugin"
 		echo "Built $plugin"
 	fi
