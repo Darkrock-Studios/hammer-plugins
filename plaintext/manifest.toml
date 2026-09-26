@@ -2,6 +2,7 @@ id = "plaintext"
 name = "Plain Text"
 version = "1.0.0"
 api = 1
+description = "Exports the story as plain text, without formatting."
 
 [[exporters]]
 format = "plaintext.txt"

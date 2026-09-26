@@ -2,6 +2,8 @@ id = "simple-grammar"
 name = "Simple grammar"
 version = "0.1.0"
 api = 1
+description = "Underlines slips a spell checker misses, such as \"could of\", \"a apple\", and doubled words, along with spacing, capitals, and dialogue punctuation. Small and fast."
+languages = ["en"]
 
 [[diagnostics]]
 name = "grammar"
