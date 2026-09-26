@@ -1,0 +1,14 @@
+# Words that may be written twice in a row, for emphasis or as a word of its own: "piano piano",
+# "quasi quasi", "via via che".
+quasi
+via
+piano
+pian
+poco
+bene
+presto
+subito
+adagio
+zitto
+zitta
+pari

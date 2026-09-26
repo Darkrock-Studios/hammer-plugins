@@ -1,0 +1,13 @@
+# Wordy phrases and shorter ones that say the same: `phrase = fix`.
+zum jetzigen Zeitpunkt = jetzt
+zum gegenwärtigen Zeitpunkt = jetzt
+zum derzeitigen Zeitpunkt = derzeit
+in Erwägung ziehen = erwägen
+zum Ausdruck bringen = ausdrücken
+zum Abschluss bringen = abschließen
+unter Beweis stellen = beweisen
+in Kenntnis setzen = informieren
+eine Entscheidung treffen = entscheiden
+im Endeffekt = letztlich
+mit Ausnahme von = außer
+im Vorfeld = vorher

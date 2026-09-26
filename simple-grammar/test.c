@@ -107,7 +107,7 @@ static void settings_test(void) {
 }
 
 static void languages_test(void) {
-  char *reply = hammer_test_run("{\"language\":\"fr\",\"paragraphs\":[\"Il a a dit.\"]}");
+  char *reply = hammer_test_run("{\"language\":\"pt\",\"paragraphs\":[\"Ele a a disse.\"]}");
   HAMMER_CHECK(strcmp(reply, "{\"diagnostics\":[]}") == 0);
   free(reply);
   reply = hammer_test_run("{\"paragraphs\":[\"Fine.\",\"It a a dog.\"],\"language\":\"en-GB\"}");
@@ -118,7 +118,7 @@ static void languages_test(void) {
   free(reply);
 
   // Another language's lists, saved with Windows line endings and written loosely: its phrases and
-  // repeatable words apply, and English's own rules do not.
+  // repeatable words apply, and English's own rules do not. A phrase's first word matches in any case.
   char directory[] = "/tmp/simple-grammar-XXXXXX";
   HAMMER_CHECK(mkdtemp(directory) != 0);
   char path[256];
@@ -126,7 +126,7 @@ static void languages_test(void) {
   mkdir(path, 0700);
   snprintf(path, sizeof(path), "%s/xx/mistakes.txt", directory);
   FILE *file = fopen(path, "w");
-  fputs("# A comment\r\n  Foo Bar = baz\r\n\r\n", file);
+  fputs("# A comment\r\n  FOO bar = baz\r\n\r\n", file);
   fclose(file);
   snprintf(path, sizeof(path), "%s/xx/repeatable.txt", directory);
   file = fopen(path, "w");
@@ -153,7 +153,7 @@ static void languages_test(void) {
   // A language with no lists leaves English's kept: with the resources gone, English still checks.
   english = strdup(getenv("HAMMER_RESOURCES"));
   setenv("HAMMER_RESOURCES", "/nonexistent", 1);
-  reply = hammer_test_run("{\"language\":\"de\",\"paragraphs\":[\"Es war war gut.\"]}");
+  reply = hammer_test_run("{\"language\":\"sv\",\"paragraphs\":[\"Det var var bra.\"]}");
   HAMMER_CHECK(strcmp(reply, "{\"diagnostics\":[]}") == 0);
   free(reply);
   reply = hammer_test_run("{\"language\":\"en\",\"paragraphs\":[\"It a a apple.\"]}");
@@ -161,6 +161,75 @@ static void languages_test(void) {
   free(reply);
   setenv("HAMMER_RESOURCES", english, 1);
   free(english);
+}
+
+#define GUILLEMET_OPEN "\xC2\xAB"
+#define GUILLEMET_CLOSE "\xC2\xBB"
+#define LOW_QUOTE "\xE2\x80\x9E"
+#define NO_BREAK_SPACE "\xC2\xA0"
+#define MODIFIER_APOSTROPHE "\xCA\xBC"
+
+static void french_test(void) {
+  HAMMER_EXPECT_IN("fr", 0, "Le arbre de école, je ai vu que il part jusque ici.",
+                   "[Le arbre]>L'arbre; [de école]>d'école; [je ai]>j'ai; [que il]>qu'il; [jusque ici]>jusqu'ici");
+  HAMMER_EXPECT_IN("fr", 0, "Je ai l" APOSTROPHE "air, et de Anne.", "[Je ai]>J" APOSTROPHE "ai; [de Anne]>d" APOSTROPHE "Anne");
+  HAMMER_EXPECT_IN("fr", 0, "Prends-le avec toi. Puis-je entrer ? Le héros, le onze, à la une, de A à Z, le ONU.", "");
+  HAMMER_EXPECT_IN("fr", 0, "Si il vient, ce est bien, quelque soit le temps, la où il faut.",
+                   "[Si il]>S'il; [ce est]>c'est; [quelque soit]>quel que soit|quelle que soit; [la où]>là où");
+  HAMMER_EXPECT_IN("fr", 0, "Nous nous sommes vus, vous vous êtes tus, et le le chat.", "[le le]>le");
+  HAMMER_EXPECT_IN("fr", 0, "Il dit: viens ; puis , non : fin.",
+                   "[:]>" NO_BREAK_SPACE ":{Add a space}; [ ,]>,");
+  HAMMER_EXPECT_IN("fr", 0, GUILLEMET_OPEN " Viens. " GUILLEMET_CLOSE ", dit-il, puis" GUILLEMET_OPEN "non" GUILLEMET_CLOSE "fin.",
+                   "[" GUILLEMET_OPEN "]> " GUILLEMET_OPEN "{Add a space}; [" GUILLEMET_CLOSE "]>" GUILLEMET_CLOSE
+                   " {Add a space}; [.]>{Remove the full stop}");
+  HAMMER_EXPECT_IN("fr", 0, "Il part. été chaud. Quoi ? rien, etc. et voilà.", "[é]>É");
+}
+
+static void german_test(void) {
+  HAMMER_EXPECT_IN("de", 0, "Seid wann ist das selbe Haus leer? Er ist tod.",
+                   "[Seid wann]>Seit wann; [das selbe]>dasselbe; [ist tod]>ist tot");
+  HAMMER_EXPECT_IN("de", 0, "Die Frau, die die Tür öffnet, weil sie sie liebt. Das ist Tod.", "");
+  HAMMER_EXPECT_IN("de", 0, "Er ist älter wie ich, im Laufe des weiteren Gesprächs. Ihr seid gestern gekommen.",
+                   "[älter wie]>älter als");
+  HAMMER_EXPECT_IN("de", 0, LOW_QUOTE "Warte." LQ ", sagte sie. " LOW_QUOTE "Gut" LQ ", sagte er.", "[.]>{Remove the full stop}");
+  HAMMER_EXPECT_IN("de", 0, LOW_QUOTE "Warte" LQ "sagte sie" LOW_QUOTE "Gut" LQ ".",
+                   "[" LQ "]>" LQ " {Add a space}; [" LOW_QUOTE "]> " LOW_QUOTE "{Add a space}");
+  HAMMER_EXPECT_IN("de", 0, "Das kostet ca. zehn Euro, z. B. heute. äpfel fallen.", "[ä]>Ä");
+  HAMMER_EXPECT_IN("de", OPTIONAL_ON, "Das ist bereits schon eine Zukunftsprognose.",
+                   "[bereits schon]>bereits|schon; [Zukunftsprognose]>Prognose");
+}
+
+static void spanish_test(void) {
+  HAMMER_EXPECT_IN("es", 0, "Me voy de el pueblo a el mar, pero no de El Salvador.", "[de el]>del|de él; [a el]>al|a él");
+  HAMMER_EXPECT_IN("es", 0, "Esto a sido duro; e visto cosas. Haber si vienes. Ha echo mucho, de echo.",
+                   "[a sido]>ha sido; [e visto]>he visto; [Haber si]>A ver si; [Ha echo]>Ha hecho; [de echo]>de hecho");
+  HAMMER_EXPECT_IN("es", 0, "Vino. \xC2\xBFqu\xC3\xA9 haces? nada.", "[q]>Q");
+  HAMMER_EXPECT_IN("es", 0, GUILLEMET_OPEN "Ven." GUILLEMET_CLOSE ", dijo.", "[.]>{Remove the full stop}");
+}
+
+static void italian_test(void) {
+  HAMMER_EXPECT_IN("it", 0, "Ho un idea e un amica; c'è la faccio, tutt'ora, più migliore.",
+                   "[un idea]>un'idea; [un amica]>un'amica; [c'è la faccio]>ce la faccio; [tutt'ora]>tuttora; "
+                   "[più migliore]>migliore");
+  HAMMER_EXPECT_IN("it", 0, "C" APOSTROPHE "è la faccio.", "[C" APOSTROPHE "è la faccio]>Ce la faccio");
+  HAMMER_EXPECT_IN("it", 0, "Piano piano, quasi quasi, via via che passa, un'idea.", "");
+}
+
+static void ukrainian_test(void) {
+  HAMMER_EXPECT_IN("uk", 0, "Він приймав участь у грі на протязі року.",
+                   "[приймав участь]>брав участь; [на протязі року]>протягом року");
+  HAMMER_EXPECT_IN("uk", 0, "Приймати участь важливо. По крайній мірі так.",
+                   "[Приймати участь]>Брати участь; [По крайній мірі]>Принаймні");
+  HAMMER_EXPECT_IN("uk", 0, "Так так. Добре. тепер іди.", "[Так так]>Так; [т]>Т");
+  HAMMER_EXPECT_IN("uk", 0, GUILLEMET_OPEN "Іду." GUILLEMET_CLOSE ", \xE2\x80\x94 сказав він" GUILLEMET_OPEN "так" GUILLEMET_CLOSE "і пішов.",
+                   "[" GUILLEMET_OPEN "]> " GUILLEMET_OPEN "{Add a space}; [" GUILLEMET_CLOSE "]>" GUILLEMET_CLOSE
+                   " {Add a space}; [.]>{Remove the full stop}");
+  HAMMER_EXPECT_IN("uk", OPTIONAL_ON, "Пам\xCA\xBCятний сувенір.", "[Пам\xCA\xBCятний сувенір]>Сувенір");
+  HAMMER_EXPECT_IN("fr", 0, "Je ai vu l" MODIFIER_APOSTROPHE "arbre.", "[Je ai]>J" MODIFIER_APOSTROPHE "ai");
+}
+
+static void english_quote_comma_test(void) {
+  HAMMER_EXPECT(0, "\"Wait.\", she said. " LQ "Go." RQ ", he said. \"U.S.\", it read.", "[.\",]>,\"; [." RQ ",]>," RQ);
 }
 
 int main(void) {
@@ -177,5 +246,11 @@ int main(void) {
   optional_rules_test();
   settings_test();
   languages_test();
+  french_test();
+  german_test();
+  spanish_test();
+  italian_test();
+  ukrainian_test();
+  english_quote_comma_test();
   return hammer_test_summary();
 }

@@ -1,0 +1,13 @@
+# Wordy phrases and shorter ones that say the same: `phrase = fix`.
+al fine di = per
+allo scopo di = per
+a causa del fatto che = perché
+dovuto al fatto che = perché
+nonostante il fatto che = benché
+malgrado il fatto che = benché
+al momento attuale = ora
+per quanto riguarda = quanto a
+prendere una decisione = decidere
+fare uso di = usare
+nel caso in cui = se
+dare inizio a = iniziare

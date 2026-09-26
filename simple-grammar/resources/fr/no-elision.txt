@@ -1,0 +1,13 @@
+# Words starting with a vowel that elision.txt's words stay whole before, or pairs, such as "la une";
+# "la où" is mistakes.txt's.
+onze
+onzième
+onzièmes
+oui
+ouate
+ouates
+ouistiti
+ouistitis
+ouf
+la une
+la où

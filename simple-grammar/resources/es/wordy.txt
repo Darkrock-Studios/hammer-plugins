@@ -1,0 +1,14 @@
+# Wordy phrases and shorter ones that say the same: `phrase = fix`.
+con el fin de = para
+con el objetivo de = para
+con el propósito de = para
+a pesar del hecho de que = aunque
+debido al hecho de que = porque
+en el caso de que = si
+en el momento actual = ahora
+en la actualidad = actualmente
+a día de hoy = hoy
+dar comienzo = comenzar
+hacer uso de = usar
+tomar una decisión = decidir
+por medio de = mediante

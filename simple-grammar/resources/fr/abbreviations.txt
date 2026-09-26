@@ -1,0 +1,26 @@
+# Abbreviations, without their last full stop, after which a lower-case word is fine.
+etc
+cf
+env
+av
+apr
+vol
+chap
+art
+éd
+coll
+fig
+ex
+op
+cit
+ibid
+suiv
+pp
+vs
+bd
+tél
+hab
+max
+min
+resp
+sqq

@@ -1,0 +1,3 @@
+# Words that may be written twice in a row: "nous nous sommes", "vous vous êtes".
+nous
+vous

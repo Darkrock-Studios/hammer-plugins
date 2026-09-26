@@ -1,0 +1,12 @@
+# Wordy phrases and shorter ones that say the same: `phrase = fix`.
+dans le but de = pour
+du fait que = parce que
+en raison du fait que = parce que
+malgré le fait que = bien que
+en dépit du fait que = bien que
+à l'heure actuelle = actuellement
+de façon à ce que = pour que
+de manière à ce que = pour que
+dans l'éventualité où = si
+en ce qui concerne = quant à
+à l'exception de = sauf

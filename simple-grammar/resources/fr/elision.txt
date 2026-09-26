@@ -1,0 +1,12 @@
+# Words that give their last letter for an apostrophe before a vowel: "le arbre" for "l'arbre". Not
+# before an "h", which may be aspirated, or after a hyphen: "prends-le avec toi", "puis-je entrer".
+le
+la
+de
+je
+me
+te
+se
+ne
+que
+jusque

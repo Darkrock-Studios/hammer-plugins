@@ -1,0 +1,10 @@
+# Words that may be written twice in a row: a relative pronoun and an article, "die die Tür öffnet",
+# or "weil sie sie liebt".
+die
+der
+das
+den
+dem
+des
+sie
+ihr
