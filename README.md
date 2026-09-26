@@ -29,3 +29,9 @@ tests. Each language needs:
 
 In Hammer on desktop: Settings, Plugins, Install plugin, pick the `.hammerplugin`, approve its
 permissions, and restart Hammer.
+
+## License
+
+MIT; see [LICENSE](LICENSE). Some word lists are built from other sources and shared under their
+terms, which ship with them: see `name-checker/resources/words/NOTICE.txt` and
+`style/resources/NOTICE.txt`.
