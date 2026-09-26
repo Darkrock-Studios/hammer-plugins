@@ -33,8 +33,7 @@ typedef struct {
   const char *code;
   uint32_t open[3];
   uint32_t close[3];
-  // "a" and "an", "then" for "than", a lone "i", and a capital after "?" and "!", which other
-  // languages may go on from in lower case: « Quoi ? dit-il. »
+  // "a" and "an", "then" for "than", and a lone "i".
   int english;
   // A space before ":" and ";", and none after a word.
   int french;
@@ -480,7 +479,9 @@ static void spacing(void) {
 static void sentence_starts(void) {
   for (uint64_t i = 1; i + 2 < text.length; i++) {
     char c = text.data[i];
-    if (!(c == '.' || (typography->english && sentence_end(c))) || text.data[i + 1] != ' ' || text.data[i - 1] == '.') continue;
+    // Only a period: a sentence may go on in lower case after "!" or "?", as in "alas! either" and
+    // « Quoi ? dit-il. »
+    if (c != '.' || text.data[i + 1] != ' ' || text.data[i - 1] == '.') continue;
     if (c == '.' && abbreviated(i)) continue;
     uint64_t next = i + 1, length;
     while (byte(next) == ' ') next++;

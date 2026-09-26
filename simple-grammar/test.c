@@ -61,7 +61,8 @@ static void spacing_test(void) {
 }
 
 static void sentence_starts_test(void) {
-  HAMMER_EXPECT(0, "She left. a dog barked! then quiet\xE2\x80\xA6 e.g. this, etc. and... that.", "[a]>A; [t]>T");
+  HAMMER_EXPECT(0, "She left. a dog barked! then quiet\xE2\x80\xA6 e.g. this, etc. and... that.", "[a]>A");
+  HAMMER_EXPECT(0, "But, alas! either the locks were too large, or thump! thump! down she came. Why? because.", "");
   HAMMER_EXPECT(0, "She met Mr. smith and Dr. jones.", "");
 }
 
