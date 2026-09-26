@@ -1,0 +1,17 @@
+# Words after which a pronoun's verb is not checked: a comparison, whose pronoun is not the verb's
+# subject ("einer wie du ist"). A line of two words ends at the pronoun, for a subject of several:
+# "du und ich sind".
+als
+wie
+und ich
+und du
+und er
+oder ich
+oder du
+oder er
+noch ich
+noch du
+noch er
+sowie ich
+sowie du
+sowie er

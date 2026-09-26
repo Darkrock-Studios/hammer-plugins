@@ -6,6 +6,20 @@ hint = "Repeated words, “a” and “an”, French elision, and mixed-up words
 default = true
 
 [[setting]]
+key = "agreement"
+type = "bool"
+label = "Verb agreement"
+hint = "A pronoun with the wrong verb form, such as “they was” for “they were”"
+default = true
+
+[[setting]]
+key = "agreementInSpeech"
+type = "bool"
+label = "Agreement in dialogue"
+hint = "Speech often breaks it on purpose; needs Verb agreement on"
+default = false
+
+[[setting]]
 key = "punctuation"
 type = "bool"
 label = "Punctuation and capitalization"

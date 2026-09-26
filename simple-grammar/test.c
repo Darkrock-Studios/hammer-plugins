@@ -169,6 +169,7 @@ static void languages_test(void) {
 #define LOW_QUOTE "\xE2\x80\x9E"
 #define NO_BREAK_SPACE "\xC2\xA0"
 #define MODIFIER_APOSTROPHE "\xCA\xBC"
+#define EM_DASH "\xE2\x80\x94"
 
 static void french_test(void) {
   HAMMER_EXPECT_IN("fr", 0, "Le arbre de école, je ai vu que il part jusque ici.",
@@ -229,6 +230,49 @@ static void ukrainian_test(void) {
   HAMMER_EXPECT_IN("fr", 0, "Je ai vu l" MODIFIER_APOSTROPHE "arbre.", "[Je ai]>J" MODIFIER_APOSTROPHE "ai");
 }
 
+static void agreement_test(void) {
+  HAMMER_EXPECT(0, "They was late, and we has time. She were tired; I is here.",
+                "[They was]>They were; [we has]>we have; [She were]>She was; [I is]>I am");
+  HAMMER_EXPECT_MESSAGES(0, "They was late.",
+                         "[They was] The verb does not agree with its subject; did you mean " LQ "They were" RQ "?");
+  // The subjunctive, a subject of several, a verb after an auxiliary, and "you" and "it" as objects.
+  HAMMER_EXPECT(0, "If he were here, as though she were, I wish I were. You and I are fine, and he and she were too.", "");
+  HAMMER_EXPECT(0, "Does he have it? Did she have one? The man who saw you was tall, and those who saw it were quiet.", "");
+  HAMMER_EXPECT(0, "I'd rather she were here, wishing he were too. King Henry I has spoken; the letter I is thin; you and i are late.",
+                "[i]>I");
+  // Speech is left alone unless asked for, but not narration around it or an apostrophe.
+  HAMMER_EXPECT(0, "\"We was robbed,\" he said. " LQ "They was there." RQ " `We was,' she said. 'They was.'", "");
+  HAMMER_EXPECT(0, "\"Come,\" she said, and they was gone. Don't go, they was told.",
+                "[they was]>they were; [they was]>they were");
+  HAMMER_EXPECT("{\"agreementInSpeech\":true}", "\"We was robbed,\" he said.", "[We was]>We were");
+  HAMMER_EXPECT("{\"agreement\":false}", "They was late.", "");
+
+  HAMMER_EXPECT_IN("fr", 0, "Il sont partis, tu est là. On sont prêts, je peut venir, qu'il ont dit.",
+                   "[Il sont]>Ils sont|Il est; [tu est]>tu es; [On sont]>On est; [je peut]>je peux; "
+                   "[qu'il ont]>qu'ils ont|qu'il a");
+  HAMMER_EXPECT_IN("fr", 0, "Il nous a vus. Pour elle sont les fleurs. Lui et elle sont là.", "");
+  HAMMER_EXPECT_IN("fr", 0, GUILLEMET_OPEN " Ils est là " GUILLEMET_CLOSE ", dit-il.", "");
+
+  HAMMER_EXPECT_IN("de", 0, "Wir hat Zeit, du bin müde. Ich sind hier.",
+                   "[Wir hat]>Wir haben; [du bin]>du bist; [Ich sind]>Ich bin");
+  HAMMER_EXPECT_IN("de", 0, "Er sagte, er habe keine Zeit. Was ich haben will, du und ich sind hier. Einer wie du ist selten.", "");
+  HAMMER_EXPECT_IN("de", 0, LOW_QUOTE "Wir hat Zeit" LQ ", sagte er.", "");
+
+  HAMMER_EXPECT_IN("es", 0, "Ellos está cansados; yo eres feliz. Nosotros va.",
+                   "[Ellos está]>Ellos están; [yo eres]>yo soy; [Nosotros va]>Nosotros vamos");
+  HAMMER_EXPECT_IN("es", 0, "Para él son importantes; tú y yo somos amigos. La casa de ellos es grande. El yo es una idea.", "");
+  HAMMER_EXPECT_IN("es", 0, EM_DASH "Nosotros va ahora " EM_DASH "dijo ella.", "");
+
+  HAMMER_EXPECT_IN("it", 0, "Loro ha fame, io sei qui. Lei hanno ragione.",
+                   "[Loro ha]>Loro hanno; [io sei]>io sono; [Lei hanno]>Lei ha");
+  HAMMER_EXPECT_IN("it", 0, "Per lui sono tutti amici, il loro è bello, tu e io siamo qui.", "");
+
+  HAMMER_EXPECT_IN("uk", 0, "Вона був вдома, а вони має час. Я було там.",
+                   "[Вона був]>Вона була; [вони має]>вони мають; [Я було]>Я був|Я була");
+  HAMMER_EXPECT_IN("uk", 0, "Він і вона були вдома. Ти і я знаємо.", "");
+  HAMMER_EXPECT_IN("uk", 0, EM_DASH " Вони має час, " EM_DASH " сказав він.", "");
+}
+
 static void english_quote_comma_test(void) {
   HAMMER_EXPECT(0, "\"Wait.\", she said. " LQ "Go." RQ ", he said. \"U.S.\", it read.", "[.\",]>,\"; [." RQ ",]>," RQ);
 }
@@ -274,6 +318,7 @@ int main(void) {
   italian_test();
   ukrainian_test();
   english_quote_comma_test();
+  agreement_test();
   ui_language_test();
   return hammer_test_summary();
 }

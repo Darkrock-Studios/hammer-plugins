@@ -1,0 +1,51 @@
+# Words after which a pronoun's verb is not checked: the subjunctive ("if he were", "I wish she
+# were"), and a verb after an auxiliary ("does he have"). A line of two words ends at the pronoun,
+# for a subject of several: "you and I are". "Letter" is for "the letter I is".
+if
+wish
+wished
+wishes
+wishing
+rather
+though
+only
+suppose
+supposing
+imagine
+that
+lest
+whether
+do
+does
+did
+don't
+doesn't
+didn't
+will
+would
+can
+could
+shall
+should
+may
+might
+must
+won't
+wouldn't
+can't
+couldn't
+shouldn't
+let
+letter
+and I
+and he
+and she
+or I
+or he
+or she
+nor I
+nor he
+nor she
+and i
+or i
+nor i

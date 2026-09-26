@@ -1,5 +1,5 @@
 name = "Gramática sencilla"
-description = "Subraya los errores que un corrector ortográfico deja pasar, como «a sido», «de el» y las palabras repetidas, además de los espacios, las mayúsculas y la puntuación de los diálogos, en inglés, francés, alemán, español, italiano y ucraniano. Ligero y rápido."
+description = "Subraya los errores que un corrector ortográfico deja pasar, como «a sido», «de el», «ellos está» y las palabras repetidas, además de los espacios, las mayúsculas y la puntuación de los diálogos, en inglés, francés, alemán, español, italiano y ucraniano. Ligero y rápido."
 
 [diagnostics.grammar]
 label = "Gramática sencilla"
@@ -7,6 +7,14 @@ label = "Gramática sencilla"
 [settings.mistakes]
 label = "Errores de palabras"
 hint = "Palabras repetidas y palabras o expresiones confundidas"
+
+[settings.agreement]
+label = "Concordancia verbal"
+hint = "Un pronombre con la forma verbal equivocada, como «ellos está» por «ellos están»"
+
+[settings.agreementInSpeech]
+label = "Concordancia en los diálogos"
+hint = "El habla la rompe a menudo a propósito; requiere Concordancia verbal"
 
 [settings.punctuation]
 label = "Puntuación y mayúsculas"

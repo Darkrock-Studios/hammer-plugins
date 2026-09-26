@@ -1,5 +1,5 @@
 name = "Grammatica semplice"
-description = "Sottolinea gli errori che un correttore ortografico lascia passare, come «un amica», «c’è la faccio» e le parole ripetute, oltre a spazi, maiuscole e punteggiatura dei dialoghi, in inglese, francese, tedesco, spagnolo, italiano e ucraino. Leggero e veloce."
+description = "Sottolinea gli errori che un correttore ortografico lascia passare, come «un amica», «c’è la faccio», «loro ha» e le parole ripetute, oltre a spazi, maiuscole e punteggiatura dei dialoghi, in inglese, francese, tedesco, spagnolo, italiano e ucraino. Leggero e veloce."
 
 [diagnostics.grammar]
 label = "Grammatica semplice"
@@ -7,6 +7,14 @@ label = "Grammatica semplice"
 [settings.mistakes]
 label = "Errori di parole"
 hint = "Parole ripetute e parole o espressioni confuse"
+
+[settings.agreement]
+label = "Concordanza del verbo"
+hint = "Un pronome con la forma verbale sbagliata, come «loro ha» per «loro hanno»"
+
+[settings.agreementInSpeech]
+label = "Concordanza nei dialoghi"
+hint = "Il parlato spesso la infrange di proposito; richiede Concordanza del verbo"
 
 [settings.punctuation]
 label = "Punteggiatura e maiuscole"

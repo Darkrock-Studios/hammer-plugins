@@ -15,6 +15,8 @@
 
 static struct {
   int mistakes;
+  int agreement;
+  int agreement_in_speech;
   int punctuation;
   int dialogue;
   int wordiness;
@@ -64,6 +66,10 @@ static const Typography *typography = &TYPOGRAPHY[0];
 static char list_bytes[LIST_BYTES];
 static const char *list_entries[LIST_ENTRIES];
 static uint64_t bytes_used, entries_used;
+// Per phrase: its first letter in lower case (0 for none), its first word's bytes, and the entries
+// in its run of phrases with that first word, which a word that is not it passes at once.
+static uint32_t phrase_first[LIST_ENTRIES];
+static uint16_t phrase_word[LIST_ENTRIES], phrase_run[LIST_ENTRIES];
 
 // Each ends with a 0. The phrase lists alternate a phrase and its fix.
 static struct {
@@ -73,7 +79,7 @@ static struct {
   int found;
   const char *const *mistakes, *const *wordy, *const *redundant, *const *possessives, *const *comparatives,
       *const *after_then, *const *abbreviations, *const *tag_verbs, *const *pronouns, *const *repeatable,
-      *const *elision, *const *no_elision;
+      *const *elision, *const *no_elision, *const *agreement, *const *agreement_after;
 } lists;
 
 static void add_entry(const char *entry) {
@@ -87,18 +93,19 @@ static int unlisted_count;
 
 enum {
   MISTAKES, WORDY, REDUNDANT, POSSESSIVES, COMPARATIVES, AFTER_THEN, ABBREVIATIONS, TAG_VERBS, PRONOUNS, REPEATABLE,
-  ELISION, NO_ELISION, LIST_COUNT
+  ELISION, NO_ELISION, AGREEMENT, AGREEMENT_AFTER, LIST_COUNT
 };
 
 static const char *const LIST_NAMES[LIST_COUNT] = {
   "mistakes", "wordy", "redundant", "possessives", "comparatives", "after-then", "abbreviations", "tag-verbs", "pronouns",
-  "repeatable", "elision", "no-elision",
+  "repeatable", "elision", "no-elision", "agreement", "agreement-after",
 };
 
 // Copies a list's lines, from hammer_resource_lines, into the kept lists. With `pairs`, each line is
 // `phrase = fix`, listed as the phrase and then the fix, which may be several joined by " | ".
 static const char *const *keep_list(const char *const *lines, int pairs) {
-  const char *const *list = &list_entries[entries_used];
+  uint64_t start = entries_used;
+  const char *const *list = &list_entries[start];
   for (; lines && *lines; lines++) {
     uint64_t length = strlen(*lines) + 1;
     if (length > LIST_BYTES - bytes_used) hammer_fail("simple-grammar's word lists are too long");
@@ -115,6 +122,18 @@ static const char *const *keep_list(const char *const *lines, int pairs) {
       *equals = 0;
       add_entry(equals + 3);
     }
+  }
+  for (uint64_t k = entries_used; pairs && k > start;) {
+    k -= 2;
+    uint64_t length;
+    uint32_t first = hammer_decode(list_entries[k], strlen(list_entries[k]), &length);
+    const char *phrase = list_entries[k];
+    phrase_first[k] = first < 0x80 && !hammer_is_ascii_letter((char)first) ? 0 : hammer_lower(first);
+    phrase_word[k] = 0;
+    while (phrase[phrase_word[k]] && phrase[phrase_word[k]] != ' ' && phrase[phrase_word[k]] != '-') phrase_word[k]++;
+    int same = k + 2 < entries_used && phrase_first[k] && phrase_word[k + 2] == phrase_word[k];
+    for (uint64_t b = 0; same && b < phrase_word[k]; b++) same = list_entries[k + 2][b] == phrase[b];
+    phrase_run[k] = same ? (uint16_t)(phrase_run[k + 2] + 2) : 2;
   }
   add_entry(0);
   return list;
@@ -176,6 +195,8 @@ static int load_lists(const HammerDiagnoseRequest *request) {
   lists.repeatable = keep_list(files[REPEATABLE], 0);
   lists.elision = keep_list(files[ELISION], 0);
   lists.no_elision = keep_list(files[NO_ELISION], 0);
+  lists.agreement = keep_list(files[AGREEMENT], 1);
+  lists.agreement_after = keep_list(files[AGREEMENT_AFTER], 0);
   lists.found = 1;
   return 1;
 }
@@ -312,8 +333,6 @@ static void articles(void) {
 // The words a matched phrase covers: a "*" must be a possessive, and the last word must not run on
 // into a compound or abbreviation ("your A-list", "your a.m."). Returns how many, or 0.
 static uint64_t match(const char *phrase, uint64_t i) {
-  // Most words start no phrase, and the first letter says so without the full match.
-  if (hammer_is_ascii_letter(phrase[0]) && hammer_to_lower(text.data[words[i].start]) != phrase[0]) return 0;
   uint64_t matched = hammer_match_phrase(text, words, count, i, phrase);
   if (!matched) return 0;
   uint64_t end = words[i + matched - 1].end;
@@ -341,12 +360,21 @@ static const char *fix_for(const char *phrase, const char *fix, uint64_t i) {
   return hammer_terminated(&out);
 }
 
-// `table` alternates a phrase and its fixes.
-static void phrases(const char *const *table, int said) {
+// `table` alternates a phrase and its fixes. A phrase starting at a word `skip` returns 1 for is
+// passed over.
+static void phrases(const char *const *table, int said, int (*skip)(uint64_t)) {
   for (uint64_t i = 0; i < count; i++) {
+    uint64_t length;
+    uint32_t first = hammer_lower(hammer_char_at(text, words[i].start, &length));
     for (const char *const *entry = table; entry[0]; entry += 2) {
+      uint64_t k = (uint64_t)(entry - list_entries);
+      if (phrase_first[k] && (phrase_first[k] != first || !hammer_word_matches(text, words[i], entry[0], phrase_word[k]))) {
+        entry += phrase_run[k] - 2;
+        continue;
+      }
       uint64_t matched = match(entry[0], i);
       if (!matched) continue;
+      if (skip && skip(i)) break;
       int capital = hammer_upper_at(text, words[i].start);
       HammerFix fixes[4];
       uint32_t n = 0;
@@ -427,6 +455,51 @@ static void than(void) {
     const char *fix = hammer_is_upper(text.data[then.start]) ? "Than" : "than";
     hammer_report_fix(then.start, then.end, say_with(SAY_DID_YOU_MEAN, "than", 4), fix, 4);
   }
+}
+
+// Whether `at` is in quoted speech, or in a paragraph opening with a dash as dialogue may. A closing
+// single quote is one no letter follows, unlike an apostrophe.
+static int in_speech(uint64_t at) {
+  uint64_t i = 0;
+  while (byte(i) == ' ') i++;
+  if (hammer_char_is(text, i, 0x2014) || hammer_char_is(text, i, 0x2013) || hammer_char_is(text, i, 0x2015)) return 1;
+  int doubled = 0, single = 0;
+  for (; i < at; i += hammer_char_length(text, i)) {
+    unsigned char c = byte(i);
+    if (c == '"') {
+      doubled = !doubled;
+    } else if (mark_at(i, typography->open)) {
+      doubled = 1;
+    } else if (mark_at(i, typography->close)) {
+      doubled = 0;
+    } else if (hammer_char_is(text, i, 0xAB) || hammer_char_is(text, i, 0xBB)) {
+      doubled = !doubled;
+    } else if (c == '`' || hammer_char_is(text, i, 0x2018)) {
+      single = 1;
+    } else if (c == '\'' || hammer_char_is(text, i, 0x2019)) {
+      int letter_after = hammer_letter_at(text, i + hammer_char_length(text, i));
+      if (single && !letter_after) single = 0;
+      else if (c == '\'' && letter_after && !hammer_letter_before(text, i)) single = 1;
+    }
+  }
+  return doubled || single;
+}
+
+// Unchecked: after agreement-after.txt's words or ending one of its phrases, a lone capital after a
+// name (a numeral: "Henry I has"), and speech unless asked for.
+static int agreement_skipped(uint64_t i) {
+  for (const char *const *entry = lists.agreement_after; *entry; entry++) {
+    uint64_t n = 1;
+    for (const char *c = *entry; *c; c++) n += *c == ' ';
+    uint64_t back = n == 1 ? 1 : n - 1;
+    if (i < back || hammer_match_phrase(text, words, count, i - back, *entry) != n) continue;
+    if (n > 1 || hammer_spaced(text, words[i - 1], words[i])) return 1;
+  }
+  if (i > 0 && hammer_word_length(words[i]) == 1 && hammer_upper_at(text, words[i].start) &&
+      hammer_spaced(text, words[i - 1], words[i]) && hammer_upper_at(text, words[i - 1].start)) {
+    return 1;
+  }
+  return !settings.agreement_in_speech && in_speech(words[i].start);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -695,6 +768,8 @@ static void long_sentences(void) {
 // A language the package has lists for, English when none is given.
 int hammer_diagnose_begin(const HammerDiagnoseRequest *request) {
   settings.mistakes = hammer_setting_bool(request, "mistakes", 1);
+  settings.agreement = hammer_setting_bool(request, "agreement", 1);
+  settings.agreement_in_speech = hammer_setting_bool(request, "agreementInSpeech", 0);
   settings.punctuation = hammer_setting_bool(request, "punctuation", 1);
   settings.dialogue = hammer_setting_bool(request, "dialogue", 1);
   settings.wordiness = hammer_setting_bool(request, "wordiness", 0);
@@ -738,9 +813,10 @@ void hammer_diagnose_paragraph(HammerText paragraph) {
     repeated_words();
     if (english) articles();
     elision();
-    phrases(lists.mistakes, SAY_DID_YOU_MEAN);
+    phrases(lists.mistakes, SAY_DID_YOU_MEAN, 0);
     if (english) than();
   }
+  if (settings.agreement) phrases(lists.agreement, SAY_AGREEMENT, agreement_skipped);
   if (settings.punctuation) {
     if (english) lone_i();
     spacing();
@@ -753,8 +829,8 @@ void hammer_diagnose_paragraph(HammerText paragraph) {
     quote_spacing();
     quote_comma();
   }
-  if (settings.wordiness) phrases(lists.wordy, SAY_WORDY);
-  if (settings.redundancy) phrases(lists.redundant, SAY_REDUNDANT);
+  if (settings.wordiness) phrases(lists.wordy, SAY_WORDY, 0);
+  if (settings.redundancy) phrases(lists.redundant, SAY_REDUNDANT, 0);
   if (settings.repeated_marks) repeated_marks();
   if (settings.long_sentences) long_sentences();
 }

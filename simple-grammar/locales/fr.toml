@@ -1,5 +1,5 @@
 name = "Grammaire simple"
-description = "Souligne les fautes qu’un correcteur orthographique laisse passer, comme « could of », « le arbre » et les mots répétés, ainsi que les espaces, les majuscules et la ponctuation des dialogues, en anglais, français, allemand, espagnol, italien et ukrainien. Léger et rapide."
+description = "Souligne les fautes qu’un correcteur orthographique laisse passer, comme « could of », « le arbre », « il sont » et les mots répétés, ainsi que les espaces, les majuscules et la ponctuation des dialogues, en anglais, français, allemand, espagnol, italien et ukrainien. Léger et rapide."
 
 [diagnostics.grammar]
 label = "Grammaire simple"
@@ -7,6 +7,14 @@ label = "Grammaire simple"
 [settings.mistakes]
 label = "Fautes de mots"
 hint = "Mots répétés, élision et mots ou expressions confondus"
+
+[settings.agreement]
+label = "Accord du verbe"
+hint = "Un pronom avec la mauvaise forme du verbe, comme « il sont » pour « ils sont »"
+
+[settings.agreementInSpeech]
+label = "Accord dans les dialogues"
+hint = "Les dialogues s’en écartent souvent exprès ; nécessite Accord du verbe"
 
 [settings.punctuation]
 label = "Ponctuation et majuscules"

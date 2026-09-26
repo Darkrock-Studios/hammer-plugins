@@ -1,0 +1,77 @@
+# Words after which a pronoun's verb is not checked: a preposition, after which "lui" is no subject
+# ("per lui sono"), and an article, before the "loro" that means "their" ("il loro è"). A line of
+# two words ends at the pronoun, for a subject of several: "tu e io siamo".
+come
+a
+ad
+di
+da
+in
+con
+su
+per
+tra
+fra
+senza
+secondo
+verso
+contro
+tranne
+eccetto
+oltre
+il
+lo
+la
+i
+gli
+le
+un
+una
+al
+allo
+alla
+ai
+agli
+alle
+del
+dello
+della
+dei
+degli
+delle
+dal
+dallo
+dalla
+dai
+dagli
+dalle
+nel
+nello
+nella
+nei
+negli
+nelle
+sul
+sullo
+sulla
+sui
+sugli
+sulle
+col
+coi
+e io
+e tu
+e lui
+e lei
+ed io
+ed tu
+ed lui
+ed lei
+o io
+o tu
+o lui
+o lei
+né io
+né tu
+né lui
+né lei

@@ -1,0 +1,53 @@
+# Words after which a pronoun's verb is not checked: a comparison ("tanto tú como yo somos"), and a
+# preposition, after which "él" is no subject ("para él son"). A line of two words ends at the
+# pronoun, for a subject of several: "tú y yo somos". "El" is for "el yo", the self.
+como
+el
+que
+a
+ante
+bajo
+con
+contra
+de
+desde
+durante
+en
+entre
+hacia
+hasta
+mediante
+para
+por
+según
+sin
+sobre
+tras
+excepto
+salvo
+menos
+y yo
+y tú
+y él
+y ella
+y usted
+e yo
+e tú
+e él
+e ella
+e usted
+o yo
+o tú
+o él
+o ella
+o usted
+u yo
+u tú
+u él
+u ella
+u usted
+ni yo
+ni tú
+ni él
+ni ella
+ni usted

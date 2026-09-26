@@ -1,8 +1,8 @@
 id = "simple-grammar"
 name = "Simple grammar"
-version = "0.2.1"
+version = "0.3.0"
 api = 1
-description = "Underlines slips a spell checker misses, such as \"could of\", \"le arbre\", and doubled words, along with spacing, capitals, and dialogue punctuation, in English, French, German, Spanish, Italian, and Ukrainian. Small and fast."
+description = "Underlines slips a spell checker misses, such as \"could of\", \"le arbre\", \"they was\", and doubled words, along with spacing, capitals, and dialogue punctuation, in English, French, German, Spanish, Italian, and Ukrainian. Small and fast."
 languages = ["en", "fr", "de", "es", "it", "uk"]
 
 [[diagnostics]]

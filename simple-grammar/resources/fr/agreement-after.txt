@@ -1,0 +1,28 @@
+# Words after which a pronoun's verb is not checked: a preposition, after which « elle » is no
+# subject (« pour elle sont réservées »). A line of two words ends at the pronoun, for a subject of
+# several: « lui et elle sont ».
+à
+de
+pour
+avec
+sans
+chez
+par
+en
+entre
+sur
+sous
+vers
+contre
+selon
+comme
+sauf
+malgré
+envers
+après
+avant
+devant
+derrière
+et elle
+ou elle
+ni elle

@@ -1,5 +1,5 @@
 name = "Einfache Grammatik"
-description = "Unterstreicht Fehler, die eine Rechtschreibprüfung übersieht, etwa „seid wann“, „das selbe“ und doppelte Wörter, dazu Leerzeichen, Großschreibung und die Zeichensetzung in Dialogen, auf Englisch, Französisch, Deutsch, Spanisch, Italienisch und Ukrainisch. Klein und schnell."
+description = "Unterstreicht Fehler, die eine Rechtschreibprüfung übersieht, etwa „seid wann“, „das selbe“, „wir hat“ und doppelte Wörter, dazu Leerzeichen, Großschreibung und die Zeichensetzung in Dialogen, auf Englisch, Französisch, Deutsch, Spanisch, Italienisch und Ukrainisch. Klein und schnell."
 
 [diagnostics.grammar]
 label = "Einfache Grammatik"
@@ -7,6 +7,14 @@ label = "Einfache Grammatik"
 [settings.mistakes]
 label = "Wortfehler"
 hint = "Doppelte Wörter und verwechselte Wörter und Wendungen"
+
+[settings.agreement]
+label = "Verbform"
+hint = "Ein Pronomen mit der falschen Verbform, etwa „wir hat“ für „wir haben“"
+
+[settings.agreementInSpeech]
+label = "Verbform in Dialogen"
+hint = "Gesprochenes weicht oft absichtlich ab; braucht Verbform"
 
 [settings.punctuation]
 label = "Zeichensetzung und Großschreibung"
