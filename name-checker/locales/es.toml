@@ -1,0 +1,8 @@
+name = "Comprobador de nombres"
+description = "Mantiene los nombres de acuerdo con la enciclopedia: subraya los probables errores en un nombre y los nombres escritos en minúscula, e indica dónde se menciona cada entrada y qué nombres no tienen entrada."
+
+[diagnostics.names]
+label = "Comprobador de nombres"
+
+[actions.report]
+label = "Informe de nombres"

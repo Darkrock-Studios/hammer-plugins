@@ -1,0 +1,8 @@
+name = "Vérificateur de noms"
+description = "Garde les noms conformes à l’encyclopédie : souligne les fautes probables dans un nom et les noms écrits en minuscules, et indique où chaque entrée est mentionnée et quels noms n’ont pas d’entrée."
+
+[diagnostics.names]
+label = "Vérificateur de noms"
+
+[actions.report]
+label = "Rapport sur les noms"

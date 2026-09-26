@@ -1,0 +1,8 @@
+name = "Namensprüfung"
+description = "Hält Namen im Einklang mit der Enzyklopädie: unterstreicht wahrscheinliche Tippfehler in Namen und kleingeschriebene Namen und zeigt, wo jeder Eintrag erwähnt wird und welche Namen keinen Eintrag haben."
+
+[diagnostics.names]
+label = "Namensprüfung"
+
+[actions.report]
+label = "Namensbericht"

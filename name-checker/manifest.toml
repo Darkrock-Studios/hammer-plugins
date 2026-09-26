@@ -1,6 +1,6 @@
 id = "name-checker"
 name = "Name checker"
-version = "0.1.0"
+version = "0.2.0"
 api = 1
 description = "Keeps names in line with the encyclopedia: underlines likely misspellings of a name and names written in lower case, and reports where each entry is mentioned and which names have no entry."
 languages = ["en", "fr", "de", "es", "it", "uk"]

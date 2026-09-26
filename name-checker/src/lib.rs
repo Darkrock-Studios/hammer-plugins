@@ -16,6 +16,9 @@ use serde_json::json;
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Write;
 use std::sync::Mutex;
+use ui::Ui;
+
+mod ui;
 
 const MIN_NAME_LENGTH: usize = 4;
 const LONG_NAME_LENGTH: usize = 8;
@@ -301,19 +304,20 @@ fn check(request: &Request) -> hammer::Result<Reply> {
         return Ok(reply);
     }
     let names = Names::load(&request.project, Some(list))?;
+    let ui = Ui::for_locale(request.locale.as_deref());
     for (index, paragraph) in request.paragraphs.iter().enumerate() {
         for (start, word) in words(paragraph) {
             let word = stem(word);
             let (message, fixes) = match finding(&names, list, word) {
                 Some(Finding::NearMiss(near)) => {
                     let message = match near.as_slice() {
-                        [name] => format!("“{word}” is close to “{name}” in the encyclopedia"),
-                        _ => format!("“{word}” is close to names in the encyclopedia"),
+                        [name] => ui.close_to_name(word, name),
+                        _ => ui.close_to_names(word),
                     };
                     (message, near.iter().map(|name| Fix::Replace((*name).to_owned())).collect())
                 }
                 Some(Finding::LowerCase(name)) => {
-                    (format!("“{name}” is capitalized in the encyclopedia"), vec![Fix::Replace(name.to_owned())])
+                    (ui.capitalized(name), vec![Fix::Replace(name.to_owned())])
                 }
                 None => continue,
             };
@@ -344,6 +348,8 @@ pub extern "C" fn diagnose() -> i32 {
 #[derive(Deserialize)]
 struct ActionRequest {
     project: String,
+    #[serde(default)]
+    locale: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -411,25 +417,18 @@ fn markdown_text(text: &str) -> String {
     out
 }
 
-fn plural(count: usize, one: &str, many: &str) -> String {
-    format!("{count} {}", if count == 1 { one } else { many })
-}
-
 /// The first few scenes by name, and how many more.
-fn scene_list(seen: &Seen, scenes: &[&Node]) -> String {
+fn scene_list(ui: Ui, seen: &Seen, scenes: &[&Node]) -> String {
     let mut named: Vec<String> = seen.scenes.iter().take(SCENES_NAMED).map(|&at| format!("*{}*", markdown_text(&scenes[at].name))).collect();
     if seen.scenes.len() > SCENES_NAMED {
-        named.push(format!("{} more", seen.scenes.len() - SCENES_NAMED));
+        named.push(ui.more(seen.scenes.len() - SCENES_NAMED));
     }
-    match named.as_slice() {
-        [one] => one.clone(),
-        [rest @ .., last] => format!("{} and {last}", rest.join(", ")),
-        [] => String::new(),
-    }
+    ui.and(&named)
 }
 
 fn report() -> hammer::Result<String> {
-    let project = hammer::input_json::<ActionRequest>().map_err(|_| "No project to report on")?.project;
+    let request = hammer::input_json::<ActionRequest>().map_err(|_| "No project to report on")?;
+    let (project, ui) = (request.project, Ui::for_locale(request.locale.as_deref()));
     let info: Info = hammer::call("project.info", &json!({ "project": project }))?;
     let list = Words::for_language(info.language.as_deref());
     let names = Names::load(&project, list)?;
@@ -488,35 +487,28 @@ fn report() -> hammer::Result<String> {
         }
     }
 
-    let mut out = String::from("# Names\n");
+    let mut out = format!("{}\n", ui.title());
     if scenes.is_empty() {
-        out.push_str("\nNo scenes yet.");
+        write!(out, "\n{}", ui.no_scenes()).unwrap();
         return Ok(out);
     }
 
-    out.push_str("\n## Encyclopedia entries\n\n");
+    write!(out, "\n{}\n\n", ui.entries_heading()).unwrap();
     if names.entries.is_empty() {
-        out.push_str("The encyclopedia has no entries yet.\n");
+        writeln!(out, "{}", ui.no_entries()).unwrap();
     } else {
         let mut order: Vec<usize> = (0..names.entries.len()).filter(|&e| mentions[e].count > 0).collect();
         order.sort_by(|&a, &b| mentions[b].count.cmp(&mentions[a].count).then_with(|| names.entries[a].cmp(&names.entries[b])));
         for entry in order {
             let seen = &mentions[entry];
-            writeln!(
-                out,
-                "- **{}**: {} in {}, first in *{}*",
-                markdown_text(&names.entries[entry]),
-                plural(seen.count, "mention", "mentions"),
-                plural(seen.scenes.len(), "scene", "scenes"),
-                markdown_text(&scenes[seen.scenes[0]].name),
-            )
-            .unwrap();
+            let first = markdown_text(&scenes[seen.scenes[0]].name);
+            writeln!(out, "{}", ui.entry_line(&markdown_text(&names.entries[entry]), seen.count, seen.scenes.len(), &first)).unwrap();
         }
         let mut unmentioned: Vec<&String> = names.entries.iter().zip(&mentions).filter(|(_, seen)| seen.count == 0).map(|(name, _)| name).collect();
         unmentioned.sort();
         if !unmentioned.is_empty() {
             let list: Vec<String> = unmentioned.iter().map(|name| format!("**{}**", markdown_text(name))).collect();
-            writeln!(out, "- Not mentioned: {}", list.join(", ")).unwrap();
+            writeln!(out, "{}", ui.not_mentioned(&list.join(", "))).unwrap();
         }
     }
 
@@ -524,18 +516,11 @@ fn report() -> hammer::Result<String> {
         let mut listed: Vec<(&String, &(Seen, Vec<String>))> = slips.iter().collect();
         listed.sort_by(|a, b| b.1.0.count.cmp(&a.1.0.count).then_with(|| a.0.cmp(b.0)));
         if !listed.is_empty() {
-            out.push_str("\n## Possible misspellings\n\n");
+            write!(out, "\n{}\n\n", ui.misspellings_heading()).unwrap();
             for (word, (seen, close)) in listed {
                 let close: Vec<String> = close.iter().map(|name| markdown_text(name)).collect();
-                writeln!(
-                    out,
-                    "- **{}**: {}, in {}. Close to {}.",
-                    markdown_text(word),
-                    plural(seen.count, "time", "times"),
-                    scene_list(seen, &scenes),
-                    close.join(" or "),
-                )
-                .unwrap();
+                let line = ui.slip_line(&markdown_text(word), seen.count, &scene_list(ui, seen, &scenes), &ui.or(&close));
+                writeln!(out, "{line}").unwrap();
             }
         }
 
@@ -543,16 +528,9 @@ fn report() -> hammer::Result<String> {
             unknown.iter().filter(|(_, seen)| seen.mid_sentence && seen.count >= MIN_UNKNOWN_COUNT).collect();
         listed.sort_by(|a, b| b.1.count.cmp(&a.1.count).then_with(|| a.0.cmp(b.0)));
         if !listed.is_empty() {
-            out.push_str("\n## Names with no entry\n\n");
+            write!(out, "\n{}\n\n", ui.unknown_heading()).unwrap();
             for (word, seen) in listed.into_iter().take(UNKNOWN_SHOWN) {
-                writeln!(
-                    out,
-                    "- **{}**: {}, in {}",
-                    markdown_text(word),
-                    plural(seen.count, "time", "times"),
-                    plural(seen.scenes.len(), "scene", "scenes"),
-                )
-                .unwrap();
+                writeln!(out, "{}", ui.unknown_line(&markdown_text(word), seen.count, seen.scenes.len())).unwrap();
             }
         }
     }

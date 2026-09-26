@@ -1,0 +1,8 @@
+name = "Controllo dei nomi"
+description = "Mantiene i nomi coerenti con l’enciclopedia: sottolinea i probabili errori in un nome e i nomi scritti in minuscolo, e riporta dove è menzionata ogni voce e quali nomi non hanno una voce."
+
+[diagnostics.names]
+label = "Controllo dei nomi"
+
+[actions.report]
+label = "Resoconto dei nomi"
