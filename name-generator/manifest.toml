@@ -1,6 +1,6 @@
 id = "name-generator"
 name = "Name generator"
-version = "0.1.0"
+version = "0.1.1"
 api = 1
 description = "Suggests names in an everyday English, Norse, or Elvish style, and adds the ones you pick to the encyclopedia as people."
 

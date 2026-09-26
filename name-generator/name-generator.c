@@ -214,12 +214,12 @@ static void put_reply(HammerBuffer *out, uint64_t seed, Options options, uint32_
       hammer_put_int(&id, i);
       hammer_put_char(&id, ':');
       hammer_put_int(&id, added);
-      buttons[count++] = (HammerButton){hammer_terminated(&id), name};
+      buttons[count++] = (HammerButton){hammer_terminated(&id), name, 0};
     }
     hammer_put_char(&markdown, '\n');
     name += strlen(name) + 1;
   }
-  buttons[count++] = (HammerButton){"more", "More names"};
+  buttons[count++] = (HammerButton){"more", "More names", 1};
   hammer_put_reply(out, markdown.data, markdown.length, buttons, count, message);
 }
 
