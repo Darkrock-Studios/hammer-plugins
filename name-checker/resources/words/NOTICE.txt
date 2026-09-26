@@ -1,0 +1,25 @@
+Word lists other than English
+
+fr.txt, de.txt, es.txt, it.txt, and uk.txt hold the words among the 200,000 most frequent of a
+subtitle frequency list that a spell-check dictionary accepts in lower case, sorted by byte. German
+also keeps the words its dictionary has capitalized as nouns: those whose entries have a noun's
+flags, or that no other language's dictionary knows only capitalized, as a name. Ukrainian keeps
+only words in Cyrillic. hammer-plugins' rust/name-checker/tools/word-lists.py builds them. Each list
+is shared under the terms of both its sources.
+
+Frequency lists: FrequencyWords by Hermit Dave, from OpenSubtitles 2018,
+https://github.com/hermitdave/FrequencyWords. Licensed CC BY-SA 4.0 (licenses/CC-BY-SA-4.0.txt).
+
+Dictionaries, from https://github.com/LibreOffice/dictionaries:
+- fr: Dictionnaires orthographiques français 7.7, by Olivier R. and contributors,
+  https://grammalecte.net/. Licensed MPL 2.0 (licenses/MPL-2.0.txt).
+- de: igerman98 with the frami additions, by Björn Jacke and Franz Michael Baumann,
+  https://www.j3e.de/ispell/igerman98/. Licensed GPL version 2 or 3 (licenses/GPL-2.0.txt,
+  licenses/GPL-3.0.txt).
+- es: the RLA-ES Spanish dictionary (es_ES), https://github.com/sbosio/rla-es. Licensed, at your
+  choice, GPL 3 or later, LGPL 3 or later, or MPL 1.1 or later (licenses/GPL-3.0.txt,
+  licenses/LGPL-3.0.txt, licenses/MPL-1.1.txt).
+- it: the Italian Writing Aids extension 5.1.1, by LibreItalia, Marina Latini, and others,
+  https://libreitalia.org. Licensed GPL 3 (licenses/GPL-3.0.txt).
+- uk: from dict_uk, by Andriy Rysin and others, https://github.com/brown-uk/dict_uk. Licensed MPL 1.1
+  (licenses/MPL-1.1.txt).

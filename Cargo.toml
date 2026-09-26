@@ -1,8 +1,8 @@
 [workspace]
 resolver = "3"
-members = ["hammer", "upper", "wordfreq", "wordcount", "style", "names", "harper-grammar"]
+members = ["hammer", "upper", "wordfreq", "wordcount", "style", "name-checker", "harper-grammar"]
 # harper-grammar builds Harper and runs Wizer, so only its own build.sh builds it.
-default-members = ["hammer", "upper", "wordfreq", "wordcount", "style", "names"]
+default-members = ["hammer", "upper", "wordfreq", "wordcount", "style", "name-checker"]
 
 [workspace.dependencies]
 hammer = { path = "hammer" }
