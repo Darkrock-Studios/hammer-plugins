@@ -62,3 +62,22 @@ If the app can't find `hammer`, use its full path, such as `/home/you/.local/bin
 take the same command and arguments.
 
 For Hammer's development data, use `hammer --dev mcp` instead.
+
+## Skills
+
+`skills/` holds [Agent Skills](https://agentskills.io) that teach an agent to analyze a manuscript
+through this server. They only read, and report what they find with quotes from your scenes; they
+never suggest rewrites.
+
+- **pov-check:** point-of-view slips (head-hopping) in a scene, a chapter, or the whole book. Tag
+  scenes `pov:Name` for the most reliable results.
+- **who-knows-what:** tracks what each character learns and when, and flags characters acting on
+  things they haven't learned yet, or forgetting what they have.
+
+For Claude Code, link each folder into `~/.claude/skills/`, from this directory:
+
+```sh
+ln -s "$PWD"/skills/* ~/.claude/skills/
+```
+
+Other clients that support Agent Skills take the same folders; see their documentation for where.
