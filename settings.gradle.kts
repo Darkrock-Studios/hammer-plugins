@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 includeBuild("../hammer-plugin-sdk/kotlin")
 
 include("mcp")
+include("real-names")

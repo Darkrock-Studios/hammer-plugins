@@ -1,0 +1,19 @@
+Name lists
+
+Each list has a name and how many people have it on each line, most common first.
+hammer-plugins' real-names/tools/ builds them, a script for each culture.
+
+american/
+
+feminine.txt, masculine.txt, and the lists by decade of birth hold the 1,000 most common given names
+of each sex among Social Security card applications for births in the United States, over 1880 to
+the latest year published and within each decade. From the Social Security Administration's national
+baby names data, https://www.ssa.gov/oact/babynames/limits.html. It gives names without spaces,
+hyphens, or capitals inside them. A name over 20 times as common for the other sex is left out.
+
+surnames.txt holds the 5,000 most common surnames of the 2010 census. From the Census Bureau's
+Frequently Occurring Surnames from the 2010 Census,
+https://www.census.gov/topics/population/genealogy/data/2010_surnames.html. It gives surnames in
+capitals without spaces or punctuation; the script restores those of the common ones.
+
+Both are works of the United States government, in the public domain.
