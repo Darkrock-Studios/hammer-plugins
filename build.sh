@@ -21,7 +21,7 @@ for plugin in $plugins; do
 		"$sdk/tools/package.sh" "$plugin" "target/wasm32-unknown-unknown/release/$(printf %s "$plugin" | tr - _).wasm"
 		echo "Built $plugin"
 	elif [ -f "$plugin/build.gradle.kts" ]; then
-		"${GRADLE:-gradle}" -q ":$plugin:hammerPlugin"
+		./gradlew -q ":$plugin:hammerPlugin"
 		echo "Built $plugin"
 	fi
 done

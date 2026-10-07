@@ -6,4 +6,4 @@ cd "$(dirname "$0")"
 sdk=../hammer-plugin-sdk
 for test in */test.c; do "$sdk/c/test.sh" "$(dirname "$test")"; done
 cargo test -q --target "$(rustc -vV | sed -n 's/^host: //p')"
-"${GRADLE:-gradle}" -q jvmTest
+./gradlew -q jvmTest

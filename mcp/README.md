@@ -33,7 +33,7 @@ show up in the open project.
 
 ## Installing
 
-1. Build it: `gradle :mcp:hammerPlugin` in `kotlin/`, which writes `mcp/build/mcp.hammerplugin`.
+1. Build it: `./build.sh mcp`, which writes `mcp/build/mcp.hammerplugin`.
 2. In Hammer: Settings, Plugins, Install plugin, pick `mcp.hammerplugin`, and approve its permissions.
 3. In Settings, Command line, add the `hammer` command to your PATH. The section also shows the exact
    command for MCP clients.

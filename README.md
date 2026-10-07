@@ -23,7 +23,7 @@ tests. Each language needs:
 - Rust: [rustup](https://rustup.rs) and `rustup target add wasm32-unknown-unknown`. `harper-grammar` also
   needs wabt, Binaryen (on PATH, or its `bin` in `BINARYEN`), python3, and `cargo install wizer
   --all-features`.
-- Kotlin: a JDK and any Gradle 9 (set `GRADLE` to a Gradle launcher if `gradle` is not on the path).
+- Kotlin: a JDK; `./gradlew` fetches Gradle.
 
 ## Installing
 
