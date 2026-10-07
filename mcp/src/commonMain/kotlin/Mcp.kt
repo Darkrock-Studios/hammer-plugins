@@ -73,7 +73,7 @@ private fun initialize(params: JsonObject): JsonObject {
 			put("name", "hammer")
 			put("version", SERVER_VERSION)
 		}
-		put("instructions", "Tools for the writer's Hammer projects. Start with project_list; most tools take a project name.")
+		put("instructions", "Tools for the author's Hammer projects. Start with project_list; most tools take a project name. Importantly, this is meant as a tool for the author, not as a replacement. Agents should never write prose for a scene. Agents should even demur from helping ideate: something as simple as picking a name for a character is part of the creative process. A writing tool such as this should never substitute for the author's own creativity.")
 	}
 }
 
