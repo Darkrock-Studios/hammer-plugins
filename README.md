@@ -34,5 +34,6 @@ permissions, and restart Hammer.
 ## License
 
 MIT; see [LICENSE](LICENSE). Some word lists are built from other sources and shared under their
-terms, which ship with them: see `name-checker/resources/words/NOTICE.txt` and
-`style/resources/NOTICE.txt`.
+terms, which ship with them: see `name-checker/resources/words/NOTICE.txt`,
+`style/resources/NOTICE.txt`, and `real-names/resources/names/NOTICE.txt`, whose Chinese lists are
+for non-commercial use only.

@@ -31,6 +31,21 @@ gives surnames in capitals without accents; the script restores those of the com
 
 Both are shared by INSEE under the Licence Ouverte 2.0, https://www.etalab.gouv.fr/licence-ouverte-open-licence/.
 
+chinese/
+
+The lists hold the most common given names of each sex among those born in China from 1930 to 2008,
+over all those years and for each cohort of birth (1930 to 1959, under 1950, then each decade), and
+the surnames, in pinyin without tones, names of the same pinyin counted as one. From the ChineseNames
+package's database, which the National Citizen Identity Information Center gathered in 2008:
+
+  Bao, H.-W.-S. (2023). ChineseNames: Chinese Name Database 1930-2008. R package,
+  https://CRAN.R-project.org/package=ChineseNames, https://github.com/psychbruce/ChineseNames.
+
+Unlike the rest of this plugin, these lists are shared under their source's terms: the GNU GPL
+version 3 (licenses/GPL-3.0.txt) and the Creative Commons Attribution-NonCommercial-ShareAlike
+licence, of which the source names no version (licenses/CC-BY-NC-SA-4.0.txt is version 4.0). They
+may be used for non-commercial purposes only, and shared only under the same terms.
+
 english/
 
 The lists by decade of birth since the 1990s hold the 1,000 most common given names of each sex among
@@ -75,7 +90,7 @@ Surnames, https://www.nrscotland.gov.uk, shared under the Open Government Licenc
 https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/. A name over 20 times as
 common for the other sex is left out. Lists for earlier decades are from Wikidata, below.
 
-brazilian/, chinese/, dutch/, filipino/, german/, greek/, indian/, iranian/, israeli/, italian/,
+brazilian/, dutch/, filipino/, german/, greek/, indian/, iranian/, israeli/, italian/,
 japanese/, korean/, mexican/, nigerian/, russian/, spanish/, swedish/, turkish/, ukrainian/, and what
 the above lack
 
@@ -83,7 +98,7 @@ The lists hold the first given names and the family names of each country's peop
 that Wikidata, https://www.wikidata.org, has, by their English labels, and how many of those people
 have each: names at least 3 have, and a decade's list where it has at least 500 people and 50 names. A
 country's people are its citizens, and those of the states before it born where it is now; England's
-are the United Kingdom's. Japanese and Chinese names are without the marks on their letters. Greek,
+are the United Kingdom's. Japanese names are without the marks on their letters. Greek,
 Russian, and Ukrainian surnames are counted for both sexes together, and a woman's formed from a man's
 by its ending. They are the names of people of note, so follow the population's only roughly.
 Wikidata's data is in the public domain (CC0).

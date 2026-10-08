@@ -32,12 +32,11 @@ DECADES = range(1880, 2030, 10)
 # For each culture: "country", whose citizens its people are; "within", the part of it they were born
 # in, for a culture that is one of a country's; "born", countries whose citizens count when born in
 # what is now the country, such as the Soviet Union for Russia; "marks", whether to keep the marks on
-# letters, which English leaves off Japanese's long vowels and Chinese's tones; and "feminine", the
-# endings that make a man's surname a woman's, for a surname list for each sex, with "sure", the
-# woman's endings that are no man's.
+# letters, which English leaves off Japanese's long vowels; and "feminine", the endings that make a
+# man's surname a woman's, for a surname list for each sex, with "sure", the woman's endings that are
+# no man's.
 CULTURES = {
     "brazilian": {"country": "Q155"},
-    "chinese": {"country": "Q148", "born": ["Q13426199", "Q8733"], "marks": False},
     "dutch": {"country": "Q55", "born": ["Q29999"]},
     # The United Kingdom's people: asking for those born in England runs out of time.
     "english": {"country": "Q145", "born": ["Q174193"]},
