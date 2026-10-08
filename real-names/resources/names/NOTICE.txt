@@ -17,3 +17,69 @@ https://www.census.gov/topics/population/genealogy/data/2010_surnames.html. It g
 capitals without spaces or punctuation; the script restores those of the common ones.
 
 Both are works of the United States government, in the public domain.
+
+french/
+
+feminine.txt, masculine.txt, and the lists by decade of birth hold the 1,000 most common given names
+of each sex among births in France, over 1900 to 2022 and within each decade. From INSEE's Fichier des
+prénoms, 2022 edition, https://www.insee.fr/fr/statistiques/7633685. A name over 20 times as common
+for the other sex is left out.
+
+surnames.txt holds the 5,000 most common surnames among births in France from 1891 to 2000. From
+INSEE's Fichier des noms de famille, 2008 edition, https://www.insee.fr/fr/statistiques/3536630. It
+gives surnames in capitals without accents; the script restores those of the common ones.
+
+Both are shared by INSEE under the Licence Ouverte 2.0, https://www.etalab.gouv.fr/licence-ouverte-open-licence/.
+
+english/
+
+The lists by decade of birth since the 1990s hold the 1,000 most common given names of each sex among
+births in England and Wales from 1996 to 2025. From the Office for National Statistics' Baby names in
+England and Wales: from 1996, shared under the Open Government Licence v3.0,
+https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/. A name over 20 times as
+common for the other sex is left out. The other lists are from Wikidata, below.
+
+irish/
+
+feminine.txt, masculine.txt, and the lists by decade of birth since the 1960s hold the 1,000 most
+common given names of each sex among births registered in Ireland from 1964 to 2024, and surnames.txt
+the surnames of babies of 2023 and 2024. From the Central Statistics Office's tables VSA50, VSA60, and
+VSA110, https://data.cso.ie, shared under CC BY 4.0, https://creativecommons.org/licenses/by/4.0/. A
+name over 20 times as common for the other sex is left out. Lists for earlier decades are from
+Wikidata, below.
+
+norwegian/
+
+feminine.txt, masculine.txt, and the lists by decade of birth hold the most common given names of each
+sex among those born in Norway from 1880 to 2025, each with how many of 100,000 born it was given to,
+a year at a time, and surnames.txt the surnames 200 people or more have. From Statistics Norway's
+StatBank tables 10467 and 12891, https://www.ssb.no/en/statbank, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. A name over 20 times as common for the other sex is left
+out.
+
+polish/
+
+feminine.txt and masculine.txt hold the 1,000 most common first given names of each sex in Poland's
+PESEL register, and surnames-feminine.txt and surnames-masculine.txt the 5,000 most common surnames of
+each, the dead counted too. From the lists the Ministry of Digital Affairs shares at
+https://dane.gov.pl, datasets 1501 and 568, in the public domain (CC0). The lists by decade of birth
+are from Wikidata, below.
+
+scottish/
+
+feminine.txt, masculine.txt, and the lists by decade of birth since the 1970s hold the 1,000 most
+common given names of each sex among births registered in Scotland from 1974 to 2025, and surnames.txt
+the surnames in its registers of births, marriages, and deaths in every fifth year from 1975 to 2010
+and each year since 2013. From National Records of Scotland's Babies' First Names and Most Common
+Surnames, https://www.nrscotland.gov.uk, shared under the Open Government Licence v3.0,
+https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/. A name over 20 times as
+common for the other sex is left out. Lists for earlier decades are from Wikidata, below.
+
+japanese/, mexican/, russian/
+
+The lists hold the first given names and the family names of each country's people born since 1880
+that Wikidata, https://www.wikidata.org, has, by their English labels, and how many of those people
+have each: names at least 3 have, and a decade's list where it has at least 1,000 people. Japanese
+names are without macrons. Russian surnames are counted for both sexes together, and a woman's formed
+from a man's by its ending. They are the names of people of note, so follow the population's only
+roughly. Wikidata's data is in the public domain (CC0).

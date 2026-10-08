@@ -2,7 +2,7 @@ id = "real-names"
 name = "Real-world names"
 version = "0.1.0"
 api = 1
-description = "Suggests real names by culture and decade of birth, as common as they were then, and adds the ones you pick to the encyclopedia as people."
+description = "Suggests real names from a culture and a decade of birth, as common as they were then, and adds the ones you pick to the encyclopedia as people."
 
 [permissions]
 operations = ["entry.create"]
@@ -20,6 +20,13 @@ label = "Culture"
 default = "american"
 options = [
 	{ value = "american", label = "American" },
+	{ value = "french", label = "French" },
+	{ value = "irish", label = "Irish" },
+	{ value = "japanese", label = "Japanese" },
+	{ value = "mexican", label = "Mexican" },
+	{ value = "norwegian", label = "Norwegian" },
+	{ value = "russian", label = "Russian" },
+	{ value = "scottish", label = "Scottish" },
 ]
 
 [[actions.field]]
@@ -55,6 +62,17 @@ options = [
 	{ value = "any", label = "Any" },
 	{ value = "feminine", label = "Feminine" },
 	{ value = "masculine", label = "Masculine" },
+]
+
+[[actions.field]]
+key = "rarity"
+type = "choice"
+label = "Names"
+default = "typical"
+options = [
+	{ value = "common", label = "Common" },
+	{ value = "typical", label = "As common as they are" },
+	{ value = "rare", label = "Rare" },
 ]
 
 [[actions.field]]

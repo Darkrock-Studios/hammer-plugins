@@ -52,9 +52,35 @@ class RealNamesTest {
 	}
 
 	@Test
-	fun `an era without lists of its own gives the names of all years`() {
+	fun `an era without lists of its own gives the nearest decade's names, or those of all years`() {
+		fun men(era: String) = generate(42, NamesInput(culture = "mexican", era = era, gender = "masculine", surnames = false))
+		assertNull(nameList("mexican", "masculine-1930"))
+		assertEquals(men("1940"), men("1930"))
+		assertEquals(men("any"), men("1890"))
 		assertEquals(generate(42, NamesInput()), generate(42, NamesInput(era = "1700")))
 		assertFailsWith<IllegalStateException> { generate(42, NamesInput(culture = "atlantean")) }
+	}
+
+	@Test
+	fun `a culture's format orders the name`() {
+		val surnames = nameList("japanese", "surnames")!!
+		val given = nameList("japanese", "masculine-1950")!!
+		val names = generate(3, NamesInput(culture = "japanese", era = "1950", gender = "masculine"))
+		assertTrue(names.all { it.substringBefore(' ') in surnames && it.substringAfter(' ') in given })
+		assertTrue(generate(3, NamesInput(culture = "japanese", gender = "masculine", surnames = false)).none { ' ' in it })
+		assertTrue("François" in nameList("french", "surnames")!! && "Hélène" in nameList("french", "feminine-1950")!!)
+	}
+
+	@Test
+	fun `a culture may have two surnames, or a surname list for each gender`() {
+		assertTrue(generate(5, NamesInput(culture = "mexican", count = 20)).all { it.count { c -> c == ' ' } >= 2 })
+
+		assertNull(nameList("russian", "surnames"))
+		val women = nameList("russian", "surnames-feminine")!!
+		val men = nameList("russian", "surnames-masculine")!!
+		assertTrue("Ivanova" in women && "Ivanov" !in women && "Ivanov" in men && "Ivanova" !in men)
+		assertTrue(generate(5, NamesInput(culture = "russian", gender = "feminine", count = 20)).all { it.substringAfter(' ') in women })
+		assertTrue(generate(5, NamesInput(culture = "russian", gender = "masculine", count = 20)).all { it.substringAfter(' ') in men })
 	}
 
 	@Test
@@ -66,10 +92,15 @@ class RealNamesTest {
 
 	@Test
 	fun `a name is picked as often as it is common`() {
-		val list = NameList(listOf("Rare\t1", "Mary Ann\t99", ""))
+		val list = NameList(listOf("Mary Ann\t99", "Rare\t1", ""))
 		val random = Random(5)
 		val rare = (1..1000).count { list.pick(random) == "Rare" }
 		assertTrue(rare in 1..39)
+		assertTrue((1..100).all { list.pick(random, "common") == "Mary Ann" && list.pick(random, "rare") == "Rare" })
+		assertEquals("Only", NameList(listOf("Only\t5")).pick(random, "rare"))
+		val surnames = nameList("american", "surnames")!!
+		assertTrue((1..200).none { surnames.pick(random, "rare") == "Smith" })
+		assertTrue((1..200).map { surnames.pick(random, "common") }.toSet().let { "Smith" in it && it.size > 50 })
 		assertTrue("Mary Ann" in list)
 		assertFailsWith<IllegalStateException> { NameList(listOf("Mary")) }
 		assertNull(nameList("american", "nothing"))
