@@ -1,0 +1,124 @@
+María	103
+Carmen	62
+Pilar	51
+Rosa	50
+Maria	48
+Teresa	42
+Isabel	39
+Ana	36
+Montserrat	32
+Mercè	24
+Cristina	22
+Mercedes	22
+Carme	21
+Blanca	17
+Anna	16
+Francisca	16
+Marta	16
+María José	15
+Aurora	14
+Margarita	14
+María Dolores	14
+María Isabel	14
+Ana María	13
+Elena	13
+Marisa	13
+Alicia	12
+Gloria	12
+Paloma	12
+Helena	11
+Josefa	11
+Josefina	11
+Julia	11
+Núria	11
+Adela	10
+Consuelo	10
+Elvira	10
+Luisa	10
+Ángeles	10
+Amparo	9
+Dolors	9
+Esther	9
+Lola	9
+Manuela	9
+Soledad	9
+Dolores	8
+Maria Teresa	8
+Marina	8
+María Jesús	8
+Matilde	8
+Rosario	8
+Antonia	7
+Begoña	7
+Esperanza	7
+Eulàlia	7
+Irene	7
+Juana	7
+Maria Dolors	7
+María del Pilar	7
+Roser	7
+Àngels	7
+Ángela	7
+Concepción	6
+Maite	6
+Margarida	6
+María de los Ángeles	6
+Olga	6
+Arantxa	5
+Assumpció	5
+Beatriz	5
+Catalina	5
+Elisa	5
+Encarnación	5
+Eva	5
+Gemma	5
+Glòria	5
+Joana	5
+Lourdes	5
+Maribel	5
+María Soledad	5
+Rosa Maria	5
+Cecilia	4
+Emilia	4
+Enriqueta	4
+Inés	4
+Laura	4
+Maria del Carme	4
+Maria Àngels	4
+María Pilar	4
+Milagros	4
+Natividad	4
+Paz	4
+Silvia	4
+Victoria	4
+Aina	3
+Amelia	3
+Antònia	3
+Bárbara	3
+Concha	3
+Diana	3
+Dora	3
+Emma	3
+Esperança	3
+Francesca	3
+Itziar	3
+Juliana	3
+Magda	3
+Magdalena	3
+Mara	3
+Margalida	3
+Marisol	3
+Maruja	3
+María Eugenia	3
+María Luz	3
+María Ángeles	3
+Merche	3
+Mireia	3
+Miren	3
+Neus	3
+Nieves	3
+Pepa	3
+Rafaela	3
+Sara	3
+Susana	3
+Valentina	3

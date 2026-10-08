@@ -1,0 +1,85 @@
+María	60
+Maria	39
+Carmen	37
+Pilar	26
+Montserrat	24
+Ana	19
+Carme	18
+Isabel	17
+Teresa	17
+Margarita	14
+Rosa	14
+Mercedes	12
+Aurora	11
+Josefina	11
+Núria	11
+Marta	10
+Elena	9
+Enriqueta	9
+Lola	8
+María Dolores	8
+Ana María	7
+Dolores	7
+Elvira	7
+Gloria	7
+Josefa	7
+Maria Teresa	7
+María Jesús	7
+Alicia	6
+Amparo	6
+Antonia	6
+Concepción	6
+Dolors	6
+Francisca	6
+Julia	6
+Luisa	6
+Mercè	6
+Roser	6
+Victoria	6
+Adela	5
+Anna	5
+Beatriz	5
+Maria Rosa	5
+Mary	5
+Paz	5
+Blanca	4
+Elisa	4
+Encarnación	4
+Esther	4
+Joana	4
+Juana	4
+Laura	4
+Maria Lluïsa	4
+Maruja	4
+Natalia	4
+Olga	4
+Àngels	4
+Ángeles	4
+Amalia	3
+Angela	3
+Begoña	3
+Concha	3
+Conchita	3
+Cristina	3
+Cándida	3
+Emilia	3
+Emma	3
+Esperanza	3
+Francesca	3
+Helena	3
+Irene	3
+Joaquima	3
+Lourdes	3
+Manuela	3
+Marisa	3
+María Isabel	3
+María Manuela	3
+María Rosa	3
+María Victoria	3
+María del Pilar	3
+Micaela	3
+Milagros	3
+Pepita	3
+Rosario	3
+Sagrario	3
+Trinidad	3

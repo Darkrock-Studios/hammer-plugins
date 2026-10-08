@@ -75,11 +75,15 @@ Surnames, https://www.nrscotland.gov.uk, shared under the Open Government Licenc
 https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/. A name over 20 times as
 common for the other sex is left out. Lists for earlier decades are from Wikidata, below.
 
-japanese/, mexican/, russian/
+brazilian/, chinese/, dutch/, filipino/, german/, greek/, indian/, iranian/, israeli/, italian/,
+japanese/, korean/, mexican/, nigerian/, russian/, spanish/, swedish/, turkish/, ukrainian/, and what
+the above lack
 
 The lists hold the first given names and the family names of each country's people born since 1880
 that Wikidata, https://www.wikidata.org, has, by their English labels, and how many of those people
-have each: names at least 3 have, and a decade's list where it has at least 1,000 people. Japanese
-names are without macrons. Russian surnames are counted for both sexes together, and a woman's formed
-from a man's by its ending. They are the names of people of note, so follow the population's only
-roughly. Wikidata's data is in the public domain (CC0).
+have each: names at least 3 have, and a decade's list where it has at least 500 people and 50 names. A
+country's people are its citizens, and those of the states before it born where it is now; England's
+are the United Kingdom's. Japanese and Chinese names are without the marks on their letters. Greek,
+Russian, and Ukrainian surnames are counted for both sexes together, and a woman's formed from a man's
+by its ending. They are the names of people of note, so follow the population's only roughly.
+Wikidata's data is in the public domain (CC0).

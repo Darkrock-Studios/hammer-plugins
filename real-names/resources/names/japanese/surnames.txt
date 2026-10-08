@@ -2838,6 +2838,7 @@ Gibu	3
 Gojo	3
 Gonoi	3
 Goshima	3
+Guan	3
 Hagio	3
 Hagiuda	3
 Hamabe	3
@@ -3304,6 +3305,7 @@ Tachi	3
 Tachihara	3
 Tachiki	3
 Tagaya	3
+Tai	3
 Takafuji	3
 Takahira	3
 Takamure	3
@@ -3443,3 +3445,4 @@ Yufu	3
 Yuge	3
 Yukino	3
 Zaima	3
+Zhao	3

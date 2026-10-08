@@ -1,0 +1,239 @@
+María	163
+Ana	129
+Carmen	88
+Cristina	83
+Marta	83
+Rosa	77
+Isabel	72
+Maria	67
+Montserrat	65
+Elena	61
+María José	61
+Pilar	61
+Teresa	57
+Anna	51
+Eva	45
+Begoña	41
+Mercedes	41
+Beatriz	40
+Susana	38
+Núria	37
+Laura	34
+Yolanda	29
+Belén	27
+María Jesús	27
+Paloma	27
+Dolores	26
+Esther	26
+Mercè	26
+Carme	23
+Lourdes	23
+Silvia	23
+Alicia	21
+Blanca	21
+Inmaculada	19
+Amparo	18
+Itziar	18
+Maite	18
+Margarita	18
+Mireia	18
+Mónica	18
+Olga	18
+Victoria	18
+Gemma	17
+María Isabel	17
+Miren	17
+Ana Isabel	16
+María Dolores	16
+Patricia	16
+Roser	16
+Sonia	16
+Ana María	15
+Elvira	15
+Francisca	15
+Nuria	15
+Ángeles	15
+Antonia	14
+Clara	14
+Ester	14
+Gloria	14
+Catalina	13
+Julia	13
+Montse	13
+Sílvia	13
+Irene	12
+Luisa	12
+Mar	12
+María del Mar	12
+Natalia	12
+Almudena	11
+Asunción	11
+Consuelo	11
+María Victoria	11
+María Ángeles	11
+Miriam	11
+Rosa Maria	11
+Ainhoa	10
+Amaia	10
+Arantxa	10
+Dolors	10
+Helena	10
+Inés	10
+Marisa	10
+María Elena	10
+Nieves	10
+Rocío	10
+Sara	10
+Ángela	10
+Aurora	9
+Carolina	9
+Concepción	9
+Esperanza	9
+Juana	9
+Judith	9
+Lucía	9
+Marisol	9
+María Pilar	9
+Matilde	9
+Milagros	9
+Nerea	9
+Neus	9
+Raquel	9
+Rosa María	9
+Soledad	9
+Virginia	9
+Berta	8
+Concha	8
+Emma	8
+Encarnación	8
+Garbiñe	8
+Joana	8
+Luz	8
+Magdalena	8
+Mònica	8
+Nekane	8
+Sandra	8
+Trinidad	8
+Arantza	7
+Cecilia	7
+Eulàlia	7
+Lola	7
+Maria Dolors	7
+Maria Àngels	7
+María de los Ángeles	7
+Paula	7
+Pepa	7
+Rosario	7
+Elisa	6
+Eloísa	6
+Emilia	6
+Encarna	6
+Francesca	6
+Gema	6
+Glòria	6
+Guadalupe	6
+Imma	6
+Inma	6
+Josefina	6
+Lidia	6
+Manuela	6
+Maribel	6
+Marina	6
+María Concepción	6
+María Xosé	6
+María del Pilar	6
+Reyes	6
+Susanna	6
+Ane	5
+Anna Maria	5
+Ascensión	5
+Elisabet	5
+Elisenda	5
+Eugenia	5
+Idoia	5
+Izaskun	5
+Josefa	5
+Lluïsa	5
+Lydia	5
+Meritxell	5
+Pura	5
+Àngels	5
+Adela	4
+Amalia	4
+Anabel	4
+Enriqueta	4
+Estrella	4
+Fina	4
+Gabriela	4
+Immaculada	4
+Judit	4
+Leticia	4
+Loreto	4
+Lídia	4
+Margarida	4
+Maria Mercè	4
+Marian	4
+Mariona	4
+María Carmen	4
+María del Rosario	4
+Natividad	4
+Olatz	4
+Purificación	4
+Remedios	4
+Rosalía	4
+Rosana	4
+Sol	4
+Sònia	4
+África	4
+Ada	3
+Adoración	3
+Agnès	3
+Aina	3
+Aintzane	3
+Alba	3
+Alejandra	3
+Amelia	3
+Angélica	3
+Azucena	3
+Caridad	3
+Carlota	3
+Carmela	3
+Celia	3
+Claudia	3
+Coral	3
+Covadonga	3
+Elsa	3
+Empar	3
+Estibaliz	3
+Eulalia	3
+Fernanda	3
+Fátima	3
+Georgina	3
+Helen	3
+Ima	3
+Karmele	3
+Magda	3
+Mara	3
+Mari	3
+Maria Jesús	3
+Maria Josep	3
+Maria Pilar	3
+Maria Rosa	3
+Maria Teresa	3
+Mariana	3
+María Belén	3
+María Cristina	3
+María Soledad	3
+Mertxe	3
+Monica	3
+Nataliya	3
+Natàlia	3
+Paz	3
+Pia	3
+Ramona	3
+Regina	3
+Rita	3
+Sagrario	3
+Sofía	3
+Sonsoles	3
+Vicenta	3

@@ -20,23 +20,27 @@ GIVEN = 1000
 SURNAMES = 5000
 # A name fewer people than this have is left out, as likely a mistake or a foreigner's.
 FEWEST = 3
-# A decade with fewer people than this gets no list of its own.
-FEWEST_PEOPLE = 1000
+# A decade gets a list of its own with this many people and this many names to pick from, and there
+# is a list of all years, or of surnames, with this many names.
+DECADE_PEOPLE = 500
+DECADE_NAMES = 50
+FEWEST_NAMES = 100
 # A given name this many times as common for the other sex is left out.
 OTHER_SEX = 20
 DECADES = range(1880, 2030, 10)
 
 # For each culture: "country", whose citizens its people are; "within", the part of it they were born
 # in, for a culture that is one of a country's; "born", countries whose citizens count when born in
-# what is now the country, such as the Soviet Union for Russia; "macrons", whether to keep long
-# vowels' macrons; and "feminine", the endings that make a man's surname a woman's, for a surname list
-# for each sex, with "sure", the woman's endings that are no man's.
+# what is now the country, such as the Soviet Union for Russia; "marks", whether to keep the marks on
+# letters, which English leaves off Japanese's long vowels and Chinese's tones; and "feminine", the
+# endings that make a man's surname a woman's, for a surname list for each sex, with "sure", the
+# woman's endings that are no man's.
 CULTURES = {
     "brazilian": {"country": "Q155"},
-    "chinese": {"country": "Q148", "born": ["Q13426199", "Q8733"]},
+    "chinese": {"country": "Q148", "born": ["Q13426199", "Q8733"], "marks": False},
     "dutch": {"country": "Q55", "born": ["Q29999"]},
-    "egyptian": {"country": "Q79"},
-    "english": {"country": "Q145", "within": "Q21"},
+    # The United Kingdom's people: asking for those born in England runs out of time.
+    "english": {"country": "Q145", "born": ["Q174193"]},
     "filipino": {"country": "Q928"},
     "german": {"country": "Q183", "born": ["Q43287", "Q41304", "Q7318", "Q16957", "Q713750"]},
     "greek": {"country": "Q41", "feminine": [
@@ -47,13 +51,11 @@ CULTURES = {
     "irish": {"country": "Q27", "born": ["Q174193", "Q145"]},
     "israeli": {"country": "Q801"},
     "italian": {"country": "Q38", "born": ["Q172579"]},
-    "japanese": {"country": "Q17", "born": ["Q188712"], "macrons": False},
-    "kenyan": {"country": "Q114"},
+    "japanese": {"country": "Q17", "born": ["Q188712"], "marks": False},
     "korean": {"country": "Q884"},
     "mexican": {"country": "Q96"},
     "nigerian": {"country": "Q1033"},
     "norwegian": {"country": "Q20"},
-    "pakistani": {"country": "Q843", "born": ["Q129286"]},
     "polish": {"country": "Q36", "born": ["Q211274", "Q207272"], "feminine": [
         ("ski", "ska"), ("cki", "cka"), ("dzki", "dzka"),
     ], "sure": ("ska", "cka", "dzka")},
@@ -68,7 +70,6 @@ CULTURES = {
     "ukrainian": {"country": "Q212", "born": ["Q15180", "Q133356"], "feminine": [
         ("skyi", "ska"), ("sky", "ska"), ("ov", "ova"), ("ev", "eva"), ("in", "ina"), ("yn", "yna"), ("nyi", "na"),
     ], "sure": ("ova", "eva", "ska")},
-    "vietnamese": {"country": "Q881"},
 }
 SEXES = {"feminine": "Q6581072", "masculine": "Q6581097"}
 
@@ -98,9 +99,10 @@ def ask(name, query):
             try:
                 with urllib.request.urlopen(request, timeout=120) as reply:
                     answer = reply.read()
+                json.loads(answer)
                 break
-            except OSError:
-                # Too many requests, or a query out of time on a busy server.
+            except (OSError, ValueError):
+                # Too many requests, a query out of time on a busy server, or an answer cut short.
                 if attempt == 3:
                     raise
                 time.sleep(30 * (attempt + 1))
@@ -114,17 +116,16 @@ def ask(name, query):
 def written(label):
     """A name's English label as the lists have it, or None for one that is not a name in Latin letters."""
     label = unicodedata.normalize("NFC", label.strip())
-    if not options.get("macrons", True):
-        label = re.sub(r"[āēīōū]", lambda m: "aeiou"["āēīōū".index(m.group())], label)
-        label = re.sub(r"[ĀĒĪŌŪ]", lambda m: "AEIOU"["ĀĒĪŌŪ".index(m.group())], label)
+    if not options.get("marks", True):
+        label = "".join(c for c in unicodedata.normalize("NFD", label) if not unicodedata.combining(c))
     if len(label) < 2 or not label[0].isupper() or not re.fullmatch(r"[^\W\d_]+(?:[ '-][^\W\d_]+)*", label):
         return None
     return label if all("LATIN" in unicodedata.name(c, "") for c in label if c.isalpha()) else None
 
 
-def write(file, counts, most):
+def write(file, counts, most, decade=False):
     ranked = sorted(((name, count) for name, count in counts.items() if count >= FEWEST), key=lambda item: (-item[1], item[0]))[:most]
-    if sum(count for _, count in ranked) < FEWEST_PEOPLE:
+    if (sum(counts.values()) < DECADE_PEOPLE or len(ranked) < DECADE_NAMES) if decade else len(ranked) < FEWEST_NAMES:
         return
     with open(os.path.join(out, f"{file}.txt"), "w", encoding="utf-8") as f:
         f.writelines(f"{name}\t{count}\n" for name, count in ranked)
@@ -166,7 +167,7 @@ for sex, sex_item in SEXES.items():
 for (sex, decade), counts in given.items():
     other = given[("masculine" if sex == "feminine" else "feminine", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(f"{sex}-{decade}" if decade else sex, counts, GIVEN)
+    write(f"{sex}-{decade}" if decade else sex, counts, GIVEN, bool(decade))
 
 endings = options.get("feminine")
 if endings:

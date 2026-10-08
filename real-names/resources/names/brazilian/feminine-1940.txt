@@ -1,0 +1,81 @@
+Maria	95
+Vera	22
+Ana	18
+Regina	13
+Lúcia	12
+Angela	9
+Helena	9
+Márcia	8
+Rosa	8
+Sonia	8
+Anna	7
+Sônia	7
+Beatriz	6
+Célia	6
+Lucia	6
+Maria Lúcia	6
+Tânia	6
+Ana Maria	5
+Carmen	5
+Irene	5
+Jane	5
+Lourdes	5
+Marcia	5
+Maria do Carmo	5
+Marisa	5
+Marta	5
+Marília	5
+Miriam	5
+Norma	5
+Rita	5
+Vânia	5
+Ângela	5
+Betty	4
+Celina	4
+Eliana	4
+Elza	4
+Eunice	4
+Glória	4
+Isabel	4
+Ivone	4
+Izabel	4
+Marlene	4
+Martha	4
+Wanda	4
+Alice	3
+Aline	3
+Antonia	3
+Berenice	3
+Carmem	3
+Cecília	3
+Clara	3
+Cláudia	3
+Conceição	3
+Cristina	3
+Edna	3
+Francisca	3
+Gilda	3
+Hilda	3
+Leila	3
+Licia	3
+Luiza	3
+Luzia	3
+Maria Aparecida	3
+Maria Helena	3
+Maria Thereza	3
+Maria da Glória	3
+Maria da Penha	3
+Marilena	3
+Mary	3
+María José	3
+Olga	3
+Raquel	3
+Sandra	3
+Solange	3
+Suely	3
+Susana	3
+Suzana	3
+Teresa	3
+Tereza	3
+Terezinha	3
+Thereza	3

@@ -1,0 +1,189 @@
+María	158
+Carmen	100
+Pilar	78
+Rosa	66
+Ana	63
+Montserrat	59
+Maria	57
+Teresa	57
+Isabel	54
+Carme	40
+María José	35
+Mercedes	34
+Núria	33
+Marta	32
+Elena	29
+Cristina	25
+Margarita	25
+Anna	24
+Alicia	23
+Lourdes	22
+Consuelo	21
+Laura	21
+María Jesús	21
+Beatriz	20
+Mercè	20
+Dolores	19
+Dolors	19
+Ana María	18
+María Isabel	18
+Begoña	17
+María Dolores	17
+Paloma	17
+Julia	15
+Blanca	14
+Eva	14
+Gloria	14
+Inmaculada	14
+Juana	14
+Milagros	14
+Concepción	13
+Francisca	13
+Luisa	13
+Ángeles	13
+Esther	12
+Montse	12
+Olga	12
+Ángela	12
+Amparo	11
+Aurora	11
+Clara	11
+Magdalena	11
+Victoria	11
+Elvira	10
+Helena	10
+Lola	10
+Maite	10
+Maria Dolors	10
+Maria Teresa	10
+Marina	10
+Matilde	10
+Rosa María	10
+Rosario	10
+Soledad	10
+Berta	9
+Inés	9
+Joana	9
+Marisa	9
+Roser	9
+Asunción	8
+Concha	8
+Gemma	8
+Josefina	8
+Marisol	8
+Esperanza	7
+Francesca	7
+Josefa	7
+Manuela	7
+María Asunción	7
+María del Pilar	7
+Nieves	7
+Regina	7
+Rosa Maria	7
+Amelia	6
+Arantza	6
+Elisa	6
+Glòria	6
+Imma	6
+María Pilar	6
+María Soledad	6
+María Ángeles	6
+Miren	6
+Nuria	6
+Sandra	6
+Susana	6
+Yolanda	6
+Ana Isabel	5
+Antonia	5
+Assumpta	5
+Carmela	5
+Carmina	5
+Encarna	5
+Irene	5
+Itziar	5
+Leonor	5
+Luz	5
+Maria Isabel	5
+Maria Lluïsa	5
+Maria Rosa	5
+Maribel	5
+María Concepción	5
+María Xosé	5
+María de los Ángeles	5
+Mónica	5
+Patricia	5
+Remedios	5
+Sara	5
+Silvia	5
+Sílvia	5
+Amaia	4
+Amalia	4
+Antònia	4
+Araceli	4
+Assumpció	4
+Carolina	4
+Cecilia	4
+Esperança	4
+Estrella	4
+Eulalia	4
+Flora	4
+Fátima	4
+Gabriela	4
+Georgina	4
+Magda	4
+Margalida	4
+Margarida	4
+Maria Carme	4
+Mariona	4
+María Eugenia	4
+María Paz	4
+Mila	4
+Natividad	4
+Neus	4
+Paula	4
+Raquel	4
+Rocío	4
+Rosalía	4
+Vicenta	4
+Victòria	4
+Virginia	4
+Adriana	3
+Agustina	3
+Almudena	3
+Anna Maria	3
+Belén	3
+Catalina	3
+Celia	3
+Edurne	3
+Elisabet	3
+Elisenda	3
+Emma	3
+Empar	3
+Encarnación	3
+Fina	3
+Gema	3
+Immaculada	3
+Isabelle	3
+Isaura	3
+Izaskun	3
+Lina	3
+Lluïsa	3
+Lucía	3
+Lídia	3
+Mar	3
+Maria Josep	3
+Maria Àngels	3
+María Elena	3
+María Rosario	3
+María Victoria	3
+María de las Mercedes	3
+María del Rosario	3
+Nekane	3
+Paz	3
+Purificación	3
+Ramona	3
+Ruth	3
+Sabela	3
+Sofía	3
+Verónica	3
+Àngels	3

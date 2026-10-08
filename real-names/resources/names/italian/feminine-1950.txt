@@ -1,0 +1,202 @@
+Maria	134
+Anna	108
+Paola	77
+Laura	75
+Daniela	72
+Patrizia	62
+Antonella	54
+Marina	51
+Francesca	47
+Gabriella	47
+Elisabetta	43
+Lucia	43
+Silvia	39
+Alessandra	38
+Elena	37
+Giovanna	35
+Stefania	34
+Cristina	33
+Rita	31
+Roberta	31
+Donatella	30
+Luisa	29
+Angela	27
+Carla	27
+Chiara	27
+Barbara	25
+Simonetta	25
+Tiziana	25
+Cinzia	24
+Silvana	23
+Franca	22
+Rossella	22
+Emanuela	21
+Anna Maria	20
+Claudia	20
+Giuliana	20
+Giuseppina	20
+Valeria	20
+Luciana	18
+Susanna	18
+Monica	17
+Rosa	17
+Rosanna	17
+Margherita	16
+Nicoletta	16
+Adriana	15
+Loredana	15
+Maria Grazia	15
+Maria Teresa	15
+Gloria	14
+Mara	14
+Marta	14
+Sandra	14
+Carmen	13
+Caterina	13
+Serena	13
+Cecilia	12
+Giulia	12
+Isabella	12
+Maria Cristina	12
+Maria Luisa	12
+Renata	12
+Teresa	12
+Annamaria	11
+Beatrice	11
+Maria Rosaria	11
+Marisa	11
+Bianca	10
+Enrica	10
+Lidia	10
+Manuela	10
+Ada	9
+Annalisa	9
+Elisa	9
+Emma	9
+Flavia	9
+Liliana	9
+Nadia	9
+Raffaella	9
+Sabina	9
+Simona	9
+Clara	8
+Marcella	8
+Maria Pia	8
+Michela	8
+Piera	8
+Donata	7
+Fernanda	7
+Gilda	7
+Grazia	7
+Graziella	7
+Livia	7
+Maria Rita	7
+Mariella	7
+Matilde	7
+Maura	7
+Valentina	7
+Adele	6
+Antonietta	6
+Concetta	6
+Daria	6
+Eleonora	6
+Emilia	6
+Eva	6
+Federica	6
+Fiorella	6
+Ida	6
+Irene	6
+Lina	6
+Maddalena	6
+Sara	6
+Sonia	6
+Vincenza	6
+Amalia	5
+Antonia	5
+Christine	5
+Dora	5
+Fabrizia	5
+Fiorenza	5
+Gigliola	5
+Giuseppa	5
+Ivana	5
+Lorella	5
+Lorenza	5
+Loretta	5
+Luigina	5
+Milena	5
+Ornella	5
+Vittoria	5
+Viviana	5
+Anita	4
+Assunta	4
+Carmela	4
+Diana	4
+Elvira	4
+Enza	4
+Erminia	4
+Gisella	4
+Ilaria	4
+Katia	4
+Linda	4
+Lisa	4
+Lucilla	4
+Luisella	4
+Magda	4
+Maria Carmela	4
+Maria Concetta	4
+Maria Gabriella	4
+Maria Letizia	4
+Mariangela	4
+Mirella	4
+Orietta	4
+Pia	4
+Pina	4
+Romana	4
+Rosa Maria	4
+Rosalba	4
+Rossana	4
+Wanda	4
+Agata	3
+Agnese	3
+Alberta	3
+Amelia	3
+Anna Rita	3
+Aurora	3
+Benedetta	3
+Bruna	3
+Brunella	3
+Carlotta	3
+Carmelina	3
+Carolina	3
+Catia	3
+Doriana	3
+Elenora	3
+Eliana	3
+Elsa	3
+Erica	3
+Eugenia	3
+Evelina	3
+Fausta	3
+Fiamma	3
+Flora	3
+Fulvia	3
+Germana	3
+Ileana	3
+Isabel	3
+Luana	3
+Lucrezia	3
+Maria Antonietta	3
+Maria Cecilia	3
+Maria Chiara	3
+Maria Giovanna	3
+Maria Piera	3
+Marilena	3
+Maristella	3
+Martina	3
+Marzia	3
+Rosalia	3
+Rosaria	3
+Rosella	3
+Stella	3
+Vera	3
