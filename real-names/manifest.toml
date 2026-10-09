@@ -89,7 +89,7 @@ label = "Names"
 default = "typical"
 options = [
 	{ value = "common", label = "Common" },
-	{ value = "typical", label = "As common as they are" },
+	{ value = "typical", label = "Realistic mix" },
 	{ value = "rare", label = "Rare" },
 ]
 
