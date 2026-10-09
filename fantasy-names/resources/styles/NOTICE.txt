@@ -1,0 +1,20 @@
+Name lists
+
+Each style's lists hold real names, a name on each line, for the names the plugin makes up to sound
+like. hammer-plugins' fantasy-names/tools/build.py builds them. A list leaves out names of more than
+one word, and names among today's American ones.
+
+elvish/ holds Welsh given names; high-elvish/ Finnish given names, and Finnish surnames as bynames,
+without those that look borrowed; dwarvish/ Old Norse given names, and Icelandic ones made of Norse
+parts, written as English writes them, Haraldr as Harald; and old-kingdom/ Old English given names,
+with th and ae for the letters English has lost.
+
+The given names are from the given-name categories of Wiktionary, https://en.wiktionary.org, by its
+contributors, shared under CC BY-SA 4.0 (licenses/CC-BY-SA-4.0.txt), as these lists are. The Welsh and
+Finnish lists add the names Wikidata, https://www.wikidata.org, has of each language, and the bynames
+are Wikidata's; its data is in the public domain (CC0).
+
+everyday.txt holds the 1,000 most common given names of each sex among Social Security card
+applications for births in the United States since 1880, in lower case, from the Social Security
+Administration's national baby names data, https://www.ssa.gov/oact/babynames/limits.html, a work of
+the United States government in the public domain.

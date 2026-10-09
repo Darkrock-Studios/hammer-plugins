@@ -4,4 +4,4 @@ build/
 .gradle/
 .kotlin/
 target/
-real-names/tools/cache/
+*/tools/cache/

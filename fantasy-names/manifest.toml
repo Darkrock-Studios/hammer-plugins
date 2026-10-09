@@ -1,15 +1,15 @@
-id = "name-generator"
-name = "Name generator"
-version = "0.1.1"
+id = "fantasy-names"
+name = "Fantasy names"
+version = "0.1.0"
 api = 1
-description = "Suggests names in an everyday English, Norse, or Elvish style, and adds the ones you pick to the encyclopedia as people."
+description = "Makes up names that sound like those of an old language, in an elvish, dwarvish, or old-kingdom style, and adds the ones you pick to the encyclopedia as people."
 
 [permissions]
 operations = ["entry.create"]
 
 [[actions]]
 name = "names"
-label = "Generate names"
+label = "Generate fantasy names"
 output = "interactive"
 places = ["project", "entry"]
 
@@ -17,11 +17,12 @@ places = ["project", "entry"]
 key = "style"
 type = "choice"
 label = "Style"
-default = "everyday"
+default = "elvish"
 options = [
-	{ value = "everyday", label = "Everyday English" },
-	{ value = "norse", label = "Norse" },
-	{ value = "elvish", label = "Elvish" },
+	{ value = "elvish", label = "Elvish (Welsh)" },
+	{ value = "high-elvish", label = "High Elvish (Finnish)" },
+	{ value = "dwarvish", label = "Dwarvish (Old Norse)" },
+	{ value = "old-kingdom", label = "Old kingdom (Old English)" },
 ]
 
 [[actions.field]]
@@ -44,7 +45,7 @@ min = 1
 max = 20
 
 [[actions.field]]
-key = "surnames"
+key = "bynames"
 type = "bool"
-label = "With surnames"
+label = "With second names"
 default = true

@@ -8,7 +8,7 @@ kits in hammer-plugin-sdk. Each directory is one plugin.
 | `simple-grammar` | C | Slips a spell checker passes, underlined in the editor (`[[diagnostics]]`), in English, French, German, Spanish, Italian, and Ukrainian: mixed-up words and phrases, French elision, a pronoun's verb that does not agree, punctuation, quotes and dialogue tags, and, when turned on in its settings, wordy and redundant phrases, repeated marks, and long sentences; its lists are resources, a folder per language; a 48 KB package, with native tests |
 | `style` | C | Style report: readability, adverbs, filter words, dialogue, and repetition per scene and for the whole story, shown from the project menu (`[[actions]]` with document output) for the whole story or the scenes chosen, with progress, and cached per scene; counts English, French, German, Spanish, Italian, and Ukrainian projects by their own rules and word lists (resources), writes the report in the UI's language, and has settings |
 | `plaintext` | C | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`) |
-| `name-generator` | C | Names in a chosen style, each with a button adding it to the encyclopedia as a person (`interactive` output, fields, `entry.create`, and styles as resources) |
+| `fantasy-names` | Kotlin | Made-up names in an elvish, dwarvish, or old-kingdom style, each with a button adding it to the encyclopedia as a person; a style's names sound like an old language's, whose real names ship as resources (`resources/styles/`), built from Wiktionary and Wikidata by `tools/` |
 | `real-names` | Kotlin | Real names by culture and decade of birth, picked as often as they were common, each with a button adding it to the encyclopedia as a person; ships name lists with counts as resources (`resources/names/`), built from public data by `tools/` |
 | `harper-grammar` | Rust | English grammar on [Harper](https://github.com/Automattic/harper), underlined in the editor, with settings for each category of check and for long sentences; pre-initialized with Wizer |
 | `name-checker` | Rust | For names from the encyclopedia: underlines slips of a name and names in lower case in the editor, and reports each entry's mentions, likely misspellings, and names with no entry; ships word lists as resources (`resources/words/`) for English, French, German, Spanish, Italian, and Ukrainian, and checks any language with a list there |
@@ -35,5 +35,5 @@ permissions, and restart Hammer.
 
 MIT; see [LICENSE](LICENSE). Some word lists are built from other sources and shared under their
 terms, which ship with them: see `name-checker/resources/words/NOTICE.txt`,
-`style/resources/NOTICE.txt`, and `real-names/resources/names/NOTICE.txt`, whose Chinese lists are
-for non-commercial use only.
+`style/resources/NOTICE.txt`, `fantasy-names/resources/styles/NOTICE.txt`, and
+`real-names/resources/names/NOTICE.txt`, whose Chinese lists are for non-commercial use only.
