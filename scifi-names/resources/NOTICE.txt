@@ -1,0 +1,11 @@
+Name lists
+
+worlds/names.txt holds the names of stars and moons, a name on each line, for the names the plugin
+makes up to sound like. hammer-plugins' scifi-names/tools/build.py builds it. The stars' names are
+those the International Astronomical Union has approved, from its Catalog of Star Names,
+https://www.iau.org/public/themes/naming_stars/, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. The moons' are from Wikidata, https://www.wikidata.org,
+whose data is in the public domain (CC0).
+
+worlds/catalogue/surveyors.txt holds the surnames of astronomers. The other lists are the plugin's
+own, their names and words written for it.

@@ -1,0 +1,10 @@
+New {names}
+{names} Prime
+{names} Station
+Port {names}
+{names} Reach
+{names}'s Landing
+{names} Minor
+Fort {names}
+{names} Deep
+{names} Secundus

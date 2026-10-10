@@ -1,0 +1,96 @@
+id = "scifi-names"
+name = "Sci-fi names"
+version = "0.1.0"
+api = 1
+description = "Makes up names for science fiction, of aliens, worlds, and ships, and adds the ones you pick to the encyclopedia."
+
+[permissions]
+operations = ["entry.create"]
+
+[[actions]]
+name = "aliens"
+label = "Generate alien names"
+output = "interactive"
+places = ["project", "entry"]
+
+[[actions.field]]
+key = "style"
+type = "choice"
+label = "Sound"
+default = "harsh"
+options = [
+	{ value = "harsh", label = "Harsh" },
+	{ value = "liquid", label = "Flowing" },
+	{ value = "sibilant", label = "Hissing" },
+	{ value = "clipped", label = "Clipped" },
+]
+
+[[actions.field]]
+key = "count"
+type = "int"
+label = "How many"
+default = 8
+min = 1
+max = 20
+
+[[actions.field]]
+key = "second"
+type = "bool"
+label = "With second names"
+default = true
+
+[[actions]]
+name = "worlds"
+label = "Generate world names"
+output = "interactive"
+places = ["project", "entry"]
+
+[[actions.field]]
+key = "style"
+type = "choice"
+label = "Style"
+default = "stars"
+options = [
+	{ value = "stars", label = "Like the stars" },
+	{ value = "settled", label = "Colonies and stations" },
+	{ value = "catalogue", label = "Catalogue designations" },
+]
+
+[[actions.field]]
+key = "count"
+type = "int"
+label = "How many"
+default = 8
+min = 1
+max = 20
+
+[[actions]]
+name = "ships"
+label = "Generate ship names"
+output = "interactive"
+places = ["project", "entry"]
+
+[[actions.field]]
+key = "style"
+type = "choice"
+label = "Style"
+default = "naval"
+options = [
+	{ value = "naval", label = "Naval" },
+	{ value = "lyrical", label = "Lyrical" },
+	{ value = "working", label = "Working ships" },
+]
+
+[[actions.field]]
+key = "count"
+type = "int"
+label = "How many"
+default = 8
+min = 1
+max = 20
+
+[[actions.field]]
+key = "prefix"
+type = "bool"
+label = "With a prefix"
+default = true

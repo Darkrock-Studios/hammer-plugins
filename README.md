@@ -10,6 +10,7 @@ kits in hammer-plugin-sdk. Each directory is one plugin.
 | `plaintext` | C | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`) |
 | `fantasy-names` | Kotlin | Made-up names in a fantasy style (elvish, dwarvish, imperial, orcish, and more), each with a button adding it to the encyclopedia as a person; most styles' names sound like an old language's, whose real names ship as resources (`resources/styles/`), built from Wiktionary and Wikidata by `tools/` |
 | `real-names` | Kotlin | Real names by culture and decade of birth, picked as often as they were common, each with a button adding it to the encyclopedia as a person; ships name lists with counts as resources (`resources/names/`), built from public data by `tools/` |
+| `scifi-names` | Kotlin | Made-up names for science fiction, an action for each of aliens, worlds, and ships, each name with a button adding it to the encyclopedia as a person, place, or thing; names follow each style's patterns over its lists (`resources/`), and worlds sound like the stars and moons, whose names `tools/` fetches |
 | `harper-grammar` | Rust | English grammar on [Harper](https://github.com/Automattic/harper), underlined in the editor, with settings for each category of check and for long sentences; pre-initialized with Wizer |
 | `name-checker` | Rust | For names from the encyclopedia: underlines slips of a name and names in lower case in the editor, and reports each entry's mentions, likely misspellings, and names with no entry; ships word lists as resources (`resources/words/`) for English, French, German, Spanish, Italian, and Ukrainian, and checks any language with a list there |
 | `mcp` | Kotlin | An MCP server for AI agents, as the `hammer mcp` command: reads your projects and, when its settings allow, organizes and edits the material around the prose, but never writes the prose itself; see its [README](mcp/README.md) |
@@ -35,5 +36,6 @@ permissions, and restart Hammer.
 
 MIT; see [LICENSE](LICENSE). Some word lists are built from other sources and shared under their
 terms, which ship with them: see `name-checker/resources/words/NOTICE.txt`,
-`style/resources/NOTICE.txt`, `fantasy-names/resources/styles/NOTICE.txt`, and
+`style/resources/NOTICE.txt`, `fantasy-names/resources/styles/NOTICE.txt`,
+`scifi-names/resources/NOTICE.txt`, and
 `real-names/resources/names/NOTICE.txt`, whose Chinese lists are for non-commercial use only.
