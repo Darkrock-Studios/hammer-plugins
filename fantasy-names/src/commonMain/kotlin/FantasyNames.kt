@@ -2,13 +2,13 @@
 // to the project's encyclopedia as a person. The list comes from a seed carried in the buttons' ids,
 // so pressing one rebuilds the same list, marking the names already added.
 //
-// Each style is a directory, resources/styles/<style>/, of real names for its made-up ones to sound
-// like, a name on each line: feminine.txt and masculine.txt, and optionally bynames.txt. A full name
-// follows format-feminine.txt or format-masculine.txt, or format.txt for both, such as
-// "{given} ap {masculine}", where {given} is a name of the kind asked for, {feminine} and {masculine}
-// one of that kind, and {byname} one like the bynames. resources/styles/everyday.txt holds today's
-// names, in lower case, which are never made up. Adding a style is a directory and an option in the
-// manifest's style field.
+// Each style is a directory, resources/styles/<style>/, of lists of real names for its made-up ones to
+// sound like, a name on each line: feminine.txt and masculine.txt, and any others its format names.
+// A full name follows format-feminine.txt or format-masculine.txt, or format.txt for both, such as
+// "{given} ap {masculine}" or "{given} of {places}", where {given} is a name of the kind asked for,
+// and any other part one like those of the list of that name. resources/styles/everyday.txt holds
+// today's names, in lower case, which are never made up. Adding a style is a directory and an option
+// in the manifest's style field.
 import hammer.ActionReply
 import hammer.ActionRequest
 import hammer.OperationException
@@ -80,14 +80,20 @@ fun realNames(style: String, file: String): List<String>? =
 /** The names [seed] gives for [input]: none of them real or everyday, and no part of them twice. */
 fun generate(seed: Long, input: NamesInput): List<String> {
 	val style = input.style
-	val real = listOf("feminine", "masculine", "bynames").associateWith { realNames(style, it) }
-	if (real["feminine"] == null || real["masculine"] == null) error("There are no names in that style")
-	val taken = real.values.filterNotNull().flatten().mapTo(HashSet()) { it.lowercase() }
+	val taken = HashSet<String>()
 	resourceText("styles/everyday.txt")?.lineSequence()?.let(taken::addAll)
-	val makers = HashMap<String, NameMaker>()
+	// Each list's maker, or null for a list the style lacks.
+	val makers = HashMap<String, NameMaker?>()
+	fun maker(list: String) = makers.getOrPut(list) {
+		realNames(style, list)?.let { names ->
+			names.mapTo(taken) { it.lowercase() }
+			NameMaker(names)
+		}
+	}
+	if (maker("feminine") == null || maker("masculine") == null) error("There are no names in that style")
 	val random = Random(seed)
 	fun make(list: String): String {
-		val maker = makers.getOrPut(list) { NameMaker(real[list] ?: error("The style's format asks for names it has none of")) }
+		val maker = maker(list) ?: error("The style's format asks for names it has none of")
 		return maker.make(random, taken::contains).also { taken += it.lowercase() }
 	}
 
@@ -98,19 +104,15 @@ fun generate(seed: Long, input: NamesInput): List<String> {
 	}
 	return List(input.count.coerceIn(1, MAX_NAMES)) {
 		val kind = kinds.random(random)
-		val name = PART.replace(formats.getValue(kind)) {
-			when (it.value) {
-				"{given}" -> make(kind)
-				"{byname}" -> make("bynames")
-				else -> make(it.value.trim('{', '}'))
-			}
+		val name = PART.replace(formats.getValue(kind)) { part ->
+			make(part.groupValues[1].let { if (it == "given") kind else it })
 		}
 		// An ending may add a third of a name's last letter, as "sson" does to Magnus.
 		TRIPLED.replace(name) { it.value.take(2) }
 	}
 }
 
-private val PART = Regex("\\{given\\}|\\{feminine\\}|\\{masculine\\}|\\{byname\\}")
+private val PART = Regex("\\{([a-z]+)\\}")
 private val TRIPLED = Regex("(\\p{L})\\1\\1")
 
 /** The reply for [names] from [seed], those in [added]'s bits marked, with a button to add each of the rest. */

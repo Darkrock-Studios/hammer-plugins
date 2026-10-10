@@ -1,4 +1,4 @@
-"""Builds resources/styles/<style>/ for every style: the real names each style's made-up names take
+"""Builds resources/styles/<style>/ for every style but those written by hand: the real names each style's made-up names take
 after, a name on each line, and everyday.txt, today's names, which no style has or makes up; see
 resources/styles/NOTICE.txt. Asks Wiktionary and Wikidata, and keeps
 each answer in the working directory, so a second run asks only for what is missing.
@@ -15,7 +15,7 @@ import urllib.parse
 import urllib.request
 
 AGENT = {"User-Agent": "hammer-plugins fantasy-names/tools/build.py"}
-SEXES = {"feminine": ("female", "Q11879590"), "masculine": ("male", "Q12308941")}
+FEMININE, MASCULINE = "Q11879590", "Q12308941"
 # What Finnish has only in borrowed names: some letters, a g without its n, two consonants at the
 # start, and some endings.
 BORROWED = re.compile("[bcfqwxzå]|(?<!n)g|^[^aeiouyäö]{2}|(nen|us|ias|es|rd|ks)$")
@@ -28,25 +28,83 @@ NORSE = re.compile(
     "thrud|ulf|unn|vald|vard|veig|vid|vor|ar|ir|i|a)$"
 )
 IMPORTED = re.compile("(ina|ia|ea|us|as|es|ons|el|an)$|[cqwz]")
+# The parts Slavic names are made of, which one starts with unless borrowed, and the endings of pet names.
+SLAVIC = re.compile(
+    "^(bog|boh|bol|bor|boz|bran|brat|bron|cest|cast|dal|dobr|drag|drah|draz|gost|host|jar|kaz|kras|lad|ljub|lub|lud|mil|mir|mlad|mst|mysl|"
+    "ned|neg|prib|pred|rad|rat|rost|slav|sob|stan|stoj|sud|svat|svet|tih|tech|tvrd|vac|vec|vel|ven|vit|vlad|vlast|voj|vrat|vuk|zbys|zdes|"
+    "zdrav|zel|ziv|zlat|zor|zvon)"
+)
+PET = re.compile("(ek|ik|us|os|as|ys|es|in|ic|oj|sz|rz|[aeiouy])$")
+SLAVS = ("Czech", "Slovak", "Serbo-Croatian", "Polish", "Slovene")
 
-# For each style: "wiktionary", the languages whose given names it takes; "wikidata", the language
-# whose given names it takes from there too; "letters", what to write for letters English lacks;
-# "norse", whether to take the nominative endings off as English does, Haraldr to Harald; "keep",
-# which names to keep; and "bynames", the language whose surnames it takes for bynames.
+
+def wiktionary(title, tag=None, change=None):
+    return {"wiktionary": title, "tag": tag, "change": change}
+
+
+def wikidata(where, tag=None):
+    return {"wikidata": where, "tag": tag, "change": None}
+
+
+def named(kind, language):
+    """Wikidata's given names of a kind, or family names, of a language."""
+    return wikidata(f"?x wdt:P31 wd:{kind}; wdt:P407 wd:{language}.")
+
+
+# For each style, the lists it has, each with where its names are from: a Wiktionary category, or
+# what Wikidata's ?x is, with a tag for "keep" to tell them by and a change to make to each name. And
+# "letters", what to write for letters English lacks, the marks on the rest going too; "plain",
+# whether the marks go anyway; "norse", whether to take the nominative endings off as English does,
+# Haraldr to Harald; and "keep", which names to keep, given the name, its source's tag, and its list.
 STYLES = {
-    "elvish": {"wiktionary": ["Welsh"], "wikidata": "Q9309"},
+    "elvish": {
+        "feminine": [wiktionary("Welsh female given names"), named(FEMININE, "Q9309")],
+        "masculine": [wiktionary("Welsh male given names"), named(MASCULINE, "Q9309")],
+    },
     "high-elvish": {
-        "wiktionary": ["Finnish"], "wikidata": "Q1412", "bynames": "Q1412",
-        "keep": lambda name, language: not BORROWED.search(name.lower()),
+        "feminine": [wiktionary("Finnish female given names"), named(FEMININE, "Q1412")],
+        "masculine": [wiktionary("Finnish male given names"), named(MASCULINE, "Q1412")],
+        "bynames": [named("Q101352", "Q1412")],
+        "keep": lambda name, tag, file: not BORROWED.search(name.lower()),
     },
     "dwarvish": {
-        "wiktionary": ["Old Norse", "Icelandic"], "norse": True,
-        "keep": lambda name, language: language != "Icelandic" or bool(NORSE.search(name.lower())) and not IMPORTED.search(name.lower()),
+        "feminine": [wiktionary("Old Norse female given names"), wiktionary("Icelandic female given names", "Icelandic")],
+        "masculine": [wiktionary("Old Norse male given names"), wiktionary("Icelandic male given names", "Icelandic")],
+        "norse": True,
         "letters": {"þ": "th", "ð": "d", "ǫ": "o", "ö": "o", "ø": "o", "æ": "ae", "œ": "oe"},
+        "keep": lambda name, tag, file: tag != "Icelandic" or bool(NORSE.search(name.lower())) and not IMPORTED.search(name.lower()),
     },
     "old-kingdom": {
-        "wiktionary": ["Old English"],
+        "feminine": [wiktionary("Old English female given names")],
+        "masculine": [wiktionary("Old English male given names")],
         "letters": {"þ": "th", "ð": "th", "æ": "ae", "ƿ": "w"},
+    },
+    # A Roman woman had her family's name, with a woman's ending.
+    "imperial": {
+        "feminine": [wiktionary("Latin nomina gentilia", change=lambda name: re.sub("ius$", "ia", name))],
+        "masculine": [wiktionary("Latin nomina gentilia"), wiktionary("Latin praenomina")],
+        "bynames": [wiktionary("Latin cognomina")],
+        "keep": lambda name, tag, file: file == "bynames" or name.endswith("ia" if file == "feminine" else "us"),
+    },
+    # Those of Greek myth, and the cities of ancient Greece.
+    "mythic": {
+        "feminine": [wikidata("?x wdt:P31 wd:Q22988604; wdt:P21 wd:Q6581072.")],
+        "masculine": [wikidata("?x wdt:P31 wd:Q22988604; wdt:P21 wd:Q6581097.")],
+        "places": [wikidata("?x wdt:P31 wd:Q148837.")],
+        "plain": True,
+    },
+    "highland": {
+        "feminine": [wiktionary(f"{language} female given names") for language in ("Old Irish", "Middle Irish", "Irish", "Scottish Gaelic")] + [named(FEMININE, "Q9142")],
+        "masculine": [wiktionary(f"{language} male given names") for language in ("Old Irish", "Middle Irish", "Irish", "Scottish Gaelic")] + [named(MASCULINE, "Q9142")],
+        "plain": True,
+    },
+    # A man's name ends in a consonant, for "ovic" to follow.
+    "forest": {
+        "feminine": [wiktionary(f"{language} female given names") for language in SLAVS],
+        "masculine": [wiktionary(f"{language} male given names") for language in SLAVS],
+        "letters": {"đ": "dj", "ł": "l", "w": "v"},
+        "keep": lambda name, tag, file: bool(SLAVIC.search(name.lower())) and len(name) >= 5
+        and (name.endswith("a") and not re.search("(ka|ca|da|ina)$", name) if file == "feminine" else not PET.search(name)),
     },
 }
 
@@ -93,8 +151,9 @@ def category(title):
         return json.load(f)
 
 
-def wikidata(name, query):
-    """The labels a Wikidata query answers with."""
+def labels(name, where):
+    """The English labels of what `where` says Wikidata's ?x is."""
+    query = f'SELECT DISTINCT ?label WHERE {{ {where} ?x rdfs:label ?label. FILTER(LANG(?label) = "en") }}'
     url = "https://query.wikidata.org/sparql?" + urllib.parse.urlencode({"query": query, "format": "json"})
     return [row["label"]["value"] for row in fetch("wikidata-" + name, url)["results"]["bindings"]]
 
@@ -108,10 +167,6 @@ def modern(*files):
     return names
 
 
-def labels(name, query):
-    return [(label, None) for label in wikidata(name, query)]
-
-
 EVERYDAY = modern("feminine.txt", "masculine.txt")
 
 
@@ -120,10 +175,9 @@ def written(name, style):
     name = unicodedata.normalize("NFC", name.strip())
     if len(name) < 3 or not name[0].isupper() or not name.isalpha() or not all("LATIN" in unicodedata.name(c, "") for c in name):
         return None
-    letters = style.get("letters")
-    if letters:
+    letters = style.get("letters", {})
+    if letters or style.get("plain"):
         name = "".join(letters.get(c, c) for c in name.lower())
-        # The marks on the rest of its letters go too.
         name = "".join(c for c in unicodedata.normalize("NFD", name) if not unicodedata.combining(c)).capitalize()
     if style.get("norse"):
         name = re.sub(r"(?<=[^aeiouy])ur$", "", name)
@@ -133,14 +187,18 @@ def written(name, style):
     return name if len(name) >= 3 else None
 
 
-def write(directory, file, names, style):
-    """Writes a list of `names`, each a name and the language it is from."""
-    keep = style.get("keep", lambda name, language: True)
-    names = ((written(name, style), language) for name, language in names)
-    names = sorted({name for name, language in names if name and name.lower() not in EVERYDAY and keep(name, language)})
+def write(directory, file, sources, style):
+    keep = style.get("keep", lambda name, tag, file: True)
+    names = set()
+    for source in sources:
+        found = category(source["wiktionary"]) if "wiktionary" in source else labels(f"{os.path.basename(directory)}-{file}", source["wikidata"])
+        for name in found:
+            name = written(source["change"](name) if source["change"] else name, style)
+            if name and name.lower() not in EVERYDAY and keep(name, source["tag"], file):
+                names.add(name)
     os.makedirs(directory, exist_ok=True)
     with open(os.path.join(directory, f"{file}.txt"), "w", encoding="utf-8") as f:
-        f.writelines(name + "\n" for name in names)
+        f.writelines(name + "\n" for name in sorted(names))
     print(os.path.basename(directory), file, len(names))
 
 
@@ -148,17 +206,6 @@ with open(os.path.join(out, "everyday.txt"), "w", encoding="utf-8") as f:
     f.writelines(name + "\n" for name in sorted(EVERYDAY))
 
 for key, style in STYLES.items():
-    directory = os.path.join(out, key)
-    for kind, (sex, item) in SEXES.items():
-        names = [(name, language) for language in style["wiktionary"] for name in category(f"{language} {sex} given names")]
-        if "wikidata" in style:
-            names += labels(f"{key}-{kind}", f"""
-                SELECT DISTINCT ?label WHERE {{
-                  ?name wdt:P31 wd:{item}; wdt:P407 wd:{style["wikidata"]}; rdfs:label ?label. FILTER(LANG(?label) = "en")
-                }}""")
-        write(directory, kind, names, style)
-    if "bynames" in style:
-        write(directory, "bynames", labels(f"{key}-bynames", f"""
-            SELECT DISTINCT ?label WHERE {{
-              ?name wdt:P31 wd:Q101352; wdt:P407 wd:{style["bynames"]}; rdfs:label ?label. FILTER(LANG(?label) = "en")
-            }}"""), style)
+    for file, sources in style.items():
+        if isinstance(sources, list):
+            write(os.path.join(out, key), file, sources, style)

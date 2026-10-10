@@ -31,8 +31,8 @@ class FantasyNamesTest {
 	private fun request(button: String? = null, project: String = "Storm", vararg input: Pair<String, JsonPrimitive>) =
 		ActionRequest("names", project, input = JsonObject(input.toMap()), button = button)
 
-	private val styles = Regex("value = \"([\\w-]+)\", label = \"[A-Z][^\"]+\\(")
-		.findAll(java.io.File("manifest.toml").readText()).map { it.groupValues[1] }.toList()
+	private val styles = Regex("value = \"([\\w-]+)\", label = \"[A-Z][^\"]+\" },")
+		.findAll(java.io.File("manifest.toml").readText().substringBefore("key = \"gender\"")).map { it.groupValues[1] }.toList()
 
 	@Test
 	fun `a seed gives the same names again`() {
@@ -61,10 +61,10 @@ class FantasyNamesTest {
 
 	@Test
 	fun `every style in the manifest makes up names of each gender, none of them real or twice`() {
-		assertEquals(4, styles.size)
+		assertEquals(9, styles.size)
 		for (style in styles) for (gender in listOf("feminine", "masculine")) {
-			val real = listOf("feminine", "masculine", "bynames").flatMap { realNames(style, it).orEmpty() }.toSet()
-			assertTrue(real.size > 300, style)
+			val real = listOf("feminine", "masculine").flatMap { realNames(style, it).orEmpty() }.toSet()
+			assertTrue(real.size > 200, style)
 			val given = generate(11, NamesInput(style, gender, 20, false))
 			assertTrue(given.size == 20 && given.none { ' ' in it || it in real } && given.toSet().size == 20, "$style $gender: $given")
 			val full = generate(11, NamesInput(style, gender, 20))
@@ -81,6 +81,11 @@ class FantasyNamesTest {
 		assertTrue((1L..20).flatMap { generate(it, NamesInput("dwarvish", "masculine", 20)) }.all { it.endsWith("sson") && "sss" !in it })
 		assertTrue(names("high-elvish", "any").all { it.matches(Regex("\\p{Lu}\\p{Ll}+ \\p{Lu}\\p{Ll}+")) })
 		assertTrue(names("old-kingdom", "masculine").all { it.endsWith("son") })
+		assertTrue(names("mythic", "any").all { it.matches(Regex("\\p{Lu}\\p{Ll}+ of \\p{Lu}\\p{Ll}+")) })
+		assertTrue(names("forest", "masculine").all { it.matches(Regex(".*[^aeiouy]ovic")) })
+		assertTrue(names("orcish", "any").all { " of clan " in it })
+		val places = realNames("mythic", "places")!!
+		assertTrue((1L..20).flatMap { names("mythic", "any") }.none { it.substringAfter(" of ") in places })
 	}
 
 	@Test

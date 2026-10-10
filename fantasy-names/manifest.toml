@@ -2,7 +2,7 @@ id = "fantasy-names"
 name = "Fantasy names"
 version = "0.1.0"
 api = 1
-description = "Makes up names that sound like those of an old language, in an elvish, dwarvish, or old-kingdom style, and adds the ones you pick to the encyclopedia as people."
+description = "Makes up names in a fantasy style, elvish, dwarvish, imperial, orcish, and more, most sounding like the names of an old language, and adds the ones you pick to the encyclopedia as people."
 
 [permissions]
 operations = ["entry.create"]
@@ -23,6 +23,11 @@ options = [
 	{ value = "high-elvish", label = "High Elvish (Finnish)" },
 	{ value = "dwarvish", label = "Dwarvish (Old Norse)" },
 	{ value = "old-kingdom", label = "Old kingdom (Old English)" },
+	{ value = "imperial", label = "Imperial (Latin)" },
+	{ value = "mythic", label = "Mythic (Ancient Greek)" },
+	{ value = "highland", label = "Highland (Gaelic)" },
+	{ value = "forest", label = "Forest (Slavic)" },
+	{ value = "orcish", label = "Orcish" },
 ]
 
 [[actions.field]]
