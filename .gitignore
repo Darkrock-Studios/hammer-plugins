@@ -4,4 +4,5 @@ build/
 .gradle/
 .kotlin/
 target/
+mcp/.idea/
 */tools/cache/
