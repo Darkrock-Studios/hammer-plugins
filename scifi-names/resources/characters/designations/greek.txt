@@ -1,0 +1,14 @@
+Alpha
+Beta
+Gamma
+Delta
+Epsilon
+Zeta
+Theta
+Iota
+Kappa
+Lambda
+Sigma
+Tau
+Omicron
+Omega

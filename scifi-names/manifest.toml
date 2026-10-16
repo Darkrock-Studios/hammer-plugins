@@ -2,27 +2,29 @@ id = "scifi-names"
 name = "Sci-fi names"
 version = "0.1.0"
 api = 1
-description = "Makes up names for science fiction, of aliens, worlds, and ships, and adds the ones you pick to the encyclopedia."
+description = "Makes up names for science fiction, of aliens, hackers, and machines, of worlds, and of ships and companies, and adds the ones you pick to the encyclopedia."
 
 [permissions]
 operations = ["entry.create"]
 
 [[actions]]
-name = "aliens"
-label = "Generate alien names"
+name = "characters"
+label = "Sci-fi characters"
 output = "interactive"
 places = ["project", "entry"]
 
 [[actions.field]]
 key = "style"
 type = "choice"
-label = "Sound"
+label = "Kind"
 default = "harsh"
 options = [
-	{ value = "harsh", label = "Harsh" },
-	{ value = "liquid", label = "Flowing" },
-	{ value = "sibilant", label = "Hissing" },
-	{ value = "clipped", label = "Clipped" },
+	{ value = "harsh", label = "Alien, harsh" },
+	{ value = "liquid", label = "Alien, flowing" },
+	{ value = "sibilant", label = "Alien, hissing" },
+	{ value = "clipped", label = "Alien, clipped" },
+	{ value = "handles", label = "Handle" },
+	{ value = "designations", label = "Machine designation" },
 ]
 
 [[actions.field]]
@@ -34,14 +36,14 @@ min = 1
 max = 20
 
 [[actions.field]]
-key = "second"
+key = "long"
 type = "bool"
-label = "With second names"
+label = "Long form"
 default = true
 
 [[actions]]
 name = "worlds"
-label = "Generate world names"
+label = "Sci-fi worlds"
 output = "interactive"
 places = ["project", "entry"]
 
@@ -65,20 +67,21 @@ min = 1
 max = 20
 
 [[actions]]
-name = "ships"
-label = "Generate ship names"
+name = "things"
+label = "Sci-fi things"
 output = "interactive"
 places = ["project", "entry"]
 
 [[actions.field]]
 key = "style"
 type = "choice"
-label = "Style"
+label = "Kind"
 default = "naval"
 options = [
-	{ value = "naval", label = "Naval" },
-	{ value = "lyrical", label = "Lyrical" },
-	{ value = "working", label = "Working ships" },
+	{ value = "naval", label = "Ship, naval" },
+	{ value = "lyrical", label = "Ship, lyrical" },
+	{ value = "working", label = "Ship, working" },
+	{ value = "corporations", label = "Company" },
 ]
 
 [[actions.field]]
@@ -90,7 +93,7 @@ min = 1
 max = 20
 
 [[actions.field]]
-key = "prefix"
+key = "long"
 type = "bool"
-label = "With a prefix"
+label = "Long form"
 default = true

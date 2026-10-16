@@ -1,0 +1,7 @@
+[first]
+[first][second]
+[first][second]
+[first][second]
+[first]-[second]
+[first]#
+[first]_##

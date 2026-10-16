@@ -8,4 +8,4 @@ https://creativecommons.org/licenses/by/4.0/. The moons' are from Wikidata, http
 whose data is in the public domain (CC0).
 
 worlds/catalogue/surveyors.txt holds the surnames of astronomers. The other lists are the plugin's
-own, their names and words written for it.
+own, their names and words written or chosen for it.

@@ -38,20 +38,20 @@ class ScifiNamesTest {
 
 	@Test
 	fun `a seed gives the same names again`() {
-		val names = generate(42, "aliens", NamesInput("harsh"))
-		assertEquals(names, generate(42, "aliens", NamesInput("harsh")))
-		assertNotEquals(names, generate(43, "aliens", NamesInput("harsh")))
+		val names = generate(42, "characters", NamesInput("harsh"))
+		assertEquals(names, generate(42, "characters", NamesInput("harsh")))
+		assertNotEquals(names, generate(43, "characters", NamesInput("harsh")))
 		assertEquals(8, names.size)
-		assertEquals(MAX_NAMES, generate(1, "aliens", NamesInput("harsh", 99)).size)
-		assertFailsWith<IllegalStateException> { generate(42, "aliens", NamesInput("atlantean")) }
-		assertFailsWith<IllegalStateException> { generate(42, "aliens", NamesInput("../ships/naval")) }
+		assertEquals(MAX_NAMES, generate(1, "characters", NamesInput("harsh", 99)).size)
+		assertFailsWith<IllegalStateException> { generate(42, "characters", NamesInput("atlantean")) }
+		assertFailsWith<IllegalStateException> { generate(42, "characters", NamesInput("../things/naval")) }
 		assertFailsWith<IllegalStateException> { generate(42, "robots", NamesInput("harsh")) }
 	}
 
 	@Test
 	fun `every style of every action in the manifest gives names, no two alike`() {
 		assertEquals(KINDS.keys, styles.keys)
-		assertEquals(listOf(4, 3, 3), styles.values.map { it.size })
+		assertEquals(listOf(6, 3, 4), styles.values.map { it.size })
 		for ((kind, list) in styles) for (style in list) for (seed in 1L..5) {
 			val names = generate(seed, kind, NamesInput(style, 20))
 			assertTrue(names.size == 20 && names.toSet().size == 20 && names.all { it[0].isUpperCase() && it.trim() == it }, "$kind $style: $names")
@@ -60,11 +60,11 @@ class ScifiNamesTest {
 
 	@Test
 	fun `an alien's names are made up, with a second unless asked not to`() {
-		val real = lines("aliens", "clipped", "names")!!
-		val names = generate(3, "aliens", NamesInput("clipped", 20))
+		val real = lines("characters", "clipped", "names")!!
+		val names = generate(3, "characters", NamesInput("clipped", 20))
 		assertTrue(names.all { it.split(' ').let { parts -> parts.size == 2 && parts.none(real::contains) } }, "$names")
 		assertTrue(names.all { '\'' in it })
-		assertTrue(generate(3, "aliens", NamesInput("clipped", 20, second = false)).none { ' ' in it || it in real })
+		assertTrue(generate(3, "characters", NamesInput("clipped", 20, long = false)).none { ' ' in it || it in real })
 	}
 
 	@Test
@@ -81,14 +81,28 @@ class ScifiNamesTest {
 
 	@Test
 	fun `a ship's name is made of the style's words, after a prefix unless asked not to`() {
-		val prefixes = lines("ships", "naval", "prefixes")!!
-		val virtues = lines("ships", "naval", "virtues")!!
-		val names = generate(6, "ships", NamesInput("naval", 20))
+		val prefixes = lines("things", "naval", "prefixes")!!
+		val virtues = lines("things", "naval", "virtues")!!
+		val names = generate(6, "things", NamesInput("naval", 20))
 		assertTrue(names.all { it.substringBefore(' ') in prefixes })
 		assertTrue(names.any { it.substringAfter(' ') in virtues })
-		val bare = generate(6, "ships", NamesInput("naval", 20, prefix = false))
+		val bare = generate(6, "things", NamesInput("naval", 20, long = false))
 		assertTrue(bare.none { it.substringBefore(' ') in prefixes } && bare.any { it in virtues })
-		assertTrue(generate(6, "ships", NamesInput("lyrical", 20, prefix = false)).any { " of " in it })
+		assertTrue(generate(6, "things", NamesInput("lyrical", 20, long = false)).any { " of " in it })
+	}
+
+	@Test
+	fun `a handle, a designation, and a company each have a long form`() {
+		fun names(kind: String, style: String, long: Boolean) = (1L..5).flatMap { generate(it, kind, NamesInput(style, 20, long)) }
+		assertTrue(names("characters", "handles", false).all { it.matches(Regex("[A-Z][a-z]+(-?[a-z]+|_?\\d+)?")) })
+		assertTrue(names("characters", "handles", true).all { it.matches(Regex("\\p{L}+ \"[^\" ]+\" \\p{L}+")) })
+		val classes = lines("characters", "designations", "classes")!!
+		assertTrue(names("characters", "designations", false).none { name -> classes.any(name::startsWith) })
+		assertTrue(names("characters", "designations", true).all { name -> classes.any { name.startsWith("$it ") } })
+		val roots = lines("things", "corporations", "roots")!!
+		val suffixes = lines("things", "corporations", "suffixes")!!
+		assertTrue(names("things", "corporations", false).none { it in roots || suffixes.any(it::endsWith) })
+		assertTrue(names("things", "corporations", true).all { name -> suffixes.any { name.endsWith(" $it") } })
 	}
 
 	@Test
@@ -116,10 +130,10 @@ class ScifiNamesTest {
 
 	@Test
 	fun `a refused entry says why and marks nothing`() {
-		val reply = names(request("ships", "naval", "add:42:0:0", "Locked"))
+		val reply = names(request("things", "naval", "add:42:0:0", "Locked"))
 		assertEquals("Not allowed", reply.message)
 		assertEquals(9, reply.buttons.size)
-		assertFailsWith<IllegalStateException> { names(request("ships", "naval", "add:42:8:0")) }
+		assertFailsWith<IllegalStateException> { names(request("things", "naval", "add:42:8:0")) }
 		assertFailsWith<IllegalStateException> { names(request("robots", "naval")) }
 	}
 }

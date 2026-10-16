@@ -1,13 +1,15 @@
-// Science fiction names: interactive actions that make up names of a kind, aliens, worlds, or ships,
-// each name with a button that adds it to the project's encyclopedia. The list comes from a seed
-// carried in the buttons' ids, so pressing one rebuilds the same list, marking the names already added.
+// Science fiction names: interactive actions that make up names of a kind, characters, worlds, or
+// things, each name with a button that adds it to the project's encyclopedia. The list comes from a
+// seed carried in the buttons' ids, so pressing one rebuilds the same list, marking the names already
+// added.
 //
 // Each action is a kind, and each kind a directory of styles, resources/<kind>/<style>/. A style's
 // format.txt holds the patterns its names follow, one on each line, picked from as often as each is
-// there; without one a name is "{names}", and an alien's second name another. In a pattern, {list} is a made-up name that sounds like
+// there; without one a name is "{names}". In a pattern, {list} is a made-up name that sounds like
 // those of <list>.txt, [list] one of its lines as it is, # a digit, and @ a capital letter. A list is
-// the style's, or else the kind's, for all its styles. Adding a style is a directory and an option
-// in the manifest's style field for the action.
+// the style's, or else the kind's, for all its styles. A style's long.txt holds the patterns of its
+// names' long form, in which * is the name. Adding a style is a directory and an option in the
+// manifest's style field for the action.
 import hammer.ActionReply
 import hammer.ActionRequest
 import hammer.OperationException
@@ -22,16 +24,14 @@ import kotlinx.serialization.json.put
 const val MAX_NAMES = 20
 
 /** The encyclopedia entry type of each kind's names. */
-val KINDS = mapOf("aliens" to "person", "worlds" to "place", "ships" to "thing")
+val KINDS = mapOf("characters" to "person", "worlds" to "place", "things" to "thing")
 
 @Serializable
 class NamesInput(
 	val style: String = "",
 	val count: Int = 8,
-	/** Whether an alien has a second name. */
-	val second: Boolean = true,
-	/** Whether a ship's name follows a prefix, such as ISV. */
-	val prefix: Boolean = true,
+	/** Whether names are in the style's long form, if it has one: an alien's two names, or a ship's after its prefix. */
+	val long: Boolean = true,
 )
 
 /**
@@ -87,6 +87,7 @@ fun generate(seed: Long, kind: String, input: NamesInput): List<String> {
 	// A style has a format or a list of names, if no more.
 	val patterns = lines(kind, style, "format") ?: lines(kind, style, "names")?.let { listOf("{names}") }
 	if (kind !in KINDS || !style.all { it.isLetterOrDigit() || it == '-' } || patterns == null) error("There are no names in that style")
+	val long = if (input.long) resourceText("$kind/$style/long.txt")?.lines()?.filter { it.isNotBlank() }.orEmpty() else emptyList()
 	val random = Random(seed)
 	val taken = HashSet<String>()
 	val lists = HashMap<String, List<String>>()
@@ -121,13 +122,8 @@ fun generate(seed: Long, kind: String, input: NamesInput): List<String> {
 	// A style of few words may not have that many names: it gives what it finds.
 	repeat(count * 20) {
 		if (names.size == count) return@repeat
-		val pattern = when {
-			kind == "aliens" && !input.second -> "{names}"
-			kind == "aliens" -> "{names} {names}"
-			kind == "ships" && input.prefix -> "[prefixes] " + patterns.random(random)
-			else -> patterns.random(random)
-		}
-		names += fill(pattern)
+		val pattern = patterns.random(random)
+		names += fill(if (long.isEmpty()) pattern else long.random(random).replace("*", pattern))
 	}
 	return names.toList()
 }
