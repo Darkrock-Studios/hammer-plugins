@@ -1,0 +1,17 @@
+# Titles and abbreviations, lower case and without their full stop, after which a full stop
+# does not end a sentence.
+sig
+sigra
+dott
+prof
+avv
+ing
+arch
+geom
+rag
+on
+sen
+ecc
+pag
+n
+es

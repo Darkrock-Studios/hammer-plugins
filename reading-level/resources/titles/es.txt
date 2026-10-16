@@ -1,0 +1,17 @@
+# Titles and abbreviations, lower case and without their full stop, after which a full stop
+# does not end a sentence.
+sr
+sra
+srta
+dr
+dra
+d
+dña
+ud
+uds
+lic
+ing
+prof
+etc
+pág
+núm

@@ -7,6 +7,7 @@ kits in hammer-plugin-sdk. Each directory is one plugin.
 | --- | --- | --- |
 | `simple-grammar` | C | Slips a spell checker passes, underlined in the editor (`[[diagnostics]]`), in English, French, German, Spanish, Italian, and Ukrainian: mixed-up words and phrases, French elision, a pronoun's verb that does not agree, punctuation, quotes and dialogue tags, and, when turned on in its settings, wordy and redundant phrases, repeated marks, and long sentences; its lists are resources, a folder per language; a 48 KB package, with native tests |
 | `style` | C | Style report: readability, adverbs, filter words, dialogue, and repetition per scene and for the whole story, shown from the project menu (`[[actions]]` with document output) for the whole story or the scenes chosen, with progress, and cached per scene; counts English, French, German, Spanish, Italian, and Ukrainian projects by their own rules and word lists (resources), writes the report in the UI's language, and has settings |
+| `reading-level` | Kotlin | Reading level report: the level each scene and the whole story reads at, from early reader to dense, by sentence and word length as US school grades, with each scene's rare words and the scenes that stand out from the rest, shown from the project or scene menu (`[[actions]]` with document output); counts English, French, German, Spanish, Italian, and Ukrainian projects by their own formulas, leaves encyclopedia names out of word length, ships each language's common words as resources (`resources/words/`), built from subtitle frequency lists by `tools/`, and caches each scene's counts |
 | `plaintext` | C | Plain text export for submission forms, with scene break, italics, and paragraph settings; reads prose as Hammer parses it (`input = "prose"`) |
 | `fantasy-names` | Kotlin | Made-up names in a fantasy style (elvish, dwarvish, imperial, orcish, and more), each with a button adding it to the encyclopedia as a person; most styles' names sound like an old language's, whose real names ship as resources (`resources/styles/`), built from Wiktionary and Wikidata by `tools/` |
 | `real-names` | Kotlin | Real names by culture and decade of birth, picked as often as they were common, each with a button adding it to the encyclopedia as a person; ships name lists with counts as resources (`resources/names/`), built from public data by `tools/` |
@@ -36,6 +37,7 @@ permissions, and restart Hammer.
 
 MIT; see [LICENSE](LICENSE). Some word lists are built from other sources and shared under their
 terms, which ship with them: see `name-checker/resources/words/NOTICE.txt`,
-`style/resources/NOTICE.txt`, `fantasy-names/resources/styles/NOTICE.txt`,
+`style/resources/NOTICE.txt`, `reading-level/resources/NOTICE.txt`,
+`fantasy-names/resources/styles/NOTICE.txt`,
 `scifi-names/resources/NOTICE.txt`, and
 `real-names/resources/names/NOTICE.txt`, whose Chinese lists are for non-commercial use only.

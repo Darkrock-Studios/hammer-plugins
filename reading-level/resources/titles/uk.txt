@@ -1,0 +1,19 @@
+# Titles and abbreviations, lower case and without their full stop, after which a full stop
+# does not end a sentence.
+д
+т
+ін
+вул
+пан
+пані
+проф
+акад
+доц
+див
+напр
+ст
+р
+рр
+тис
+млн
+грн

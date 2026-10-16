@@ -1,0 +1,7 @@
+Word lists from other sources
+
+words/<lang>.txt hold each language's most frequent words, from FrequencyWords by Hermit Dave, made
+from OpenSubtitles 2018, https://github.com/hermitdave/FrequencyWords. hammer-plugins'
+reading-level/tools/words.py builds them. Licensed CC BY-SA 4.0 (licenses/CC-BY-SA-4.0.txt).
+
+The other lists here are hammer-plugins' own.

@@ -1,0 +1,21 @@
+id = "reading-level"
+name = "Reading level"
+version = "0.1.0"
+api = 1
+description = "Reports the level each scene and the whole story reads at, from early reader to dense, with each scene's rare words and the scenes that read well above or below the rest. Works with English, French, German, Spanish, Italian, and Ukrainian projects."
+languages = ["en", "fr", "de", "es", "it", "uk"]
+
+[permissions]
+operations = ["project.info", "scene.tree", "scene.read", "entry.list"]
+
+[[actions]]
+name = "report"
+label = "Reading level"
+output = "document"
+places = ["project", "scene"]
+
+[[actions.field]]
+key = "scenes"
+type = "scenes"
+label = "Scenes"
+hint = "Leave empty for the whole story, or the scene you are in."
