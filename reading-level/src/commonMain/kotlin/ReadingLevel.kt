@@ -74,14 +74,20 @@ fun thousands(value: Long): String {
 
 private fun percent(part: Long, whole: Long): String = "${if (whole > 0) roundHalfUp(part * 100.0 / whole) else 0}%"
 
-private fun plural(count: Long, one: String, many: String) = "${thousands(count)} ${if (count == 1L) one else many}"
-
-/** [text] as it should read, with the characters that would format it escaped. */
+/** [text] as it should read, with the characters that would format it, or end a table cell, escaped. */
 private fun markdownText(text: String): String = buildString {
 	for (c in text) {
-		if (c in "\\*_`[]<>#") append('\\')
+		if (c in "\\*_`[]<>#|~=") append('\\')
 		append(c)
 	}
+}
+
+/** A table, its columns aligned by [align]: a character each, '<' left and '>' right. */
+private fun StringBuilder.table(header: List<String>, align: String, rows: List<List<String>>) {
+	append(header.joinToString(" | ", "| ", " |\n"))
+	append(align.map { if (it == '>') "---:" else ":---" }.joinToString(" | ", "| ", " |\n"))
+	for (row in rows) append(row.joinToString(" | ", "| ", " |\n"))
+	append("\n")
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -97,27 +103,39 @@ private fun rareList(words: Map<String, Int>, size: Int): String =
 	words.entries.sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
 		.take(size).joinToString(", ") { if (it.value > 1) "${markdownText(it.key)} (${it.value})" else markdownText(it.key) }
 
-/** "**Middle grade**: grade 5.2 (Flesch–Kincaid)" */
-private fun levelText(grade: Double, counts: Counts, language: Language): String =
-	"**${Level.of(grade).label}**" + (language.score(counts)?.let { ": $it" } ?: "")
+private fun perSentence(counts: Counts) = if (counts.sentences > 0) tenths(counts.words.toDouble() / counts.sentences) else ""
 
-private fun StringBuilder.sceneSection(scene: Scene, language: Language, lists: Lists) {
-	val counts = scene.counts
-	append("### ${markdownText(scene.name)}\n\n")
-	when {
-		scene.grade != null -> {
-			append(levelText(scene.grade, counts, language))
-			append(if (scene.steady) ". " else ", roughly, from a short scene. ")
-		}
-		language.basis != null -> append("Too short for a level. ")
+private fun rarePercent(counts: Counts) = if (counts.measured > 0) percent(counts.rare, counts.measured) else ""
+
+/** "below 2", "2 to 4", "12 and up" */
+private fun grades(level: Level): String {
+	val from = Level.entries.getOrNull(level.ordinal - 1)?.below?.toInt()
+	return when {
+		from == null -> "below ${level.below.toInt()}"
+		level.below.isInfinite() -> "$from and up"
+		else -> "$from to ${level.below.toInt()}"
 	}
-	append(plural(counts.words, "word", "words"))
-	if (counts.sentences > 0) append(", ${tenths(counts.words.toDouble() / counts.sentences)} per sentence")
-	append(".")
-	if (lists.common != null && counts.measured > 0) append(" ${percent(counts.rare, counts.measured)} rare words.")
-	append(" ${percent(counts.dialogueWords, counts.words)} dialogue.")
-	if (counts.rareWords.isNotEmpty()) append("\n\nRare words: ${rareList(counts.rareWords, SCENE_RARE_WORDS)}")
-	append("\n\n")
+}
+
+/** The level as a quote, then the counts as a table, for the whole story or a scene reported alone. */
+private fun StringBuilder.summary(grade: Double?, steady: Boolean, counts: Counts, language: Language, lists: Lists) {
+	if (grade != null) {
+		append("> **${Level.of(grade).label}** · grade ${tenths(grade)}")
+		language.score(counts)?.let { append(" · $it") }
+		if (!steady) append(" · rough, from fewer than $STEADY_WORDS words")
+		append("\n\n")
+	} else if (language.basis != null) {
+		append("> Too short for a level\n\n")
+	}
+	val header = mutableListOf("Words", "Sentences", "Words per sentence")
+	val row = mutableListOf(thousands(counts.words), thousands(counts.sentences), perSentence(counts))
+	if (lists.common != null) {
+		header += "Rare words"
+		row += rarePercent(counts)
+	}
+	header += "Dialogue"
+	row += percent(counts.dialogueWords, counts.words)
+	table(header, ">".repeat(header.size), listOf(row))
 }
 
 private fun median(values: List<Double>): Double {
@@ -128,23 +146,13 @@ private fun median(values: List<Double>): Double {
 
 private fun StringBuilder.storySection(scenes: List<Scene>, total: Counts, language: Language, lists: Lists) {
 	append("## Whole story\n\n")
-	val grade = if (total.hasProse) language.grade(total) else null
-	if (grade != null) append("${levelText(grade, total, language)}\n\n")
-	append("- **Words:** ${thousands(total.words)} in ${plural(total.sentences, "sentence", "sentences")}")
-	if (total.sentences > 0) append(", ${tenths(total.words.toDouble() / total.sentences)} per sentence")
-	append("\n")
-	if (lists.common != null && total.measured > 0) {
-		append("- **Rare words:** ${percent(total.rare, total.measured)}")
-		if (total.rareWords.isNotEmpty()) append("; the most used: ${rareList(total.rareWords, STORY_RARE_WORDS)}")
-		append("\n")
-	}
-	append("- **Dialogue:** ${percent(total.dialogueWords, total.words)}\n")
+	summary(if (total.hasProse) language.grade(total) else null, true, total, language, lists)
 
 	val leveled = scenes.mapNotNull { it.grade }
 	if (leveled.isNotEmpty()) {
 		val byLevel = leveled.groupingBy { Level.of(it) }.eachCount()
-		val spread = Level.entries.filter { it in byLevel }.joinToString(", ") { "${byLevel.getValue(it)} ${it.label.lowercase()}" }
-		append("- **Scenes by level:** $spread\n")
+		append("### Scenes by level\n\n")
+		table(listOf("Level", "Grades", "Scenes"), "<<>", Level.entries.map { listOf(it.label, grades(it), "${byLevel[it] ?: 0}") })
 	}
 
 	val steady = scenes.filter { it.steady }
@@ -153,17 +161,54 @@ private fun StringBuilder.storySection(scenes: List<Scene>, total: Counts, langu
 		val standOuts = steady.filter { abs(it.grade!! - middle) >= STAND_OUT_GRADES }
 			.sortedByDescending { abs(it.grade!! - middle) }.take(STAND_OUTS_SHOWN)
 		if (standOuts.isNotEmpty()) {
-			append("- **Stand out** from the story’s middle, grade ${tenths(middle)}:\n")
-			for (scene in standOuts) {
-				val way = if (scene.grade!! > middle) "above" else "below"
-				append("  - *${markdownText(scene.name)}*, ${Level.of(scene.grade).label.lowercase()} at grade ${tenths(scene.grade)}, $way\n")
-			}
+			append("### Stand out\n\n")
+			append("Scenes ${STAND_OUT_GRADES.toInt()} grades or more from the story’s middle, grade ${tenths(middle)}.\n\n")
+			table(listOf("Scene", "Level", "Grade", "From the middle"), "<<>>", standOuts.map {
+				val off = it.grade!! - middle
+				listOf(markdownText(it.name), Level.of(it.grade).label, tenths(it.grade), "${if (off > 0) "+" else ""}${tenths(off)}")
+			})
 		}
 	}
-	append("\n")
+
+	if (total.rareWords.isNotEmpty()) append("### Most used rare words\n\n${rareList(total.rareWords, STORY_RARE_WORDS)}\n\n")
 }
 
-private fun StringBuilder.note(language: Language) {
+private fun StringBuilder.scenesSection(scenes: List<Scene>, language: Language, lists: Lists) {
+	append("## Scenes\n\n")
+	val leveled = language.basis != null
+	val columns = buildList {
+		add("Scene" to '<')
+		if (leveled) addAll(listOf("Level" to '<', "Grade" to '>'))
+		addAll(listOf("Words" to '>', "Words per sentence" to '>'))
+		if (lists.common != null) add("Rare words" to '>')
+		add("Dialogue" to '>')
+	}
+	table(columns.map { it.first }, columns.map { it.second }.joinToString(""), scenes.map { scene ->
+		val counts = scene.counts
+		buildList {
+			add(markdownText(scene.name))
+			if (leveled) {
+				add(scene.grade?.let { Level.of(it).label } ?: "*Too short*")
+				add(scene.grade?.let { (if (scene.steady) "" else "≈") + tenths(it) } ?: "")
+			}
+			add(thousands(counts.words))
+			add(perSentence(counts))
+			if (lists.common != null) add(rarePercent(counts))
+			add(percent(counts.dialogueWords, counts.words))
+		}
+	})
+	if (scenes.any { it.grade != null && !it.steady }) append("≈ rough, from a scene of fewer than $STEADY_WORDS words\n\n")
+
+	val withRare = scenes.filter { it.counts.rareWords.isNotEmpty() }
+	if (withRare.isNotEmpty()) {
+		append("### Rare words\n\n")
+		table(listOf("Scene", "Most used first"), "<<", withRare.map { listOf(markdownText(it.name), rareList(it.counts.rareWords, SCENE_RARE_WORDS)) })
+	}
+}
+
+/** How levels are worked out, and their grades when [showGrades]. */
+private fun StringBuilder.about(language: Language, showGrades: Boolean) {
+	append("---\n\n## About these levels\n\n")
 	if (language.basis == null) {
 		append(
 			"Reading levels need an English, French, German, Spanish, Italian, or Ukrainian project; this one " +
@@ -172,13 +217,12 @@ private fun StringBuilder.note(language: Language) {
 		return
 	}
 	append(
-		"Levels go by sentence and word length, as US school grades: ${Level.EarlyReader.label.lowercase()} below " +
-			"2, ${Level.ChapterBook.label.lowercase()} 2 to 4, ${Level.MiddleGrade.label.lowercase()} 4 to 7, " +
-			"${Level.TeenAndUp.label.lowercase()} 7 to 12, and ${Level.Dense.label.lowercase()} from 12. They measure " +
-			"how the text reads, not what it is about. ${language.basis} Rare words are those outside the " +
-			"${language.name} words most used in film and TV subtitles. Names count toward a sentence’s length but " +
-			"not a word’s.\n\n",
+		"Levels go by sentence and word length, as US school grades. They measure how the text reads, not what " +
+			"it is about. ${language.basis}\n\n" +
+			"Rare words are those outside the ${language.name} words most used in film and TV subtitles. Names " +
+			"count toward a sentence’s length but not a word’s.\n\n",
 	)
+	if (showGrades) table(listOf("Level", "Grades"), "<<", Level.entries.map { listOf(it.label, grades(it)) })
 }
 
 fun report(request: ActionRequest): String {
@@ -209,9 +253,16 @@ fun report(request: ActionRequest): String {
 
 	return buildString {
 		append("# Reading level\n\n")
-		if (scenes.size > 1) storySection(scenes, total, language, lists)
-		note(language)
-		if (scenes.size > 1) append("## Scenes\n\n")
-		for (scene in scenes) sceneSection(scene, language, lists)
+		val story = scenes.size > 1
+		if (story) {
+			storySection(scenes, total, language, lists)
+			scenesSection(scenes, language, lists)
+		} else {
+			val scene = scenes.single()
+			append("## ${markdownText(scene.name)}\n\n")
+			summary(scene.grade, scene.steady, scene.counts, language, lists)
+			if (scene.counts.rareWords.isNotEmpty()) append("### Rare words\n\n${rareList(scene.counts.rareWords, SCENE_RARE_WORDS)}\n\n")
+		}
+		about(language, showGrades = !story || scenes.none { it.grade != null })
 	}.trimEnd()
 }

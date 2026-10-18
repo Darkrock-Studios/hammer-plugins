@@ -35,7 +35,7 @@ class Language(
 	val basis: String? = null,
 	/** The text's US school grade, or null without a formula. */
 	val grade: (Counts) -> Double? = { null },
-	/** Its own formula's figure, shown beside the level. */
+	/** Its own formula's figure, shown beside the grade, when that is not the grade. */
 	val score: (Counts) -> String? = { null },
 )
 
@@ -65,14 +65,11 @@ private fun wiener(counts: Counts): Double = (
 
 private fun gulpease(counts: Counts): Double = 89 + 300.0 * counts.sentences / counts.words - 10.0 * counts.letters / counts.measured
 
-private val ENGLISH_GRADE = fleschKincaid(1.015, 84.6)
-
 val LANGUAGES = listOf(
 	Language(
 		"en", "English", "aeiouy", silentE = true,
 		basis = "English levels are Flesch–Kincaid grades.",
-		grade = ENGLISH_GRADE,
-		score = { "grade ${tenths(ENGLISH_GRADE(it))} (Flesch–Kincaid)" },
+		grade = fleschKincaid(1.015, 84.6),
 	),
 	Language(
 		"fr", "French", "aeiouyàâäéèêëîïôöùûüÿœæ", silentE = true, splitApostrophes = true, dashDialogue = true,
@@ -84,7 +81,6 @@ val LANGUAGES = listOf(
 		"de", "German", "aeiouyäöü", capitalNouns = true,
 		basis = "German levels are the Wiener Sachtextformel’s school grades.",
 		grade = ::wiener,
-		score = { "grade ${tenths(wiener(it))} (Wiener Sachtextformel)" },
 	),
 	Language(
 		"es", "Spanish", "aeiouáéíóúü", dashDialogue = true,

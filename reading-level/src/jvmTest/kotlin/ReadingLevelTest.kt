@@ -183,18 +183,22 @@ class ReadingLevelTest {
 		scenes = mapOf(1 to steady, 2 to steady, 3 to steady, 4 to DENSE.repeat(5), 5 to "Too short.")
 		val text = report()
 		assertTrue(text.startsWith("# Reading level\n\n## Whole story"), text)
-		assertTrue("- **Scenes by level:** 3 early reader, 1 dense" in text, text)
-		assertTrue("*Scene 4*, dense at grade" in text, text)
-		assertTrue("### Scene 1\n\n**Early reader**: grade" in text, text)
-		assertTrue("### Scene 5\n\nToo short for a level. 2 words" in text, text)
-		assertTrue("contemporaneous (5)" in text, text)
+		assertTrue("| Early reader | below 2 | 3 |\n" in text, text)
+		assertTrue("| Middle grade | 4 to 7 | 0 |\n" in text, text)
+		assertTrue("| Dense | 12 and up | 1 |\n" in text, text)
+		assertTrue("### Stand out" in text && "| Scene 4 | Dense | " in text, text)
+		assertTrue("| Scene 1 | Early reader | " in text, text)
+		assertTrue("| Scene 5 | *Too short* |  | 2 | " in text, text)
+		assertTrue("| Scene 4 | accumulate (5), contemporaneous (5), " in text, text)
+		assertFalse("≈" in text, text)
 		// Scenes with the same text share their counts.
 		assertEquals(3, fake.cache.size)
 
 		// A second run reads its counts from the cache.
 		assertEquals(text, report())
 		fake.cache[cacheKey("Too short.", english, namesHash(emptySet()))] = "31 3 31 31 100 31 0 0 0 0".encodeToByteArray()
-		assertTrue("### Scene 5\n\n**Early reader**" in report())
+		val rough = report()
+		assertTrue("| Scene 5 | Early reader | ≈" in rough && "≈ rough" in rough, rough)
 	}
 
 	@Test
@@ -202,8 +206,9 @@ class ReadingLevelTest {
 		scenes = mapOf(1 to SIMPLE, 2 to DENSE)
 		val text = report("scene", 2)
 		assertFalse("Whole story" in text)
-		assertTrue("### Scene 2" in text && "### Scene 1" !in text, text)
-		assertTrue("### Scene 1" in report(chosen = listOf(1)))
+		assertTrue("## Scene 2\n\n> **Dense** · grade" in text && "Scene 1" !in text, text)
+		assertTrue("| Dense | 12 and up |" in text, text)
+		assertTrue("## Scene 1" in report(chosen = listOf(1)))
 	}
 
 	@Test
@@ -221,7 +226,7 @@ class ReadingLevelTest {
 		val text = report()
 		assertTrue("Reading levels need" in text, text)
 		assertFalse("**Early reader**" in text, text)
-		assertTrue("40 words" in text, text)
+		assertTrue("| 40 | 8 | 5.0 | 0% |" in text, text)
 	}
 
 	@Test
