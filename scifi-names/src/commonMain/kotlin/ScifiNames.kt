@@ -159,8 +159,8 @@ fun names(request: ActionRequest): ActionReply {
 	val type = KINDS[kind] ?: error("There is no such action")
 	fun fresh(options: NamesInput) = NamesState(Random.nextLong(), options).let { page(it, type, generate(it.seed, kind, options)) }
 	val button = request.button ?: return fresh(request.input())
-	// Only the manifest's page has the style, so a page whose state is unreadable cannot start over.
-	val state = request.state<NamesState>() ?: error("That list of names is out of date; run the action again")
+	// Only the manifest's page has the options, which Hammer remembers for running the action again.
+	val state = request.state<NamesState>() ?: return ActionReply.message("That list of names is out of date; run the action again")
 	// A button's id is "add:<index>", or "more".
 	if (!button.startsWith("add:")) return fresh(state.options)
 	val names = generate(state.seed, kind, state.options)
@@ -175,6 +175,6 @@ fun names(request: ActionRequest): ActionReply {
 		})
 		page(NamesState(state.seed, state.options, state.added or (1 shl index)), type, names, "Added $name to the encyclopedia")
 	} catch (e: OperationException) {
-		page(state, type, names, e.message)
+		ActionReply(errors = mapOf("" to e.message.orEmpty()))
 	}
 }

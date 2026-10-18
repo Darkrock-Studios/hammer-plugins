@@ -3,12 +3,12 @@ import hammer.ActionRequest
 import hammer.FakeHammerHost
 import hammer.OperationException
 import hammer.host
-import hammer.state
 import hammer.stateOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -145,19 +145,20 @@ class ScifiNamesTest {
 	}
 
 	@Test
-	fun `a refused entry says why and marks nothing`() {
+	fun `a refused entry says why on the page and marks nothing`() {
 		val driver = driver("things", "Locked").open().run()
 		val page = driver.page
 		driver.press("add:0")
-		assertEquals(listOf("Not allowed"), driver.messages)
-		assertEquals(page!!.markdown, driver.page!!.markdown)
-		assertEquals(9, driver.page!!.buttons.size)
+		assertEquals(mapOf("" to "Not allowed"), driver.errors)
+		assertTrue(driver.messages.isEmpty())
+		assertSame(page, driver.page)
 		assertTrue(created.isEmpty())
 	}
 
 	@Test
-	fun `an unreadable state, a name not in the list, and an unknown action fail`() {
-		assertFailsWith<IllegalStateException> { names(ActionRequest("things", "Storm", button = "more", state = JsonPrimitive("add:42:0:0"))) }
+	fun `a page whose state is unreadable ends the action, and a name not in the list or an unknown action fails`() {
+		val stale = names(ActionRequest("things", "Storm", button = "more", state = JsonPrimitive("add:42:0:0")))
+		assertEquals("""{"message":"That list of names is out of date; run the action again"}""", stale.toJson())
 		val state = stateOf(NamesState(42, NamesInput("naval", 2)))
 		assertFailsWith<IllegalStateException> { names(ActionRequest("things", "Storm", button = "add:2", state = state)) }
 		assertFailsWith<IllegalStateException> { names(ActionRequest("robots", "Storm", input = JsonObject(mapOf("style" to JsonPrimitive("naval"))))) }

@@ -122,10 +122,9 @@ fun page(state: NamesState, names: List<String> = generate(state.seed, state.opt
 }
 
 fun names(request: ActionRequest): ActionReply {
-	// The first call has the manifest's options; one whose state is unreadable starts over from the defaults.
-	val state = request.state<NamesState>()
-	val button = request.button
-	if (button == null || state == null) return page(NamesState(Random.nextLong(), request.input()))
+	val button = request.button ?: return page(NamesState(Random.nextLong(), request.input()))
+	// Only the manifest's page has the options, which Hammer remembers for running the action again.
+	val state = request.state<NamesState>() ?: return ActionReply.message("That list of names is out of date; run the action again")
 	// A button's id is "add:<index>", or "more".
 	if (!button.startsWith("add:")) return page(NamesState(Random.nextLong(), state.options))
 	val names = generate(state.seed, state.options)
@@ -140,6 +139,6 @@ fun names(request: ActionRequest): ActionReply {
 		})
 		page(NamesState(state.seed, state.options, state.added or (1 shl index)), names, "Added $name to the encyclopedia")
 	} catch (e: OperationException) {
-		page(state, names, e.message)
+		ActionReply(errors = mapOf("" to e.message.orEmpty()))
 	}
 }

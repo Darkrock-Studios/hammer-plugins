@@ -3,7 +3,6 @@ import hammer.ActionRequest
 import hammer.FakeHammerHost
 import hammer.OperationException
 import hammer.host
-import hammer.state
 import hammer.stateOf
 import kotlin.random.Random
 import kotlin.test.Test
@@ -11,6 +10,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -158,21 +158,20 @@ class RealNamesTest {
 	}
 
 	@Test
-	fun `a refused entry says why and marks nothing`() {
+	fun `a refused entry says why on the page and marks nothing`() {
 		val driver = driver("Locked").open().run()
 		val page = driver.page
 		driver.press("add:0")
-		assertEquals(listOf("Not allowed"), driver.messages)
-		assertEquals(page!!.markdown, driver.page!!.markdown)
-		assertEquals(9, driver.page!!.buttons.size)
+		assertEquals(mapOf("" to "Not allowed"), driver.errors)
+		assertTrue(driver.messages.isEmpty())
+		assertSame(page, driver.page)
 		assertTrue(created.isEmpty())
 	}
 
 	@Test
-	fun `a page whose state is unreadable starts over, and a name not in the list fails`() {
+	fun `a page whose state is unreadable ends the action, and a name not in the list fails`() {
 		val stale = names(ActionRequest("names", "Storm", button = "add:0", state = JsonPrimitive("add:42:0:0")))
-		assertEquals(9, stale.page!!.buttons.size)
-		assertEquals("american", ActionRequest("names", "Storm", state = stale.page!!.state).state<NamesState>()!!.options.culture)
+		assertEquals("""{"message":"That list of names is out of date; run the action again"}""", stale.toJson())
 		assertTrue(created.isEmpty())
 		val state = stateOf(NamesState(42, NamesInput(count = 2)))
 		assertFailsWith<IllegalStateException> { names(ActionRequest("names", "Storm", button = "add:2", state = state)) }
