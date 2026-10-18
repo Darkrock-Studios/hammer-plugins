@@ -1,0 +1,31 @@
+id = "character-interview"
+name = "Character interview"
+version = "0.1.0"
+api = 1
+description = "Interviews a character a page of questions at a time, from a quick dozen to Proust's questionnaire, and writes the answers into a new encyclopedia entry for them."
+
+[permissions]
+operations = ["entry.create"]
+
+[[actions]]
+name = "interview"
+label = "Interview a character"
+places = ["project"]
+keep = true
+
+[[actions.field]]
+key = "name"
+type = "text"
+label = "Name"
+required = true
+
+[[actions.field]]
+key = "set"
+type = "choice"
+label = "Interview"
+default = "quick"
+options = [
+	{ value = "quick", label = "Quick (12 questions)" },
+	{ value = "full", label = "Full (33 questions)" },
+	{ value = "proust", label = "Proust questionnaire (31 questions)" },
+]
