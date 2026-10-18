@@ -112,12 +112,39 @@ class ReadingLevelTest {
 
 	@Test
 	fun `names count toward sentence length but not word length or rarity`() {
-		val names = nameWords(listOf("Aelindrathor the Red", "Castle Vharnoth"), englishLists)
+		val names = nameWords(listOf("Aelindrathor the Red", "Castle Vharnoth"), english, englishLists)
 		assertEquals(setOf("aelindrathor", "vharnoth"), names)
 		val counts = count("Aelindrathor rode to Vharnoth.", names = names)
 		assertEquals(4, counts.words)
 		assertEquals(2, counts.measured)
 		assertEquals(0, counts.rare)
+	}
+
+	@Test
+	fun `a name splits into words as the prose does`() {
+		val names = nameWords(listOf("O'Brien"), english, englishLists)
+		assertEquals(setOf("o'brien"), names)
+		assertEquals(1, count("O'Brien left.", names = names).measured)
+		// French splits at the apostrophe, in names as in prose.
+		assertEquals(setOf("vharnoth"), nameWords(listOf("D'Vharnoth"), languageOf("fr"), listsFor(languageOf("fr"))))
+	}
+
+	@Test
+	fun `lines run on into one paragraph until a blank line, a heading, or a list item`() {
+		val wrapped = count("The cat sat\non the mat. It ran\naway.")
+		assertEquals(2, wrapped.sentences)
+		assertEquals(9, wrapped.words)
+		assertEquals(3, count("One\n\nTwo\n# Heading\nThree").sentences)
+		assertEquals(2, count("- one\n- two").sentences)
+		assertEquals(2, count("\u2014Ven \u2014dijo\n\u2014Ya", languageOf("es")).sentences)
+		assertEquals(2, count("A b c.\r\nD e f.").sentences)
+	}
+
+	@Test
+	fun `a capitalized word opening a quotation is not taken for a name`() {
+		assertEquals(mapOf("susurrus" to 1), count("She said, \u201CSusurrus is a word.\u201D").rareWords)
+		assertEquals(mapOf("susurrus" to 1), count("She said, \"Susurrus is a word.\"").rareWords)
+		assertEquals(0, count("Then Qyburn spoke, \u201CQyburn knows.\u201D").rare)
 	}
 
 	@Test

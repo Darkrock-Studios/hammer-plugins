@@ -186,7 +186,7 @@ fun report(request: ActionRequest): String {
 	fun projectInput() = buildJsonObject { put("project", project) }
 	val language = languageOf(call<Info>("project.info", projectInput()).language)
 	val lists = listsFor(language)
-	val names = nameWords(call<Entries>("entry.list", projectInput()).entries.flatMap { listOf(it.name) + it.aliases }, lists)
+	val names = nameWords(call<Entries>("entry.list", projectInput()).entries.flatMap { listOf(it.name) + it.aliases }, language, lists)
 	val nameHash = namesHash(names)
 
 	val here = request.context.id.takeIf { request.context.place == "scene" }
