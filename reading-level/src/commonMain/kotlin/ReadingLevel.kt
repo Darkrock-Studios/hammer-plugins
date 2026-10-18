@@ -2,6 +2,7 @@
 // from a project's or a scene's menu, through the `action` export. Each scene's level comes from its
 // sentence and word length by its language's formula (see Languages.kt), and its rare words are those
 // its language's list of common words lacks.
+import hammer.ActionReply
 import hammer.ActionRequest
 import hammer.call
 import hammer.input
@@ -225,7 +226,7 @@ private fun StringBuilder.about(language: Language, showGrades: Boolean) {
 	if (showGrades) table(listOf("Level", "Grades"), "<<", Level.entries.map { listOf(it.label, grades(it)) })
 }
 
-fun report(request: ActionRequest): String {
+fun report(request: ActionRequest): ActionReply {
 	val project = request.project
 	fun projectInput() = buildJsonObject { put("project", project) }
 	val language = languageOf(call<Info>("project.info", projectInput()).language)
@@ -236,7 +237,7 @@ fun report(request: ActionRequest): String {
 	val here = request.context.id.takeIf { request.context.place == "scene" }
 	val chosen = request.input<ReportInput>().scenes.ifEmpty { listOfNotNull(here) }
 	val nodes = scenesOf(call<Tree>("scene.tree", projectInput()).nodes).filter { chosen.isEmpty() || it.id in chosen }
-	if (nodes.isEmpty()) return "# Reading level\n\nThere are no scenes to read."
+	if (nodes.isEmpty()) return ActionReply.document("# Reading level\n\nThere are no scenes to read.")
 
 	val total = Counts()
 	val scenes = nodes.mapIndexed { i, node ->
@@ -251,7 +252,7 @@ fun report(request: ActionRequest): String {
 		Scene(node.name, counts, language)
 	}
 
-	return buildString {
+	val markdown = buildString {
 		append("# Reading level\n\n")
 		val story = scenes.size > 1
 		if (story) {
@@ -264,5 +265,6 @@ fun report(request: ActionRequest): String {
 			if (scene.counts.rareWords.isNotEmpty()) append("### Rare words\n\n${rareList(scene.counts.rareWords, SCENE_RARE_WORDS)}\n\n")
 		}
 		about(language, showGrades = !story || scenes.none { it.grade != null })
-	}.trimEnd()
+	}
+	return ActionReply.document(markdown.trimEnd())
 }

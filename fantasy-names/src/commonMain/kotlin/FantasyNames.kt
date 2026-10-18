@@ -1,6 +1,6 @@
-// Fantasy names: an interactive action that makes up names in a style, each with a button that adds it
-// to the project's encyclopedia as a person. The list comes from a seed carried in the buttons' ids,
-// so pressing one rebuilds the same list, marking the names already added.
+// Fantasy names: an action whose page makes up names in a style, each with a button that adds it to
+// the project's encyclopedia as a person. The page's state holds the list's seed and options, so
+// pressing a name rebuilds the same list, marking the names already added.
 //
 // Each style is a directory, resources/styles/<style>/, of lists of real names for its made-up ones to
 // sound like, a name on each line: feminine.txt and masculine.txt, and any others its format names.
@@ -10,11 +10,15 @@
 // today's names, in lower case, which are never made up. Adding a style is a directory and an option
 // in the manifest's style field.
 import hammer.ActionReply
+import hammer.ActionReply.Button
+import hammer.ActionReply.Page
 import hammer.ActionRequest
 import hammer.OperationException
 import hammer.callJson
 import hammer.input
 import hammer.resourceText
+import hammer.state
+import hammer.stateOf
 import kotlin.random.Random
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.buildJsonObject
@@ -115,27 +119,36 @@ fun generate(seed: Long, input: NamesInput): List<String> {
 private val PART = Regex("\\{([a-z]+)\\}")
 private val TRIPLED = Regex("(\\p{L})\\1\\1")
 
-/** The reply for [names] from [seed], those in [added]'s bits marked, with a button to add each of the rest. */
-fun reply(seed: Long, names: List<String>, added: Int, message: String? = null): ActionReply {
+/** What a page of names is made from: the seed and options that give its names, and those added, as bits. */
+@Serializable
+class NamesState(val seed: Long, val options: NamesInput, val added: Int = 0) {
 	fun isAdded(index: Int) = added and (1 shl index) != 0
-	val list = names.withIndex().joinToString("\n") { (i, name) -> if (isAdded(i)) "- $name (added)" else "- $name" }
-	val buttons = names.withIndex().filterNot { isAdded(it.index) }.map { (i, name) -> ActionReply.Button("add:$seed:$i:$added", name) }
+}
+
+/** The page listing [names] from [state], those added marked, with a button to add each of the rest. */
+fun page(state: NamesState, names: List<String> = generate(state.seed, state.options), message: String? = null): ActionReply {
+	val list = names.withIndex().joinToString("\n") { (i, name) -> if (state.isAdded(i)) "- $name (added)" else "- $name" }
+	val buttons = names.withIndex().filterNot { state.isAdded(it.index) }.map { (i, name) -> Button("add:$i", name, inline = true) }
 	return ActionReply(
-		"Press a name to add it to the encyclopedia as a person.\n\n$list\n",
-		buttons + ActionReply.Button("more", "More names", footer = true),
+		Page(
+			markdown = "Press a name to add it to the encyclopedia as a person.\n\n$list\n",
+			buttons = buttons + Button("more", "More names"),
+			state = stateOf(state),
+		),
 		message,
 	)
 }
 
 fun names(request: ActionRequest): ActionReply {
-	val input = request.input<NamesInput>()
-	// A button's id is "add:<seed>:<index>:<names added so far, as bits>", or "more".
-	val button = request.button?.split(':')?.takeIf { it.size == 4 && it[0] == "add" }
-	val seed = button?.get(1)?.toLongOrNull() ?: return Random.nextLong().let { reply(it, generate(it, input), 0) }
-	val index = button[2].toIntOrNull()
-	val added = button[3].toIntOrNull() ?: 0
-	val names = generate(seed, input)
-	val name = index?.let(names::getOrNull) ?: error("That name is no longer in the list")
+	// The first call has the manifest's options; one whose state is unreadable starts over from the defaults.
+	val state = request.state<NamesState>()
+	val button = request.button
+	if (button == null || state == null) return page(NamesState(Random.nextLong(), request.input()))
+	// A button's id is "add:<index>", or "more".
+	if (!button.startsWith("add:")) return page(NamesState(Random.nextLong(), state.options))
+	val names = generate(state.seed, state.options)
+	val index = button.removePrefix("add:").toIntOrNull()?.takeIf { it in names.indices } ?: error("That name is no longer in the list")
+	val name = names[index]
 	return try {
 		callJson("entry.create", buildJsonObject {
 			put("project", request.project)
@@ -143,8 +156,8 @@ fun names(request: ActionRequest): ActionReply {
 			put("text", "")
 			put("name", name)
 		})
-		reply(seed, names, added or (1 shl index), "Added $name to the encyclopedia")
+		page(NamesState(state.seed, state.options, state.added or (1 shl index)), names, "Added $name to the encyclopedia")
 	} catch (e: OperationException) {
-		reply(seed, names, added, e.message)
+		page(state, names, e.message)
 	}
 }

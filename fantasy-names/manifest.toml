@@ -10,7 +10,6 @@ operations = ["entry.create"]
 [[actions]]
 name = "names"
 label = "Generate fantasy names"
-output = "interactive"
 places = ["project", "entry"]
 
 [[actions.field]]

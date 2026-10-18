@@ -1,3 +1,4 @@
+import hammer.ActionDriver
 import hammer.ActionRequest
 import hammer.FakeHammerHost
 import hammer.host
@@ -9,9 +10,6 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.add
-import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
@@ -68,13 +66,13 @@ class ReadingLevelTest {
 	private fun count(text: String, language: Language = english, names: Set<String> = emptySet()) =
 		countScene(text, language, listsFor(language), names)
 
-	private fun report(place: String = "project", id: Int? = null, chosen: List<Int> = emptyList()) = report(
-		ActionRequest(
-			"report", "Storm",
-			input = JsonObject(mapOf("scenes" to buildJsonArray { chosen.forEach { add(it) } })),
-			context = ActionRequest.Context(place, id),
-		),
-	)
+	/** The report's markdown, from a page with nothing else on it. */
+	private fun report(place: String = "project", id: Int? = null, chosen: List<Int> = emptyList()): String {
+		val driver = ActionDriver("report", ::report, "Storm", context = ActionRequest.Context(place, id)).open()
+		val page = driver.fill("scenes", chosen).run().page!!
+		assertTrue(page.fields.isEmpty() && page.buttons.isEmpty() && page.state == null && driver.messages.isEmpty())
+		return page.markdown!!
+	}
 
 	@Test
 	fun `syllables are vowel groups less a silent e`() {

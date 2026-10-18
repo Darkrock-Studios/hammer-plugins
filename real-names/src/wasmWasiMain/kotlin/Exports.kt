@@ -2,4 +2,4 @@ import hammer.action
 import kotlin.wasm.WasmExport
 
 @WasmExport
-fun action(): Int = action { names(it).toJson() }
+fun action(): Int = action { names(it) }

@@ -15,4 +15,3 @@ label = "Name checker"
 [[actions]]
 name = "report"
 label = "Names report"
-output = "document"

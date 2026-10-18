@@ -539,7 +539,7 @@ fn report() -> hammer::Result<String> {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn action() -> i32 {
-    hammer::run(report)
+    hammer::run(|| hammer::action::Reply::document(report()?).to_json())
 }
 
 #[cfg(test)]

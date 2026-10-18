@@ -1,7 +1,10 @@
+import hammer.ActionDriver
 import hammer.ActionRequest
 import hammer.FakeHammerHost
 import hammer.OperationException
 import hammer.host
+import hammer.state
+import hammer.stateOf
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,8 +32,7 @@ class RealNamesTest {
 		)
 	}
 
-	private fun request(button: String? = null, project: String = "Storm", vararg input: Pair<String, JsonPrimitive>) =
-		ActionRequest("names", project, input = JsonObject(input.toMap()), button = button)
+	private fun driver(project: String = "Storm") = ActionDriver("names", ::names, project)
 
 	@Test
 	fun `a seed gives the same names again, with surnames`() {
@@ -53,10 +55,10 @@ class RealNamesTest {
 
 	@Test
 	fun `an era without lists of its own gives the nearest decade's names, or those of all years`() {
-		fun men(era: String) = generate(42, NamesInput(culture = "mexican", era = era, gender = "masculine", surnames = false))
-		assertNull(nameList("mexican", "masculine-1930"))
-		assertEquals(men("1940"), men("1930"))
-		assertEquals(men("any"), men("1890"))
+		fun women(era: String) = generate(42, NamesInput(culture = "mexican", era = era, gender = "feminine", surnames = false))
+		assertNull(nameList("mexican", "feminine-1930"))
+		assertEquals(women("1940"), women("1930"))
+		assertEquals(women("any"), women("1890"))
 		assertEquals(generate(42, NamesInput()), generate(42, NamesInput(era = "1700")))
 		assertFailsWith<IllegalStateException> { generate(42, NamesInput(culture = "atlantean")) }
 	}
@@ -118,29 +120,61 @@ class RealNamesTest {
 	}
 
 	@Test
-	fun `the first reply has a button for each name, and one for more`() {
-		val reply = names(request())
-		assertEquals(9, reply.buttons.size)
-		assertTrue(reply.buttons.last().let { it.id == "more" && it.footer })
-		assertTrue(reply.buttons.first().id.matches(Regex("add:-?\\d+:0:0")))
-		assertTrue(reply.markdown!!.contains("- ${reply.buttons.first().label}\n"))
+	fun `the page has a name to add for each, more names, and the options in its state`() {
+		val driver = driver().open().fill("culture", "japanese").fill("count", 3).run()
+		val state = driver.state<NamesState>()!!
+		assertEquals(listOf("japanese", 3, true), state.options.let { listOf(it.culture, it.count, it.surnames) })
+		val names = generate(state.seed, state.options)
+		assertEquals("Press a name to add it to the encyclopedia as a person.\n\n${names.joinToString("\n") { "- $it" }}\n", driver.page!!.markdown)
+		assertEquals(names.indices.map { "add:$it" } + "more", driver.page!!.buttons.map { it.id })
+		assertEquals(names, driver.page!!.buttons.filter { it.inline }.map { it.label })
+		assertEquals("More names", driver.page!!.buttons.single { !it.inline }.label)
 	}
 
 	@Test
 	fun `pressing a name adds it as a person and marks it`() {
-		val names = generate(42, NamesInput(count = 2))
-		val reply = names(request("add:42:1:0", "Storm", "count" to JsonPrimitive(2)))
-		assertEquals("Added ${names[1]} to the encyclopedia", reply.message)
+		val driver = driver().open().fill("count", 2).run()
+		val names = driver.state<NamesState>()!!.let { generate(it.seed, it.options) }
+		driver.press("add:1")
+		assertEquals(listOf("Added ${names[1]} to the encyclopedia"), driver.messages)
 		assertEquals(listOf("Storm", "person", names[1]), listOf("project", "type", "name").map { created.single()[it]!!.jsonPrimitive.content })
-		assertTrue(reply.markdown!!.contains("- ${names[1]} (added)"))
-		assertEquals(listOf("add:42:0:2", "more"), reply.buttons.map { it.id })
+		assertTrue(driver.page!!.markdown!!.contains("- ${names[1]} (added)"))
+		assertEquals(listOf("add:0", "more"), driver.page!!.buttons.map { it.id })
+		driver.press("add:0")
+		assertEquals(listOf("more"), driver.page!!.buttons.map { it.id })
+		assertEquals(3, driver.state<NamesState>()!!.added)
+	}
+
+	@Test
+	fun `more names are new ones of the same options, none added`() {
+		val driver = driver().open().fill("culture", "irish").fill("count", 4).run().press("add:0")
+		val before = driver.state<NamesState>()!!
+		driver.press("more")
+		val after = driver.state<NamesState>()!!
+		assertNotEquals(before.seed, after.seed)
+		assertEquals(listOf("irish", 4), listOf(after.options.culture, after.options.count))
+		assertEquals(0, after.added)
+		assertEquals(5, driver.page!!.buttons.size)
 	}
 
 	@Test
 	fun `a refused entry says why and marks nothing`() {
-		val reply = names(request("add:42:0:0", "Locked"))
-		assertEquals("Not allowed", reply.message)
-		assertEquals(9, reply.buttons.size)
-		assertFailsWith<IllegalStateException> { names(request("add:42:8:0")) }
+		val driver = driver("Locked").open().run()
+		val page = driver.page
+		driver.press("add:0")
+		assertEquals(listOf("Not allowed"), driver.messages)
+		assertEquals(page!!.markdown, driver.page!!.markdown)
+		assertEquals(9, driver.page!!.buttons.size)
+		assertTrue(created.isEmpty())
+	}
+
+	@Test
+	fun `a page whose state is unreadable starts over, and a name not in the list fails`() {
+		val stale = names(ActionRequest("names", "Storm", button = "add:0", state = JsonPrimitive("add:42:0:0")))
+		assertEquals(9, stale.page!!.buttons.size)
+		assertEquals("american", ActionRequest("names", "Storm", state = stale.page!!.state).state<NamesState>()!!.options.culture)
+		assertTrue(created.isEmpty())
+		val state = stateOf(NamesState(42, NamesInput(count = 2)))
+		assertFailsWith<IllegalStateException> { names(ActionRequest("names", "Storm", button = "add:2", state = state)) }
 	}
 }

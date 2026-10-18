@@ -1329,7 +1329,9 @@ int32_t EXTISM_EXPORTED_FUNCTION(action) {
   }
   trim_end(&report);
 
-  extism_output_buf(report.data, report.length);
+  HammerBuffer document = {0};
+  hammer_put_document(&document, report.data, report.length);
+  extism_output_buf(document.data, document.length);
   return 0;
 
 failed:
