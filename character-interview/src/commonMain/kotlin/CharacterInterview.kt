@@ -23,7 +23,7 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.put
 
 /** The interviews by id, each resources/sets/<id>.md, in the order the manifest's set field offers them. */
-val SETS = linkedMapOf("quick" to "Quick", "full" to "Full", "proust" to "Proust questionnaire")
+val SETS = mapOf("quick" to "Quick", "full" to "Full", "proust" to "Proust questionnaire")
 
 const val DEFAULT_SET = "quick"
 
@@ -52,7 +52,7 @@ fun interview(request: ActionRequest): ActionReply {
 	val saved = request.state<Interview>()
 	val set = saved?.set?.takeIf { it in SETS }?.let(::questionSet)
 	if (saved == null || set == null || saved.step !in 0..set.pages.size + 1) {
-		return ActionReply(namePage(recover(request.state)), "That interview was out of date, so it starts again here")
+		return ActionReply(namePage(recover(request.state)), "This interview could not carry on from where it was left, so it starts again here")
 	}
 	val interview = saved.answering(set, request.input)
 	val review = set.pages.size + 1
@@ -77,13 +77,16 @@ private fun begin(request: ActionRequest, interview: Interview): ActionReply {
 	return show(interview.copy(name = name, set = start.set, step = 1), questionSet(start.set))
 }
 
-/**
- * Why Hammer would refuse [name], already trimmed, as an entry's name, or null. Letters outside the Basic
- * Multilingual Plane are surrogate pairs here, judged one char at a time, so they are let through for
- * Hammer to judge when the entry is created.
- */
+/** Why Hammer would refuse [name], already trimmed, as an entry's name, or null. */
 fun nameProblem(name: String): String? {
-	val refused = name.filterNot { it.isLetter() || it in '0'..'9' || it in NAME_MARKS || it.isSurrogate() }.toSet()
+	val refused = LinkedHashSet<String>()
+	var at = 0
+	while (at < name.length) {
+		val size = if (name[at].isHighSurrogate() && name.getOrNull(at + 1)?.isLowSurrogate() == true) 2 else 1
+		val character = name.substring(at, at + size)
+		if (!allowedInName(character)) refused += character
+		at += size
+	}
 	return when {
 		name.isEmpty() -> "Enter a name"
 		name.length > MAX_NAME -> "A name is at most $MAX_NAME characters"
@@ -91,6 +94,17 @@ fun nameProblem(name: String): String? {
 		name.endsWith('.') -> "A name cannot end with a dot"
 		else -> null
 	}
+}
+
+/** Whether Hammer takes [character], one char or a surrogate pair, in a name. */
+private fun allowedInName(character: String): Boolean {
+	val first = character[0]
+	if (character.length == 1) return first.isLetter() || first in '0'..'9' || first in NAME_MARKS
+	// Past U+FFFF Hammer takes only letters, which Kotlin cannot pick out here, so this takes the ranges they
+	// lie in: below U+1F000 (old scripts and mathematical letters, among a few symbols Hammer refuses) and
+	// planes 2 and 3 (ideographs). Emoji and other symbols fill U+1F000 to U+1FFFF.
+	val code = 0x10000 + ((first.code - 0xD800) shl 10) + (character[1].code - 0xDC00)
+	return code < 0x1F000 || code in 0x20000..0x3FFFF
 }
 
 /** What an entry's name may have besides letters and digits; `~` is not among them. */
@@ -183,9 +197,47 @@ fun entryText(interview: Interview, set: QuestionSet): String = buildString {
 		val answered = page.questions.mapNotNull { question -> interview.answer(question)?.let { question to it } }
 		if (answered.isEmpty()) continue
 		append("## ${page.heading}\n\n")
-		for ((question, answer) in answered) append("**${question.text}**\n\n$answer\n\n")
+		for ((question, answer) in answered) append("**${question.text}**\n\n${nestHeadings(answer)}\n\n")
 	}
 }.trimEnd()
+
+/**
+ * [answer] with its headings moved down, in step, until the highest is `###`, so that under the page's `##`
+ * a heading in an answer cannot start a section of the entry. Lines in a fenced code block are left alone.
+ */
+private fun nestHeadings(answer: String): String {
+	val lines = answer.lines()
+	var fence: Char? = null
+	val levels = lines.map { line ->
+		val text = line.trimStart(' ')
+		when {
+			line.length - text.length > 3 -> 0
+			text.startsWith("```") || text.startsWith("~~~") -> {
+				if (fence == null) fence = text[0] else if (fence == text[0]) fence = null
+				0
+			}
+			fence != null -> 0
+			else -> headingLevel(text)
+		}
+	}
+	val shift = 3 - (levels.filter { it > 0 }.minOrNull() ?: return answer)
+	if (shift <= 0) return answer
+	return lines.zip(levels) { line, level ->
+		if (level == 0) {
+			line
+		} else {
+			val indent = line.length - line.trimStart(' ').length
+			line.substring(0, indent) + "#".repeat(minOf(shift, 6 - level)) + line.substring(indent)
+		}
+	}.joinToString("\n")
+}
+
+/** The level of the ATX heading [text] starts, or 0 when it is not one: `#` to `######`, then a space or nothing. */
+private fun headingLevel(text: String): Int {
+	val level = text.takeWhile { it == '#' }.length
+	val after = text.getOrNull(level)
+	return if (level in 1..6 && (after == null || after == ' ' || after == '\t')) level else 0
+}
 
 private fun create(project: String, interview: Interview, set: QuestionSet): ActionReply = try {
 	val entry = call<Created>("entry.create", buildJsonObject {

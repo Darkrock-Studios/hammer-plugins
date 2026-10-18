@@ -199,6 +199,40 @@ class CharacterInterviewTest {
 	}
 
 	@Test
+	fun `headings in an answer sit under its page's heading`() {
+		val driver = mara()
+			.fill("q1", "# Names\n\nMara.\n\n## At sea\n\n*Captain*.\n\n```\n# kept\n```\n\n#1 on deck")
+			.fill("q2", "### Days\n\nNets.")
+			.press("next").press("next").press("next").press("next")
+		val expected = """
+			## Who they are
+
+			**What do people call you, and what do you wish they called you?**
+
+			### Names
+
+			Mara.
+
+			#### At sea
+
+			*Captain*.
+
+			```
+			# kept
+			```
+
+			#1 on deck
+
+			**What do you do with your days?**
+
+			### Days
+
+			Nets.
+		""".trimIndent()
+		assertEquals(expected, driver.markdown)
+	}
+
+	@Test
 	fun `create entry adds the person and opens them`() {
 		val driver = reviewed().press("create")
 		val input = created.single()
@@ -239,6 +273,14 @@ class CharacterInterviewTest {
 	}
 
 	@Test
+	fun `letters past U+FFFF are taken in a name, and emoji are not`() {
+		assertNull(nameProblem("\uD842\uDFB7野"))
+		assertNull(nameProblem("\uD835\uDC00da"))
+		assertEquals("A name cannot have \uD83D\uDE00", nameProblem("Mara \uD83D\uDE00\uD83D\uDE00"))
+		assertEquals("A name cannot have \uD800", nameProblem("Mara\uD800"))
+	}
+
+	@Test
 	fun `blank answers are left out`() {
 		val driver = mara().fill("q1", " \n ").fill("q2", "Fishing").press("next")
 		assertEquals(mapOf("quick/2" to "Fishing"), driver.state<Interview>()!!.answers)
@@ -258,7 +300,7 @@ class CharacterInterviewTest {
 		for (state in listOf(null, JsonPrimitive("nonsense"), buildJsonObject { put("name", 3) })) {
 			val reply = next(state)
 			assertEquals(listOf("", "quick"), reply.page!!.fields.map { it.initial() }, "$state")
-			assertEquals("That interview was out of date, so it starts again here", reply.message)
+			assertEquals("This interview could not carry on from where it was left, so it starts again here", reply.message)
 		}
 
 		val stale = next(buildJsonObject {

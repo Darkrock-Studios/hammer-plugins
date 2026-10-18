@@ -2,7 +2,7 @@ id = "character-interview"
 name = "Character interview"
 version = "0.1.0"
 api = 1
-description = "Interviews a character a page of questions at a time, from a quick dozen to Proust's questionnaire, and writes the answers into a new encyclopedia entry for them."
+description = "Interviews a character a page of questions at a time (a quick dozen, a full set, or Proust's questionnaire) and writes the answers into a new encyclopedia entry for them."
 
 [permissions]
 operations = ["entry.create"]
