@@ -107,7 +107,7 @@ class CharacterInterviewTest {
 		assertEquals("Picture them sitting across from you. Answer as they would, or in your own words about them.", first.markdown)
 		assertEquals(listOf("q1", "q2", "q3"), first.fields.map { it.key })
 		assertEquals("What do people call you, and what do you wish they called you?", first.fields[0].label)
-		assertTrue(first.fields.all { it.type == "text" && it.format == TextFormat.Rich && !it.required })
+		assertTrue(first.fields.all { it.type == "text" && it.format == TextFormat.Plain && it.multiline && !it.required })
 		assertEquals(listOf(Triple("back", "Back", false), Triple("next", "Next", true)), first.buttons.map { Triple(it.id, it.label, it.validate) })
 		assertTrue(first.buttons.single { it.id == "next" }.primary)
 

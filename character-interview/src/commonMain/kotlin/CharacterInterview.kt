@@ -9,7 +9,6 @@ import hammer.ActionReply.Open
 import hammer.ActionReply.Page
 import hammer.ActionRequest
 import hammer.OperationException
-import hammer.TextFormat
 import hammer.call
 import hammer.input
 import hammer.state
@@ -167,7 +166,7 @@ private fun questionPage(interview: Interview, set: QuestionSet): Page {
 		title = "${interview.name}: ${page.heading} (${interview.step} of ${set.pages.size})",
 		markdown = page.intro,
 		fields = page.questions.map {
-			Field.text("q${it.number}", it.text, default = interview.answer(it), format = TextFormat.Rich)
+			Field.text("q${it.number}", it.text, default = interview.answer(it), multiline = true)
 		},
 		buttons = listOf(
 			Button("back", "Back", validate = false),
