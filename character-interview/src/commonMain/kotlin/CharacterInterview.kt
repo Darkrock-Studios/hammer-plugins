@@ -196,47 +196,98 @@ fun entryText(interview: Interview, set: QuestionSet): String = buildString {
 		val answered = page.questions.mapNotNull { question -> interview.answer(question)?.let { question to it } }
 		if (answered.isEmpty()) continue
 		append("## ${page.heading}\n\n")
-		for ((question, answer) in answered) append("**${question.text}**\n\n${nestHeadings(answer)}\n\n")
+		for ((question, answer) in answered) append("**${question.text}**\n\n${answerMarkdown(answer)}\n\n")
 	}
 }.trimEnd()
 
 /**
- * [answer] with its headings moved down, in step, until the highest is `###`, so that under the page's `##`
- * a heading in an answer cannot start a section of the entry. Lines in a fenced code block are left alone.
+ * [answer] as it goes under its question: as typed, line for line, but with its headings moved down, in step,
+ * until the highest is `###`, so that under the page's `##` a heading in an answer cannot start a section of the
+ * entry; and a code fence it leaves open closed, so that it cannot take in the questions after it. Text over
+ * a line of `=` is a heading in Hammer, so it is written with `#` to be moved down with the rest. Lines in a
+ * fenced code block are left alone.
  */
-private fun nestHeadings(answer: String): String {
+private fun answerMarkdown(answer: String): String {
 	val lines = answer.lines()
-	var fence: Char? = null
-	val levels = lines.map { line ->
-		val text = line.trimStart(' ')
+	val fenced = BooleanArray(lines.size)
+	val levels = IntArray(lines.size)
+	// The lines of each heading over a line of `=`, and those lines of `=`.
+	val setext = BooleanArray(lines.size)
+	val underlines = BooleanArray(lines.size)
+	var fence: String? = null
+	for ((index, line) in lines.withIndex()) {
+		val open = fence
+		fence = if (open == null) fenceMarker(line) else open.takeUnless { closesFence(line, it) }
+		if (open != null || fence != null) {
+			fenced[index] = true
+			continue
+		}
+		levels[index] = headingLevel(line)
+		if (!SETEXT_EQUALS.matches(line)) continue
+		var first = index
+		while (first > 0 && !fenced[first - 1] && !underlines[first - 1] && isParagraphText(lines[first - 1])) first--
+		// Text right after a list item's line is the item's, which no underline makes a heading.
+		if (first == index || first > 0 && !fenced[first - 1] && LIST_ITEM_START.containsMatchIn(lines[first - 1])) continue
+		for (heading in first until index) {
+			levels[heading] = 1
+			setext[heading] = true
+		}
+		underlines[index] = true
+	}
+	val shift = 3 - (levels.filter { it > 0 }.minOrNull() ?: 3)
+	val nested = if (shift <= 0) lines else lines.indices.mapNotNull { index ->
+		val line = lines[index]
+		val level = levels[index]
 		when {
-			line.length - text.length > 3 -> 0
-			text.startsWith("```") || text.startsWith("~~~") -> {
-				if (fence == null) fence = text[0] else if (fence == text[0]) fence = null
-				0
+			underlines[index] -> null
+			setext[index] -> "#".repeat(1 + shift) + " " + line.trim().let { text ->
+				ATX_CLOSING.find(text)?.let { text.substring(0, it.range.first) + it.value.replaceFirst("#", "\\#") } ?: text
 			}
-			fence != null -> 0
-			else -> headingLevel(text)
+			level == 0 -> line
+			else -> {
+				val indent = line.length - line.trimStart(' ').length
+				line.substring(0, indent) + "#".repeat(minOf(shift, 6 - level)) + line.substring(indent)
+			}
 		}
 	}
-	val shift = 3 - (levels.filter { it > 0 }.minOrNull() ?: return answer)
-	if (shift <= 0) return answer
-	return lines.zip(levels) { line, level ->
-		if (level == 0) {
-			line
-		} else {
-			val indent = line.length - line.trimStart(' ').length
-			line.substring(0, indent) + "#".repeat(minOf(shift, 6 - level)) + line.substring(indent)
-		}
-	}.joinToString("\n")
+	return nested.joinToString("\n") + if (fence != null) "\n$fence" else ""
 }
 
-/** The level of the ATX heading [text] starts, or 0 when it is not one: `#` to `######`, then a space or nothing. */
-private fun headingLevel(text: String): Int {
+/** The level of the ATX heading [line] is, or 0 when it is not one: up to three spaces, `#` to `######`, then a space or nothing. */
+private fun headingLevel(line: String): Int {
+	val text = line.trimStart(' ')
+	if (line.length - text.length > 3) return 0
 	val level = text.takeWhile { it == '#' }.length
 	val after = text.getOrNull(level)
 	return if (level in 1..6 && (after == null || after == ' ' || after == '\t')) level else 0
 }
+
+/** The run of three or more backticks or tildes that [line] opens a code fence with, after up to three spaces, or null. */
+private fun fenceMarker(line: String): String? {
+	val text = line.trimStart(' ')
+	if (line.length - text.length > 3 || text.isEmpty() || text[0] != '`' && text[0] != '~') return null
+	val run = text.takeWhile { it == text[0] }
+	// A backtick fence's info string cannot have a backtick: such a line is a code span.
+	return run.takeIf { it.length >= 3 && !(run[0] == '`' && text.indexOf('`', run.length) >= 0) }
+}
+
+/** Whether [line] closes the fence [open] opened: as long a run of its character or longer, and nothing else. */
+private fun closesFence(line: String, open: String): Boolean {
+	val marker = fenceMarker(line) ?: return false
+	return marker[0] == open[0] && marker.length >= open.length && line.trimStart(' ').substring(marker.length).isBlank()
+}
+
+/** Whether [line] is a paragraph's text in Hammer, not the start of another block. */
+private fun isParagraphText(line: String): Boolean =
+	line.isNotBlank() && !line.startsWith("    ") && !line.startsWith("\t") && !line.trimStart().startsWith(">") &&
+		!LIST_ITEM_START.containsMatchIn(line) && headingLevel(line) == 0 && !THEMATIC_BREAK.matches(line)
+
+private val SETEXT_EQUALS = Regex("""^ {0,3}=+[ \t]*$""")
+private val LIST_ITEM_START = Regex("""^[ \t]*(?:[-*+]|\d{1,9}[.)])(?:[ \t]|$)""")
+private val THEMATIC_BREAK = Regex("""^ {0,3}([-*_])(?:[ \t]*\1){2,}[ \t]*$""")
+
+/** A closing run of `#`, which a heading written with `#` would drop as markup. */
+private val ATX_CLOSING = Regex("""(?:^|[ \t]+)#+[ \t]*$""")
 
 private fun create(project: String, interview: Interview, set: QuestionSet): ActionReply = try {
 	val entry = call<Created>("entry.create", buildJsonObject {

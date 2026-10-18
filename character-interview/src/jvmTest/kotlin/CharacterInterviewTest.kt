@@ -232,6 +232,38 @@ class CharacterInterviewTest {
 		assertEquals(expected, driver.markdown)
 	}
 
+	/** The entry written for Mara with [answer] to the first question and "Nets." to the second. */
+	private fun entryWith(answer: String) = mara().fill("q1", answer).fill("q2", "Nets.")
+		.press("next").press("next").press("next").press("next")
+		.markdown!!
+		.removePrefix("## Who they are\n\n**What do people call you, and what do you wish they called you?**\n\n")
+		.removeSuffix("\n\n**What do you do with your days?**\n\nNets.")
+
+	@Test
+	fun `an answer goes in line for line`() {
+		val answer = "Mara.\nCaptain, one day.\n- not yet\n> she says\n1. first mate\n    the old way\n---\nNets *and* rope"
+		assertEquals(answer, entryWith(answer))
+	}
+
+	@Test
+	fun `a code fence an answer leaves open is closed before the next question`() {
+		assertEquals("```\n# kept\n```", entryWith("```\n# kept"))
+		assertEquals("Code:\n~~~~\n~~~\n# kept\n~~~~", entryWith("Code:\n~~~~\n~~~\n# kept"))
+		assertEquals("```kotlin\nval x = 1\n```\n\nDone.", entryWith("```kotlin\nval x = 1\n```\n\nDone."))
+		assertEquals("A ```span``` here", entryWith("A ```span``` here"))
+	}
+
+	@Test
+	fun `text over a line of equals signs is a heading under its page's`() {
+		assertEquals("### Names\n\nMara.\n\n#### Later", entryWith("Names\n===\n\nMara.\n\n## Later"))
+		assertEquals("### First\n### Second\nMara.", entryWith("First\nSecond\n=\nMara."))
+		assertEquals("### Room \\#", entryWith("Room #\n==="))
+		assertEquals("Mara.\n---", entryWith("Mara.\n---"))
+		assertEquals("- nets\n===", entryWith("- nets\n==="))
+		assertEquals("Mara.\n\n===", entryWith("Mara.\n\n==="))
+		assertEquals("```\nMara.\n===\n```", entryWith("```\nMara.\n===\n```"))
+	}
+
 	@Test
 	fun `create entry adds the person and opens them`() {
 		val driver = reviewed().press("create")
