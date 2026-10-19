@@ -168,7 +168,7 @@ class FirstMeetingTest {
 		assertEquals("Alice and the White Rabbit", page.title)
 		assertEquals(
 			"**Alice** and **the White Rabbit** first share a scene in **Down the Rabbit-Hole**, in Part One › Chapter 1.\n\n" +
-				"This goes by each scene's References, in Scene Info, so a scene that only mentions one of them counts too.\n\n" +
+				"*This goes by each scene's References in Scene Info, which you confirm or dismiss for each scene.*\n\n" +
 				"They share 3 scenes in all. The others, in story order:\n\n" +
 				"- **The Pool of Tears**, in Part One › Chapter 1\n" +
 				"- **The Trial**, in Part Two",
@@ -198,7 +198,7 @@ class FirstMeetingTest {
 		assertEquals("Cheshire Cat and Alice", driver.page!!.title)
 		assertEquals(
 			"**Cheshire Cat** and **Alice** first share a scene in **Interlude \\#1**. It is the only scene they share.\n\n" +
-				"This goes by each scene's References, in Scene Info, so a scene that only mentions one of them counts too.",
+				"*This goes by each scene's References in Scene Info, which you confirm or dismiss for each scene.*",
 			driver.page!!.markdown,
 		)
 		assertEquals(
@@ -214,8 +214,8 @@ class FirstMeetingTest {
 		assertEquals("the White Rabbit and Mock Turtle", page.title)
 		assertEquals(
 			"**the White Rabbit** and **Mock Turtle** are never in the same scene.\n\n" +
-				"This goes by each scene's References, in Scene Info. Hammer adds a character there when you save a " +
-				"scene with their name or an alias in it; add one to a scene without it with + Add reference.",
+				"*This goes by each scene's References in Scene Info, which you confirm or dismiss for each scene. " +
+				"Add a character a scene is missing with + Add reference.*",
 			page.markdown,
 		)
 		assertEquals(listOf(Triple("back", "Back", false)), driver.buttons)
@@ -238,7 +238,7 @@ class FirstMeetingTest {
 			"No scene has both **Dodo** and **Alice**: **Dodo** is not in any scene's References yet.",
 			one.markdown!!.substringBefore("\n"),
 		)
-		assertTrue(one.markdown!!.endsWith("add one to a scene without it with + Add reference."))
+		assertTrue(one.markdown!!.endsWith("Add a character a scene is missing with + Add reference.*"))
 
 		val both = find(8, 10).page!!
 		assertEquals("Dodo and Bill the *Lizard*", both.title)
