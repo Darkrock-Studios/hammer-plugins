@@ -2,7 +2,7 @@
 // language's rules. Names count toward a sentence's length but not toward word length or rarity: a
 // reader meets "Aelindrathor" once and knows it after. A name is a word of an encyclopedia entry's name
 // or aliases, or, outside German, a word the language's list lacks that a scene writes with a capital
-// somewhere other than a sentence's start. Kotlin/Wasm's Regex is slow in Hammer, so text is read by hand.
+// somewhere other than the start of a sentence or a quotation. Kotlin/Wasm's Regex is slow in Hammer, so text is read by hand.
 import hammer.cacheGet
 import hammer.cacheSet
 import hammer.resourceText
@@ -88,7 +88,7 @@ private fun lowerCase(word: String): String = if (word.all { it in 'a'..'z' || i
 // ---------------------------------------------------------------------------------------------
 // Reading the text
 
-/** A word as written: [text] in lower case, and whether it had a capital, opened its sentence, and was spoken. */
+/** A word as written: [text] in lower case, and whether it had a capital, opened its sentence or quotation, and was spoken. */
 private class Word(val text: String, val capital: Boolean, val first: Boolean, val dialogue: Boolean)
 
 private class Scan {
@@ -118,12 +118,14 @@ private fun endsSentence(text: String, sentenceStart: Int, space: Int, titles: S
 
 private enum class Quote { None, Double, CurlyDouble, CurlySingle, Low, LeftAngle, RightAngle, Dash }
 
-/** One line's words and sentences; a line's end ends its last sentence. */
-private fun scanLine(text: String, language: Language, titles: Set<String>, scan: Scan) {
+/** One paragraph's words and sentences; its end ends its last sentence. */
+private fun scanParagraph(text: String, language: Language, titles: Set<String>, scan: Scan) {
 	var opened = Quote.None
-	// Whether the line has had anything but spaces, and whether it opened with a dialogue dash.
+	// Whether the paragraph has had anything but spaces, and whether it opened with a dialogue dash.
 	var started = false
 	var dashLine = false
+	// Whether a quotation has opened since the last word, so the next word starts one.
+	var quotationOpened = false
 	var sentenceStart = 0
 	var sentenceWords = 0
 	var at = 0
@@ -146,11 +148,13 @@ private fun scanLine(text: String, language: Language, titles: Set<String>, scan
 				if (!isWordChar(d) && !apostrophe) break
 				at++
 			}
-			scan.words += Word(lowerCase(text.substring(here, at)), c.isUpperCase(), sentenceWords == 0, opened != Quote.None)
+			scan.words += Word(lowerCase(text.substring(here, at)), c.isUpperCase(), sentenceWords == 0 || quotationOpened, opened != Quote.None)
 			sentenceWords++
 			started = true
+			quotationOpened = false
 			continue
 		}
+		val before = opened
 		if ((c == '—' || c == '–') && language.dashDialogue && (dashLine || !started)) {
 			dashLine = true
 			opened = if (opened == Quote.Dash) Quote.None else if (opened == Quote.None) Quote.Dash else opened
@@ -170,6 +174,7 @@ private fun scanLine(text: String, language: Language, titles: Set<String>, scan
 			c == '"' -> if (opened == Quote.Double) Quote.None else if (opened == Quote.None) Quote.Double else opened
 			else -> opened
 		}
+		if (before == Quote.None && opened != Quote.None) quotationOpened = true
 	}
 }
 
@@ -253,31 +258,41 @@ fun syllables(word: String, language: Language): Int {
 }
 
 /** The lower-case words of encyclopedia [names] and aliases that are not common, which count as names. */
-fun nameWords(names: List<String>, lists: Lists): Set<String> {
-	val found = HashSet<String>()
-	for (name in names) {
-		var at = 0
-		while (at < name.length) {
-			if (!isLetter(name[at])) {
-				at++
-				continue
-			}
-			val start = at
-			while (at < name.length && isWordChar(name[at])) at++
-			val word = lowerCase(name.substring(start, at))
-			if (lists.common == null || !isCommon(word, lists.common)) found += word
-		}
+fun nameWords(names: List<String>, language: Language, lists: Lists): Set<String> {
+	// Read as prose is, so a name splits into words as it does in a scene.
+	val scan = Scan()
+	for (name in names) scanParagraph(name, language, emptySet(), scan)
+	return scan.words.mapNotNullTo(HashSet()) { word ->
+		word.text.takeIf { it.any(::isLetter) && (lists.common == null || !isCommon(it, lists.common)) }
 	}
-	return found
+}
+
+/** Whether [line] starts a paragraph of its own: a list item, a quotation, or, where dashes mark dialogue, a line of it. */
+private fun startsParagraph(line: String, language: Language): Boolean {
+	if (proseStart(line) > 0) return true
+	val first = line.firstOrNull { !isSpace(it) }
+	return language.dashDialogue && (first == '—' || first == '–')
 }
 
 /** [markdown]'s counts, with the words of [names] counted as names. */
 fun countScene(markdown: String, language: Language, lists: Lists, names: Set<String>): Counts {
 	val scan = Scan()
-	// A \r\n pair ends one line, and the empty line between its halves has no words either way.
-	for (line in markdown.split('\n', '\r')) {
-		if (!isHeading(line)) scanLine(stripMarkdown(line), language, lists.titles, scan)
+	// Lines run on into one paragraph until a blank line or a heading, as markdown reads them.
+	val paragraph = StringBuilder()
+	fun endParagraph() {
+		if (paragraph.isNotEmpty()) scanParagraph(paragraph.toString(), language, lists.titles, scan)
+		paragraph.clear()
 	}
+	for (line in markdown.lines()) {
+		if (line.isBlank() || isHeading(line)) {
+			endParagraph()
+			continue
+		}
+		if (startsParagraph(line, language)) endParagraph()
+		if (paragraph.isNotEmpty()) paragraph.append(' ')
+		paragraph.append(stripMarkdown(line))
+	}
+	endParagraph()
 	val common = lists.common
 	val capitalized = if (common == null || language.capitalNouns) emptySet()
 	else scan.words.filter { it.capital && !it.first && !isCommon(it.text, common) }.mapTo(HashSet()) { it.text }
@@ -320,7 +335,7 @@ private fun hash(text: String, from: Long = -3750763034362895579L /* FNV-1a's of
 fun namesHash(names: Set<String>): Long = hash(names.sorted().joinToString("\n"))
 
 fun cacheKey(markdown: String, language: Language, namesHash: Long): String =
-	"counts/1/${language.code}/${hash(markdown, namesHash).toULong().toString(16).padStart(16, '0')}/${markdown.length}"
+	"counts/2/${language.code}/${hash(markdown, namesHash).toULong().toString(16).padStart(16, '0')}/${markdown.length}"
 
 fun saveCounts(key: String, counts: Counts) {
 	val value = buildString {
