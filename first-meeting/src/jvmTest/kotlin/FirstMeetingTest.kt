@@ -168,7 +168,7 @@ class FirstMeetingTest {
 		assertEquals("Alice and the White Rabbit", page.title)
 		assertEquals(
 			"**Alice** and **the White Rabbit** first share a scene in **Down the Rabbit-Hole**, in Part One › Chapter 1.\n\n" +
-				"*This goes by each scene's References in Scene Info, which you confirm or dismiss for each scene.*\n\n" +
+				"*This goes by each scene's References, which you dismiss or add in each scene's Scene Info.*\n\n" +
 				"They share 3 scenes in all. The others, in story order:\n\n" +
 				"- **The Pool of Tears**, in Part One › Chapter 1\n" +
 				"- **The Trial**, in Part Two",
@@ -198,7 +198,7 @@ class FirstMeetingTest {
 		assertEquals("Cheshire Cat and Alice", driver.page!!.title)
 		assertEquals(
 			"**Cheshire Cat** and **Alice** first share a scene in **Interlude \\#1**. It is the only scene they share.\n\n" +
-				"*This goes by each scene's References in Scene Info, which you confirm or dismiss for each scene.*",
+				"*This goes by each scene's References, which you dismiss or add in each scene's Scene Info.*",
 			driver.page!!.markdown,
 		)
 		assertEquals(
@@ -214,7 +214,7 @@ class FirstMeetingTest {
 		assertEquals("the White Rabbit and Mock Turtle", page.title)
 		assertEquals(
 			"**the White Rabbit** and **Mock Turtle** are never in the same scene.\n\n" +
-				"*This goes by each scene's References in Scene Info, which you confirm or dismiss for each scene. " +
+				"*This goes by each scene's References, which you dismiss or add in each scene's Scene Info. " +
 				"Add a character a scene is missing with + Add reference.*",
 			page.markdown,
 		)

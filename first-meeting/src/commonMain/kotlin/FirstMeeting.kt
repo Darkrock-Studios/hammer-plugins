@@ -1,6 +1,6 @@
 // First meeting: an action that picks two characters and finds the first scene, in story order, with both
-// in its References (entry.read's referencedBy: the entries the writer has confirmed in each scene's Scene
-// Info). It lists the other scenes they share too, and has a button opening each of the first few.
+// in its References (entry.read's referencedBy: the entries in each scene's References, in Scene Info). It
+// lists the other scenes they share too, and has a button opening each of the first few.
 import hammer.ActionReply
 import hammer.ActionReply.Button
 import hammer.ActionReply.Field
@@ -128,7 +128,7 @@ private fun resultPage(first: String, second: String, scenes: List<PlacedScene>,
 		return Page(
 			title = "$first and $second",
 			markdown = "$none\n\n" +
-				"*This goes by each scene's References in Scene Info, which you confirm or dismiss for each scene. " +
+				"*This goes by each scene's References, which you dismiss or add in each scene's Scene Info. " +
 				"Add a character a scene is missing with + Add reference.*",
 			buttons = listOf(back),
 			state = stateOf(meeting),
@@ -137,7 +137,7 @@ private fun resultPage(first: String, second: String, scenes: List<PlacedScene>,
 	val markdown = buildString {
 		append("$pair first share a scene in ${place(scenes.first())}.")
 		if (scenes.size == 1) append(" It is the only scene they share.")
-		append("\n\n*This goes by each scene's References in Scene Info, which you confirm or dismiss for each scene.*")
+		append("\n\n*This goes by each scene's References, which you dismiss or add in each scene's Scene Info.*")
 		if (scenes.size > 1) {
 			append("\n\nThey share ${scenes.size} scenes in all. The others, in story order:\n\n")
 			append(scenes.drop(1).joinToString("\n") { "- ${place(it)}" })
