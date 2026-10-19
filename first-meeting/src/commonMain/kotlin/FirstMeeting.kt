@@ -1,6 +1,7 @@
-// First meeting: an action that picks two characters and finds the first scene, in story order, that
-// both are confirmed to appear in, by the references in each scene's metadata (entry.read's
-// referencedBy). It lists the other scenes they share too, each a button that opens it.
+// First meeting: an action that picks two characters and finds the first scene, in story order, with both
+// in its References (entry.read's referencedBy: the entries confirmed in each scene's Scene Info, which
+// Hammer adds when a saved scene names them). It lists the other scenes they share too, and has a button
+// opening each of the first few.
 import hammer.ActionReply
 import hammer.ActionReply.Button
 import hammer.ActionReply.Field
@@ -42,6 +43,12 @@ private const val GROUP_SEPARATOR = " › "
 
 private const val OPEN = "open:"
 
+/**
+ * The most scenes with a button of their own: the first meeting and those soon after. All of them are
+ * listed, but a button for each of the hundred scenes a hero and their friend share would bury the page.
+ */
+internal const val MAX_BUTTONS = 10
+
 fun meet(request: ActionRequest): ActionReply {
 	// Run from an entry, that entry starts as the first character; Hammer drops it when it is not a person.
 	val button = request.button
@@ -80,7 +87,8 @@ private fun find(request: ActionRequest): ActionReply {
 		val second = read(request.project, b.id)
 		val shared = first.referencedBy.toSet().intersect(second.referencedBy.toSet())
 		val scenes = if (shared.isEmpty()) emptyList() else storyOrder(tree(request.project)).filter { it.id in shared }
-		ActionReply(resultPage(first.name, second.name, scenes, Meeting(a, b, scenes.map { it.id })))
+		val unreferenced = listOf(first, second).filter { it.referencedBy.isEmpty() }.map { it.name }
+		ActionReply(resultPage(first.name, second.name, scenes, unreferenced, Meeting(a, b, scenes.map { it.id })))
 	} catch (e: OperationException) {
 		ActionReply(errors = mapOf("" to (e.message ?: "Hammer could not read those characters")))
 	}
@@ -105,37 +113,52 @@ private fun storyOrder(tree: SceneTree): List<PlacedScene> {
 	return scenes
 }
 
-private fun resultPage(first: String, second: String, scenes: List<PlacedScene>, meeting: Meeting): Page {
+/**
+ * The page of what was found for [first] and [second]: the [scenes] they share, in story order, or why
+ * there are none, naming whichever of them [unreferenced] says is in no scene's References at all.
+ */
+private fun resultPage(first: String, second: String, scenes: List<PlacedScene>, unreferenced: List<String>, meeting: Meeting): Page {
 	val pair = "**${markdownText(first)}** and **${markdownText(second)}**"
 	val back = Button("back", "Back", validate = false)
 	if (scenes.isEmpty()) {
+		val none = when (unreferenced.size) {
+			0 -> "$pair are never in the same scene."
+			1 -> "No scene has both $pair: **${markdownText(unreferenced.single())}** is not in any scene's References yet."
+			else -> "No scene has both $pair: neither is in any scene's References yet."
+		}
 		return Page(
 			title = "$first and $second",
-			markdown = "$pair are never in the same scene.\n\n" +
-				"This goes by the references confirmed in each scene's metadata: if they do share a scene, add " +
-				"whichever of them it is missing in that scene's references panel.",
+			markdown = "$none\n\n" +
+				"This goes by each scene's References, in Scene Info. Hammer adds a character there when you save a " +
+				"scene with their name or an alias in it; add one to a scene without it with + Add reference.",
 			buttons = listOf(back),
 			state = stateOf(meeting),
 		)
 	}
 	val markdown = buildString {
-		append("$pair first meet in ${place(scenes.first())}.\n\n")
+		append("$pair first share a scene in ${place(scenes.first())}.")
+		if (scenes.size == 1) append(" It is the only scene they share.")
+		append("\n\nThis goes by each scene's References, in Scene Info, so a scene that only mentions one of them counts too.")
 		if (scenes.size > 1) {
-			append("They also share:\n\n")
-			for (scene in scenes.drop(1)) append("- ${place(scene)}\n")
-			append("\nThey share ${scenes.size} scenes.")
-		} else {
-			append("It is the only scene they share.")
+			append("\n\nThey share ${scenes.size} scenes in all. The others, in story order:\n\n")
+			append(scenes.drop(1).joinToString("\n") { "- ${place(it)}" })
 		}
+		if (scenes.size > MAX_BUTTONS) append("\n\nThe buttons below open the first $MAX_BUTTONS.")
 	}
+	val buttoned = scenes.take(MAX_BUTTONS)
+	val repeated = buttoned.groupingBy { it.name }.eachCount().filterValues { it > 1 }.keys
 	return Page(
 		title = "$first and $second",
 		markdown = markdown,
-		buttons = scenes.map { Button("$OPEN${it.id}", it.name, inline = true) } +
+		buttons = buttoned.map { Button("$OPEN${it.id}", label(it, it.name in repeated), inline = true) } +
 			listOf(back, Button("$OPEN${scenes.first().id}", "Open ${scenes.first().name}", primary = true)),
 		state = stateOf(meeting),
 	)
 }
+
+/** [scene]'s name for its button, followed by its groups when another button has the same name. */
+private fun label(scene: PlacedScene, repeated: Boolean) =
+	if (repeated && scene.groups.isNotEmpty()) "${scene.name} (${scene.groups.joinToString(GROUP_SEPARATOR)})" else scene.name
 
 /** [scene]'s name in bold, then the groups it is in, if any. */
 private fun place(scene: PlacedScene): String {
@@ -144,7 +167,7 @@ private fun place(scene: PlacedScene): String {
 }
 
 /**
- * Goes to the scene [id], if it is one of those on the page. Any other id keeps the page as it is, with an
+ * Goes to the scene [id], if it is one of those [meeting] found. Any other id keeps the page as it is, with an
  * error, since Hammer fails a reply that opens an item that does not exist.
  */
 private fun open(id: Int?, meeting: Meeting?): ActionReply =

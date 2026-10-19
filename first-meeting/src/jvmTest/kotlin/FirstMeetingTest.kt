@@ -24,6 +24,8 @@ import kotlinx.serialization.json.put
 class FirstMeetingTest {
 	private class Character(val name: String, val referencedBy: List<Int>)
 
+	private val teaParty = (201..212).toList()
+
 	// Scene 9 is archived, so it is in no tree, and 42 is no scene at all.
 	private val characters = mapOf(
 		1 to Character("Alice", listOf(1, 2, 3, 5, 7, 9)),
@@ -31,19 +33,26 @@ class FirstMeetingTest {
 		4 to Character("Cheshire Cat", listOf(2)),
 		6 to Character("Mock Turtle", listOf(9, 42)),
 		8 to Character("Dodo", emptyList()),
+		10 to Character("Bill the *Lizard*", emptyList()),
+		11 to Character("Hatter", teaParty),
+		12 to Character("March Hare", teaParty),
 	)
 
 	/**
 	 * Part One (Chapter 1: scenes 7 and 3; Chapter 2: scene 5), the top-level scene 2, then Part Two (scene 1):
-	 * story order is not id order.
+	 * story order is not id order. Part Three's two chapters have six scenes each, both opening with a scene
+	 * of the same name.
 	 */
 	private val tree = buildJsonObject {
 		put("nodes", buildJsonArray {
 			add(group(100, "Part One", group(101, "Chapter 1", scene(7, "Down the Rabbit-Hole"), scene(3, "The Pool of Tears")), group(102, "Chapter 2", scene(5, "A Caucus-Race"))))
 			add(scene(2, "Interlude #1"))
 			add(group(103, "Part Two", scene(1, "The Trial")))
+			add(group(104, "Part Three", group(105, "Chapter 7", *teaScenes(201..206)), group(106, "Chapter 8", *teaScenes(207..212))))
 		})
 	}
+
+	private fun teaScenes(ids: IntRange) = ids.map { scene(it, if (it == ids.first) "A Mad Tea-Party" else "Tea $it") }.toTypedArray()
 
 	private val reads = mutableListOf<Int>()
 	private var trees = 0
@@ -158,11 +167,11 @@ class FirstMeetingTest {
 		val page = driver.page!!
 		assertEquals("Alice and the White Rabbit", page.title)
 		assertEquals(
-			"**Alice** and **the White Rabbit** first meet in **Down the Rabbit-Hole**, in Part One › Chapter 1.\n\n" +
-				"They also share:\n\n" +
+			"**Alice** and **the White Rabbit** first share a scene in **Down the Rabbit-Hole**, in Part One › Chapter 1.\n\n" +
+				"This goes by each scene's References, in Scene Info, so a scene that only mentions one of them counts too.\n\n" +
+				"They share 3 scenes in all. The others, in story order:\n\n" +
 				"- **The Pool of Tears**, in Part One › Chapter 1\n" +
-				"- **The Trial**, in Part Two\n\n" +
-				"They share 3 scenes.",
+				"- **The Trial**, in Part Two",
 			page.markdown,
 		)
 		assertEquals(
@@ -188,7 +197,8 @@ class FirstMeetingTest {
 		val driver = find(4, 1)
 		assertEquals("Cheshire Cat and Alice", driver.page!!.title)
 		assertEquals(
-			"**Cheshire Cat** and **Alice** first meet in **Interlude \\#1**.\n\nIt is the only scene they share.",
+			"**Cheshire Cat** and **Alice** first share a scene in **Interlude \\#1**. It is the only scene they share.\n\n" +
+				"This goes by each scene's References, in Scene Info, so a scene that only mentions one of them counts too.",
 			driver.page!!.markdown,
 		)
 		assertEquals(
@@ -204,8 +214,8 @@ class FirstMeetingTest {
 		assertEquals("the White Rabbit and Mock Turtle", page.title)
 		assertEquals(
 			"**the White Rabbit** and **Mock Turtle** are never in the same scene.\n\n" +
-				"This goes by the references confirmed in each scene's metadata: if they do share a scene, add " +
-				"whichever of them it is missing in that scene's references panel.",
+				"This goes by each scene's References, in Scene Info. Hammer adds a character there when you save a " +
+				"scene with their name or an alias in it; add one to a scene without it with + Add reference.",
 			page.markdown,
 		)
 		assertEquals(listOf(Triple("back", "Back", false)), driver.buttons)
@@ -215,9 +225,49 @@ class FirstMeetingTest {
 
 	@Test
 	fun `a pair with no scene in common never meets, without reading the tree`() {
-		val driver = find(8, 1)
-		assertEquals("**Dodo** and **Alice** are never in the same scene.", driver.page!!.markdown!!.substringBefore("\n"))
+		val driver = find(4, 6)
+		assertEquals("**Cheshire Cat** and **Mock Turtle** are never in the same scene.", driver.page!!.markdown!!.substringBefore("\n"))
 		assertEquals(0, trees)
+	}
+
+	@Test
+	fun `a character in no scene's References is named as the reason they never meet`() {
+		val one = find(8, 1).page!!
+		assertEquals("Dodo and Alice", one.title)
+		assertEquals(
+			"No scene has both **Dodo** and **Alice**: **Dodo** is not in any scene's References yet.",
+			one.markdown!!.substringBefore("\n"),
+		)
+		assertTrue(one.markdown!!.endsWith("add one to a scene without it with + Add reference."))
+
+		val both = find(8, 10).page!!
+		assertEquals("Dodo and Bill the *Lizard*", both.title)
+		assertEquals(
+			"No scene has both **Dodo** and **Bill the \\*Lizard\\***: neither is in any scene's References yet.",
+			both.markdown!!.substringBefore("\n"),
+		)
+		assertEquals(0, trees)
+	}
+
+	@Test
+	fun `every scene they share is listed, but only the first ten have buttons`() {
+		val driver = find(11, 12)
+		val page = driver.page!!
+		val markdown = page.markdown!!
+		assertTrue(markdown.startsWith("**Hatter** and **March Hare** first share a scene in **A Mad Tea-Party**, in Part Three › Chapter 7.\n\n"))
+		assertTrue("They share 12 scenes in all. The others, in story order:\n\n- **Tea 202**, in Part Three › Chapter 7\n" in markdown)
+		assertTrue("- **A Mad Tea-Party**, in Part Three › Chapter 8\n" in markdown)
+		assertTrue(markdown.endsWith("- **Tea 212**, in Part Three › Chapter 8\n\nThe buttons below open the first 10."))
+
+		val inline = page.buttons.filter { it.inline }
+		assertEquals(MAX_BUTTONS, inline.size)
+		assertEquals((201..210).map { "open:$it" }, inline.map { it.id })
+		// The two scenes of the same name are told apart by their chapters; the others go by name alone.
+		assertEquals("A Mad Tea-Party (Part Three › Chapter 7)", inline[0].label)
+		assertEquals("A Mad Tea-Party (Part Three › Chapter 8)", inline[6].label)
+		assertEquals("Tea 202", inline[1].label)
+		assertEquals("Open A Mad Tea-Party", page.buttons.single { it.primary }.label)
+		assertEquals(Meeting(entry(11), entry(12), teaParty), driver.state<Meeting>())
 	}
 
 	@Test
