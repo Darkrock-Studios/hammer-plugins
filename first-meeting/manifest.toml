@@ -1,0 +1,13 @@
+id = "first-meeting"
+name = "First meeting"
+version = "0.1.0"
+api = 1
+description = "Finds the first scene two characters share, in story order, by the references confirmed in each scene, and lists the other scenes they share, each a button that opens it."
+
+[permissions]
+operations = ["entry.read", "scene.tree"]
+
+[[actions]]
+name = "meet"
+label = "Find where two characters first meet"
+places = ["project", "entry"]
