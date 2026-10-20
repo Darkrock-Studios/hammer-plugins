@@ -1,6 +1,6 @@
 id = "mcp"
 name = "MCP server"
-version = "0.1.0"
+version = "0.2.0"
 api = 1
 description = "Lets AI agents such as Claude read your projects through the Model Context Protocol, and, if you allow it in its settings, organize them. It never writes prose."
 
@@ -19,6 +19,7 @@ operations = [
 	"scene.archive",
 	"scene.unarchive",
 	"scene.meta.write",
+	"scene.references.set",
 	"draft.create",
 	"note.create",
 	"note.update",

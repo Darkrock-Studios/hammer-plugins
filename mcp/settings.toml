@@ -2,7 +2,7 @@
 key = "changes"
 type = "bool"
 label = "Let AI agents make changes"
-hint = "Organize scenes and edit outlines, notes, encyclopedia entries, the timeline, and ideas. Never your prose."
+hint = "Organize scenes and edit outlines, notes, references, encyclopedia entries, the timeline, and ideas. Never your prose."
 default = false
 
 [[setting]]

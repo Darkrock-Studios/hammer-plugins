@@ -66,13 +66,16 @@ For Hammer's development data, use `hammer --dev mcp` instead.
 ## Skills
 
 `skills/` holds [Agent Skills](https://agentskills.io) that teach an agent to analyze a manuscript
-through this server. They only read, and report what they find with quotes from your scenes; they
-never suggest rewrites.
+through this server. They report what they find with quotes from your scenes, and never suggest
+rewrites.
 
 - **pov-check:** point-of-view slips (head-hopping) in a scene, a chapter, or the whole book. Tag
   scenes `pov:Name` for the most reliable results.
 - **who-knows-what:** tracks what each character learns and when, and flags characters acting on
   things they haven't learned yet, or forgetting what they have.
+- **true-up-references:** checks which encyclopedia entries each scene references, proposing to
+  dismiss ones only mentioned, confirm ones really in the scene, and clear ones cut from it. It applies
+  only the changes you approve, and needs "Let AI agents make changes" on to apply them.
 
 For Claude Code, link each folder into `~/.claude/skills/`, from this directory:
 
