@@ -1,0 +1,12 @@
+[package]
+name = "languagetool"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+hammer.workspace = true
+serde.workspace = true
+serde_json.workspace = true
