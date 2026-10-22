@@ -1,0 +1,73 @@
+name: CI
+
+# Tests and builds every plugin with the repo's own test.sh and build.sh, against the SDK's main, and
+# keeps the packages as the run's plugins artifact.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BINARYEN_VERSION: '120'
+  WIZER_VERSION: '10.0.0'
+
+jobs:
+  plugins:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hammer-plugins
+    steps:
+      # test.sh and build.sh expect the SDK checked out beside this repo.
+      - uses: actions/checkout@v6
+        with:
+          path: hammer-plugins
+
+      - uses: actions/checkout@v6
+        with:
+          repository: Darkrock-Studios/hammer-plugin-sdk
+          path: hammer-plugin-sdk
+
+      - name: Install clang, lld, and wabt
+        run: sudo apt-get update && sudo apt-get install -y clang lld wabt
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      # Also keeps ~/.cargo/bin, so Wizer is built once.
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: hammer-plugins
+
+      - name: Install Wizer
+        run: cargo install wizer --version "$WIZER_VERSION" --all-features --locked
+
+      - name: Install Binaryen
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl -sSfL "https://github.com/WebAssembly/binaryen/releases/download/version_$BINARYEN_VERSION/binaryen-version_$BINARYEN_VERSION-x86_64-linux.tar.gz" | tar xz
+          echo "BINARYEN=$RUNNER_TEMP/binaryen-version_$BINARYEN_VERSION/bin" >> "$GITHUB_ENV"
+
+      - name: Test
+        run: ./test.sh
+
+      - name: Build
+        run: ./build.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugins
+          path: hammer-plugins/*/build/*.hammerplugin
+          if-no-files-found: error

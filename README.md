@@ -25,7 +25,8 @@ Check out hammer-plugin-sdk beside this repo, then `./build.sh` builds every plu
 `<plugin>/build/<plugin>.hammerplugin`, or `./build.sh style` one. `./test.sh` runs every plugin's unit
 tests. The Rust kit comes from crates.io (`hammer-plugin-kit`); the SDK checkout supplies the C kit, the
 Kotlin kit, and the packaging tools. To build the Rust plugins against the checkout's kit instead, see
-`.cargo/config.toml`. Each language needs:
+`.cargo/config.toml`. CI runs both scripts on every push to `main` and pull request, and keeps the
+packages as the run's `plugins` artifact. Each language needs:
 
 - C: clang with the wasm32 target and lld (`sudo apt install clang lld`), and zip.
 - Rust: [rustup](https://rustup.rs) and `rustup target add wasm32-unknown-unknown`. `harper-grammar` also
