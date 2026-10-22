@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 env:
-  BINARYEN_VERSION: '133'
+  BINARYEN_VERSION: '120'
   WIZER_VERSION: '10.0.0'
 
 jobs:
