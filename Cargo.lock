@@ -2227,7 +2227,9 @@ dependencies = [
 
 [[package]]
 name = "hammer-plugin-kit"
-version = "0.5.0"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c13ea621d5bae7b69adedebd74c51186458083987661caa8b205fc470e10a0d8"
 dependencies = [
  "getrandom 0.3.4",
  "serde",

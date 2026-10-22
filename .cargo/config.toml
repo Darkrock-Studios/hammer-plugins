@@ -1,3 +1,9 @@
+# .cargo/local.toml, which git ignores, can build the Rust plugins against an SDK checkout beside this repo:
+#
+#   [patch.crates-io]
+#   hammer-plugin-kit = { path = "../hammer-plugin-sdk/rust/hammer" }
+include = [{ path = "local.toml", optional = true }]
+
 [build]
 target = "wasm32-unknown-unknown"
 

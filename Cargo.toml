@@ -5,8 +5,8 @@ members = ["name-checker", "harper-grammar", "languagetool"]
 default-members = ["name-checker", "languagetool"]
 
 [workspace.dependencies]
-# The SDK is checked out beside this repo.
-hammer = { package = "hammer-plugin-kit", path = "../hammer-plugin-sdk/rust/hammer" }
+# To build against an SDK checkout instead, see .cargo/config.toml.
+hammer = { package = "hammer-plugin-kit", version = "0.6" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 

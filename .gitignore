@@ -6,3 +6,4 @@ build/
 target/
 mcp/.idea/
 */tools/cache/
+.cargo/local.toml
