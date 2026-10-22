@@ -14,6 +14,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.Json
+import hammer.ops.Entry
 
 class ScifiNamesTest {
 	private val created = mutableListOf<JsonObject>()
@@ -24,7 +27,7 @@ class ScifiNamesTest {
 				"entry.create" to { input ->
 					if (input["project"]!!.jsonPrimitive.content == "Locked") throw OperationException("PermissionDenied", "Not allowed")
 					created += input
-					buildJsonObject {}
+					Json.encodeToJsonElement(Entry(id = 1, name = input["name"]!!.jsonPrimitive.content))
 				},
 			),
 		)
@@ -126,7 +129,7 @@ class ScifiNamesTest {
 			val names = driver.state<NamesState>()!!.let { generate(it.seed, kind, it.options) }
 			driver.press("add:1")
 			assertEquals(listOf("Added ${names[1]} to the encyclopedia"), driver.messages)
-			assertEquals(listOf("Storm", type, names[1]), listOf("project", "type", "name").map { created.last()[it]!!.jsonPrimitive.content })
+			assertEquals(listOf("Storm", type.name.lowercase(), names[1]), listOf("project", "type", "name").map { created.last()[it]!!.jsonPrimitive.content })
 			assertTrue(driver.page!!.markdown!!.contains("- ${names[1]} (added)"))
 			assertEquals(listOf("add:0", "more"), driver.page!!.buttons.map { it.id })
 		}

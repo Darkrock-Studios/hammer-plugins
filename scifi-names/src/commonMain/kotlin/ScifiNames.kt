@@ -15,20 +15,20 @@ import hammer.ActionReply.Button
 import hammer.ActionReply.Page
 import hammer.ActionRequest
 import hammer.OperationException
-import hammer.callJson
 import hammer.input
+import hammer.ops.EntryKind
+import hammer.ops.Hammer
 import hammer.resourceText
 import hammer.state
 import hammer.stateOf
 import kotlin.random.Random
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
 const val MAX_NAMES = 20
 
 /** The encyclopedia entry type of each kind's names. */
-val KINDS = mapOf("characters" to "person", "worlds" to "place", "things" to "thing")
+val KINDS = mapOf("characters" to EntryKind.Person, "worlds" to EntryKind.Place, "things" to EntryKind.Thing)
 
 @Serializable
 class NamesInput(
@@ -141,12 +141,12 @@ class NamesState(val seed: Long, val options: NamesInput, val added: Int = 0) {
 }
 
 /** The page listing [names] from [state], those added marked, with a button to add each of the rest as a [type]. */
-fun page(state: NamesState, type: String, names: List<String>, message: String? = null): ActionReply {
+fun page(state: NamesState, type: EntryKind, names: List<String>, message: String? = null): ActionReply {
 	val list = names.withIndex().joinToString("\n") { (i, name) -> if (state.isAdded(i)) "- $name (added)" else "- $name" }
 	val buttons = names.withIndex().filterNot { state.isAdded(it.index) }.map { (i, name) -> Button("add:$i", name, inline = true) }
 	return ActionReply(
 		Page(
-			markdown = "Press a name to add it to the encyclopedia as a $type.\n\n$list\n",
+			markdown = "Press a name to add it to the encyclopedia as a ${type.name.lowercase()}.\n\n$list\n",
 			buttons = buttons + Button("more", "More names"),
 			state = stateOf(state),
 		),
@@ -167,12 +167,7 @@ fun names(request: ActionRequest): ActionReply {
 	val index = button.removePrefix("add:").toIntOrNull()?.takeIf { it in names.indices } ?: error("That name is no longer in the list")
 	val name = names[index]
 	return try {
-		callJson("entry.create", buildJsonObject {
-			put("project", request.project)
-			put("type", type)
-			put("text", "")
-			put("name", name)
-		})
+		Hammer.entry.create(request.project, name, type, text = "")
 		page(NamesState(state.seed, state.options, state.added or (1 shl index)), type, names, "Added $name to the encyclopedia")
 	} catch (e: OperationException) {
 		ActionReply(errors = mapOf("" to e.message.orEmpty()))

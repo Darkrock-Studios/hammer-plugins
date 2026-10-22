@@ -11,8 +11,8 @@
 //! resources/words/NOTICE.txt).
 
 use hammer::diagnose::{Diagnostic, Fix, Reply, Request};
+use hammer::ops::{self, SceneKind, SceneNode};
 use serde::Deserialize;
-use serde_json::json;
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Write;
 use std::sync::Mutex;
@@ -168,18 +168,6 @@ fn distance(a: &[char], b: &[char]) -> usize {
 // ---------------------------------------------------------------------------------------------
 // The encyclopedia's names
 
-#[derive(Deserialize)]
-struct Entries {
-    entries: Vec<Entry>,
-}
-
-#[derive(Deserialize)]
-struct Entry {
-    name: String,
-    #[serde(default)]
-    aliases: Vec<String>,
-}
-
 struct Names {
     /// Each entry's name, as shown.
     entries: Vec<String>,
@@ -195,10 +183,10 @@ struct Names {
 impl Names {
     /// Without a word list, every word of a name counts as a name.
     fn load(project: &str, list: Option<Words>) -> hammer::Result<Names> {
-        let listed: Entries = hammer::call("entry.list", &json!({ "project": project }))?;
+        let listed = ops::entry::list(project, Default::default())?;
         let mut names = Names { entries: Vec::new(), phrases: HashMap::new(), unknown_words: HashMap::new(), targets: Vec::new() };
         for (index, entry) in listed.entries.into_iter().enumerate() {
-            for name in std::iter::once(&entry.name).chain(&entry.aliases) {
+            for name in std::iter::once(&entry.name).chain(entry.aliases.iter().flatten()) {
                 let parts: Vec<String> = words(name).into_iter().map(|(_, word)| word.to_owned()).collect();
                 let Some(first) = parts.first() else { continue };
                 names.phrases.entry(first.to_lowercase()).or_default().push((index, parts.clone()));
@@ -352,34 +340,10 @@ struct ActionRequest {
     locale: Option<String>,
 }
 
-#[derive(Deserialize)]
-struct Info {
-    language: Option<String>,
-}
-
-#[derive(Deserialize)]
-struct Tree {
-    nodes: Vec<Node>,
-}
-
-#[derive(Deserialize)]
-struct Node {
-    id: i64,
-    name: String,
-    kind: String,
-    #[serde(default)]
-    children: Vec<Node>,
-}
-
-#[derive(Deserialize)]
-struct SceneText {
-    markdown: String,
-}
-
 /// The story's scenes in order, groups opened up.
-fn add_scenes<'a>(nodes: &'a [Node], scenes: &mut Vec<&'a Node>) {
+fn add_scenes<'a>(nodes: &'a [SceneNode], scenes: &mut Vec<&'a SceneNode>) {
     for node in nodes {
-        if node.kind == "scene" {
+        if node.kind == SceneKind::Scene {
             scenes.push(node);
         } else {
             add_scenes(&node.children, scenes);
@@ -418,7 +382,7 @@ fn markdown_text(text: &str) -> String {
 }
 
 /// The first few scenes by name, and how many more.
-fn scene_list(ui: Ui, seen: &Seen, scenes: &[&Node]) -> String {
+fn scene_list(ui: Ui, seen: &Seen, scenes: &[&SceneNode]) -> String {
     let mut named: Vec<String> = seen.scenes.iter().take(SCENES_NAMED).map(|&at| format!("*{}*", markdown_text(&scenes[at].name))).collect();
     if seen.scenes.len() > SCENES_NAMED {
         named.push(ui.more(seen.scenes.len() - SCENES_NAMED));
@@ -429,10 +393,10 @@ fn scene_list(ui: Ui, seen: &Seen, scenes: &[&Node]) -> String {
 fn report() -> hammer::Result<String> {
     let request = hammer::input_json::<ActionRequest>().map_err(|_| "No project to report on")?;
     let (project, ui) = (request.project, Ui::for_locale(request.locale.as_deref()));
-    let info: Info = hammer::call("project.info", &json!({ "project": project }))?;
+    let info = ops::project::info(&project)?;
     let list = Words::for_language(info.language.as_deref());
     let names = Names::load(&project, list)?;
-    let tree: Tree = hammer::call("scene.tree", &json!({ "project": project }))?;
+    let tree = ops::scene::tree(&project)?;
     let mut scenes = Vec::new();
     add_scenes(&tree.nodes, &mut scenes);
 
@@ -440,7 +404,7 @@ fn report() -> hammer::Result<String> {
     let mut slips: BTreeMap<String, (Seen, Vec<String>)> = BTreeMap::new();
     let mut unknown: BTreeMap<String, Seen> = BTreeMap::new();
     for (at, scene) in scenes.iter().enumerate() {
-        let text: SceneText = hammer::call("scene.read", &json!({ "project": project, "id": scene.id }))?;
+        let text = ops::scene::read(&project, scene.id)?;
         for line in text.markdown.lines().filter(|line| !line.trim_start().starts_with('#')) {
             let found = words(line);
             let mut k = 0;

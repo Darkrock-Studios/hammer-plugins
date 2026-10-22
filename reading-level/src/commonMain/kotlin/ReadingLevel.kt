@@ -4,13 +4,14 @@
 // its language's list of common words lacks.
 import hammer.ActionReply
 import hammer.ActionRequest
-import hammer.call
 import hammer.input
+import hammer.ops.Hammer
+import hammer.ops.SceneKind
+import hammer.ops.SceneNode
 import hammer.progress
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
 /** Fewer words than this get no level. */
@@ -29,26 +30,8 @@ const val STAND_OUTS_SHOWN = 10
 @Serializable
 class ReportInput(val scenes: List<Int> = emptyList())
 
-@Serializable
-private class Info(val language: String? = null)
-
-@Serializable
-private class Node(val id: Int, val name: String, val kind: String, val children: List<Node> = emptyList())
-
-@Serializable
-private class Tree(val nodes: List<Node>)
-
-@Serializable
-private class SceneText(val markdown: String)
-
-@Serializable
-private class Entries(val entries: List<Entry>) {
-	@Serializable
-	class Entry(val name: String, val aliases: List<String> = emptyList())
-}
-
 /** The story's scenes in order, groups opened up. */
-private fun scenesOf(nodes: List<Node>): List<Node> = nodes.flatMap { if (it.kind == "scene") listOf(it) else scenesOf(it.children) }
+private fun scenesOf(nodes: List<SceneNode>): List<SceneNode> = nodes.flatMap { if (it.kind == SceneKind.Scene) listOf(it) else scenesOf(it.children) }
 
 // ---------------------------------------------------------------------------------------------
 // Numbers
@@ -228,24 +211,20 @@ private fun StringBuilder.about(language: Language, showGrades: Boolean) {
 
 fun report(request: ActionRequest): ActionReply {
 	val project = request.project
-	fun projectInput() = buildJsonObject { put("project", project) }
-	val language = languageOf(call<Info>("project.info", projectInput()).language)
+	val language = languageOf(Hammer.project.info(project).language)
 	val lists = listsFor(language)
-	val names = nameWords(call<Entries>("entry.list", projectInput()).entries.flatMap { listOf(it.name) + it.aliases }, language, lists)
+	val names = nameWords(Hammer.entry.list(project).entries.flatMap { listOf(it.name) + it.aliases.orEmpty() }, language, lists)
 	val nameHash = namesHash(names)
 
 	val here = request.context.id.takeIf { request.context.place == "scene" }
 	val chosen = request.input<ReportInput>().scenes.ifEmpty { listOfNotNull(here) }
-	val nodes = scenesOf(call<Tree>("scene.tree", projectInput()).nodes).filter { chosen.isEmpty() || it.id in chosen }
+	val nodes = scenesOf(Hammer.scene.tree(project).nodes).filter { chosen.isEmpty() || it.id in chosen }
 	if (nodes.isEmpty()) return ActionReply.document("# Reading level\n\nThere are no scenes to read.")
 
 	val total = Counts()
 	val scenes = nodes.mapIndexed { i, node ->
 		progress(i.toDouble() / nodes.size, "Reading ${node.name}")
-		val markdown = call<SceneText>("scene.read", buildJsonObject {
-			put("project", project)
-			put("id", node.id)
-		}).markdown
+		val markdown = Hammer.scene.read(project, node.id).markdown
 		val key = cacheKey(markdown, language, nameHash)
 		val counts = loadCounts(key) ?: countScene(markdown, language, lists, names).also { saveCounts(key, it) }
 		total.add(counts)

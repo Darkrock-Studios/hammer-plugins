@@ -9,13 +9,14 @@ import hammer.ActionReply.Page
 import hammer.ActionRequest
 import hammer.EntityRef
 import hammer.OperationException
-import hammer.call
 import hammer.input
+import hammer.ops.Hammer
+import hammer.ops.SceneKind
+import hammer.ops.SceneNode
+import hammer.ops.SceneTree
 import hammer.state
 import hammer.stateOf
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 /** The two characters picked, as the picking page's input has them. */
 @Serializable
@@ -25,14 +26,6 @@ private class Picks(val a: EntityRef? = null, val b: EntityRef? = null)
 @Serializable
 data class Meeting(val a: EntityRef, val b: EntityRef, val scenes: List<Int> = emptyList())
 
-@Serializable
-private class Entry(val name: String, val referencedBy: List<Int> = emptyList())
-
-@Serializable
-private class SceneTree(val nodes: List<Node> = emptyList()) {
-	@Serializable
-	class Node(val id: Int, val name: String, val kind: String, val children: List<Node> = emptyList())
-}
 
 /** A scene with the names of the groups it is in, outermost first. */
 private class PlacedScene(val id: Int, val name: String, val groups: List<String>)
@@ -93,19 +86,16 @@ private fun find(request: ActionRequest): ActionReply {
 	}
 }
 
-private fun read(project: String, id: Int) = call<Entry>("entry.read", buildJsonObject {
-	put("project", project)
-	put("id", id)
-})
+private fun read(project: String, id: Int) = Hammer.entry.read(project, id)
 
-private fun tree(project: String) = call<SceneTree>("scene.tree", buildJsonObject { put("project", project) })
+private fun tree(project: String) = Hammer.scene.tree(project)
 
 /** The tree's scenes in story order, the order a walk of it meets them, each with its groups. */
 private fun storyOrder(tree: SceneTree): List<PlacedScene> {
 	val scenes = mutableListOf<PlacedScene>()
-	fun walk(nodes: List<SceneTree.Node>, groups: List<String>) {
+	fun walk(nodes: List<SceneNode>, groups: List<String>) {
 		for (node in nodes) {
-			if (node.kind == "scene") scenes += PlacedScene(node.id, node.name, groups) else walk(node.children, groups + node.name)
+			if (node.kind == SceneKind.Scene) scenes += PlacedScene(node.id, node.name, groups) else walk(node.children, groups + node.name)
 		}
 	}
 	walk(tree.nodes, emptyList())

@@ -14,14 +14,14 @@ import hammer.ActionReply.Button
 import hammer.ActionReply.Page
 import hammer.ActionRequest
 import hammer.OperationException
-import hammer.callJson
 import hammer.input
+import hammer.ops.EntryKind
+import hammer.ops.Hammer
 import hammer.resourceText
 import hammer.state
 import hammer.stateOf
 import kotlin.random.Random
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
 const val MAX_NAMES = 20
@@ -149,12 +149,7 @@ fun names(request: ActionRequest): ActionReply {
 	val index = button.removePrefix("add:").toIntOrNull()?.takeIf { it in names.indices } ?: error("That name is no longer in the list")
 	val name = names[index]
 	return try {
-		callJson("entry.create", buildJsonObject {
-			put("project", request.project)
-			put("type", "person")
-			put("text", "")
-			put("name", name)
-		})
+		Hammer.entry.create(request.project, name, EntryKind.Person, text = "")
 		page(NamesState(state.seed, state.options, state.added or (1 shl index)), names, "Added $name to the encyclopedia")
 	} catch (e: OperationException) {
 		ActionReply(errors = mapOf("" to e.message.orEmpty()))

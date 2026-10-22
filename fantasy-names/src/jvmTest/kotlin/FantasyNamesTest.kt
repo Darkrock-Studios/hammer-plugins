@@ -15,6 +15,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.Json
+import hammer.ops.Entry
 
 class FantasyNamesTest {
 	private val created = mutableListOf<JsonObject>()
@@ -25,7 +28,7 @@ class FantasyNamesTest {
 				"entry.create" to { input ->
 					if (input["project"]!!.jsonPrimitive.content == "Locked") throw OperationException("PermissionDenied", "Not allowed")
 					created += input
-					buildJsonObject {}
+					Json.encodeToJsonElement(Entry(id = 1, name = input["name"]!!.jsonPrimitive.content))
 				},
 			),
 		)

@@ -9,15 +9,15 @@ import hammer.ActionReply.Open
 import hammer.ActionReply.Page
 import hammer.ActionRequest
 import hammer.OperationException
-import hammer.call
 import hammer.input
+import hammer.ops.EntryKind
+import hammer.ops.Hammer
 import hammer.state
 import hammer.stateOf
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.put
 
@@ -41,9 +41,6 @@ data class Interview(val name: String, val set: String, val step: Int, val answe
 
 @Serializable
 private class Start(val name: String = "", val set: String = DEFAULT_SET)
-
-@Serializable
-private class Created(val id: Int)
 
 fun interview(request: ActionRequest): ActionReply {
 	// No button: Run on the manifest's page.
@@ -290,12 +287,7 @@ private val THEMATIC_BREAK = Regex("""^ {0,3}([-*_])(?:[ \t]*\1){2,}[ \t]*$""")
 private val ATX_CLOSING = Regex("""(?:^|[ \t]+)#+[ \t]*$""")
 
 private fun create(project: String, interview: Interview, set: QuestionSet): ActionReply = try {
-	val entry = call<Created>("entry.create", buildJsonObject {
-		put("project", project)
-		put("name", interview.name)
-		put("type", "person")
-		put("text", entryText(interview, set))
-	})
+	val entry = Hammer.entry.create(project, interview.name, EntryKind.Person, entryText(interview, set))
 	ActionReply(message = "Added ${interview.name} to the encyclopedia", open = Open("entry", entry.id))
 } catch (e: OperationException) {
 	ActionReply(errors = mapOf("" to (e.message ?: "Hammer could not add ${interview.name}")))

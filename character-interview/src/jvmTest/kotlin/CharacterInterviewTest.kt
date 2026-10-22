@@ -21,6 +21,9 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
+import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.Json
+import hammer.ops.Entry
 
 class CharacterInterviewTest {
 	private val created = mutableListOf<JsonObject>()
@@ -32,11 +35,7 @@ class CharacterInterviewTest {
 	private fun createEntry(input: JsonObject): JsonElement {
 		if (input["project"]!!.jsonPrimitive.content == "Locked") throw OperationException("PermissionDenied", "Not allowed")
 		created += input
-		return buildJsonObject {
-			put("id", 12)
-			put("name", input["name"]!!)
-			put("type", "person")
-		}
+		return Json.encodeToJsonElement(Entry(id = 12, name = input["name"]!!.jsonPrimitive.content))
 	}
 
 	private fun driver(project: String = "Storm") = ActionDriver("interview", ::interview, project)
