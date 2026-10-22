@@ -1,3 +1,3 @@
 plugins {
-	id("hammer.plugin")
+	id("com.darkrockstudios.hammer.plugin")
 }
