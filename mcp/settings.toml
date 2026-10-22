@@ -11,3 +11,11 @@ type = "bool"
 label = "Let AI agents delete things"
 hint = "Scenes, drafts, notes, encyclopedia entries, timeline events, and ideas. Never whole projects."
 default = false
+
+[[setting]]
+key = "plugins"
+type = "bool"
+label = "Let AI agents install and remove plugins"
+hint = "A plugin an agent installs gets every permission it asks for, without Hammer asking you."
+danger = true
+default = false

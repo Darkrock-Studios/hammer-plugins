@@ -15,15 +15,18 @@ It can always read:
 - **Projects:** list and show them, and export them in any export format.
 - **Scenes:** the scene tree, scene text, metadata, and drafts.
 - **Notes, encyclopedia entries, ideas, and timeline events.**
-- **Everything else:** search, tags, and writing stats.
+- **Everything else:** search, tags, writing stats, and which plugins are installed.
 
-Two settings, both off by default, let it do more:
+Three settings, all off by default, let it do more:
 
 - **Let AI agents make changes:** create, rename, move, and archive scenes; edit scene outlines and tags;
   snapshot drafts; add and edit notes, encyclopedia entries and their images, timeline events, and ideas;
   create and rename projects; and make backups.
 - **Let AI agents delete things:** scenes, drafts, notes, encyclopedia entries, timeline events, and
   ideas, marked as destructive so your client can ask first. Whole projects are never deletable.
+- **Let AI agents install and remove plugins:** from a `.hammerplugin` file on this machine. A plugin an
+  agent installs gets every permission its manifest asks for, with no prompt from Hammer, so Settings
+  marks this one as risky.
 
 Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it
 reconnects.

@@ -1,0 +1,42 @@
+[[setting]]
+key = "service"
+type = "choice"
+label = "Service"
+default = "free"
+options = [
+	{ value = "free", label = "LanguageTool, free" },
+	{ value = "premium", label = "LanguageTool Premium" },
+	{ value = "custom", label = "Your own server" },
+]
+
+[[setting]]
+key = "username"
+type = "string"
+label = "Premium email"
+hint = "The email of your LanguageTool account"
+
+[[setting]]
+key = "apiKey"
+type = "secret"
+label = "Premium API key"
+hint = "From your LanguageTool account's settings"
+
+[[setting]]
+key = "server"
+type = "secret"
+label = "Server"
+hint = "Your own server's address, such as http://localhost:8081"
+
+[[setting]]
+key = "picky"
+type = "bool"
+label = "Picky"
+hint = "More checks of style and typography"
+default = false
+
+[[setting]]
+key = "style"
+type = "bool"
+label = "Style suggestions"
+hint = "Wordiness, redundancy, and register, underlined more quietly than mistakes"
+default = true

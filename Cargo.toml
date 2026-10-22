@@ -1,8 +1,8 @@
 [workspace]
 resolver = "3"
-members = ["name-checker", "harper-grammar"]
+members = ["name-checker", "harper-grammar", "languagetool"]
 # harper-grammar builds Harper and runs Wizer, so only its own build.sh builds it.
-default-members = ["name-checker"]
+default-members = ["name-checker", "languagetool"]
 
 [workspace.dependencies]
 # The SDK is checked out beside this repo.
