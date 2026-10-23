@@ -3,6 +3,9 @@
 // sentence and word length by its language's formula (see Languages.kt), and its rare words are those
 // its language's list of common words lacks.
 import hammer.ActionReply
+import hammer.ActionReply.Button
+import hammer.ActionReply.Field
+import hammer.ActionReply.Page
 import hammer.ActionRequest
 import hammer.input
 import hammer.ops.Hammer
@@ -26,6 +29,8 @@ const val STAND_OUT_GRADES = 2.0
 const val SCENE_RARE_WORDS = 8
 const val STORY_RARE_WORDS = 15
 const val STAND_OUTS_SHOWN = 10
+
+private const val RUN = "run"
 
 @Serializable
 class ReportInput(val scenes: List<Int> = emptyList())
@@ -71,7 +76,8 @@ private fun StringBuilder.table(header: List<String>, align: String, rows: List<
 	append(header.joinToString(" | ", "| ", " |\n"))
 	append(align.map { if (it == '>') "---:" else ":---" }.joinToString(" | ", "| ", " |\n"))
 	for (row in rows) append(row.joinToString(" | ", "| ", " |\n"))
-	append("\n")
+	// Hammer takes the first blank line after a table as the table's end, so a second leaves a gap under it.
+	append("\n\n")
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -209,15 +215,23 @@ private fun StringBuilder.about(language: Language, showGrades: Boolean) {
 	if (showGrades) table(listOf("Level", "Grades"), "<<", Level.entries.map { listOf(it.label, grades(it)) })
 }
 
+/** The page picking the scenes to report on, starting with [scene] picked when there is one. */
+private fun pickPage(scene: Int?) = Page(
+	fields = listOf(Field.scenes("scenes", "Scenes", hint = "Leave empty for the whole story.", default = scene?.let(::listOf))),
+	buttons = listOf(Button(RUN, "Run", primary = true)),
+)
+
 fun report(request: ActionRequest): ActionReply {
+	// The picker is a page of the plugin's own rather than the manifest's, so it can start with the scene run from.
+	if (request.button == null) return ActionReply(pickPage(request.context.id.takeIf { request.context.place == "scene" }))
+
 	val project = request.project
 	val language = languageOf(Hammer.project.info(project).language)
 	val lists = listsFor(language)
 	val names = nameWords(Hammer.entry.list(project).entries.flatMap { listOf(it.name) + it.aliases.orEmpty() }, language, lists)
 	val nameHash = namesHash(names)
 
-	val here = request.context.id.takeIf { request.context.place == "scene" }
-	val chosen = request.input<ReportInput>().scenes.ifEmpty { listOfNotNull(here) }
+	val chosen = request.input<ReportInput>().scenes
 	val nodes = scenesOf(Hammer.scene.tree(project).nodes).filter { chosen.isEmpty() || it.id in chosen }
 	if (nodes.isEmpty()) return ActionReply.document("# Reading level\n\nThere are no scenes to read.")
 

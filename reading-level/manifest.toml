@@ -12,9 +12,3 @@ operations = ["project.info", "scene.tree", "scene.read", "entry.list"]
 name = "report"
 label = "Reading level"
 places = ["project", "scene"]
-
-[[actions.field]]
-key = "scenes"
-type = "scenes"
-label = "Scenes"
-hint = "Leave empty for the whole story, or the scene you are in."

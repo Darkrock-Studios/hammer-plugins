@@ -10,6 +10,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
@@ -67,9 +68,10 @@ class ReadingLevelTest {
 		countScene(text, language, listsFor(language), names)
 
 	/** The report's markdown, from a page with nothing else on it. */
-	private fun report(place: String = "project", id: Int? = null, chosen: List<Int> = emptyList()): String {
+	private fun report(place: String = "project", id: Int? = null, chosen: List<Int>? = null): String {
 		val driver = ActionDriver("report", ::report, "Storm", context = ActionRequest.Context(place, id)).open()
-		val page = driver.fill("scenes", chosen).run().page!!
+		chosen?.let { driver.fill("scenes", it) }
+		val page = driver.press("run").page!!
 		assertTrue(page.fields.isEmpty() && page.buttons.isEmpty() && page.state == null && driver.messages.isEmpty())
 		return page.markdown!!
 	}
@@ -234,6 +236,15 @@ class ReadingLevelTest {
 		assertTrue("## Scene 2\n\n> **Dense** · grade" in text && "Scene 1" !in text, text)
 		assertTrue("| Dense | 12 and up |" in text, text)
 		assertTrue("## Scene 1" in report(chosen = listOf(1)))
+		assertTrue("Whole story" in report("scene", 2, chosen = emptyList()))
+	}
+
+	@Test
+	fun `the picker starts with the scene run from`() {
+		val fromScene = ActionDriver("report", ::report, "Storm", context = ActionRequest.Context("scene", 2)).open()
+		assertEquals(JsonArray(listOf(JsonPrimitive(2))), fromScene.values["scenes"])
+		val fromProject = ActionDriver("report", ::report, "Storm", context = ActionRequest.Context("project", null)).open()
+		assertEquals(JsonArray(emptyList()), fromProject.values["scenes"])
 	}
 
 	@Test
