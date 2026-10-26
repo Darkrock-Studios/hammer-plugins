@@ -19,9 +19,9 @@ It can always read:
 
 Three settings, all off by default, let it do more:
 
-- **Let AI agents make changes:** create, rename, move, and archive scenes; edit scene outlines and tags;
-  snapshot drafts; add and edit notes, encyclopedia entries and their images, timeline events, and ideas;
-  create and rename projects; and make backups.
+- **Let AI agents make changes:** create, rename, move, and archive scenes; edit scene outlines, tags,
+  and References; snapshot drafts; add and edit notes, encyclopedia entries and their images, timeline
+  events, and ideas; create and rename projects; and make backups.
 - **Let AI agents delete things:** scenes, drafts, notes, encyclopedia entries, timeline events, and
   ideas, marked as destructive so your client can ask first. Whole projects are never deletable.
 - **Let AI agents install and remove plugins:** from a `.hammerplugin` file on this machine. A plugin an
@@ -87,3 +87,19 @@ ln -s "$PWD"/skills/* ~/.claude/skills/
 ```
 
 Other clients that support Agent Skills take the same folders; see their documentation for where.
+
+## How it works
+
+Written in Kotlin. The manifest asks for `content:read`, `plugins:read`, and by name the writes that
+organize a project, installing and removing plugins, and the deletes of everything inside one, and
+declares the `mcp` command. It asks for no operation that writes a scene's prose (`scene.write`,
+`scene.append`, `draft.apply`, `project.import`); Hammer treats those as Prose, which no scope grant
+covers.
+
+An MCP client starts `hammer mcp` and speaks JSON-RPC over standard input and output, one message a
+line; Hammer hands each line to the plugin and writes back its reply. The plugin answers `initialize`,
+`ping`, `tools/list`, and `tools/call`, and ignores notifications. Its tools are what `ops.list`
+returns it, less `ops.list` itself and whatever its settings leave out; settings are read for every
+message. A failed call, including one refused because Hammer is busy, is a tool error the agent can
+read. Calls go through the running app when it is open, and straight to the project files when it is
+not, with no network port and no token.

@@ -36,8 +36,8 @@ packages as the run's `plugins` artifact. Each language needs:
 
 ## Installing
 
-In Hammer on desktop: Settings, Plugins, Install plugin, pick the `.hammerplugin`, approve its
-permissions, and restart Hammer.
+In Hammer on desktop or Android: Settings, Plugins, Manage plugins, Install plugin, pick the
+`.hammerplugin`, and approve its permissions. It works right away, with no restart.
 
 ## License
 
