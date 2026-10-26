@@ -17,19 +17,20 @@ It can always read:
 - **Notes, encyclopedia entries, ideas, and timeline events.**
 - **Everything else:** search, tags, writing stats, and which plugins are installed.
 
-Three settings, all off by default, let it do more:
+Two settings, both off by default, let it do more:
 
 - **Let AI agents make changes:** create, rename, move, and archive scenes; edit scene outlines, tags,
   and References; snapshot drafts; add and edit notes, encyclopedia entries and their images, timeline
   events, and ideas; create and rename projects; and make backups.
 - **Let AI agents delete things:** scenes, drafts, notes, encyclopedia entries, timeline events, and
   ideas, marked as destructive so your client can ask first. Whole projects are never deletable.
-- **Let AI agents install and remove plugins:** from a `.hammerplugin` file on this machine. A plugin an
-  agent installs gets every permission its manifest asks for, with no prompt from Hammer, so Settings
-  marks this one as risky.
 
 Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it
 reconnects.
+
+It can't install or remove plugins: Hammer allows no plugin to, since an installed plugin gets its
+permissions without Hammer asking you. An agent that needs to can run `hammer plugin install` or
+`hammer plugin uninstall` itself.
 
 It works whether Hammer is open or not: with the app running, calls go through it, so an agent's changes
 show up in the open project.
@@ -91,10 +92,9 @@ Other clients that support Agent Skills take the same folders; see their documen
 ## How it works
 
 Written in Kotlin. The manifest asks for `content:read`, `plugins:read`, and by name the writes that
-organize a project, installing and removing plugins, and the deletes of everything inside one, and
-declares the `mcp` command. It asks for no operation that writes a scene's prose (`scene.write`,
-`scene.append`, `draft.apply`, `project.import`); Hammer treats those as Prose, which no scope grant
-covers.
+organize a project and the deletes of everything inside one, and declares the `mcp` command. It asks
+for no operation that writes a scene's prose (`scene.write`, `scene.append`, `draft.apply`,
+`project.import`); Hammer treats those as Prose, which no scope grant covers.
 
 An MCP client starts `hammer mcp` and speaks JSON-RPC over standard input and output, one message a
 line; Hammer hands each line to the plugin and writes back its reply. The plugin answers `initialize`,

@@ -1,18 +1,16 @@
 id = "mcp"
 name = "MCP server"
-version = "0.3.0"
+version = "0.4.0"
 api = 1
 description = "Lets AI agents such as Claude read your projects through the Model Context Protocol, and, if you allow it in its settings, organize them. It never writes prose."
 
 [permissions]
 # No operation that writes a scene's prose (scene.write, scene.append, draft.apply, project.import):
 # Hammer's AI is a tool for the writer, not a replacement. Writes and deletes are offered as tools only
-# when the plugin's settings allow them, plugin installs and removals by a setting of their own.
+# when the plugin's settings allow them. Hammer withholds plugin installs and removals from plugins.
 operations = [
 	"content:read",
 	"plugins:read",
-	"plugin.install",
-	"plugin.uninstall",
 	"project.create",
 	"project.rename",
 	"backup.create",
