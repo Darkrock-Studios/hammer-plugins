@@ -59,6 +59,11 @@ sealed interface Block {
 	@Serializable
 	@SerialName("table")
 	class Table(val header: List<List<Span>>, val rows: List<List<List<Span>>>) : Block
+
+	/** A line holding only a project image, named by [name]; its file is not used. */
+	@Serializable
+	@SerialName("image")
+	class Image(val name: String) : Block
 }
 
 @Serializable
@@ -128,6 +133,8 @@ internal fun blockHtml(block: Block): String? = when (block) {
 	}
 	is Block.Code -> block.code.trimEnd().takeUnless { it.isBlank() }?.let { "<pre>${escape(it, breaks = false)}</pre>" }
 	is Block.Table -> tableHtml(block)
+	// AO3 hosts no images, so `src` is left for the author to fill in with the image's URL.
+	is Block.Image -> "<img alt=\"${attribute(block.name)}\" src=\"\">"
 	Block.Blank, Block.Rule -> null
 }
 
@@ -207,8 +214,12 @@ internal fun spansHtml(spans: List<Span>): String = buildString {
 private fun linkTag(url: String): String? {
 	val scheme = url.substringBefore(':', "").lowercase()
 	if (scheme != "http" && scheme != "https" && scheme != "mailto") return null
-	return "<a href=\"${escape(url, breaks = false).replace("\"", "&quot;")}\">"
+	return "<a href=\"${attribute(url)}\">"
 }
+
+/** A double-quoted attribute's value, with a newline as a space. */
+private fun attribute(value: String): String =
+	escape(value, breaks = false).replace("\"", "&quot;").replace('\n', ' ')
 
 /**
  * Escapes what AO3 would read as markup. With [breaks], a newline is a `<br />`, never followed by a
