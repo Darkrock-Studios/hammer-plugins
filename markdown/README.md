@@ -17,8 +17,8 @@ author's own, untouched. Names and scenes are written as they are, not trimmed.
 
 Images are left as Hammer writes them, `![image](hammer://image/5)`, which nothing outside Hammer can
 show. The Markdown Hammer sends a plugin names no images, and this plugin does not ask for their files,
-which it could not use. For a story with its images, use the [Markdown + images](../markdown-zip/README.md)
-plugin, which exports a ZIP holding them.
+which it could not use. For a story with its images, use Hammer's own Markdown export (from Hammer 4.0),
+which writes a ZIP of the story's Markdown with its images.
 
 The file's type is `text/plain`, not `text/markdown`, which is missing from Android's list of types; the
 `.md` extension is what marks it as Markdown.
