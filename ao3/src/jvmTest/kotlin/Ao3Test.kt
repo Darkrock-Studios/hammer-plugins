@@ -5,10 +5,11 @@ import kotlin.test.assertFailsWith
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonArray
 
 class Ao3Test {
 	private fun chapter(name: String, vararg scenes: String) =
-		ExportRequest.Chapter(name, prose = scenes.map { Json.parseToJsonElement(it) })
+		ExportRequest.Chapter(name, prose = scenes.map { Json.parseToJsonElement(it).jsonArray })
 
 	private fun export(vararg chapters: ExportRequest.Chapter, asChapters: Boolean = true, sceneBreak: String? = null) =
 		ao3Export(

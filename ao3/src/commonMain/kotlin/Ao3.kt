@@ -9,7 +9,6 @@ import hammer.settings
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
@@ -93,11 +92,11 @@ fun ao3Export(request: ExportRequest): String {
 }
 
 /** A chapter's scenes, each a list of blocks, with a scene break between passages. */
-private fun chapterHtml(scenes: List<JsonElement>, sceneBreak: String): String {
+private fun chapterHtml(scenes: List<List<JsonElement>>, sceneBreak: String): String {
 	val passages = mutableListOf<MutableList<String>>()
 	for (scene in scenes) {
 		var passage = mutableListOf<String>().also { passages += it }
-		for (element in (scene as? JsonArray).orEmpty()) {
+		for (element in scene) {
 			when (val block = decode(element)) {
 				null, Block.Blank -> {}
 				Block.Rule -> passage = mutableListOf<String>().also { passages += it }
