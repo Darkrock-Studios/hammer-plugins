@@ -2,13 +2,15 @@ import hammer.ExportRequest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonArray
 
 class Ao3Test {
 	private fun chapter(name: String, vararg scenes: String) =
-		ExportRequest.Chapter(name, prose = scenes.map { Json.parseToJsonElement(it) })
+		ExportRequest.Chapter(name, prose = scenes.map { Json.parseToJsonElement(it).jsonArray })
 
 	private fun export(vararg chapters: ExportRequest.Chapter, asChapters: Boolean = true, sceneBreak: String? = null) =
 		ao3Export(
@@ -22,6 +24,9 @@ class Ao3Test {
 		)
 
 	private fun paragraph(text: String) = """{"type": "paragraph", "spans": [{"text": "$text"}]}"""
+
+	/** [name] goes into the JSON as is, so a quote in it must come backslash-escaped. */
+	private fun image(id: Int, name: String) = """{"type": "image", "id": $id, "name": "$name"}"""
 
 	@Test
 	fun `paragraphs and scenes, with a marker per chapter`() {
@@ -149,5 +154,51 @@ class Ao3Test {
 		val markdownOnly = ExportRequest.Chapter("One", scenes = listOf("Alice"))
 		assertFailsWith<IllegalStateException> { export(markdownOnly) }
 		assertEquals("", export())
+	}
+
+	@Test
+	fun `an image line is an img placeholder on its own line, for the author to give a URL`() {
+		assertEquals(
+			"===== Chapter 1 of 1: One =====\n\n<p>Before.</p>\n<img alt=\"Cat\" src=\"\">\n<p>After.</p>\n",
+			export(chapter("One", "[${paragraph("Before.")}, ${image(5, "Cat")}, ${paragraph("After.")}]")),
+		)
+		assertEquals(
+			"===== Chapter 1 of 1: One =====\n\n<img alt=\"A\" src=\"\">\n<hr />\n<img alt=\"B\" src=\"\">\n",
+			export(chapter("One", "[${image(1, "A")}, {\"type\": \"rule\"}, ${image(2, "B")}]")),
+		)
+	}
+
+	@Test
+	fun `an image's name is escaped in its alt, with a newline as a space`() {
+		assertEquals(
+			"<img alt=\"Tweedledee &amp; &quot;Tweedledum&quot; &lt;Jr&gt;\" src=\"\">",
+			blockHtml(Block.Image("Tweedledee & \"Tweedledum\" <Jr>")),
+		)
+		assertEquals("<img alt=\"Tweedledee and Tweedledum\" src=\"\">", blockHtml(Block.Image("Tweedledee\nand Tweedledum")))
+		assertEquals(
+			"===== Chapter 1 of 1: One =====\n\n<img alt=\"&quot;Jr&quot; &amp; co\" src=\"\">\n",
+			export(chapter("One", "[${image(2, """\"Jr\" & co""")}]")),
+		)
+	}
+
+	@Test
+	fun `the image files Hammer sends are not used`() {
+		val base64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+		val out = ao3Export(
+			ExportRequest(
+				"ao3.txt",
+				"Wonderland",
+				chapters = listOf(chapter("One", "[${image(7, "Map")}]")),
+				images = listOf(ExportRequest.Image(7, "Map", "png", "image/png", base64)),
+			),
+		)
+		assertEquals("===== Chapter 1 of 1: One =====\n\n<img alt=\"Map\" src=\"\">\n", out)
+		assertFalse(base64 in out)
+		assertFalse("data:" in out)
+	}
+
+	@Test
+	fun `a paragraph of an image's name, as a Hammer without image blocks sends one, stays a paragraph`() {
+		assertEquals("===== Chapter 1 of 1: One =====\n\n<p>Cat</p>\n", export(chapter("One", "[${paragraph("Cat")}]")))
 	}
 }
