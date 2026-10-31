@@ -6,9 +6,8 @@ offers Hammer's operations to it as tools. Desktop only, since it runs as a `ham
 
 ## What it can do
 
-It helps around your writing, and never writes it: no tool changes a scene's text. It can't delete
-images either, since deleting one rewrites the scenes that show it. Hammer's stance is AI as a tool for
-the writer, not a replacement.
+It helps around your writing, and never writes it: no tool changes a scene's text, beyond taking out
+an image you let it delete. Hammer's stance is AI as a tool for the writer, not a replacement.
 
 Every operation the plugin is granted is a tool, named with underscores (`scene_read` for `scene.read`).
 It can always read:
@@ -24,8 +23,9 @@ Two settings, both off by default, let it do more:
   and References; snapshot drafts; add and edit notes, encyclopedia entries, timeline events, and ideas;
   add, replace, and rename a project's images; attach images to an entry, detach them, choose its
   primary one, and import a new one for it; create and rename projects; and make backups.
-- **Let AI agents delete things:** scenes, drafts, notes, encyclopedia entries, timeline events, and
-  ideas, marked as destructive so your client can ask first. Whole projects are never deletable.
+- **Let AI agents delete things:** scenes, drafts, notes, encyclopedia entries, images (deleting one
+  first takes it out of the entries, texts, and cover that use it), timeline events, and ideas, marked
+  as destructive so your client can ask first. Whole projects are never deletable.
 
 Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it
 reconnects.

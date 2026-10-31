@@ -9,5 +9,5 @@ default = false
 key = "deletes"
 type = "bool"
 label = "Let AI agents delete things"
-hint = "Scenes, drafts, notes, encyclopedia entries, timeline events, and ideas. Never whole projects."
+hint = "Scenes, drafts, notes, encyclopedia entries, images, timeline events, and ideas. Never whole projects."
 default = false

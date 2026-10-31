@@ -44,6 +44,7 @@ operations = [
 	"draft.delete",
 	"note.delete",
 	"entry.delete",
+	"image.delete",
 	"timeline.delete",
 	"idea.delete",
 ]
