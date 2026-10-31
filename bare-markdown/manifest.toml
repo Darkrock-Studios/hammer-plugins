@@ -1,0 +1,12 @@
+id = "bare-markdown"
+name = "Bare Markdown"
+version = "0.1.0"
+api = 1
+description = "Exports the story as one bare Markdown document, each chapter a heading and each scene as written, without Hammer's images."
+
+[[exporters]]
+format = "bare-markdown.md"
+extension = "md"
+mime = "text/plain"
+label = "Bare Markdown (MD)"
+input = "markdown"
