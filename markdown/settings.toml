@@ -1,0 +1,6 @@
+[[setting]]
+key = "numberChapters"
+type = "bool"
+label = "Number chapters"
+hint = "Only when top-level scenes are exported as chapters."
+default = false

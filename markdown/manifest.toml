@@ -1,0 +1,12 @@
+id = "markdown"
+name = "Markdown"
+version = "0.1.0"
+api = 1
+description = "Exports the story as one Markdown document, each chapter a heading and each scene as written."
+
+[[exporters]]
+format = "markdown.md"
+extension = "md"
+mime = "text/plain"
+label = "Markdown (MD)"
+input = "markdown"
