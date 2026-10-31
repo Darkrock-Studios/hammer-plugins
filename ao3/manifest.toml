@@ -10,3 +10,4 @@ extension = "txt"
 mime = "text/plain"
 label = "AO3 (TXT)"
 input = "prose"
+images = true
