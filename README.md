@@ -36,6 +36,13 @@ packages as the run's `plugins` artifact. Each language needs:
   --all-features`.
 - Kotlin: a JDK; `./gradlew` fetches Gradle.
 
+## Releasing
+
+Bump `version` in the plugin's `manifest.toml`, then push the tag `<plugin>-v<version>`, such as
+`ao3-v0.2.0`. The Release workflow checks the tag against the manifest, builds that plugin, and publishes
+a release with its `<plugin>.hammerplugin`. The [plugin registry](https://github.com/Darkrock-Studios/hammer-plugin-registry)
+picks the release up from the `<plugin>-v` tag prefix.
+
 ## Installing
 
 In Hammer on desktop or Android: Settings, Plugins, Manage plugins, Install plugin, pick the

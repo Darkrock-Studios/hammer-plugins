@@ -1,0 +1,81 @@
+name: Release
+
+# Pushing a tag <plugin>-v<version> builds that plugin and publishes it as a release holding the one
+# <plugin>.hammerplugin asset. The plugin registry's tag_prefix for each plugin is <plugin>-v.
+on:
+  push:
+    tags: ['*-v[0-9]*']
+
+permissions:
+  contents: write
+
+env:
+  BINARYEN_VERSION: '120'
+  WIZER_VERSION: '10.0.0'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hammer-plugins
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: hammer-plugins
+
+      - name: Check the tag against the manifest
+        id: plugin
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          id="${TAG%-v*}"
+          version="${TAG#"$id"-v}"
+          [ -f "$id/manifest.toml" ] || { echo "No plugin named $id" >&2; exit 1; }
+          declared=$(sed -n 's/^version = "\(.*\)"$/\1/p' "$id/manifest.toml" | head -n 1)
+          [ "$declared" = "$version" ] || { echo "$id/manifest.toml says version $declared, the tag says $version" >&2; exit 1; }
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v6
+        with:
+          repository: Darkrock-Studios/hammer-plugin-sdk
+          path: hammer-plugin-sdk
+
+      - name: Install clang, lld, and wabt
+        run: sudo apt-get update && sudo apt-get install -y clang lld wabt
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: gradle/actions/setup-gradle@v5
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: hammer-plugins
+
+      - name: Install Wizer
+        run: cargo install wizer --version "$WIZER_VERSION" --all-features --locked
+
+      - name: Install Binaryen
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl -sSfL "https://github.com/WebAssembly/binaryen/releases/download/version_$BINARYEN_VERSION/binaryen-version_$BINARYEN_VERSION-x86_64-linux.tar.gz" | tar xz
+          echo "BINARYEN=$RUNNER_TEMP/binaryen-version_$BINARYEN_VERSION/bin" >> "$GITHUB_ENV"
+
+      - name: Build
+        env:
+          ID: ${{ steps.plugin.outputs.id }}
+        run: ./build.sh "$ID"
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          ID: ${{ steps.plugin.outputs.id }}
+        run: gh release create "$TAG" "$ID/build/$ID.hammerplugin" --title "$TAG" --generate-notes
