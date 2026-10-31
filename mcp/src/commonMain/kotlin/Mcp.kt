@@ -25,13 +25,13 @@ import kotlinx.serialization.json.putJsonObject
 private val json = Json { ignoreUnknownKeys = true }
 
 @Serializable
-private class Settings(val changes: Boolean = false, val deletes: Boolean = false, val plugins: Boolean = false)
+private class Settings(val changes: Boolean = false, val deletes: Boolean = false)
 
 @Serializable
 private class OperationList(val operations: List<Operation>)
 
 @Serializable
-private class Operation(val name: String, val description: String, val access: String, val scope: String = "content", val input: JsonObject)
+private class Operation(val name: String, val description: String, val access: String, val input: JsonObject)
 
 /** The line to answer [request] with, or null when it needs none. */
 fun mcpReply(request: CommandRequest): String? = handle(request.line, request.settings<Settings>())?.toString()
@@ -103,16 +103,15 @@ private fun tools(settings: Settings): List<Tool> {
 	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), callJson(OPS_LIST, JsonObject(emptyMap())))
 		.operations.also { operations = it }
 	// tools/list already describes every tool, filtered by the settings, which ops.list is not.
-	return ops.filter { it.name != OPS_LIST && settings.allows(it) }
+	return ops.filter { it.name != OPS_LIST && settings.allows(it.access) }
 		.map { Tool(toolName(it.name), it) }
 		.groupBy { it.name }
 		.mapNotNull { (_, tools) -> tools.singleOrNull() }
 }
 
-private fun Settings.allows(op: Operation): Boolean = when {
-	op.access == READ -> true
-	op.scope == PLUGINS -> plugins
-	op.access == DESTRUCTIVE -> deletes
+private fun Settings.allows(access: String): Boolean = when (access) {
+	READ -> true
+	DESTRUCTIVE -> deletes
 	else -> changes
 }
 
@@ -164,7 +163,6 @@ private const val SERVER_VERSION = "1"
 private const val OPS_LIST = "ops.list"
 private const val READ = "read"
 private const val DESTRUCTIVE = "destructive"
-private const val PLUGINS = "plugins"
 
 private const val PARSE_ERROR = -32700
 private const val INVALID_REQUEST = -32600

@@ -1,0 +1,10 @@
+[[setting]]
+key = "sceneBreak"
+type = "choice"
+label = "Scene break"
+default = "Rule"
+options = [
+	{ value = "Rule", label = "Horizontal line" },
+	{ value = "Asterisks", label = "* * *" },
+	{ value = "Blank", label = "Blank line" },
+]

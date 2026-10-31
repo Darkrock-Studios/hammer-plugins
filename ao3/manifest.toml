@@ -1,0 +1,12 @@
+id = "ao3"
+name = "AO3"
+version = "0.1.0"
+api = 1
+description = "Exports the story as the HTML Archive of Our Own's work text box takes, a chapter at a time, ready to paste."
+
+[[exporters]]
+format = "ao3.txt"
+extension = "txt"
+mime = "text/plain"
+label = "AO3 (TXT)"
+input = "prose"

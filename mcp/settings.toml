@@ -2,20 +2,12 @@
 key = "changes"
 type = "bool"
 label = "Let AI agents make changes"
-hint = "Organize scenes and edit outlines, notes, references, encyclopedia entries, the timeline, and ideas. Never your prose."
+hint = "Organize scenes and edit outlines, notes, references, encyclopedia entries and images, the timeline, and ideas. Never your prose."
 default = false
 
 [[setting]]
 key = "deletes"
 type = "bool"
 label = "Let AI agents delete things"
-hint = "Scenes, drafts, notes, encyclopedia entries, timeline events, and ideas. Never whole projects."
-default = false
-
-[[setting]]
-key = "plugins"
-type = "bool"
-label = "Let AI agents install and remove plugins"
-hint = "A plugin an agent installs gets every permission it asks for, without Hammer asking you."
-danger = true
+hint = "Scenes, drafts, notes, encyclopedia entries, images, timeline events, and ideas. Never whole projects."
 default = false
