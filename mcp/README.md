@@ -27,6 +27,13 @@ Two settings, both off by default, let it do more:
   first takes it out of the entries, texts, and cover that use it), timeline events, and ideas, marked
   as destructive so your client can ask first. Whole projects are never deletable.
 
+With changes allowed, three tools arrange the timeline:
+
+- `timeline_place` places a scene or an encyclopedia EVENT entry on the timeline.
+- `timeline_set` sets or clears single fields of any timeline event: label, lane, milestone, start,
+  end, and title for plain events.
+- `timeline_settings_write` changes the timeline's mode, calendar, lane order, and name.
+
 Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it
 reconnects.
 
