@@ -24,8 +24,19 @@ Two settings, both off by default, let it do more:
   add, replace, and rename a project's images; attach images to an entry, detach them, choose its
   primary one, and import a new one for it; create and rename projects; and make backups.
 - **Let AI agents delete things:** scenes, drafts, notes, encyclopedia entries, images (deleting one
-  first takes it out of the entries, texts, and cover that use it), timeline events, and ideas, marked
-  as destructive so your client can ask first. Whole projects are never deletable.
+  first takes it out of the entries, texts, and cover that use it), timeline events, whole timelines
+  with their events, and ideas, marked as destructive so your client can ask first. Whole projects are
+  never deletable.
+
+A project can hold several timelines. `timeline_settings_read` lists them, and `timeline_list` reads
+one: main unless `timeline` names another, or with `orphaned` the events left on timelines deleted
+since. With changes allowed, these tools arrange them:
+
+- `timeline_place` places a scene or an encyclopedia EVENT entry on a timeline, once on each.
+- `timeline_set` sets or clears single fields of any timeline event: label, lane, milestone, start,
+  end, and title for plain events. Naming another `timeline` moves the event there.
+- `timeline_settings_write` changes one timeline's mode, calendar, lane order, and name.
+- `timeline_def_create` adds a timeline.
 
 Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it
 reconnects.
