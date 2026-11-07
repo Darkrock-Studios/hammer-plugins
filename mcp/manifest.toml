@@ -39,6 +39,7 @@ operations = [
 	"timeline.place",
 	"timeline.set",
 	"timeline.settings.write",
+	"timeline.def.create",
 	"idea.create",
 	"idea.update",
 	"idea.archive",
@@ -49,6 +50,7 @@ operations = [
 	"entry.delete",
 	"image.delete",
 	"timeline.delete",
+	"timeline.def.delete",
 	"idea.delete",
 ]
 

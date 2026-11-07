@@ -28,9 +28,11 @@ for the writer, not a replacement.
 1. If the project isn't named, call `project_list` and ask which one.
 2. Call `scene_tree` for scenes and groups in story order with word counts, and `entry_list` with
    `type: "person"` for characters and aliases.
-3. Call `timeline_list`. If the book isn't told in chronological order (flashbacks, parallel
-   timelines, a frame story), ask the writer which order knowledge should follow, and use the timeline
-   or their answer to place scenes in story-world time. Otherwise story order is the order.
+3. Call `timeline_settings_read`, then `timeline_list` for the timeline the story's events are on: main,
+   unless the project has several and the writer names another. If the book isn't told in
+   chronological order (flashbacks, parallel timelines, a frame story), ask the writer which order
+   knowledge should follow, and use the timeline or their answer to place scenes in story-world time.
+   Otherwise story order is the order.
 
 ## Pass 1: build the ledger
 
