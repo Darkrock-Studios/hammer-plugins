@@ -42,3 +42,6 @@ label = "Frasi lunghe"
 [settings.longSentenceWords]
 label = "Parole in una frase lunga"
 hint = "Più di queste; richiede Frasi lunghe"
+
+[kind]
+label = "Correttore grammaticale"
