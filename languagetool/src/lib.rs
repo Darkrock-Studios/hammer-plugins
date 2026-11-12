@@ -29,7 +29,7 @@ fn send(options: &Options, language: &str, text: &str) -> hammer::Result<CheckRe
     let response = hammer::http::request("POST", &endpoint, &headers, Some(body.as_bytes()))?;
     match response.status {
         200..300 => Ok(serde_json::from_slice(&response.body)?),
-        status => Err(check::failure(status, &response.body).into()),
+        status => Err(check::failure(&options.service, status, &response.body).into()),
     }
 }
 

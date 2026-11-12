@@ -116,10 +116,12 @@ impl Options {
 }
 
 /// What to tell the user when LanguageTool, reached directly, replies with a status other than success.
-pub fn failure(status: u16, body: &[u8]) -> String {
+pub fn failure(service: &Service, status: u16, body: &[u8]) -> String {
     match status {
         429 => "LanguageTool's limit of requests is reached; checking resumes in a minute".into(),
-        401 | 403 => "LanguageTool refused the email or API key in the plugin's settings".into(),
+        401 | 403 if matches!(service, Service::Premium { .. }) => {
+            "LanguageTool refused the email or API key in the plugin's settings".into()
+        }
         status => {
             let detail: String = String::from_utf8_lossy(body).chars().take(200).collect();
             format!("LanguageTool replied {status}: {detail}")
@@ -135,8 +137,10 @@ pub fn hammer_failure(error: &ServerError) -> String {
         ErrorKind::Network => "Your Hammer server couldn't be reached".into(),
         ErrorKind::RateLimited => "Your Hammer server's limit of checks is reached; checking resumes in a minute".into(),
         ErrorKind::ServiceFailed => "Your Hammer server couldn't reach its LanguageTool; try again later".into(),
-        // The sync server's own refusals carry a message meant for the user.
-        ErrorKind::Rejected => error.message.clone(),
+        // The sync server's own refusals carry a message meant for the user; LanguageTool's pass through
+        // as the SDK's "The service replied ...".
+        ErrorKind::Rejected => error.message.replacen("The service replied", "LanguageTool replied", 1),
+        ErrorKind::Invalid => format!("Your Hammer server's reply couldn't be read: {}", error.message),
         _ => format!("Your Hammer server refused the check: {}", error.message),
     }
 }
@@ -307,9 +311,13 @@ mod tests {
         assert!(hammer_failure(&error(ErrorKind::ServiceFailed, "")).contains("couldn't reach its LanguageTool"));
         assert!(hammer_failure(&error(ErrorKind::NotSignedIn, "")).starts_with("Sign in"));
         assert_eq!(hammer_failure(&error(ErrorKind::Rejected, "The request is too large")), "The request is too large");
-        assert!(failure(429, b"").starts_with("LanguageTool's limit"));
-        assert!(failure(403, b"").contains("API key"));
-        assert_eq!(failure(400, b"Bad language"), "LanguageTool replied 400: Bad language");
+        assert_eq!(hammer_failure(&error(ErrorKind::Rejected, "The service replied 400: Bad language")), "LanguageTool replied 400: Bad language");
+        assert!(hammer_failure(&error(ErrorKind::Invalid, "expected value")).contains("couldn't be read"));
+        let premium = Service::Premium { username: "me@example.com".into(), api_key: "key".into() };
+        assert!(failure(&Service::Free, 429, b"").starts_with("LanguageTool's limit"));
+        assert!(failure(&premium, 403, b"").contains("API key"));
+        assert_eq!(failure(&Service::Custom("http://localhost:8081".into()), 403, b"Forbidden"), "LanguageTool replied 403: Forbidden");
+        assert_eq!(failure(&Service::Free, 400, b"Bad language"), "LanguageTool replied 400: Bad language");
     }
 
     #[test]

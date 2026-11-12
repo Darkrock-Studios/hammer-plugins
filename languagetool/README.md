@@ -25,20 +25,21 @@ offers up to five fixes.
 ## Limits
 
 The free service allows 20 requests a minute, and a Hammer server as many as its admin sets. Changed
-paragraphs travel together, a blank line between them, in requests under the service's size limit: up
-to 18,000 bytes for the free service, 50,000 for Premium or your own server, and 30,000 for your Hammer
-server, whose limit counts the encoded request. Each paragraph's matches are cached by a hash of its text, the
-service, Picky, and the language, so a scene opened again is not sent again; Style suggestions only
-filters what is cached. Each batch is cached as it comes back, so a failure part way costs only the
-rest. When the limit is reached, the check fails with a message and resumes once requests are allowed
-again.
+paragraphs travel together, a blank line between them, in requests under the service's size limit:
+up to 18,000 bytes for the free service, 50,000 for Premium or your own server, and 30,000 for your
+Hammer server, whose limit counts the encoded request. Each paragraph's matches are cached by a hash
+of its text, the service, Picky, and the language, so a scene opened again is not sent again; Style
+suggestions only filters what is cached. Each batch is cached as it comes back, so a failure part
+way costs only the rest. When the limit is reached, the check fails with a message and resumes once
+requests are allowed again.
 
 ## Development
 
 Written in Rust. `permissions.http` names LanguageTool's two hosts, `api.languagetool.org` and
 `api.languagetoolplus.com`, and `permissions.userHosts` names the `server` setting, for your own
-server. `permissions.hammerServer` names `languagetool`, which `hammer::server` reaches on the user's
-sync server; the plugin never sees their credentials. The API key and the server address are `secret` settings.
+server. `permissions.hammerServer` names `languagetool`, which `hammer::server::languagetool` checks
+with on the user's sync server; the plugin never sees their credentials. The API key and the server
+address are `secret` settings.
 
 LanguageTool counts offsets in UTF-16 units; the plugin turns each match into UTF-8 byte offsets in
 its paragraph, and drops a match that runs past its paragraph or starts or ends inside a character.
