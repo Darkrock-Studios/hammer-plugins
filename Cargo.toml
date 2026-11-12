@@ -6,7 +6,7 @@ default-members = ["name-checker", "languagetool"]
 
 [workspace.dependencies]
 # To build against an SDK checkout instead, see .cargo/config.toml.
-hammer = { package = "hammer-plugin-kit", version = "0.6" }
+hammer = { package = "hammer-plugin-kit", version = "0.8" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 

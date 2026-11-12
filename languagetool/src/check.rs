@@ -8,6 +8,7 @@ use serde_json::{Map, Value};
 
 const FREE: &str = "https://api.languagetool.org";
 const PREMIUM: &str = "https://api.languagetoolplus.com";
+pub const CHECK_PATH: &str = "/v2/check";
 
 /// Between paragraphs in a batch: LanguageTool reads a blank line as a paragraph break.
 const SEPARATOR: &str = "\n\n";
@@ -19,6 +20,8 @@ pub enum Service {
     Premium { username: String, api_key: String },
     /// A server's address, without `/v2/check`.
     Custom(String),
+    /// The user's Hammer sync server, which forwards to its own LanguageTool.
+    Hammer,
 }
 
 #[derive(Debug)]
@@ -55,25 +58,30 @@ impl Options {
                 }
                 Service::Custom(server.into())
             }
+            "hammer" => Service::Hammer,
             _ => Service::Free,
         };
         Ok(Options { service, picky: flag(settings, "picky", false), style: flag(settings, "style", true) })
     }
 
-    pub fn endpoint(&self) -> String {
+    /// The URL a check goes to, or None for [Service::Hammer], which Hammer addresses itself.
+    pub fn endpoint(&self) -> Option<String> {
         let server = match &self.service {
             Service::Free => FREE,
             Service::Premium { .. } => PREMIUM,
             Service::Custom(server) => server,
+            Service::Hammer => return None,
         };
-        format!("{server}/v2/check")
+        Some(format!("{server}{CHECK_PATH}"))
     }
 
     /// The most UTF-8 bytes of text to send at once, under the service's limit per request: 20 KB
-    /// free, 60,000 characters with Premium.
+    /// free, 60,000 characters with Premium. A Hammer server caps the encoded form at 100,000 bytes by
+    /// default, and encoding can triple non-ASCII text.
     pub fn batch_limit(&self) -> usize {
         match self.service {
             Service::Free => 18_000,
+            Service::Hammer => 30_000,
             _ => 50_000,
         }
     }
@@ -84,6 +92,7 @@ impl Options {
             Service::Free => "free",
             Service::Premium { .. } => "premium",
             Service::Custom(_) => "custom",
+            Service::Hammer => "hammer",
         };
         format!("{service}:{}", if self.picky { "picky" } else { "default" })
     }
@@ -99,6 +108,29 @@ impl Options {
         }
         hammer::http::form(&fields)
     }
+}
+
+/// What to tell the user when a check comes back with a status other than success.
+pub fn failure(service: &Service, status: u16, body: &[u8]) -> String {
+    let hammer = *service == Service::Hammer;
+    // The Hammer server's own refusals carry a message meant for the user.
+    let from_hammer = if hammer { display_message(body) } else { None };
+    match status {
+        429 if hammer => "Your Hammer server's limit of checks is reached; checking resumes in a minute".into(),
+        429 => "LanguageTool's limit of requests is reached; checking resumes in a minute".into(),
+        401 | 403 if !hammer => "LanguageTool refused the email or API key in the plugin's settings".into(),
+        502 if hammer => "Your Hammer server couldn't reach its LanguageTool; try again later".into(),
+        _ if from_hammer.is_some() => from_hammer.unwrap(),
+        status => {
+            let detail: String = String::from_utf8_lossy(body).chars().take(200).collect();
+            format!("LanguageTool replied {status}: {detail}")
+        }
+    }
+}
+
+fn display_message(body: &[u8]) -> Option<String> {
+    let reply: Value = serde_json::from_slice(body).ok()?;
+    reply.get("displayMessage")?.as_str().filter(|it| !it.is_empty()).map(str::to_owned)
 }
 
 /// LanguageTool's language for a project's BCP 47 tag, which it takes as it is; with none, it guesses.
@@ -274,7 +306,7 @@ mod tests {
         let options =
             Options::from_settings(&settings(json!({"service": "premium", "username": " me@example.com ", "apiKey": "key"}))).unwrap();
         assert_eq!(options.service, Service::Premium { username: "me@example.com".into(), api_key: "key".into() });
-        assert_eq!(options.endpoint(), "https://api.languagetoolplus.com/v2/check");
+        assert_eq!(options.endpoint().unwrap(), "https://api.languagetoolplus.com/v2/check");
         assert_eq!(options.form("en-US", "Hi"), "text=Hi&language=en-US&username=me%40example.com&apiKey=key");
     }
 
@@ -283,9 +315,29 @@ mod tests {
         for server in ["http://localhost:8081", "http://localhost:8081/", "http://localhost:8081/v2/check", "http://localhost:8081/v2"] {
             let options =
                 Options::from_settings(&settings(json!({"service": "custom", "server": server}))).unwrap();
-            assert_eq!(options.endpoint(), "http://localhost:8081/v2/check");
+            assert_eq!(options.endpoint().unwrap(), "http://localhost:8081/v2/check");
         }
         assert!(Options::from_settings(&settings(json!({"service": "custom", "server": "localhost:8081"}))).is_err());
+    }
+
+    #[test]
+    fn the_hammer_server_needs_no_address_or_credentials() {
+        let options = Options::from_settings(&settings(json!({"service": "hammer", "apiKey": "key"}))).unwrap();
+        assert_eq!(options.service, Service::Hammer);
+        assert_eq!(options.endpoint(), None);
+        assert_eq!(options.form("en-US", "Hi"), "text=Hi&language=en-US");
+        assert!(options.fingerprint().starts_with("hammer:"));
+    }
+
+    #[test]
+    fn failures_name_the_hammer_server_when_it_is_in_the_way() {
+        assert!(failure(&Service::Hammer, 429, b"").starts_with("Your Hammer server's limit"));
+        assert!(failure(&Service::Free, 429, b"").starts_with("LanguageTool's limit"));
+        assert!(failure(&Service::Hammer, 502, b"").contains("couldn't reach its LanguageTool"));
+        assert!(failure(&Service::Free, 403, b"").contains("API key"));
+        assert_eq!(failure(&Service::Hammer, 400, b"Bad language"), "LanguageTool replied 400: Bad language");
+        let refused = br#"{"error":"api_services_error_toolarge","displayMessage":"The request is too large"}"#;
+        assert_eq!(failure(&Service::Hammer, 413, refused), "The request is too large");
     }
 
     #[test]

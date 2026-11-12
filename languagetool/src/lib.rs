@@ -22,15 +22,30 @@ fn cache_key(options: &Options, language: &str, paragraph: &str) -> String {
 fn send(options: &Options, language: &str, text: &str) -> hammer::Result<Response> {
     let body = options.form(language, text);
     let headers = [("Content-Type", "application/x-www-form-urlencoded"), ("Accept", "application/json")];
-    let response = hammer::http::request("POST", &options.endpoint(), &headers, Some(body.as_bytes()))?;
-    match response.status {
-        _ if response.is_success() => Ok(serde_json::from_slice(&response.body)?),
-        429 => Err("LanguageTool's limit of requests is reached; checking resumes in a minute".into()),
-        401 | 403 => Err("LanguageTool refused the email or API key in the plugin's settings".into()),
-        status => {
-            let detail: String = String::from_utf8_lossy(&response.body).chars().take(200).collect();
-            Err(format!("LanguageTool replied {status}: {detail}").into())
+    let (status, reply) = match options.endpoint() {
+        Some(endpoint) => {
+            let response = hammer::http::request("POST", &endpoint, &headers, Some(body.as_bytes()))?;
+            (response.status, response.body)
         }
+        None => {
+            let response = hammer::server::request("languagetool", "POST", check::CHECK_PATH, &headers, Some(body.as_bytes()))
+                .map_err(|error| hammer_failure(&error))?;
+            (response.status, response.body.into_bytes())
+        }
+    };
+    match status {
+        200..300 => Ok(serde_json::from_slice(&reply)?),
+        status => Err(check::failure(&options.service, status, &reply).into()),
+    }
+}
+
+fn hammer_failure(error: &hammer::server::ServerError) -> String {
+    use hammer::server::ErrorKind;
+    match error.kind {
+        ErrorKind::NotSignedIn => "Sign in to sync to check with your Hammer server".into(),
+        ErrorKind::Unavailable => "Your Hammer server doesn't offer LanguageTool".into(),
+        ErrorKind::Network => "Your Hammer server couldn't be reached".into(),
+        ErrorKind::NotPermitted | ErrorKind::Invalid => format!("Your Hammer server refused the check: {}", error.message),
     }
 }
 
