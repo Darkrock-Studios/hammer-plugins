@@ -9,4 +9,4 @@ crate-type = ["cdylib"]
 [dependencies]
 hammer = { workspace = true, features = ["getrandom"] }
 serde_json.workspace = true
-harper-core = { version = "2.11.0", default-features = false }
+harper-core = { version = "3.0.0", default-features = false }

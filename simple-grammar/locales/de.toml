@@ -42,3 +42,6 @@ label = "Lange Sätze"
 [settings.longSentenceWords]
 label = "Wörter in einem langen Satz"
 hint = "Mehr als so viele; nur mit „Lange Sätze“"
+
+[kind]
+label = "Grammatikprüfung"

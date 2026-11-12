@@ -42,3 +42,6 @@ label = "Oraciones largas"
 [settings.longSentenceWords]
 label = "Palabras de una oración larga"
 hint = "Más de esta cantidad; requiere Oraciones largas"
+
+[kind]
+label = "Corrector gramatical"
