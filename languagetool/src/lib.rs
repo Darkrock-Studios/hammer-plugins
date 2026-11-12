@@ -4,8 +4,9 @@
 
 mod check;
 
-use check::{Issue, Options, Response};
+use check::{Issue, Options};
 use hammer::diagnose::{Reply, Request};
+use hammer::server::languagetool::{self, CheckResponse};
 
 /// In every cache key, so a change to what is cached leaves the old values unread.
 const CACHE_VERSION: u32 = 1;
@@ -19,18 +20,16 @@ fn cache_key(options: &Options, language: &str, paragraph: &str) -> String {
     format!("v{CACHE_VERSION}:{}:{language}:{:016x}:{}", options.fingerprint(), hash(paragraph), paragraph.len())
 }
 
-fn send(options: &Options, language: &str, text: &str) -> hammer::Result<Response> {
+fn send(options: &Options, language: &str, text: &str) -> hammer::Result<CheckResponse> {
+    let Some(endpoint) = options.endpoint() else {
+        return languagetool::check(&options.request(language, text)).map_err(|error| check::hammer_failure(&error).into());
+    };
     let body = options.form(language, text);
     let headers = [("Content-Type", "application/x-www-form-urlencoded"), ("Accept", "application/json")];
-    let response = hammer::http::request("POST", &options.endpoint(), &headers, Some(body.as_bytes()))?;
+    let response = hammer::http::request("POST", &endpoint, &headers, Some(body.as_bytes()))?;
     match response.status {
-        _ if response.is_success() => Ok(serde_json::from_slice(&response.body)?),
-        429 => Err("LanguageTool's limit of requests is reached; checking resumes in a minute".into()),
-        401 | 403 => Err("LanguageTool refused the email or API key in the plugin's settings".into()),
-        status => {
-            let detail: String = String::from_utf8_lossy(&response.body).chars().take(200).collect();
-            Err(format!("LanguageTool replied {status}: {detail}").into())
-        }
+        200..300 => Ok(serde_json::from_slice(&response.body)?),
+        status => Err(check::failure(&options.service, status, &response.body).into()),
     }
 }
 

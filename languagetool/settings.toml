@@ -7,6 +7,7 @@ options = [
 	{ value = "free", label = "LanguageTool, free" },
 	{ value = "premium", label = "LanguageTool Premium" },
 	{ value = "custom", label = "Your own server" },
+	{ value = "hammer", label = "Your Hammer server" },
 ]
 
 [[setting]]
