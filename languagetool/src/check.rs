@@ -3,12 +3,13 @@
 //! tests.
 
 use hammer::diagnose::{Diagnostic, Fix, Severity};
+use hammer::server::languagetool::{CHECK_PATH, CheckRequest, CheckResponse, Level, Match};
+use hammer::server::{ErrorKind, ServerError};
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
 const FREE: &str = "https://api.languagetool.org";
 const PREMIUM: &str = "https://api.languagetoolplus.com";
-pub const CHECK_PATH: &str = "/v2/check";
 
 /// Between paragraphs in a batch: LanguageTool reads a blank line as a paragraph break.
 const SEPARATOR: &str = "\n\n";
@@ -97,30 +98,28 @@ impl Options {
         format!("{service}:{}", if self.picky { "picky" } else { "default" })
     }
 
+    pub fn request(&self, language: &str, text: &str) -> CheckRequest {
+        let level = if self.picky { Level::Picky } else { Level::Default };
+        CheckRequest { level, ..CheckRequest::new(text, language) }
+    }
+
+    /// The form for a server the plugin reaches itself, with Premium's credentials.
     pub fn form(&self, language: &str, text: &str) -> String {
-        let mut fields = vec![("text", text), ("language", language)];
-        if self.picky {
-            fields.push(("level", "picky"));
+        let form = self.request(language, text).form();
+        match &self.service {
+            Service::Premium { username, api_key } => {
+                format!("{form}&{}", hammer::http::form(&[("username", username), ("apiKey", api_key)]))
+            }
+            _ => form,
         }
-        if let Service::Premium { username, api_key } = &self.service {
-            fields.push(("username", username));
-            fields.push(("apiKey", api_key));
-        }
-        hammer::http::form(&fields)
     }
 }
 
-/// What to tell the user when a check comes back with a status other than success.
-pub fn failure(service: &Service, status: u16, body: &[u8]) -> String {
-    let hammer = *service == Service::Hammer;
-    // The Hammer server's own refusals carry a message meant for the user.
-    let from_hammer = if hammer { display_message(body) } else { None };
+/// What to tell the user when LanguageTool, reached directly, replies with a status other than success.
+pub fn failure(status: u16, body: &[u8]) -> String {
     match status {
-        429 if hammer => "Your Hammer server's limit of checks is reached; checking resumes in a minute".into(),
         429 => "LanguageTool's limit of requests is reached; checking resumes in a minute".into(),
-        401 | 403 if !hammer => "LanguageTool refused the email or API key in the plugin's settings".into(),
-        502 if hammer => "Your Hammer server couldn't reach its LanguageTool; try again later".into(),
-        _ if from_hammer.is_some() => from_hammer.unwrap(),
+        401 | 403 => "LanguageTool refused the email or API key in the plugin's settings".into(),
         status => {
             let detail: String = String::from_utf8_lossy(body).chars().take(200).collect();
             format!("LanguageTool replied {status}: {detail}")
@@ -128,9 +127,18 @@ pub fn failure(service: &Service, status: u16, body: &[u8]) -> String {
     }
 }
 
-fn display_message(body: &[u8]) -> Option<String> {
-    let reply: Value = serde_json::from_slice(body).ok()?;
-    reply.get("displayMessage")?.as_str().filter(|it| !it.is_empty()).map(str::to_owned)
+/// What to tell the user when a check through their Hammer server fails.
+pub fn hammer_failure(error: &ServerError) -> String {
+    match error.kind {
+        ErrorKind::NotSignedIn => "Sign in to sync to check with your Hammer server".into(),
+        ErrorKind::Unavailable => "Your Hammer server doesn't offer LanguageTool".into(),
+        ErrorKind::Network => "Your Hammer server couldn't be reached".into(),
+        ErrorKind::RateLimited => "Your Hammer server's limit of checks is reached; checking resumes in a minute".into(),
+        ErrorKind::ServiceFailed => "Your Hammer server couldn't reach its LanguageTool; try again later".into(),
+        // The sync server's own refusals carry a message meant for the user.
+        ErrorKind::Rejected => error.message.clone(),
+        _ => format!("Your Hammer server refused the check: {}", error.message),
+    }
 }
 
 /// LanguageTool's language for a project's BCP 47 tag, which it takes as it is; with none, it guesses.
@@ -172,51 +180,14 @@ pub fn batches(paragraphs: &[(usize, &str)], limit: usize) -> Vec<Batch> {
     batches
 }
 
-#[derive(Deserialize)]
-pub struct Response {
-    #[serde(default)]
-    pub matches: Vec<Match>,
+/// Hammer's own spell check underlines these already.
+fn is_spelling(found: &Match) -> bool {
+    found.rule.issue_type == "misspelling" && found.rule.category.id == "TYPOS"
 }
 
-#[derive(Deserialize)]
-pub struct Match {
-    pub message: String,
-    #[serde(default)]
-    pub replacements: Vec<Replacement>,
-    pub offset: usize,
-    pub length: usize,
-    pub rule: Rule,
-}
-
-#[derive(Deserialize)]
-pub struct Replacement {
-    pub value: String,
-}
-
-#[derive(Deserialize)]
-pub struct Rule {
-    #[serde(rename = "issueType", default)]
-    pub issue_type: String,
-    #[serde(default)]
-    pub category: Category,
-}
-
-#[derive(Deserialize, Default)]
-pub struct Category {
-    #[serde(default)]
-    pub id: String,
-}
-
-impl Match {
-    /// Hammer's own spell check underlines these already.
-    fn is_spelling(&self) -> bool {
-        self.rule.issue_type == "misspelling" && self.rule.category.id == "TYPOS"
-    }
-
-    fn is_suggestion(&self) -> bool {
-        matches!(self.rule.issue_type.as_str(), "style" | "register" | "locale-violation")
-            || matches!(self.rule.category.id.as_str(), "STYLE" | "REDUNDANCY")
-    }
+fn is_suggestion(found: &Match) -> bool {
+    matches!(found.rule.issue_type.as_str(), "style" | "register" | "locale-violation")
+        || matches!(found.rule.category.id.as_str(), "STYLE" | "REDUNDANCY")
 }
 
 /// A match in one paragraph, kept in the cache as it is, before the style setting filters it.
@@ -258,10 +229,10 @@ fn utf16_byte_offsets(text: &str) -> Vec<Option<usize>> {
 
 /// Each of the batch's parts' issues, in the order of its parts. A match that runs past its
 /// paragraph, or starts or ends inside a character, is dropped.
-pub fn issues(batch: &Batch, paragraphs: &[String], response: &Response) -> Vec<Vec<Issue>> {
+pub fn issues(batch: &Batch, paragraphs: &[String], response: &CheckResponse) -> Vec<Vec<Issue>> {
     let mut found: Vec<Vec<Issue>> = batch.parts.iter().map(|_| Vec::new()).collect();
     let offsets: Vec<_> = batch.parts.iter().map(|part| utf16_byte_offsets(&paragraphs[part.paragraph])).collect();
-    for found_match in response.matches.iter().filter(|it| !it.is_spelling()) {
+    for found_match in response.matches.iter().filter(|it| !is_spelling(it)) {
         let Some(index) = batch.parts.iter().rposition(|part| part.start <= found_match.offset) else { continue };
         let part = &batch.parts[index];
         let (start, end) = (found_match.offset - part.start, found_match.offset - part.start + found_match.length);
@@ -274,7 +245,7 @@ pub fn issues(batch: &Batch, paragraphs: &[String], response: &Response) -> Vec<
             end: *end,
             message: found_match.message.clone(),
             fixes: found_match.replacements.iter().take(MAX_FIXES).map(|it| it.value.clone()).collect(),
-            suggestion: found_match.is_suggestion(),
+            suggestion: is_suggestion(found_match),
         });
     }
     found
@@ -331,13 +302,14 @@ mod tests {
 
     #[test]
     fn failures_name_the_hammer_server_when_it_is_in_the_way() {
-        assert!(failure(&Service::Hammer, 429, b"").starts_with("Your Hammer server's limit"));
-        assert!(failure(&Service::Free, 429, b"").starts_with("LanguageTool's limit"));
-        assert!(failure(&Service::Hammer, 502, b"").contains("couldn't reach its LanguageTool"));
-        assert!(failure(&Service::Free, 403, b"").contains("API key"));
-        assert_eq!(failure(&Service::Hammer, 400, b"Bad language"), "LanguageTool replied 400: Bad language");
-        let refused = br#"{"error":"api_services_error_toolarge","displayMessage":"The request is too large"}"#;
-        assert_eq!(failure(&Service::Hammer, 413, refused), "The request is too large");
+        let error = |kind, message: &str| ServerError { kind, message: message.into() };
+        assert!(hammer_failure(&error(ErrorKind::RateLimited, "")).starts_with("Your Hammer server's limit"));
+        assert!(hammer_failure(&error(ErrorKind::ServiceFailed, "")).contains("couldn't reach its LanguageTool"));
+        assert!(hammer_failure(&error(ErrorKind::NotSignedIn, "")).starts_with("Sign in"));
+        assert_eq!(hammer_failure(&error(ErrorKind::Rejected, "The request is too large")), "The request is too large");
+        assert!(failure(429, b"").starts_with("LanguageTool's limit"));
+        assert!(failure(403, b"").contains("API key"));
+        assert_eq!(failure(400, b"Bad language"), "LanguageTool replied 400: Bad language");
     }
 
     #[test]
@@ -369,7 +341,7 @@ mod tests {
         let paragraphs = vec!["Héllo 😀 wrld.".to_string(), String::new(), "It are fine.".to_string()];
         let batch = &batches(&[(0, &paragraphs[0]), (2, &paragraphs[2])], 1000)[0];
         let second = batch.parts[1].start;
-        let response: Response = serde_json::from_value(json!({"matches": [
+        let response: CheckResponse = serde_json::from_value(json!({"matches": [
             matched(9, 4, "misspelling", "TYPOS", &["world"]),
             matched(second + 3, 3, "grammar", "GRAMMAR", &["is", ""]),
             matched(second + 7, 4, "style", "REDUNDANCY", &[]),
@@ -392,7 +364,7 @@ mod tests {
     fn an_emoji_before_a_match_shifts_its_bytes() {
         let paragraphs = vec!["😀 It are.".to_string()];
         let batch = &batches(&[(0, &paragraphs[0])], 1000)[0];
-        let response: Response = serde_json::from_value(json!({"matches": [matched(6, 3, "grammar", "GRAMMAR", &["is"])]})).unwrap();
+        let response: CheckResponse = serde_json::from_value(json!({"matches": [matched(6, 3, "grammar", "GRAMMAR", &["is"])]})).unwrap();
         let issue = &issues(batch, &paragraphs, &response)[0][0];
         assert_eq!(&paragraphs[0][issue.start..issue.end], "are");
     }

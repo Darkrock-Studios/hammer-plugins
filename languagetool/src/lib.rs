@@ -4,8 +4,9 @@
 
 mod check;
 
-use check::{Issue, Options, Response};
+use check::{Issue, Options};
 use hammer::diagnose::{Reply, Request};
+use hammer::server::languagetool::{self, CheckResponse};
 
 /// In every cache key, so a change to what is cached leaves the old values unread.
 const CACHE_VERSION: u32 = 1;
@@ -19,33 +20,16 @@ fn cache_key(options: &Options, language: &str, paragraph: &str) -> String {
     format!("v{CACHE_VERSION}:{}:{language}:{:016x}:{}", options.fingerprint(), hash(paragraph), paragraph.len())
 }
 
-fn send(options: &Options, language: &str, text: &str) -> hammer::Result<Response> {
+fn send(options: &Options, language: &str, text: &str) -> hammer::Result<CheckResponse> {
+    let Some(endpoint) = options.endpoint() else {
+        return languagetool::check(&options.request(language, text)).map_err(|error| check::hammer_failure(&error).into());
+    };
     let body = options.form(language, text);
     let headers = [("Content-Type", "application/x-www-form-urlencoded"), ("Accept", "application/json")];
-    let (status, reply) = match options.endpoint() {
-        Some(endpoint) => {
-            let response = hammer::http::request("POST", &endpoint, &headers, Some(body.as_bytes()))?;
-            (response.status, response.body)
-        }
-        None => {
-            let response = hammer::server::request("languagetool", "POST", check::CHECK_PATH, &headers, Some(body.as_bytes()))
-                .map_err(|error| hammer_failure(&error))?;
-            (response.status, response.body.into_bytes())
-        }
-    };
-    match status {
-        200..300 => Ok(serde_json::from_slice(&reply)?),
-        status => Err(check::failure(&options.service, status, &reply).into()),
-    }
-}
-
-fn hammer_failure(error: &hammer::server::ServerError) -> String {
-    use hammer::server::ErrorKind;
-    match error.kind {
-        ErrorKind::NotSignedIn => "Sign in to sync to check with your Hammer server".into(),
-        ErrorKind::Unavailable => "Your Hammer server doesn't offer LanguageTool".into(),
-        ErrorKind::Network => "Your Hammer server couldn't be reached".into(),
-        _ => format!("Your Hammer server refused the check: {}", error.message),
+    let response = hammer::http::request("POST", &endpoint, &headers, Some(body.as_bytes()))?;
+    match response.status {
+        200..300 => Ok(serde_json::from_slice(&response.body)?),
+        status => Err(check::failure(status, &response.body).into()),
     }
 }
 
