@@ -362,7 +362,8 @@ static const char *fix_for(const char *phrase, const char *fix, uint64_t i) {
 
 // `table` alternates a phrase and its fixes. A phrase starting at a word `skip` returns 1 for is
 // passed over.
-static void phrases(const char *const *table, int said, int (*skip)(uint64_t)) {
+// A style list's matches are suggestions, with the quieter underline; the rest are mistakes.
+static void phrases(const char *const *table, int said, int (*skip)(uint64_t), int style) {
   for (uint64_t i = 0; i < count; i++) {
     uint64_t length;
     uint32_t first = hammer_lower(hammer_char_at(text, words[i].start, &length));
@@ -390,8 +391,8 @@ static void phrases(const char *const *table, int said, int (*skip)(uint64_t)) {
         if (!*end) break;
         at = end + 3;
       }
-      hammer_report(words[i].start, words[i + matched - 1].end, say_with(said, fixes[0].replacement, fixes[0].length),
-                    fixes, n);
+      (style ? hammer_suggest : hammer_report)(words[i].start, words[i + matched - 1].end,
+                                               say_with(said, fixes[0].replacement, fixes[0].length), fixes, n);
       i += matched - 1;
       break;
     }
@@ -727,7 +728,7 @@ static void repeated_marks(void) {
     }
     if (end - i >= 2 && !(bangs == 1 && questions == 1)) {
       const char *fix = bangs && questions ? "?!" : bangs ? "!" : "?";
-      hammer_report_fix(i, end, say(SAY_REPEATED_PUNCTUATION), fix, strlen(fix));
+      hammer_suggest_fix(i, end, say(SAY_REPEATED_PUNCTUATION), fix, strlen(fix));
     }
     i = end - 1;
   }
@@ -756,7 +757,7 @@ static void long_sentences(void) {
     if ((int64_t)length > settings.long_sentence_words) {
       HammerBuffer words_in = {0};
       hammer_put_int(&words_in, (int64_t)length);
-      hammer_report(words[first].start, words[k].end, say_with(SAY_LONG_SENTENCE, words_in.data, words_in.length), 0, 0);
+      hammer_suggest(words[first].start, words[k].end, say_with(SAY_LONG_SENTENCE, words_in.data, words_in.length), 0, 0);
     }
     first = k + 1;
   }
@@ -813,10 +814,10 @@ void hammer_diagnose_paragraph(HammerText paragraph) {
     repeated_words();
     if (english) articles();
     elision();
-    phrases(lists.mistakes, SAY_DID_YOU_MEAN, 0);
+    phrases(lists.mistakes, SAY_DID_YOU_MEAN, 0, 0);
     if (english) than();
   }
-  if (settings.agreement) phrases(lists.agreement, SAY_AGREEMENT, agreement_skipped);
+  if (settings.agreement) phrases(lists.agreement, SAY_AGREEMENT, agreement_skipped, 0);
   if (settings.punctuation) {
     if (english) lone_i();
     spacing();
@@ -829,8 +830,8 @@ void hammer_diagnose_paragraph(HammerText paragraph) {
     quote_spacing();
     quote_comma();
   }
-  if (settings.wordiness) phrases(lists.wordy, SAY_WORDY, 0);
-  if (settings.redundancy) phrases(lists.redundant, SAY_REDUNDANT, 0);
+  if (settings.wordiness) phrases(lists.wordy, SAY_WORDY, 0, 1);
+  if (settings.redundancy) phrases(lists.redundant, SAY_REDUNDANT, 0, 1);
   if (settings.repeated_marks) repeated_marks();
   if (settings.long_sentences) long_sentences();
 }
