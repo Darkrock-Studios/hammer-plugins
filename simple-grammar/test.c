@@ -91,14 +91,14 @@ static void dialogue_test(void) {
 
 static void optional_rules_test(void) {
   HAMMER_EXPECT(0, "In order to win, we got a free gift!!", "");
-  HAMMER_EXPECT(OPTIONAL_ON, "In order to win, we got a free gift!!", "[In order to]>To; [free gift]>gift; [!!]>!");
-  HAMMER_EXPECT_MESSAGES(OPTIONAL_ON, "Each and every one.", "[Each and every] Wordy; " LQ "Each" RQ " says the same");
-  HAMMER_EXPECT(OPTIONAL_ON, "What?! Really?!? No!? Why??", "[?!?]>?!; [??]>?");
+  HAMMER_EXPECT(OPTIONAL_ON, "In order to win, we got a free gift!!", "[In order to]~>To; [free gift]~>gift; [!!]~>!");
+  HAMMER_EXPECT_MESSAGES(OPTIONAL_ON, "Each and every one.", "[Each and every]~ Wordy; " LQ "Each" RQ " says the same");
+  HAMMER_EXPECT(OPTIONAL_ON, "What?! Really?!? No!? Why??", "[?!?]~>?!; [??]~>?");
   HAMMER_EXPECT_MESSAGES(OPTIONAL_ON,
                          "One two three four five six seven eight nine ten eleven. Short one. Mr. J. R. Smith went "
                          "to the shop and bought one or two things.",
-                         "[One two three four five six seven eight nine ten eleven] Long sentence: 11 words; "
-                         "[Mr. J. R. Smith went to the shop and bought one or two things] Long sentence: 14 words");
+                         "[One two three four five six seven eight nine ten eleven]~ Long sentence: 11 words; "
+                         "[Mr. J. R. Smith went to the shop and bought one or two things]~ Long sentence: 14 words");
 }
 
 static void settings_test(void) {
@@ -198,7 +198,7 @@ static void german_test(void) {
                    "[" LQ "]>" LQ " {Add a space}; [" LOW_QUOTE "]> " LOW_QUOTE "{Add a space}");
   HAMMER_EXPECT_IN("de", 0, "Das kostet ca. zehn Euro, z. B. heute. äpfel fallen.", "[ä]>Ä");
   HAMMER_EXPECT_IN("de", OPTIONAL_ON, "Das ist bereits schon eine Zukunftsprognose.",
-                   "[bereits schon]>bereits|schon; [Zukunftsprognose]>Prognose");
+                   "[bereits schon]~>bereits|schon; [Zukunftsprognose]~>Prognose");
 }
 
 static void spanish_test(void) {
@@ -226,7 +226,7 @@ static void ukrainian_test(void) {
   HAMMER_EXPECT_IN("uk", 0, GUILLEMET_OPEN "Іду." GUILLEMET_CLOSE ", \xE2\x80\x94 сказав він" GUILLEMET_OPEN "так" GUILLEMET_CLOSE "і пішов.",
                    "[" GUILLEMET_OPEN "]> " GUILLEMET_OPEN "{Add a space}; [" GUILLEMET_CLOSE "]>" GUILLEMET_CLOSE
                    " {Add a space}; [.]>{Remove the full stop}");
-  HAMMER_EXPECT_IN("uk", OPTIONAL_ON, "Пам\xCA\xBCятний сувенір.", "[Пам\xCA\xBCятний сувенір]>Сувенір");
+  HAMMER_EXPECT_IN("uk", OPTIONAL_ON, "Пам\xCA\xBCятний сувенір.", "[Пам\xCA\xBCятний сувенір]~>Сувенір");
   HAMMER_EXPECT_IN("fr", 0, "Je ai vu l" MODIFIER_APOSTROPHE "arbre.", "[Je ai]>J" MODIFIER_APOSTROPHE "ai");
 }
 

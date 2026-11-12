@@ -20,6 +20,8 @@ Its settings turn groups of rules on and off:
 | Repeated marks | Off | "!!" and "?!?", but not "?!" |
 | Long sentences | Off | More than a set number of words, 40 unless changed (10 to 200) |
 
+The last four are style, not mistakes, so they get the editor's quieter, dotted underline.
+
 ## What it leaves alone
 
 The rules flag only what they are sure of:
