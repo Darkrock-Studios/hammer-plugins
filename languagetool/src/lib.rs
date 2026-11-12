@@ -45,7 +45,7 @@ fn hammer_failure(error: &hammer::server::ServerError) -> String {
         ErrorKind::NotSignedIn => "Sign in to sync to check with your Hammer server".into(),
         ErrorKind::Unavailable => "Your Hammer server doesn't offer LanguageTool".into(),
         ErrorKind::Network => "Your Hammer server couldn't be reached".into(),
-        ErrorKind::NotPermitted | ErrorKind::Invalid => format!("Your Hammer server refused the check: {}", error.message),
+        _ => format!("Your Hammer server refused the check: {}", error.message),
     }
 }
 
