@@ -84,13 +84,15 @@ private fun initialize(params: JsonObject): JsonObject {
 }
 
 /**
- * An operation offered as a tool. Its description carries Hammer's stance as well, since some clients
- * never show the model the server's instructions, but every client shows it the tool descriptions.
+ * An operation offered as a tool. A tool that writes carries Hammer's stance in its description too:
+ * some clients never show the model the server's instructions, and a model weighs a tool's description
+ * as it decides to call it. Read and delete tools go without, since the tool list is sent with every
+ * message and small local models have little room.
  */
 private class Tool(val name: String, val op: Operation) {
 	fun toJson() = buildJsonObject {
 		put("name", name)
-		put("description", "${op.description} ${if (op.access == WRITE) WRITER_DECIDES else TOOL_NOT_CO_AUTHOR}")
+		put("description", if (op.access == WRITE) "${op.description} $WRITER_DECIDES" else op.description)
 		put("inputSchema", op.input)
 		putJsonObject("annotations") {
 			put("readOnlyHint", op.access == READ)
@@ -169,11 +171,8 @@ private const val READ = "read"
 private const val WRITE = "write"
 private const val DESTRUCTIVE = "destructive"
 
-private const val TOOL_NOT_CO_AUTHOR = "Hammer is a tool for the writer, not a co-author: never write prose, or invent " +
-	"or suggest story content."
-private const val WRITER_DECIDES = "Record only what the writer has decided. Never invent or suggest names, characters, " +
-	"plot, or other story content, not even as options to pick from, and even when the writer asks you to choose: " +
-	"leave the choice to them."
+private const val WRITER_DECIDES = "Record only what the writer decided. Never invent or suggest names or other story " +
+	"content, even if asked to choose."
 
 private const val PARSE_ERROR = -32700
 private const val INVALID_REQUEST = -32600

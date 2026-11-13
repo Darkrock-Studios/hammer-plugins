@@ -10,10 +10,10 @@ It helps around your writing, and never writes it: no tool changes a scene's tex
 an image you let it delete. Hammer's stance is AI as a tool for the writer, not a replacement.
 
 The server's instructions tell agents not to ideate for you, down to naming a character or offering a
-list of names. Some clients, such as Jan, never show the model those instructions, so every tool's
-description repeats the stance, and each tool that makes changes says to record only what you've decided,
-never inventing or suggesting it.
-These steer a model; only the missing prose tools are a hard limit.
+list of names. Some clients, such as Jan, never show the model those instructions, so each tool that
+makes changes repeats in its description to record only what you've decided, never inventing or
+suggesting it. In testing, that line is what held. These steer a model; only the missing prose tools are
+a hard limit.
 
 Every operation the plugin is granted is a tool, named with underscores (`scene_read` for `scene.read`).
 It can always read:
@@ -46,6 +46,9 @@ since. With changes allowed, these tools arrange them:
 
 Turning a setting off applies right away. Turning one on adds tools, which an agent sees once it
 reconnects.
+
+With a small local model, leave both settings off unless you need them. The client sends the whole tool
+list with every message: about 3,000 tokens with only the read tools, and nearly 10,000 with all of them.
 
 It can't install or remove plugins: Hammer allows no plugin to, since an installed plugin gets its
 permissions without Hammer asking you. An agent that needs to can run `hammer plugin install` or
