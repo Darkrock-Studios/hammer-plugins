@@ -87,7 +87,7 @@ through this server. They report what they find with quotes from your scenes, an
 rewrites.
 
 - **pov-check:** point-of-view slips (head-hopping) in a scene, a chapter, or the whole book. Tag
-  scenes `pov:Name` for the most reliable results.
+  scenes `pov-Name` for the most reliable results.
 - **who-knows-what:** tracks what each character learns and when, and flags characters acting on
   things they haven't learned yet, or forgetting what they have.
 - **true-up-references:** checks which encyclopedia entries each scene references, proposing to

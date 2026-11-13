@@ -33,7 +33,8 @@ text of earlier pages. The word counts from `scene_tree` tell you up front how m
 
 Use the first of these that answers it, and record which one did:
 
-1. **Tag:** a scene tag like `pov:Name`, `pov-Name`, or `POV Name`.
+1. **Tag:** a scene tag like `pov-Name` or `pov_Name`. Hammer tags hold only letters, digits, `-`, and
+   `_`: it drops a tag with a colon and splits one with a space, so never suggest either.
 2. **Metadata:** the outline or notes naming the POV character.
 3. **Inferred:** from the text: the first-person narrator, or the one character whose thoughts and
    sensations the narration reports directly.
@@ -86,7 +87,7 @@ Then list the scenes checked with no findings on one line, and end with totals: 
 slips, borderline. Mark a finding Borderline when a reasonable writer could read it as the POV
 character's inference.
 
-If POV was inferred for any scene, say so at the top: tagging scenes `pov:Name` makes the next check
+If POV was inferred for any scene, say so at the top: tagging scenes `pov-Name` makes the next check
 more reliable.
 
 ## Saving the report
