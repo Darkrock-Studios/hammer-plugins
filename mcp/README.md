@@ -88,9 +88,13 @@ For Hammer's development data, use `hammer --dev mcp` instead.
 
 ## Skills
 
-`skills/` holds [Agent Skills](https://agentskills.io) that teach an agent to analyze a manuscript
-through this server. They report what they find with quotes from your scenes, and never suggest
-rewrites.
+`skills/` holds [Agent Skills](https://agentskills.io) for agents using this server. They report what
+they find with quotes from your scenes, and never suggest rewrites.
+
+- **hammer:** the general one. Answers questions about your story and its world from the project
+  itself, citing the scenes and entries it draws on, and records only what you decide. It repeats
+  Hammer's stance in its description, which clients that list skills put in front of the model, so it
+  holds even in a client that drops the server's instructions. Install it alongside the others.
 
 - **pov-check:** point-of-view slips (head-hopping) in a scene, a chapter, or the whole book. Tag
   scenes `pov-Name` for the most reliable results.
