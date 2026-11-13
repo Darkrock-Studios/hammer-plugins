@@ -1,8 +1,8 @@
 id = "languagetool"
 name = "LanguageTool"
-version = "0.2.0"
+version = "0.2.1"
 api = 1
-description = "Grammar, punctuation, and style from [LanguageTool](https://languagetool.org), underlined as you write, in more than 30 languages. The text you write is sent to LanguageTool's servers to be checked, to your own LanguageTool server if you run one, or to your Hammer sync server if it offers grammar checking."
+description = "Grammar, punctuation, and style from [LanguageTool](https://languagetool.org), checked as you write, in more than 30 languages. The text you write is sent to a LanguageTool server. Host your own, or use your Hammer sync server if it offers grammar checking."
 
 [kind]
 id = "grammar"

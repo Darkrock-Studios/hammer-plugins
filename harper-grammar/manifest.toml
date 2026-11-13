@@ -1,8 +1,8 @@
 id = "harper-grammar"
 name = "Harper grammar"
-version = "0.2.0"
+version = "0.2.1"
 api = 1
-description = "Grammar and style checks from [Harper](https://writewithharper.com/), underlined as you write. Thorough, but large: it needs about 100 MB of memory."
+description = "Grammar and style checks from [Harper](https://writewithharper.com/), underlined as you write. Thorough, but English only."
 languages = ["en"]
 
 [kind]
