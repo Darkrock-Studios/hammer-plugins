@@ -9,6 +9,12 @@ offers Hammer's operations to it as tools. Desktop only, since it runs as a `ham
 It helps around your writing, and never writes it: no tool changes a scene's text, beyond taking out
 an image you let it delete. Hammer's stance is AI as a tool for the writer, not a replacement.
 
+The server's instructions tell agents not to ideate for you, down to naming a character or offering a
+list of names. Some clients, such as Jan, never show the model those instructions, so every tool's
+description repeats the stance, and each tool that makes changes says to record only what you've decided,
+never inventing or suggesting it.
+These steer a model; only the missing prose tools are a hard limit.
+
 Every operation the plugin is granted is a tool, named with underscores (`scene_read` for `scene.read`).
 It can always read:
 

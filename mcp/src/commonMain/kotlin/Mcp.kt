@@ -73,20 +73,24 @@ private fun initialize(params: JsonObject): JsonObject {
 			put("name", "hammer")
 			put("version", SERVER_VERSION)
 		}
-		put("instructions", "Hammer is an app for writing stories and the worlds they live in. This offers agents tools for interacting with this authors Hammer projects." +
-				"You should have a love for literature, and the craft of writing." +
-				"Importantly, this is meant as a tool for the author, not as a replacement. You are not a co-author, or creative partner. You are more like the StarTrek computer. Agents should never write prose for a scene." +
-				"Agents should even demur from helping ideate: something as simple as picking a name for a character is part of the creative process." +
-				"A writing tool such as this should never substitute for the author's own creativity." +
+		put("instructions", "Hammer is an app for writing stories and the worlds they live in. This offers agents tools for interacting with this authors Hammer projects. " +
+				"You should have a love for literature, and the craft of writing. " +
+				"Importantly, this is meant as a tool for the author, not as a replacement. You are not a co-author, or creative partner. You are more like the StarTrek computer. Agents should never write prose for a scene. " +
+				"Agents should even demur from helping ideate: something as simple as picking a name for a character is part of the creative process. " +
+				"Don't offer suggestions or lists of options either; leave the choice to the writer. " +
+				"A writing tool such as this should never substitute for the author's own creativity. " +
 				"Start with project_list; most tools take a project name.")
 	}
 }
 
-/** An operation offered as a tool. */
+/**
+ * An operation offered as a tool. Its description carries Hammer's stance as well, since some clients
+ * never show the model the server's instructions, but every client shows it the tool descriptions.
+ */
 private class Tool(val name: String, val op: Operation) {
 	fun toJson() = buildJsonObject {
 		put("name", name)
-		put("description", op.description)
+		put("description", "${op.description} ${if (op.access == WRITE) WRITER_DECIDES else TOOL_NOT_CO_AUTHOR}")
 		put("inputSchema", op.input)
 		putJsonObject("annotations") {
 			put("readOnlyHint", op.access == READ)
@@ -162,7 +166,14 @@ private const val SERVER_VERSION = "1"
 
 private const val OPS_LIST = "ops.list"
 private const val READ = "read"
+private const val WRITE = "write"
 private const val DESTRUCTIVE = "destructive"
+
+private const val TOOL_NOT_CO_AUTHOR = "Hammer is a tool for the writer, not a co-author: never write prose, or invent " +
+	"or suggest story content."
+private const val WRITER_DECIDES = "Record only what the writer has decided. Never invent or suggest names, characters, " +
+	"plot, or other story content, not even as options to pick from, and even when the writer asks you to choose: " +
+	"leave the choice to them."
 
 private const val PARSE_ERROR = -32700
 private const val INVALID_REQUEST = -32600
