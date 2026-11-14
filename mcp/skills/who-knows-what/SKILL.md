@@ -46,7 +46,10 @@ reading the next, and keep only ledger rows, not the text of earlier pages. For 
   a short id and one-line statement: `F7: The letter was forged by Ada.` Reuse ids when a fact comes up
   again; don't create near-duplicates. Skip trivia and anything every character would know.
 - **Learns:** a character comes to know a fact. Note how: witnessed, told by whom, overheard, read,
-  deduced. Include the POV character, and anyone present when it's said aloud.
+  deduced. Include the POV character, and anyone present when it's said aloud. A character's own
+  words or actions are never how they learn a fact: a learns row needs a source in the scene (who told
+  them, what they saw, read, or worked out). If the first time they show the fact is by stating or
+  acting on it, that's a uses row with no learns row yet.
 - **Uses:** a character acts on, mentions, or plans around a fact, or reacts as if they know it.
 - **Shows ignorance:** a character asks about, is surprised by, or acts against a fact.
 
