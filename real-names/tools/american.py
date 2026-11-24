@@ -1,11 +1,11 @@
-"""Builds resources/names/american/: the most common given names by sex, over all years and for each
+"""Builds resources/names/american.txt: the most common given names by sex, over all years and for each
 decade of birth, and the most common surnames, each with its count; see resources/names/NOTICE.txt.
 Needs, in the working directory:
 
     yob<year>.txt            https://www.ssa.gov/oact/babynames/names.zip, unzipped
     Names_2010Census.csv     https://www2.census.gov/topics/genealogy/2010surnames/names.zip, unzipped
 
-    python3 american.py <working directory> <resources/names/american directory>
+    python3 american.py <working directory> <resources/names/american.txt>
 """
 import csv
 import glob
@@ -13,6 +13,8 @@ import os
 import re
 import sys
 from collections import Counter
+
+import lists
 
 GIVEN = 1000
 SURNAMES = 5000
@@ -48,15 +50,11 @@ def cased(name, forms={}):
     return upper[0] + upper[1:].lower()
 
 
-def write(path, counts, most):
-    ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most]
-    with open(path, "w", encoding="utf-8") as f:
-        f.writelines(f"{name}\t{count}\n" for name, count in ranked)
-    print(os.path.basename(path), len(ranked))
+def write(name, counts, most):
+    lists.write(out, name, sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most])
 
 
 work, out = sys.argv[1], sys.argv[2]
-os.makedirs(out, exist_ok=True)
 
 # Keyed by (sex, decade), with decade None for all years.
 given = {}
@@ -70,11 +68,11 @@ for (sex, decade), counts in sorted(given.items(), key=lambda item: (item[0][0],
     kind = {"F": "feminine", "M": "masculine"}[sex]
     other = given[("M" if sex == "F" else "F", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(os.path.join(out, f"{kind}-{decade}.txt" if decade else f"{kind}.txt"), counts, GIVEN)
+    write(f"{kind}-{decade}" if decade else kind, counts, GIVEN)
 
 surnames = Counter()
 with open(os.path.join(work, "Names_2010Census.csv"), encoding="utf-8") as f:
     for row in csv.DictReader(f):
         if row["name"].isalpha():
             surnames[cased(row["name"], FORMS)] += int(row["count"])
-write(os.path.join(out, "surnames.txt"), surnames, SURNAMES)
+write("surnames", surnames, SURNAMES)

@@ -2,13 +2,13 @@
 // that adds it to the project's encyclopedia as a person. The page's state holds the list's seed and
 // options, so pressing a name rebuilds the same list, marking the names already added.
 //
-// Each culture is a directory, resources/names/<culture>/, of lists with a name and how many people
-// have it on each line, a tab between them: feminine.txt and masculine.txt, optionally
-// feminine-<decade>.txt and masculine-<decade>.txt for those born in a decade, such as
-// feminine-1950.txt, and optionally surnames.txt, or surnames-feminine.txt and surnames-masculine.txt
-// where they differ. A name is picked as often as it is common. A full name is "{given} {surname}"
-// unless format.txt says otherwise, such as "{surname} {given}". Adding a
-// culture is a directory and an option in the manifest's culture field.
+// Each culture is a file, resources/names/<culture>.txt, of lists, each a line "[<list>]" and then a
+// name and how many people have it on each line, a tab between them: feminine and masculine,
+// optionally feminine-<decade> and masculine-<decade> for those born in a decade, such as
+// feminine-1950, and optionally surnames, or surnames-feminine and surnames-masculine where they
+// differ. A name is picked as often as it is common. A full name is "{given} {surname}" unless the
+// format list's line says otherwise, such as "{surname} {given}". Adding a culture is a file and an
+// option in the manifest's culture field.
 import hammer.ActionReply
 import hammer.ActionReply.Button
 import hammer.ActionReply.Page
@@ -69,9 +69,26 @@ class NameList(lines: List<String>) {
 	}
 }
 
-/** The culture's list in `<file>.txt`, or null when it has none. */
-fun nameList(culture: String, file: String): NameList? =
-	resourceText("names/$culture/$file.txt")?.let { NameList(it.lines()) }?.takeUnless { it.isEmpty() }
+private val cultures = HashMap<String, Map<String, List<String>>>()
+
+/** The culture's lists, each as its lines, by name, or null when there is no such culture. */
+fun lists(culture: String): Map<String, List<String>>? =
+	cultures[culture] ?: resourceText("names/$culture.txt")?.let(::parseLists)?.also { cultures[culture] = it }
+
+/** The lists in a culture's file: each a line `[<list>]` and then its lines. */
+fun parseLists(text: String): Map<String, List<String>> {
+	val lists = HashMap<String, MutableList<String>>()
+	var list: MutableList<String>? = null
+	for (line in text.lines()) {
+		if (line.startsWith('[') && line.endsWith(']')) list = ArrayList<String>().also { lists[line.substring(1, line.length - 1)] = it }
+		else if (line.isNotBlank()) (list ?: error("A culture's file has lines before its first list")) += line
+	}
+	return lists
+}
+
+/** The culture's list [name], or null when it has none. */
+fun nameList(culture: String, name: String): NameList? =
+	lists(culture)?.get(name)?.let(::NameList)?.takeUnless { it.isEmpty() }
 
 /** The culture's given names of a kind for the decade nearest [era] that has a list, within 30 years, or for all years. */
 private fun givenNames(culture: String, kind: String, era: String): NameList {
@@ -90,7 +107,7 @@ fun generate(seed: Long, input: NamesInput): List<String> {
 		givenNames(culture, kind, input.era) to
 			if (input.surnames) nameList(culture, "surnames-$kind") ?: nameList(culture, "surnames") else null
 	}
-	val format = resourceText("names/$culture/format.txt")?.trim() ?: "{given} {surname}"
+	val format = lists(culture)?.get("format")?.firstOrNull()?.trim() ?: "{given} {surname}"
 	val random = Random(seed)
 	return List(input.count.coerceIn(1, MAX_NAMES)) {
 		val (given, surnames) = lists.random(random)

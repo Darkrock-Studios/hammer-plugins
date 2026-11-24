@@ -1,37 +1,38 @@
 Name lists
 
-Each list has a name and how many people have it on each line, most common first.
+Each culture's file holds its lists, each under a line "[<list>]", with a name and how many people
+have it on each line, most common first.
 hammer-plugins' real-names/tools/ builds them, a script for each culture.
 
-american/
+american.txt
 
-feminine.txt, masculine.txt, and the lists by decade of birth hold the 1,000 most common given names
+feminine, masculine, and the lists by decade of birth hold the 1,000 most common given names
 of each sex among Social Security card applications for births in the United States, over 1880 to
 the latest year published and within each decade. From the Social Security Administration's national
 baby names data, https://www.ssa.gov/oact/babynames/limits.html. It gives names without spaces,
 hyphens, or capitals inside them. A name over 20 times as common for the other sex is left out.
 
-surnames.txt holds the 5,000 most common surnames of the 2010 census. From the Census Bureau's
+surnames holds the 5,000 most common surnames of the 2010 census. From the Census Bureau's
 Frequently Occurring Surnames from the 2010 Census,
 https://www.census.gov/topics/population/genealogy/data/2010_surnames.html. It gives surnames in
 capitals without spaces or punctuation; the script restores those of the common ones.
 
 Both are works of the United States government, in the public domain.
 
-french/
+french.txt
 
-feminine.txt, masculine.txt, and the lists by decade of birth hold the 1,000 most common given names
+feminine, masculine, and the lists by decade of birth hold the 1,000 most common given names
 of each sex among births in France, over 1900 to 2022 and within each decade. From INSEE's Fichier des
 prénoms, 2022 edition, https://www.insee.fr/fr/statistiques/7633685. A name over 20 times as common
 for the other sex is left out.
 
-surnames.txt holds the 5,000 most common surnames among births in France from 1891 to 2000. From
+surnames holds the 5,000 most common surnames among births in France from 1891 to 2000. From
 INSEE's Fichier des noms de famille, 2008 edition, https://www.insee.fr/fr/statistiques/3536630. It
 gives surnames in capitals without accents; the script restores those of the common ones.
 
 Both are shared by INSEE under the Licence Ouverte 2.0, https://www.etalab.gouv.fr/licence-ouverte-open-licence/.
 
-chinese/
+chinese.txt
 
 The lists hold the most common given names of each sex among those born in China from 1930 to 2008,
 over all those years and for each cohort of birth (1930 to 1959, under 1950, then each decade), and
@@ -46,7 +47,7 @@ version 3 (licenses/GPL-3.0.txt) and the Creative Commons Attribution-NonCommerc
 licence, of which the source names no version (licenses/CC-BY-NC-SA-4.0.txt is version 4.0). They
 may be used for non-commercial purposes only, and shared only under the same terms.
 
-english/
+english.txt
 
 The lists by decade of birth since the 1990s hold the 1,000 most common given names of each sex among
 births in England and Wales from 1996 to 2025. From the Office for National Statistics' Baby names in
@@ -54,45 +55,45 @@ England and Wales: from 1996, shared under the Open Government Licence v3.0,
 https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/. A name over 20 times as
 common for the other sex is left out. The other lists are from Wikidata, below.
 
-irish/
+irish.txt
 
-feminine.txt, masculine.txt, and the lists by decade of birth since the 1960s hold the 1,000 most
-common given names of each sex among births registered in Ireland from 1964 to 2024, and surnames.txt
+feminine, masculine, and the lists by decade of birth since the 1960s hold the 1,000 most
+common given names of each sex among births registered in Ireland from 1964 to 2024, and surnames
 the surnames of babies of 2023 and 2024. From the Central Statistics Office's tables VSA50, VSA60, and
 VSA110, https://data.cso.ie, shared under CC BY 4.0, https://creativecommons.org/licenses/by/4.0/. A
 name over 20 times as common for the other sex is left out. Lists for earlier decades are from
 Wikidata, below.
 
-norwegian/
+norwegian.txt
 
-feminine.txt, masculine.txt, and the lists by decade of birth hold the most common given names of each
+feminine, masculine, and the lists by decade of birth hold the most common given names of each
 sex among those born in Norway from 1880 to 2025, each with how many of 100,000 born it was given to,
-a year at a time, and surnames.txt the surnames 200 people or more have. From Statistics Norway's
+a year at a time, and surnames the surnames 200 people or more have. From Statistics Norway's
 StatBank tables 10467 and 12891, https://www.ssb.no/en/statbank, shared under CC BY 4.0,
 https://creativecommons.org/licenses/by/4.0/. A name over 20 times as common for the other sex is left
 out.
 
-polish/
+polish.txt
 
-feminine.txt and masculine.txt hold the 1,000 most common first given names of each sex in Poland's
-PESEL register, and surnames-feminine.txt and surnames-masculine.txt the 5,000 most common surnames of
+feminine and masculine hold the 1,000 most common first given names of each sex in Poland's
+PESEL register, and surnames-feminine and surnames-masculine the 5,000 most common surnames of
 each, the dead counted too. From the lists the Ministry of Digital Affairs shares at
 https://dane.gov.pl, datasets 1501 and 568, in the public domain (CC0). The lists by decade of birth
 are from Wikidata, below.
 
-scottish/
+scottish.txt
 
-feminine.txt, masculine.txt, and the lists by decade of birth since the 1970s hold the 1,000 most
-common given names of each sex among births registered in Scotland from 1974 to 2025, and surnames.txt
+feminine, masculine, and the lists by decade of birth since the 1970s hold the 1,000 most
+common given names of each sex among births registered in Scotland from 1974 to 2025, and surnames
 the surnames in its registers of births, marriages, and deaths in every fifth year from 1975 to 2010
 and each year since 2013. From National Records of Scotland's Babies' First Names and Most Common
 Surnames, https://www.nrscotland.gov.uk, shared under the Open Government Licence v3.0,
 https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/. A name over 20 times as
 common for the other sex is left out. Lists for earlier decades are from Wikidata, below.
 
-brazilian/, dutch/, filipino/, german/, greek/, indian/, iranian/, israeli/, italian/,
-japanese/, korean/, mexican/, nigerian/, russian/, spanish/, swedish/, turkish/, ukrainian/, and what
-the above lack
+brazilian.txt, dutch.txt, filipino.txt, german.txt, greek.txt, indian.txt, iranian.txt,
+israeli.txt, italian.txt, japanese.txt, korean.txt, mexican.txt, nigerian.txt, russian.txt,
+spanish.txt, swedish.txt, turkish.txt, ukrainian.txt, and what the above lack
 
 The lists hold the first given names and the family names of each country's people born since 1880
 that Wikidata, https://www.wikidata.org, has, by their English labels, and how many of those people

@@ -1,4 +1,4 @@
-"""Builds resources/names/irish/: the most common given names by sex, since 1964 and for each decade of
+"""Builds resources/names/irish.txt: the most common given names by sex, since 1964 and for each decade of
 birth since, and the most common surnames, each with its count; see resources/names/NOTICE.txt. Run
 it after wikidata.py, whose lists for earlier decades it leaves. Needs, in the working directory,
 the Central Statistics Office's tables as CSV, each from
@@ -8,12 +8,14 @@ https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/<table>/CS
     VSA60.csv                girls' names with 3 or more occurrences, by year
     VSA110.csv               surnames of babies with 10 or more occurrences, by year
 
-    python3 irish.py <working directory> <resources/names/irish directory>
+    python3 irish.py <working directory> <resources/names/irish.txt>
 """
 import csv
 import os
 import sys
 from collections import Counter
+
+import lists
 
 GIVEN = 1000
 SURNAMES = 5000
@@ -21,7 +23,6 @@ SURNAMES = 5000
 OTHER_SEX = 20
 
 work, out = sys.argv[1], sys.argv[2]
-os.makedirs(out, exist_ok=True)
 
 
 def table(name):
@@ -32,11 +33,8 @@ def table(name):
                 yield value, int(year), int(count)
 
 
-def write(path, counts, most):
-    ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most]
-    with open(path, "w", encoding="utf-8") as f:
-        f.writelines(f"{name}\t{count}\n" for name, count in ranked)
-    print(os.path.basename(path), len(ranked))
+def write(name, counts, most):
+    lists.write(out, name, sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most])
 
 
 # Keyed by (kind, decade), with decade None for all years.
@@ -48,9 +46,9 @@ for kind, name in (("masculine", "VSA50"), ("feminine", "VSA60")):
 for (kind, decade), counts in sorted(given.items(), key=lambda item: (item[0][0], item[0][1] or 0)):
     other = given[("masculine" if kind == "feminine" else "feminine", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(os.path.join(out, f"{kind}-{decade}.txt" if decade else f"{kind}.txt"), counts, GIVEN)
+    write(f"{kind}-{decade}" if decade else kind, counts, GIVEN)
 
 surnames = Counter()
 for value, _, count in table("VSA110"):
     surnames[value] += count
-write(os.path.join(out, "surnames.txt"), surnames, SURNAMES)
+write("surnames", surnames, SURNAMES)

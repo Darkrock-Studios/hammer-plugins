@@ -1,17 +1,19 @@
-"""Builds resources/names/norwegian/: the most common given names by sex, over all years and for each
+"""Builds resources/names/norwegian.txt: the most common given names by sex, over all years and for each
 decade of birth, each with how many of 100,000 born it was given to, a year at a time, and the most
 common surnames, each with its count; see resources/names/NOTICE.txt.
 Asks Statistics Norway's StatBank, https://data.ssb.no, for tables 10467 (born persons by name and
 year) and 12891 (last names used by 200 persons or more), and keeps each answer in the working
 directory, so a second run asks for nothing.
 
-    python3 norwegian.py <working directory> <resources/names/norwegian directory>
+    python3 norwegian.py <working directory> <resources/names/norwegian.txt>
 """
 import json
 import os
 import sys
 import urllib.request
 from collections import Counter
+
+import lists
 
 GIVEN = 1000
 SURNAMES = 5000
@@ -20,7 +22,6 @@ OTHER_SEX = 20
 
 work, out = sys.argv[1], sys.argv[2]
 os.makedirs(work, exist_ok=True)
-os.makedirs(out, exist_ok=True)
 
 
 def table(number, contents):
@@ -46,11 +47,8 @@ def table(number, contents):
             yield codes[i // len(years)], labels[i // len(years)], int(years[i % len(years)]), value
 
 
-def write(path, counts, most):
-    ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most]
-    with open(path, "w", encoding="utf-8") as f:
-        f.writelines(f"{name}\t{count}\n" for name, count in ranked)
-    print(os.path.basename(path), len(ranked))
+def write(name, counts, most):
+    lists.write(out, name, sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most])
 
 
 # Keyed by (sex, decade), with decade None for all years. A name's code starts with 1 for a girls'
@@ -64,10 +62,10 @@ for (sex, decade), counts in sorted(given.items(), key=lambda item: (item[0][0],
     kind = {"1": "feminine", "2": "masculine"}[sex]
     other = given.get(("2" if sex == "1" else "1", decade), Counter())
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(os.path.join(out, f"{kind}-{decade}.txt" if decade else f"{kind}.txt"), counts, GIVEN)
+    write(f"{kind}-{decade}" if decade else kind, counts, GIVEN)
 
 # Each surname's count in the latest year it has one.
 surnames = {}
 for _, name, year, count in table(12891, "Personer"):
     surnames[name] = count
-write(os.path.join(out, "surnames.txt"), surnames, SURNAMES)
+write("surnames", surnames, SURNAMES)

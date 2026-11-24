@@ -1,4 +1,4 @@
-"""Builds resources/names/chinese/: the most common given names by sex, over all years and for each
+"""Builds resources/names/chinese.txt: the most common given names by sex, over all years and for each
 cohort of birth, and the most common surnames, each with its count, in pinyin; see
 resources/names/NOTICE.txt, as its source's terms cover these lists. Needs, in the working directory,
 from the ChineseNames package's data-csv/, https://github.com/psychbruce/ChineseNames:
@@ -8,13 +8,15 @@ from the ChineseNames package's data-csv/, https://github.com/psychbruce/Chinese
     top100name.year.csv      the 100 most common given names of each sex in each cohort
     familyname.csv           surnames
 
-    python3 chinese.py <working directory> <resources/names/chinese directory>
+    python3 chinese.py <working directory> <resources/names/chinese.txt>
 """
 import csv
 import os
 import re
 import sys
 from collections import Counter
+
+import lists
 
 # A given name this many times as common for the other sex is left out.
 OTHER_SEX = 20
@@ -24,7 +26,6 @@ SURNAMES = {"曾": "zeng", "覃": "qin", "单": "shan", "解": "xie", "缪": "mi
             "乐": "yue", "盖": "ge", "朴": "piao", "区": "ou", "都": "du", "薄": "bo", "宿": "su"}
 
 work, out = sys.argv[1], sys.argv[2]
-os.makedirs(out, exist_ok=True)
 
 
 def table(name):
@@ -47,10 +48,7 @@ def written(name, readings={}):
 
 
 def write(file, counts):
-    ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
-    with open(os.path.join(out, f"{file}.txt"), "w", encoding="utf-8") as f:
-        f.writelines(f"{name}\t{count}\n" for name, count in ranked)
-    print(file, len(ranked))
+    lists.write(out, file, sorted(counts.items(), key=lambda item: (-item[1], item[0])))
 
 
 # Names of different characters and the same pinyin count as one.

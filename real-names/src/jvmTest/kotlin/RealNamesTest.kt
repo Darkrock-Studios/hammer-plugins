@@ -100,6 +100,17 @@ class RealNamesTest {
 	}
 
 	@Test
+	fun `a culture's file holds its lists under their names`() {
+		val lists = parseLists("[format]\n{surname} {given}\n\n[feminine]\nMary\t9\nAnn\t3\n\n[surnames]\n")
+		assertEquals(mapOf("format" to listOf("{surname} {given}"), "feminine" to listOf("Mary\t9", "Ann\t3"), "surnames" to emptyList()), lists)
+		assertFailsWith<IllegalStateException> { parseLists("Mary\t9\n[feminine]\n") }
+		assertNull(lists("atlantean"))
+		val files = java.io.File("resources/names").list()!!.filter { it.endsWith(".txt") && it != "NOTICE.txt" }.map { it.removeSuffix(".txt") }
+		val manifest = java.io.File("manifest.toml").readText()
+		assertTrue(files.size > 20 && files.all { "value = \"$it\"" in manifest }, "$files")
+	}
+
+	@Test
 	fun `surnames are written as they usually are`() {
 		val surnames = nameList("american", "surnames")!!
 		assertTrue(listOf("O'Brien", "McDonald", "De La Cruz", "St. John").all { it in surnames })

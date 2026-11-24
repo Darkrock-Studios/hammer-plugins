@@ -1,4 +1,4 @@
-"""Builds resources/names/english/'s lists of the most common given names by sex for each decade of
+"""Builds resources/names/english.txt's lists of the most common given names by sex for each decade of
 birth since the 1990s, each with its count; see resources/names/NOTICE.txt. Run it after wikidata.py,
 whose other lists it leaves. Needs, in the working directory, the Office for National Statistics'
 Baby names in England and Wales: from 1996,
@@ -6,13 +6,14 @@ https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/liv
 
     babynames1996to2025.xlsx
 
-    python3 english.py <working directory> <resources/names/english directory>
+    python3 english.py <working directory> <resources/names/english.txt>
 """
 import os
 import re
 import sys
 from collections import Counter
 
+import lists
 from xlsx import sheets
 
 GIVEN = 1000
@@ -21,7 +22,6 @@ OTHER_SEX = 20
 KINDS = {"Table_1": "feminine", "Table_2": "masculine"}
 
 work, out = sys.argv[1], sys.argv[2]
-os.makedirs(out, exist_ok=True)
 
 # Keyed by (kind, decade). A table's rows are a name and its rank and count in each year, the columns
 # headed such as "2025 Count"; a count under 3 is "[x]".
@@ -40,6 +40,4 @@ for sheet, rows in sheets(os.path.join(work, "babynames1996to2025.xlsx")):
 for (kind, decade), counts in sorted(given.items()):
     other = given[("masculine" if kind == "feminine" else "feminine", decade)]
     ranked = sorted(((name, count) for name, count in counts.items() if other[name] <= OTHER_SEX * count), key=lambda item: (-item[1], item[0]))[:GIVEN]
-    with open(os.path.join(out, f"{kind}-{decade}.txt"), "w", encoding="utf-8") as f:
-        f.writelines(f"{name}\t{count}\n" for name, count in ranked)
-    print(f"{kind}-{decade}", len(ranked))
+    lists.write(out, f"{kind}-{decade}", ranked)

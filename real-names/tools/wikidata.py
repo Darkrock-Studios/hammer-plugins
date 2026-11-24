@@ -1,10 +1,10 @@
-"""Builds resources/names/<culture>/ for a culture without published statistics, from the people
+"""Builds resources/names/<culture>.txt for a culture without published statistics, from the people
 Wikidata has born since 1880: the most common given names by sex, over all years and for each decade
 of birth with enough people, and the most common surnames, each with its count; see resources/names/NOTICE.txt.
 Asks https://query.wikidata.org, and keeps each answer in the working directory, so a second run
 asks only for what is missing.
 
-    python3 wikidata.py <culture> <working directory> <resources/names/<culture> directory>
+    python3 wikidata.py <culture> <working directory> <resources/names/<culture>.txt>
 """
 import json
 import os
@@ -15,6 +15,8 @@ import unicodedata
 import urllib.parse
 import urllib.request
 from collections import Counter
+
+import lists
 
 GIVEN = 1000
 SURNAMES = 5000
@@ -75,7 +77,6 @@ SEXES = {"feminine": "Q6581072", "masculine": "Q6581097"}
 culture, work, out = sys.argv[1], sys.argv[2], sys.argv[3]
 options = CULTURES[culture]
 os.makedirs(work, exist_ok=True)
-os.makedirs(out, exist_ok=True)
 
 
 def people():
@@ -126,9 +127,7 @@ def write(file, counts, most, decade=False):
     ranked = sorted(((name, count) for name, count in counts.items() if count >= FEWEST), key=lambda item: (-item[1], item[0]))[:most]
     if (sum(counts.values()) < DECADE_PEOPLE or len(ranked) < DECADE_NAMES) if decade else len(ranked) < FEWEST_NAMES:
         return
-    with open(os.path.join(out, f"{file}.txt"), "w", encoding="utf-8") as f:
-        f.writelines(f"{name}\t{count}\n" for name, count in ranked)
-    print(file, len(ranked))
+    lists.write(out, file, ranked)
 
 
 # Keyed by (sex, decade), with decade None for all of them. A person's first given name counts: one
