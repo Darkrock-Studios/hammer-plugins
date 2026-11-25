@@ -110,6 +110,9 @@ class RealNamesTest {
 		assertEquals(emptyList(), file.list(bytes, "surnames"))
 		assertNull(file.list(bytes, "masculine"))
 		assertFailsWith<IllegalStateException> { CultureFile("Mary\t9\n[feminine]\n".encodeToByteArray()) }
+		assertFailsWith<IllegalStateException> { CultureFile("\n Mary\t9\n[feminine]\n".encodeToByteArray()) }
+		val marked = "﻿\n \r\n[feminine]\nMary\t9\n".encodeToByteArray()
+		assertEquals(listOf("Mary\t9"), CultureFile(marked).list(marked, "feminine"))
 		assertNull(nameList("atlantean", "feminine"))
 		// More cultures than are kept, then the first again once it has been let go.
 		listOf("american", "french", "japanese", "russian", "greek", "american").forEach { culture ->

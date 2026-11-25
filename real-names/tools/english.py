@@ -39,5 +39,4 @@ for sheet, rows in sheets(os.path.join(work, "babynames1996to2025.xlsx")):
                     given.setdefault((KINDS[sheet], year // 10 * 10), Counter())[row[0]] += int(row[i])
 for (kind, decade), counts in sorted(given.items()):
     other = given[("masculine" if kind == "feminine" else "feminine", decade)]
-    ranked = sorted(((name, count) for name, count in counts.items() if other[name] <= OTHER_SEX * count), key=lambda item: (-item[1], item[0]))[:GIVEN]
-    lists.write(out, f"{kind}-{decade}", ranked)
+    lists.write(out, f"{kind}-{decade}", ((name, count) for name, count in counts.items() if other[name] <= OTHER_SEX * count), GIVEN)

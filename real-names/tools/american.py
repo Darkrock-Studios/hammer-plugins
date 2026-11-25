@@ -50,10 +50,6 @@ def cased(name, forms={}):
     return upper[0] + upper[1:].lower()
 
 
-def write(name, counts, most):
-    lists.write(out, name, sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most])
-
-
 work, out = sys.argv[1], sys.argv[2]
 
 # Keyed by (sex, decade), with decade None for all years.
@@ -68,11 +64,11 @@ for (sex, decade), counts in sorted(given.items(), key=lambda item: (item[0][0],
     kind = {"F": "feminine", "M": "masculine"}[sex]
     other = given[("M" if sex == "F" else "F", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(f"{kind}-{decade}" if decade else kind, counts, GIVEN)
+    lists.write(out, f"{kind}-{decade}" if decade else kind, counts.items(), GIVEN)
 
 surnames = Counter()
 with open(os.path.join(work, "Names_2010Census.csv"), encoding="utf-8") as f:
     for row in csv.DictReader(f):
         if row["name"].isalpha():
             surnames[cased(row["name"], FORMS)] += int(row["count"])
-write("surnames", surnames, SURNAMES)
+lists.write(out, "surnames", surnames.items(), SURNAMES)

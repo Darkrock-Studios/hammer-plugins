@@ -49,10 +49,6 @@ def cased(name):
     return re.sub(r"(^|[ '-])(.)", lambda m: m.group(1) + m.group(2).upper(), name.lower())
 
 
-def write(name, counts, most):
-    lists.write(out, name, sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most])
-
-
 work, out = sys.argv[1], sys.argv[2]
 
 # Keyed by (sex, decade), with decade None for all years.
@@ -68,7 +64,7 @@ for (sex, decade), counts in sorted(given.items(), key=lambda item: (item[0][0],
     kind = {"1": "masculine", "2": "feminine"}[sex]
     other = given[("1" if sex == "2" else "2", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(f"{kind}-{decade}" if decade else kind, counts, GIVEN)
+    lists.write(out, f"{kind}-{decade}" if decade else kind, counts.items(), GIVEN)
 
 forms = {}
 for name, _ in (given[("1", None)] + given[("2", None)]).most_common()[::-1]:
@@ -83,4 +79,4 @@ with open(os.path.join(work, "noms2008nat_txt.txt"), encoding="ascii") as f:
             continue
         name = forms.get(row[0]) or re.sub(r"iere$", "ière", cased(row[0]))
         surnames[name] += sum(int(count) for count in row[1:])
-write("surnames", surnames, SURNAMES)
+lists.write(out, "surnames", surnames.items(), SURNAMES)

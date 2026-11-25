@@ -89,34 +89,34 @@ class NameList(lines: List<String>) {
  * as bytes, to find its lists, and a list is decoded only when it is asked for.
  */
 class CultureFile(bytes: ByteArray) {
-	private val starts = HashMap<String, Int>()
-	private val ends = HashMap<String, Int>()
+	/** Where each list's lines lie in the file's bytes, by the list's name. */
+	private val lists = HashMap<String, IntRange>()
 
 	init {
-		if (bytes.isNotEmpty() && bytes[0] != OPEN) error("A culture's file has lines before its first list")
 		var list: String? = null
-		var lineStart = 0
-		for (i in 0..bytes.size) {
+		var start = 0
+		var lineStart = if (bytes.size >= 3 && bytes[0] == BOM[0] && bytes[1] == BOM[1] && bytes[2] == BOM[2]) 3 else 0
+		for (i in lineStart..bytes.size) {
 			if (i < bytes.size && bytes[i] != NEWLINE) continue
-			if (i > lineStart && bytes[lineStart] == OPEN) {
-				val end = if (bytes[i - 1] == RETURN) i - 1 else i
-				if (end - lineStart > 1 && bytes[end - 1] == CLOSE) {
-					list?.let { ends[it] = lineStart }
-					list = bytes.decodeToString(lineStart + 1, end - 1)
-					starts[list] = minOf(i + 1, bytes.size)
-				}
+			val end = if (i > lineStart && bytes[i - 1] == RETURN) i - 1 else i
+			if (end - lineStart > 1 && bytes[lineStart] == OPEN && bytes[end - 1] == CLOSE) {
+				list?.let { lists[it] = start until lineStart }
+				list = bytes.decodeToString(lineStart + 1, end - 1)
+				start = minOf(i + 1, bytes.size)
+			} else if (list == null && (lineStart until end).any { bytes[it] != SPACE && bytes[it] != TAB }) {
+				error("A culture's file has lines before its first list")
 			}
 			lineStart = i + 1
 		}
-		list?.let { ends[it] = bytes.size }
+		list?.let { lists[it] = start until bytes.size }
 	}
 
-	operator fun contains(name: String) = name in starts
+	operator fun contains(name: String) = name in lists
 
 	/** The lines of the list [name] in the file's [bytes], or null when there is no such list. */
 	fun list(bytes: ByteArray, name: String): List<String>? {
-		val start = starts[name] ?: return null
-		return bytes.decodeToString(start, ends.getValue(name)).lines().filter { it.isNotBlank() }
+		val range = lists[name] ?: return null
+		return bytes.decodeToString(range.first, range.last + 1).lines().filter { it.isNotBlank() }
 	}
 
 	private companion object {
@@ -124,6 +124,9 @@ class CultureFile(bytes: ByteArray) {
 		const val CLOSE = ']'.code.toByte()
 		const val NEWLINE = '\n'.code.toByte()
 		const val RETURN = '\r'.code.toByte()
+		const val SPACE = ' '.code.toByte()
+		const val TAB = '\t'.code.toByte()
+		val BOM = byteArrayOf(0xEF.toByte(), 0xBB.toByte(), 0xBF.toByte())
 	}
 }
 
@@ -133,57 +136,55 @@ private class Culture(val file: CultureFile, val format: String) {
 }
 
 // Hammer drops a plugin whose heap grows too large, and phones have little to spare, so only the
-// cultures used last are kept, and a file's bytes only for the call that read them.
+// cultures used last are kept, the most recent last, and a file's bytes only for the call that read them.
 private const val KEPT_CULTURES = 3
-private val cultures = HashMap<String, Culture>()
-private val recent = ArrayList<String>()
-private var read: Pair<String, ByteArray>? = null
+private val cultures = LinkedHashMap<String, Culture>()
 
-private fun bytes(culture: String): ByteArray? =
-	read?.takeIf { it.first == culture }?.second ?: resource("names/$culture.txt")?.also { read = culture to it }
+/** A culture's lists for one call, which reads the culture's file only to build a list it has not kept. */
+private class Lookup(private val culture: String) {
+	private var read: ByteArray? = null
 
-private fun culture(culture: String): Culture? {
-	val known = cultures[culture] ?: bytes(culture)?.let { bytes ->
+	private fun bytes(): ByteArray? = read ?: resource("names/$culture.txt")?.also { read = it }
+
+	/** The culture, or null when there is no such culture. */
+	val known: Culture? = (cultures.remove(culture) ?: bytes()?.let { bytes ->
 		val file = CultureFile(bytes)
 		Culture(file, file.list(bytes, "format")?.firstOrNull()?.trim() ?: "{given} {surname}")
-	} ?: return null
-	cultures[culture] = known
-	recent.remove(culture)
-	recent.add(0, culture)
-	while (recent.size > KEPT_CULTURES) cultures.remove(recent.removeLast())
-	return known
+	})?.also {
+		cultures[culture] = it
+		while (cultures.size > KEPT_CULTURES) cultures.remove(cultures.keys.first())
+	}
+
+	/** The culture's list [name], or null when it has none. */
+	fun list(name: String): NameList? {
+		val known = known ?: return null
+		if (name in known.lists) return known.lists[name]
+		val list = if (name in known.file) known.file.list(bytes()!!, name)?.let(::NameList)?.takeUnless { it.isEmpty() } else null
+		return list.also { known.lists[name] = it }
+	}
 }
 
 /** The culture's list [name], or null when it has none. */
-fun nameList(culture: String, name: String): NameList? {
-	val known = culture(culture) ?: return null
-	if (name in known.lists) return known.lists[name]
-	val list = if (name in known.file) known.file.list(bytes(culture)!!, name)?.let(::NameList)?.takeUnless { it.isEmpty() } else null
-	return list.also { known.lists[name] = it }
-}
+fun nameList(culture: String, name: String): NameList? = Lookup(culture).list(name)
 
 /** The culture's given names of a kind for the decade nearest [era] that has a list, within 30 years, or for all years. */
-private fun givenNames(culture: String, kind: String, era: String): NameList {
+private fun givenNames(lookup: Lookup, kind: String, era: String): NameList {
 	val decades = era.toIntOrNull()?.let { decade -> listOf(0, -10, 10, -20, 20, -30, 30).map { decade + it } }.orEmpty()
-	return decades.firstNotNullOfOrNull { nameList(culture, "$kind-$it") }
-		?: nameList(culture, kind)
+	return decades.firstNotNullOfOrNull { lookup.list("$kind-$it") }
+		?: lookup.list(kind)
 		?: error("There are no names for that culture")
 }
 
 /** The names [seed] gives for [input]. */
 fun generate(seed: Long, input: NamesInput): List<String> {
-	val culture = input.culture
+	val lookup = Lookup(input.culture)
 	val kinds = listOf("feminine", "masculine").filter { input.gender == "any" || input.gender == it }.ifEmpty { listOf("feminine", "masculine") }
 	// Each kind's given names with its surnames, which a culture may have a list of for each.
-	val lists = try {
-		kinds.map { kind ->
-			givenNames(culture, kind, input.era) to
-				if (input.surnames) nameList(culture, "surnames-$kind") ?: nameList(culture, "surnames") else null
-		}
-	} finally {
-		read = null
+	val lists = kinds.map { kind ->
+		givenNames(lookup, kind, input.era) to
+			if (input.surnames) lookup.list("surnames-$kind") ?: lookup.list("surnames") else null
 	}
-	val format = culture(culture)!!.format
+	val format = lookup.known!!.format
 	val random = Random(seed)
 	return List(input.count.coerceIn(1, MAX_NAMES)) {
 		val (given, surnames) = lists.random(random)

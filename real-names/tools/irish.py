@@ -33,10 +33,6 @@ def table(name):
                 yield value, int(year), int(count)
 
 
-def write(name, counts, most):
-    lists.write(out, name, sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most])
-
-
 # Keyed by (kind, decade), with decade None for all years.
 given = {}
 for kind, name in (("masculine", "VSA50"), ("feminine", "VSA60")):
@@ -46,9 +42,9 @@ for kind, name in (("masculine", "VSA50"), ("feminine", "VSA60")):
 for (kind, decade), counts in sorted(given.items(), key=lambda item: (item[0][0], item[0][1] or 0)):
     other = given[("masculine" if kind == "feminine" else "feminine", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(f"{kind}-{decade}" if decade else kind, counts, GIVEN)
+    lists.write(out, f"{kind}-{decade}" if decade else kind, counts.items(), GIVEN)
 
 surnames = Counter()
 for value, _, count in table("VSA110"):
     surnames[value] += count
-write("surnames", surnames, SURNAMES)
+lists.write(out, "surnames", surnames.items(), SURNAMES)

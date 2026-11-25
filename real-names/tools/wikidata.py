@@ -124,10 +124,11 @@ def written(label):
 
 
 def write(file, counts, most, decade=False):
-    ranked = sorted(((name, count) for name, count in counts.items() if count >= FEWEST), key=lambda item: (-item[1], item[0]))[:most]
-    if (sum(counts.values()) < DECADE_PEOPLE or len(ranked) < DECADE_NAMES) if decade else len(ranked) < FEWEST_NAMES:
-        return
-    lists.write(out, file, ranked)
+    kept = [(name, count) for name, count in counts.items() if count >= FEWEST]
+    enough = min(len(kept), most)
+    too_few = (sum(counts.values()) < DECADE_PEOPLE or enough < DECADE_NAMES) if decade else enough < FEWEST_NAMES
+    # A list too few people have is dropped, along with any an earlier run wrote.
+    lists.write(out, file, [] if too_few else kept, most)
 
 
 # Keyed by (sex, decade), with decade None for all of them. A person's first given name counts: one

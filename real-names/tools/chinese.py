@@ -47,10 +47,6 @@ def written(name, readings={}):
     return joined[0].upper() + joined[1:]
 
 
-def write(file, counts):
-    lists.write(out, file, sorted(counts.items(), key=lambda item: (-item[1], item[0])))
-
-
 # Names of different characters and the same pinyin count as one.
 given = {"feminine": Counter(), "masculine": Counter()}
 for row in table("top1000name.prov"):
@@ -59,7 +55,7 @@ for row in table("top1000name.prov"):
         given["feminine"][name] += int(row["n.female"])
         given["masculine"][name] += int(row["n.male"])
 for kind, other in (("feminine", "masculine"), ("masculine", "feminine")):
-    write(kind, {name: count for name, count in given[kind].items() if count and given[other][name] <= OTHER_SEX * count})
+    lists.write(out, kind, ((name, count) for name, count in given[kind].items() if count and given[other][name] <= OTHER_SEX * count))
 
 # The cohorts are those born from 1930 to 1959, under 1950, then each decade to 2000 to 2008.
 for kind, sex in (("feminine", "f"), ("masculine", "m")):
@@ -69,11 +65,11 @@ for kind, sex in (("feminine", "f"), ("masculine", "m")):
             name = written(row[f"name.{sex}.{decade}"])
             if name:
                 counts[name] += int(row[f"n.{sex}.{decade}"])
-        write(f"{kind}-{decade}", counts)
+        lists.write(out, f"{kind}-{decade}", counts.items())
 
 surnames = Counter()
 for row in table("familyname"):
     name = written(row["surname"], SURNAMES)
     if name:
         surnames[name] += int(row["n.1930_2008"])
-write("surnames", surnames)
+lists.write(out, "surnames", surnames.items())

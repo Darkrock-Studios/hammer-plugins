@@ -31,13 +31,12 @@ def cased(name):
 
 def build(source, file, most):
     """Writes a list from a workbook whose rows start with a name and end with its count."""
-    ranked = []
+    counts = []
     for _, rows in sheets(os.path.join(work, f"{source}.xlsx")):
         # "BRAK DANYCH" counts the people the register has no name for.
-        ranked += [(cased(row[0]), int(row[-1])) for row in rows
+        counts += [(cased(row[0]), int(row[-1])) for row in rows
                    if len(row) >= 2 and row[-1].isdigit() and row[0][:1].isalpha() and row[0] != "BRAK DANYCH"]
-    ranked = sorted(ranked, key=lambda item: (-item[1], item[0]))[:most]
-    lists.write(out, file, ranked)
+    lists.write(out, file, counts, most)
 
 
 build("imiona-zenskie", "feminine", GIVEN)

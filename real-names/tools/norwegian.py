@@ -47,10 +47,6 @@ def table(number, contents):
             yield codes[i // len(years)], labels[i // len(years)], int(years[i % len(years)]), value
 
 
-def write(name, counts, most):
-    lists.write(out, name, sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most])
-
-
 # Keyed by (sex, decade), with decade None for all years. A name's code starts with 1 for a girls'
 # name and 2 for a boys'. The table has counts only since 1946, and the per cent of those born since
 # 1880, to three places.
@@ -62,10 +58,10 @@ for (sex, decade), counts in sorted(given.items(), key=lambda item: (item[0][0],
     kind = {"1": "feminine", "2": "masculine"}[sex]
     other = given.get(("2" if sex == "1" else "1", decade), Counter())
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(f"{kind}-{decade}" if decade else kind, counts, GIVEN)
+    lists.write(out, f"{kind}-{decade}" if decade else kind, counts.items(), GIVEN)
 
 # Each surname's count in the latest year it has one.
 surnames = {}
 for _, name, year, count in table(12891, "Personer"):
     surnames[name] = count
-write("surnames", surnames, SURNAMES)
+lists.write(out, "surnames", surnames.items(), SURNAMES)

@@ -27,10 +27,6 @@ OTHER_SEX = 20
 work, out = sys.argv[1], sys.argv[2]
 
 
-def write(name, counts, most):
-    lists.write(out, name, sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most])
-
-
 # Keyed by (sex, decade), with decade None for all years.
 given = {}
 with open(os.path.join(work, "full-list-1974-2025.csv"), encoding="utf-8") as f:
@@ -43,7 +39,7 @@ for (sex, decade), counts in sorted(given.items(), key=lambda item: (item[0][0],
     kind = {"Girl": "feminine", "Boy": "masculine"}[sex]
     other = given[("Boy" if sex == "Girl" else "Girl", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(f"{kind}-{decade}" if decade else kind, counts, GIVEN)
+    lists.write(out, f"{kind}-{decade}" if decade else kind, counts.items(), GIVEN)
 
 # The surnames in the registers of births, marriages, and deaths of every fifth year from 1975 to
 # 2010 and each year since 2013: the sheet's rows are a year, a surname, its number, and its rank.
@@ -55,4 +51,4 @@ for name, rows in sheets(os.path.join(work, "most-common-surnames-2025.xlsx")):
                 # "Mcdonald", "O'neill", and the like are written with one capital.
                 surname = re.sub(r"^(Mc|O'|D')(.)", lambda m: m.group(1) + m.group(2).upper(), row[1])
                 surnames[surname] += int(row[2])
-write("surnames", surnames, SURNAMES)
+lists.write(out, "surnames", surnames.items(), SURNAMES)
