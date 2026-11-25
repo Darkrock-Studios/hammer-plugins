@@ -32,16 +32,12 @@ off by name but take no parameters, so the 40-word limit is fixed.
 ## Development
 
 Written in Rust on `harper-core`. `./build.sh harper-grammar` runs this folder's `build.sh`, which needs
-wabt, Binaryen (on PATH, or its `bin` in `BINARYEN`), python3, and `cargo install wizer
---all-features`; CI uses Binaryen 120.
+wabt, Binaryen (on PATH, or its `bin` in `BINARYEN`), and python3; CI uses Binaryen 120.
 
-Harper builds its dictionary and rules on start-up, which measured 36 seconds under chasm (0.6
-natively) and about 140 MB of memory. So the build runs that start-up for the American dialect under
-Wizer and ships the memory it leaves: a module of about 100 MB, 18 MB zipped, declaring
-`limits.memory = 256`. A project in another dialect builds its own linter on its first check, and
-pays that start-up then. Only one dialect's linter is kept, so moving between projects of different
-dialects builds it again.
+The module is about 8 MB, 3 MB zipped. Harper builds its dictionary and rules for the project's dialect
+on the first check, which measured about 16 seconds on desktop under chasm (0.6 natively, 5.7 on Android
+compiled to DEX) and about 140 MB of memory, hence `limits.memory = 256`. Only one dialect's linter is
+kept, so moving between projects of different dialects builds it again.
 
-Loading the module measured about 1.5 seconds, and a paragraph about 0.4. It loads in a 352 MB JVM
-heap but not in 320, and about 90 MB stays once it is loaded. Short of that heap, the check fails and
-the text goes unmarked. It is untried on Android, whose app heap may be too small.
+Loading the module measured about 1.1 seconds on desktop, and a paragraph after the first check about
+0.4.

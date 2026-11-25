@@ -8,9 +8,6 @@ use harper_core::linting::{Lint, LintGroup, LintKind, Linter, Suggestion};
 use harper_core::spell::FstDictionary;
 use harper_core::{Dialect, Document, TokenStringExt};
 
-#[global_allocator]
-static ALLOCATOR: hammer::ZeroingAllocator = hammer::ZeroingAllocator;
-
 thread_local! {
     // Built on first use and kept, since the module stays loaded between calls.
     static LINTER: RefCell<Option<(Dialect, LintGroup)>> = const { RefCell::new(None) };
@@ -36,15 +33,6 @@ fn new_linter(dialect: Dialect) -> LintGroup {
     let mut linter = LintGroup::new_curated(FstDictionary::curated(), dialect);
     linter.config.set_rule_enabled("SpellCheck", false);
     linter
-}
-
-/// Builds the American linter ahead of time: build.sh runs this under Wizer and saves the memory it
-/// leaves into the module, so Hammer loads it built rather than spending half a minute on it.
-#[unsafe(export_name = "wizer.initialize")]
-pub extern "C" fn initialize() {
-    LINTER.with_borrow_mut(|cached| *cached = Some((Dialect::American, new_linter(Dialect::American))));
-    // Parsing uses the curated dictionary too; this builds anything it keeps apart from the linter.
-    drop(Document::new_plain_english_curated("Warm up."));
 }
 
 /// The setting that turns a kind of lint on or off. Harper's kinds are too fine to offer one by one.
