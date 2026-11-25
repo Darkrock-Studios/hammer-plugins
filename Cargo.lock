@@ -2238,9 +2238,9 @@ dependencies = [
 
 [[package]]
 name = "harper-brill"
-version = "3.0.0"
+version = "3.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc30f9c4ce40d83ef9beef39126d803b9014ef8cc88581dca3a693b8eaf3586c"
+checksum = "e1fcd4306560f4cf50c3e73e96a09a0fb503cd59213e158166fcaba62c1d1c85"
 dependencies = [
  "harper-pos-utils",
  "serde_json",
@@ -2248,9 +2248,9 @@ dependencies = [
 
 [[package]]
 name = "harper-core"
-version = "3.0.0"
+version = "3.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f3e3c3af455f1325a03746c19efa0bbd60a2cf65da3fa93505e4ac675184ebda"
+checksum = "e297ce4ebe1d64b3dc938cf02e7b6b692634c069dc4c67549941bd5cf7b85754"
 dependencies = [
  "ammonia",
  "bitflags",
@@ -2293,9 +2293,9 @@ dependencies = [
 
 [[package]]
 name = "harper-pos-utils"
-version = "3.0.0"
+version = "3.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "adf827c2f3ecd4a52077c86ff07e328cd34bca01acf09ea9054ab4ad077dc302"
+checksum = "d8560ee17f2c045dd24149f803454fd9c99ac7658d51f6b2d115cdc6a4a115ec"
 dependencies = [
  "burn",
  "burn-ndarray",
