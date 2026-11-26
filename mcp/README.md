@@ -107,7 +107,14 @@ they find with quotes from your scenes, and never suggest rewrites.
   dismiss ones only mentioned, confirm ones really in the scene, and clear ones cut from it. It applies
   only the changes you approve, and needs "Let AI agents make changes" on to apply them.
 
-For Claude Code, link each folder into `~/.claude/skills/`, from this directory:
+The server serves them itself through the MCP
+[Skills extension](https://modelcontextprotocol.io/extensions/skills/overview), so a client that
+supports it gets them on connecting, with nothing to install: Claude Code from 2.1.331 (as
+`/hammer:pov-check` and so on, approved once per version) and VS Code from 1.147, both in beta. They're
+built into the plugin from `skills/`, so rebuild it after changing one.
+
+For other clients, install the folders. For an older Claude Code, link each into `~/.claude/skills/`, from
+this directory:
 
 ```sh
 ln -s "$PWD"/skills/* ~/.claude/skills/
@@ -124,8 +131,12 @@ for no operation that writes a scene's prose (`scene.write`, `scene.append`, `dr
 
 An MCP client starts `hammer mcp` and speaks JSON-RPC over standard input and output, one message a
 line; Hammer hands each line to the plugin and writes back its reply. The plugin answers `initialize`,
-`ping`, `tools/list`, and `tools/call`, and ignores notifications. Its tools are what `ops.list`
-returns it, less `ops.list` itself and whatever its settings leave out; settings are read for every
-message. A failed call, including one refused because Hammer is busy, is a tool error the agent can
-read. Calls go through the running app when it is open, and straight to the project files when it is
-not, with no network port and no token.
+`ping`, `tools/list`, and `tools/call`, and ignores notifications. For the Skills extension it answers
+`skills/list`, `skills/get`, `resources/list`, and `resources/read` of `skill://<name>/SKILL.md`, each
+listed with its SHA-256 digest and size, computed when the plugin is built. It speaks protocol
+revisions from 2024-11-05 to 2026-07-28: clients of the newer revision skip `initialize`, ask
+`server/discover`, and name their version on every request, so each request is answered by the revision
+it names. Its tools are what `ops.list` returns it, less `ops.list` itself and whatever its settings
+leave out; settings are read for every message. A failed call, including one refused because Hammer is
+busy, is a tool error the agent can read. Calls go through the running app when it is open, and
+straight to the project files when it is not, with no network port and no token.
