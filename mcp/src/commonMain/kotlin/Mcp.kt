@@ -20,11 +20,11 @@ import kotlinx.serialization.json.putJsonObject
 
 // An MCP server over stdio (https://modelcontextprotocol.io): Hammer hands `command` each line of
 // standard input, a JSON-RPC message, and writes back what it returns. Every operation this plugin is
-// granted is offered as a tool, writes and deletes only when its settings allow. Its manifest asks for no
-// operation that writes a scene's prose: Hammer's AI is a tool for the writer, not a replacement. It also
-// serves the skills in skills/ (see Skills.kt). It speaks both the legacy revisions, which open with
-// initialize, and the modern ones, which carry their version on every request; each request is answered
-// by its own.
+// granted is offered as a tool, writes and deletes only when its settings allow, along with the read
+// tools in TextTools.kt that it computes itself. Its manifest asks for no operation that writes a scene's
+// prose: Hammer's AI is a tool for the writer, not a replacement. It also serves the skills in skills/
+// (see Skills.kt). It speaks both the legacy revisions, which open with initialize, and the modern ones,
+// which carry their version on every request; each request is answered by its own.
 
 private val json = Json { ignoreUnknownKeys = true }
 
@@ -35,7 +35,7 @@ private class Settings(val changes: Boolean = false, val deletes: Boolean = fals
 private class OperationList(val operations: List<Operation>)
 
 @Serializable
-private class Operation(val name: String, val description: String, val access: String, val input: JsonObject)
+internal class Operation(val name: String, val description: String, val access: String, val input: JsonObject)
 
 /** The line to answer [request] with, or null when it needs none. */
 fun mcpReply(request: CommandRequest): String? = handle(request.line, request.settings<Settings>())?.toString()
@@ -152,35 +152,47 @@ private const val INSTRUCTIONS = "Hammer is an app for writing stories and the w
 	"Start with project_list; most tools take a project name."
 
 /**
- * An operation offered as a tool. A tool that writes carries Hammer's stance in its description too:
- * some clients never show the model the server's instructions, and a model weighs a tool's description
- * as it decides to call it. Read and delete tools go without, since the tool list is sent with every
- * message and small local models have little room.
+ * A tool, which [run] answers with the text of its result. A tool that writes carries Hammer's stance in
+ * its description too: some clients never show the model the server's instructions, and a model weighs
+ * a tool's description as it decides to call it. Read and delete tools go without, since the tool list
+ * is sent with every message and small local models have little room.
  */
-private class Tool(val name: String, val op: Operation) {
+internal class Tool(
+	val name: String,
+	val description: String,
+	val access: String,
+	val input: JsonObject,
+	val run: (JsonObject) -> String,
+) {
 	fun toJson() = buildJsonObject {
 		put("name", name)
-		put("description", if (op.access == WRITE) "${op.description} $WRITER_DECIDES" else op.description)
-		put("inputSchema", op.input)
+		put("description", if (access == WRITE) "$description $WRITER_DECIDES" else description)
+		put("inputSchema", input)
 		putJsonObject("annotations") {
-			put("readOnlyHint", op.access == READ)
-			put("destructiveHint", op.access == DESTRUCTIVE)
+			put("readOnlyHint", access == READ)
+			put("destructiveHint", access == DESTRUCTIVE)
 			put("openWorldHint", false)
 		}
 	}
 }
 
-// Operations do not change while the module is loaded, so they are fetched once.
-private var operations: List<Operation>? = null
+// Operations do not change while the module is loaded, so they are fetched once. Tests, which each fake
+// their own host, clear it.
+internal var operations: List<Operation>? = null
 
 private fun tools(settings: Settings): List<Tool> {
 	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), callJson(OPS_LIST, JsonObject(emptyMap())))
 		.operations.also { operations = it }
-	// tools/list already describes every tool, filtered by the settings, which ops.list is not.
+	// tools/list already describes every tool, filtered by the settings, which ops.list is not. Two
+	// operations whose tool names collide are both left out; an operation named like one of the plugin's
+	// own tools gives way to it.
+	val own = textTools.map { it.name }.toSet()
 	return ops.filter { it.name != OPS_LIST && settings.allows(it.access) }
-		.map { Tool(toolName(it.name), it) }
+		.map { op -> Tool(toolName(op.name), op.description, op.access, op.input) { callJsonText(op.name, it) } }
+		.filter { it.name !in own }
 		.groupBy { it.name }
 		.mapNotNull { (_, tools) -> tools.singleOrNull() }
+		.plus(textTools.filter { settings.allows(it.access) })
 }
 
 private fun Settings.allows(access: String): Boolean = when (access) {
@@ -194,8 +206,10 @@ private fun call(params: JsonObject, settings: Settings): JsonObject {
 	val tool = tools(settings).firstOrNull { it.name == name } ?: throw RpcException(INVALID_PARAMS, "Unknown tool '$name'")
 	val arguments = params["arguments"] as? JsonObject ?: JsonObject(emptyMap())
 	return try {
-		toolResult(callJsonText(tool.op.name, arguments), isError = false)
+		toolResult(tool.run(arguments), isError = false)
 	} catch (e: OperationException) {
+		toolResult(e.message.orEmpty(), isError = true)
+	} catch (e: ToolInputException) {
 		toolResult(e.message.orEmpty(), isError = true)
 	}
 }
@@ -251,7 +265,7 @@ private const val SKILLS_TTL = 3_600_000L
 private const val TOOLS_TTL = 60_000L
 
 private const val OPS_LIST = "ops.list"
-private const val READ = "read"
+internal const val READ = "read"
 private const val WRITE = "write"
 private const val DESTRUCTIVE = "destructive"
 

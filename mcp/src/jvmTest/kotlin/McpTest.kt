@@ -22,6 +22,7 @@ import kotlinx.serialization.json.putJsonObject
 
 class McpTest {
 	init {
+		operations = null
 		host = FakeHammerHost(
 			mapOf(
 				"ops.list" to { _ ->

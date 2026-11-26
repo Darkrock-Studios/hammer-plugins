@@ -21,7 +21,19 @@ It can always read:
 - **Projects:** list and show them, and export them in any export format.
 - **Scenes:** the scene tree, scene text, metadata, and drafts.
 - **Notes, encyclopedia entries and their images, ideas, and timeline events.**
-- **Everything else:** search, tags, writing stats, and which plugins are installed.
+- **Everything else:** search, exact counts of words and phrases, tags, writing stats, and which plugins
+  are installed.
+
+`search` finds a scene once however often a word is in it, ignores case, and matches inside longer words
+and in titles, so the plugin adds two tools of its own for exact answers on a long book:
+
+- `text_count` counts each of up to 50 words or phrases, giving each one's total and the scenes it's in.
+- `text_find` lists every place one appears, in story order, with about 80 characters either side, a
+  page at a time, and always the full total.
+
+Both read only the scenes' text, match whole words unless `wholeWord` is false, and ignore case unless
+`caseSensitive` is true. They read past styling marks, backslash escapes, and curly quotes, so `E.V.`
+matches `*E.V.*` and `Teo's` matches `Teo’s`. `group` or `ids` narrows them to part of the book.
 
 Two settings, both off by default, let it do more:
 
@@ -48,7 +60,7 @@ Turning a setting off applies right away. Turning one on adds tools, which an ag
 reconnects.
 
 With a small local model, leave both settings off unless you need them. The client sends the whole tool
-list with every message: about 3,000 tokens with only the read tools, and nearly 10,000 with all of them.
+list with every message: about 3,500 tokens with only the read tools, and nearly 10,000 with all of them.
 
 It can't install or remove plugins: Hammer allows no plugin to, since an installed plugin gets its
 permissions without Hammer asking you. An agent that needs to can run `hammer plugin install` or
@@ -151,10 +163,13 @@ An MCP client starts `hammer mcp` and speaks JSON-RPC over standard input and ou
 line; Hammer hands each line to the plugin and writes back its reply. The plugin answers `initialize`,
 `ping`, `tools/list`, and `tools/call`, and ignores notifications. For the Skills extension it answers
 `skills/list`, `skills/get`, `resources/list`, and `resources/read` of `skill://<name>/SKILL.md`, each
-listed with its SHA-256 digest and size, computed when the plugin is built. It speaks protocol
-revisions from 2024-11-05 to 2026-07-28: clients of the newer revision skip `initialize`, ask
-`server/discover`, and name their version on every request, so each request is answered by the revision
-it names. Its tools are what `ops.list` returns it, less `ops.list` itself and whatever its settings
-leave out; settings are read for every message. A failed call, including one refused because Hammer is
-busy, is a tool error the agent can read. Calls go through the running app when it is open, and
-straight to the project files when it is not, with no network port and no token.
+listed with its SHA-256 digest and size, computed when the plugin is built. It speaks protocol revisions
+from 2024-11-05 to 2026-07-28: clients of the newer revision skip `initialize`, ask `server/discover`,
+and name their version on every request, so each request is answered by the revision it names. Its tools
+are what `ops.list` returns it, less `ops.list` itself and whatever its settings leave out; settings are
+read for every message. `text_count` and `text_find` it works out itself, reading `scene.read_many` a
+page at a time and keeping only counts and the matches asked for; an operation of the same name gives
+way to them. Each call reads every scene in its scope, since `text_find`'s total is exact. A failed
+call, including one refused because Hammer is busy, is a tool error the agent can read. Calls go through
+the running app when it is open, and straight to the project files when it is not, with no network port
+and no token.
