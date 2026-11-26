@@ -47,6 +47,7 @@ options = [
 	{ value = "levantine", label = "Levantine" },
 	{ value = "maghrebi", label = "Maghrebi" },
 	{ value = "mexican", label = "Mexican" },
+	{ value = "new_zealander", label = "New Zealander" },
 	{ value = "nigerian", label = "Nigerian" },
 	{ value = "norwegian", label = "Norwegian" },
 	{ value = "polish", label = "Polish" },

@@ -89,6 +89,7 @@ CULTURES = {
     # the Maghreb before independence are mostly its settlers.
     "maghrebi": {"countries": ["Q1028", "Q262", "Q948"], "born": ["Q2017684", "Q4899891", "Q12560"], **ARABIC},
     "mexican": {"country": "Q96"},
+    "new_zealander": {"country": "Q664"},
     "nigerian": {"country": "Q1033"},
     "norwegian": {"country": "Q20"},
     "polish": {"country": "Q36", "born": ["Q211274", "Q207272"], "feminine": [
