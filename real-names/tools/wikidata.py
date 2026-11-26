@@ -49,12 +49,20 @@ DECADES = range(1880, 2030, 10)
 ARABIC = {"spelled": True, "scholarly": True, "particles": {
     "Abd", "Abdel", "Abdul", "Abou", "Abu", "Ait", "Aït", "Al", "Ben", "Bin", "Bou", "El", "Ibn", "Ould",
 }}
+CZECH_CONSONANTS = "bcčdďfghjklmnňpqrřsštťvwxzž"
 CULTURES = {
     "australian": {"country": "Q408"},
     "austrian": {"country": "Q40", "born": ["Q28513", "Q533534"]},
     "belgian": {"country": "Q31"},
     "brazilian": {"country": "Q155"},
     "canadian": {"country": "Q16"},
+    # The mobile e first, as Hájek's is Hájková, but an -el's after the plain form, as Engel's is
+    # Engelová, unless women have it, as Havel's Havlová.
+    "czech": {"country": "Q213", "born": ["Q33946", "Q28513"], "feminine": [
+        ("ov", "ova"), ("něk", "ňková"), *((c + "ek", c + "ková") for c in CZECH_CONSONANTS),
+        *((c + "ec", c + "cová") for c in CZECH_CONSONANTS), *((c, c + "ová") for c in CZECH_CONSONANTS),
+        *((c + "el", c + "lová") for c in CZECH_CONSONANTS), ("le", "lová"), ("a", "ová"), ("o", "ová"), ("ý", "á"),
+    ], "sure": ("ová", "ova", "á")},
     "danish": {"country": "Q756617"},
     "dutch": {"country": "Q55", "born": ["Q29999"]},
     # Egypt's earlier states and the Ottoman Empire, of which Egyptians were subjects before 1914.
@@ -353,7 +361,9 @@ if endings:
         men[next((form for form in forms if form in surnames["masculine"]), forms[0] if sure else name)] += count
     women = Counter()
     for name, count in men.items():
-        women[next((name[: -len(old)] + new for old, new in endings if name.endswith(old)), name)] += count
+        # The woman's form women have, or the first that fits, as Kadlec's is Kadlecová but Němec's Němcová.
+        forms = [name[: -len(old)] + new for old, new in endings if name.endswith(old)]
+        women[next((form for form in forms if form in surnames["feminine"]), forms[0] if forms else name)] += count
     write("surnames-masculine", men, SURNAMES)
     write("surnames-feminine", women, SURNAMES)
 else:

@@ -25,6 +25,7 @@ options = [
 	{ value = "brazilian", label = "Brazilian" },
 	{ value = "canadian", label = "Canadian" },
 	{ value = "chinese", label = "Chinese" },
+	{ value = "czech", label = "Czech" },
 	{ value = "danish", label = "Danish" },
 	{ value = "dutch", label = "Dutch" },
 	{ value = "egyptian", label = "Egyptian" },
