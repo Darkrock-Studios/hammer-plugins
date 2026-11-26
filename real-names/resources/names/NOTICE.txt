@@ -262,6 +262,17 @@ or more people of its sex have it, in a year's count when 5 or more born that ye
 surnames when more than 30 people have it. A name over 20 times as common for the other sex is left
 out. The lists of masculine names by decade before the 1940s in israeli.txt are from Wikidata, below.
 
+italian.txt
+
+The lists by decade of birth since the 2000s hold the 1,000 most common given names of each sex
+among births registered in Italy from 2000 to 2019 and 2022 to 2024. From ISTAT's Contanomi,
+https://www.istat.it/dati/calcolatori/contanomi/, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. It gives names in capitals, an accent as an
+apostrophe, and before 2011 mostly without accents; the script restores them. Before 2022 its yearly
+lists stop short of a year's rarer names, so a name that could be among the most common is counted
+from its count in each year. A name over 20 times as common for the other sex is left out. The other
+lists are from Wikidata, below.
+
 mexican.txt
 
 feminine-2010 and masculine-2010 hold the most common given names of each sex among births
@@ -278,6 +289,22 @@ those of the names Mexico's people on Wikidata have and of the common ones, and 
 Fuente: INEGI. Shared under INEGI's Términos de Libre Uso de la Información del INEGI,
 https://www.inegi.org.mx/inegi/terminos.html, which allow copying, adapting, and commercial use with
 the credit "Fuente: INEGI" and a note of any changes made. The other lists are from Wikidata, below.
+
+slovenian.txt
+
+feminine and masculine hold the 1,000 most common given names of each sex among those living in
+Slovenia on 1 January 2026, and surnames the 5,000 most common surnames among them. The lists by
+decade of birth from the 1930s to the 1980s hold the most common given names of each sex among those
+living then by period of birth: the 1930s those born up to 1940, and each later decade those born from
+its first year and one to its last and one, such as 1941 to 1950 for the 1940s. Those from the 1990s
+hold the given names of each sex given to 5 or more babies a year, from 1992 to 2025. From the
+Statistical Office of the Republic of Slovenia's SiStat tables 05X1005S, 05X1010S, 05X1015S to
+05X1018S, 05X2001S, and 05X2002S, https://pxweb.stat.si/SiStatData, and its Names and birthdays
+application, https://www.stat.si/ImenaRojstva, which count names with 5 or more bearers and hide some
+small counts. A name over 20 times as common for the other sex is left out. Source: SURS; the lists
+are drawn from its data, and are free to use for any purpose with SURS acknowledged as their source and
+changes marked, https://www.stat.si/StatWeb/en/StaticPages/Index/Copyright. Lists for earlier
+decades are from Wikidata, below.
 
 spanish.txt
 
@@ -323,8 +350,8 @@ terms "Open use. Must provide the source.", https://opendata.swiss/en/terms-of-u
 FSO, STATPOP. The lists for earlier decades are from Wikidata, below.
 
 danish.txt, dutch.txt, filipino.txt, greek.txt, hungarian.txt, indian.txt, iranian.txt,
-italian.txt, japanese.txt, korean.txt, nigerian.txt, russian.txt, turkish.txt, ukrainian.txt, and
-what the above lack
+japanese.txt, korean.txt, nigerian.txt, russian.txt, turkish.txt, ukrainian.txt, and what the above
+lack
 
 The lists hold the first given names and the family names of each country's people born since 1880
 that Wikidata, https://www.wikidata.org, has, by their English labels or, where a name has none, its

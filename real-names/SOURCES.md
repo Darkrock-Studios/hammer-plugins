@@ -34,17 +34,19 @@ docstring says.
 | German | german.py | de | 2010s and 2020s | the rest |
 | Irish | irish.py | ie | overall, decades since the 1960s, surnames | earlier decades |
 | Israeli | israeli.py | il | all since the 1940s (Jewish sector) | masculine before the 1940s |
+| Italian | italian.py | it | decades since the 2000s | overall, surnames, earlier decades |
 | Levantine | israeli.py | il | all (Arab sectors) | none |
 | Mexican | mexican.py | mx | 2010s and 2020s, surnames | overall, earlier decades |
 | Norwegian | norwegian.py | no | all | none |
 | Polish | polish.py | pl | overall, decades since 2000, surnames | earlier decades |
 | Québécois | canadian.py | ca | overall, decades since the 1980s | surnames, earlier decades |
 | Scottish | scottish.py | sc | overall, decades since the 1970s, surnames | earlier decades |
+| Slovenian | slovenian.py | si | overall, decades since the 1930s, surnames | masculine before the 1930s |
 | Spanish | spanish.py | es | all since the 1920s | decades before the 1920s |
 | Swedish | swedish.py | se | overall, decades since the 1940s, surnames | earlier decades |
 | Swiss | swiss.py | ch | overall, decades since the 1920s, surnames | masculine before the 1920s |
 
-Every other culture is Wikidata's alone: Danish, Dutch, Egyptian, Filipino, Greek, Hungarian, Indian, Iranian, Italian,
+Every other culture is Wikidata's alone: Danish, Dutch, Egyptian, Filipino, Greek, Hungarian, Indian, Iranian,
 Japanese, Korean, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
 
 ## Cultures with official statistics
@@ -316,6 +318,38 @@ Japanese, Korean, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
   rarely match Arab names in Hebrew letters, and often give English cognates (Joseph). IGRA's
   population-registry tables (https://genealogy.org.il/pop/) have no years and no stated licence.
 
+### Italian
+
+- **Lists:** feminine-2000, masculine-2000, feminine-2010, masculine-2010, feminine-2020,
+  masculine-2020. Overall, earlier decades and surnames from Wikidata (newborns since 1999 are not the
+  population).
+- **Source:** ISTAT, Contanomi, https://www.istat.it/dati/calcolatori/contanomi/, through the JSONP
+  service its page uses (named in its birthName.js):
+  `https://www.istat.it/wp-content/themes/EGPbs5-child/contanomi/nati/index2022.php`, with
+  `type=list&year=<y>&gender=f|m&limit=<n>` (a year's names) and `type=name&name=<name>&gender=f|m`
+  (one name's count in each year, 1999 to 2025).
+- **Licence:** CC BY 4.0, per https://www.istat.it/note-legali/.
+- **Coverage:** births registered 2000 to 2019 and 2022 to 2024. The 2020s are 2022 to 2024: 2020's
+  and 2021's lists stop at the top 255 to 610 names, and 2025 is updated weekly. Known counts cover
+  89 to 90% of births in the 2000s, 85 to 86% in the 2010s and all of 2022 to 2024.
+- **Rebuild:** about 700 list requests (a binary search on each year and sex) and 1,850 single-name
+  requests. The service slows to 25 to 38 seconds an answer when asked often, so a full fetch took
+  about 7 hours; from the cache, seconds.
+- **Caveats:** before 2022 a year's list comes back empty once it would include a row the service
+  cannot encode (a stray curly apostrophe or accented letter, which sorts after plain-letter names), so
+  each year and sex keeps the longest list that works. Names past its end are counted from their
+  single-name series, asked for every name that could reach a decade's top 1,000, on the guess that a
+  missing year is no higher than the name's highest year within two years either side. The service
+  escapes apostrophes, so names stored with a final apostrophe (Noè, Mosè, José, René, André, Josué,
+  Nikolò, Marilù) cannot be asked for and are short in 2016 to 2019. A series also counts a name
+  written with an accented letter (Céline with Celine); the script drops those list rows so they are
+  not counted twice. Accents come back as a grave on the marked vowel, acute for a fixed list (José,
+  René, André, Chloé, Josué, ...), or Wikidata's spelling; each word takes its commonest spelling
+  since 2011 (Nicolò, Niccolò, Giosuè; Zoe and Chloe stay unaccented). Placeholders (DATO MANCANTE,
+  NON INDICATO, SCONOSCIUTO) are dropped.
+- **Considered and not used:** replacing the overall lists, since newborns since 1999 are not the
+  population; nothing official covers surnames.
+
 ### Mexican
 - **Lists:** feminine-2010, masculine-2010, feminine-2020, masculine-2020, surnames. Overall and earlier
   decades from Wikidata.
@@ -376,6 +410,41 @@ Japanese, Korean, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
 - **Licence:** Open Government Licence v3.0.
 - **Coverage:** births registered 1974 to 2025; surnames in the registers in every fifth year 1975 to
   2010 and each year since 2013.
+
+### Slovenian
+
+- **Lists:** `feminine`, `masculine`, `surnames` from SURS's residents' tables (2026);
+  `feminine-`/`masculine-1930` to `-1980` from SURS's Names and birthdays app (living population by
+  period of birth); `-1990` to `-2020` from SURS's newborn tables. Wikidata: `masculine-1890` to
+  `-1920` (no feminine decade before 1930 had enough people).
+- **Source:** Statistical Office of the Republic of Slovenia (SURS). PxWeb API
+  `POST https://pxweb.stat.si/SiStatData/api/v1/en/Data/<table>.px` (json-stat2, MERITVE=1): 05X1005S
+  and 05X1010S (male and female first names, LETO=2026), 05X1015S to 05X1018S (surnames A-F, G-L, M-R,
+  S-Ž, LETO=2026), 05X2001S and 05X2002S (baby boys' and girls' first names, 1992 to 2025). App:
+  `GET https://www.stat.si/ImenaRojstva/sl/ImenaData/GetNameChartValues?name=<name>&gender=M|Z` (10
+  counts: up to 1940, 1941-50, ... 2011-20, 2021-25).
+- **Licence:** SURS terms, https://www.stat.si/StatWeb/en/StaticPages/Index/Copyright: free for any
+  use, including commercial, with SURS acknowledged as the source ("Source: SURS") and changes marked.
+- **Coverage:** residents on 1 January 2026, names with 5+ bearers (4,252 masculine and 4,435 feminine
+  given names, about 30,400 surnames). Decade lists for the 1930s to 1980s are those living in 2026
+  (immigrants included); 1941-50 is the 1940s and so on, and "up to 1940" the 1930s. The 1990s to
+  2020s are births: names given to 5+ babies a year, 1992 to 2025 (the 1990s lack 1990 and 1991).
+  Names with fewer than 10 living bearers are not asked about in the app.
+- **Rebuild:** 8 PxWeb requests plus about 5,600 app requests at 0.5 s spacing (about 2.5 hours);
+  answers are cached in `surs-*.json` and `imena-M.jsonl` / `imena-Z.jsonl`, so a rerun asks for
+  nothing. The app answers `null` (or HTTP 500) for some names; these are recorded and skipped.
+- **Caveats:** survivor lists under-represent men in old cohorts and include immigrants born abroad;
+  the app hides some small counts ("z"), and 261 feminine names (3,168 people, each with 41 or fewer
+  bearers) get no answer, so they are missing from the 1930s to 1980s lists. Resident lists include
+  many names from former Yugoslavia and Albania, as the population does. Surnames are one list, as
+  Slovenian surnames are the same for both sexes. A word in capitals is written with a capital only at
+  its start, and names with one-letter words (such as "B K") are dropped.
+- **Robots:** pxweb.stat.si's robots.txt disallows `/sistatdata/` (lower case) for every agent and
+  everything for AI crawlers; the script uses only the documented API (`/SiStatData/api`), 8 requests,
+  which the maintainer accepted. www.stat.si has no robots.txt.
+- **Considered and not used:** survivors for the 1990s to 2020s (births leave out later immigrants);
+  the app's newborn tables (the same data as 05X2001S and 05X2002S); PxWeb's CSV output (cp1250;
+  json-stat2 is UTF-8).
 
 ### Spanish
 - **Lists:** feminine, masculine, decades 1920s to 2020s, surnames. Decades before the 1920s from Wikidata.
@@ -463,9 +532,6 @@ Checked November 2026; each stays on Wikidata.
 - **Greek:** ELSTAT's 2021 census names appear only as top-5 infographics and press coverage.
 - **Indian, Iranian, Nigerian:** nothing official with counts. Iran's civil registration portal blocks
   foreign access and gives only top-N in Persian script.
-- **Italian:** ISTAT's Contanomi has newborns 1999 to 2025, CC BY 4.0, but its API returns empty
-  answers past a certain length for most years (accented names appear to break it); nothing official
-  covers the population or surnames.
 - **Japanese:** no government name statistics; Meiji Yasuda's yearly survey of policyholders' children
   is a top 100 in kanji, all rights reserved.
 - **Korean:** given names: only the Supreme Court's top-N viewer, no download. Surnames: KOSIS table
@@ -482,5 +548,6 @@ Checked November 2026; each stays on Wikidata.
 - Name datasets built from the 2021 Facebook leak (such as the `names-dataset` package): leaked
   personal data, whatever the volume.
 - Forebears and similar sites: modelled estimates with no reuse licence.
-- Getting around access controls (Cloudflare challenges, API keys, internal endpoints of interactive
-  tools): not done; such sources wait for proper access.
+- Getting around access controls (Cloudflare challenges, API keys, sign-ins): not done; such sources
+  wait for proper access. The keyless services that ISTAT's Contanomi and SURS's Names and birthdays
+  pages call are used as those pages use them, with requests spaced out.
