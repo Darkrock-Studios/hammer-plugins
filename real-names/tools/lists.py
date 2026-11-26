@@ -1,6 +1,7 @@
 """A culture's lists, all in resources/names/<culture>.txt: each a line "[<list>]", such as
 "[feminine-1950]", then its lines, a name and its count on each, a tab between them."""
 import os
+from collections import Counter
 
 
 def read(path):
@@ -22,7 +23,11 @@ def read(path):
 def write(path, name, counts, most=None):
     """Sets the list `name` in the culture's file at `path` to the `most` most common of `counts`, (name, count)
     pairs, keeping its other lists; with none, the file has no such list."""
-    ranked = sorted(counts, key=lambda item: (-item[1], item[0]))[:most]
+    ranked = sorted(counts, key=lambda item: (-item[1], item[0]))
+    twice = {each for each, count in Counter(each for each, _ in ranked).items() if count > 1}
+    if twice:
+        raise ValueError(f"{name} has {sorted(twice)[:5]} more than once")
+    ranked = ranked[:most]
     lists = read(path)
     if ranked:
         lists[name] = [f"{each}\t{count}" for each, count in ranked]

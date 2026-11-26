@@ -1,6 +1,6 @@
 [feminine]
 Anna	1373184
-Maria	1020557
+Maria	1020561
 Zofia	731930
 Katarzyna	682242
 Małgorzata	626627
@@ -63,7 +63,7 @@ Wiesława	137842
 Lena	135101
 Amelia	133699
 Marzena	133635
-Alina	132008
+Alina	132012
 Dominika	126873
 Antonina	125557
 Kinga	123461
@@ -184,9 +184,9 @@ Hildegarda	15342
 Kalina	15293
 Liliia	15048
 Tamara	14890
-Olivia	14509
+Olivia	14511
 Melania	14360
-Mia	14226
+Mia	14228
 Alona	13930
 Marika	13869
 Sonia	13768
@@ -230,7 +230,7 @@ Inga	8733
 Marharyta	8640
 Milana	8566
 Lesia	8550
-Sofia	8505
+Sofia	8507
 Bianka	8447
 Ada	8306
 Jessica	8135
@@ -243,7 +243,7 @@ Marzenna	7900
 Eryka	7854
 Yeva	7679
 Maya	7621
-Alisa	7559
+Alisa	7561
 Gizela	7542
 Lilia	7522
 Longina	7515
@@ -291,7 +291,7 @@ Katsiaryna	4960
 Volha	4933
 Viktoria	4926
 Kunegunda	4904
-Lila	4826
+Lila	4828
 Kamilla	4806
 Zhanna	4699
 Marcela	4658
@@ -354,7 +354,7 @@ Viktoryia	2844
 Lara	2836
 Bogna	2820
 Zoia	2806
-Mila	2791
+Mila	2795
 Nelia	2790
 Wanessa	2769
 Michelle	2721
@@ -382,7 +382,7 @@ Sophia	2394
 Irmgarda	2357
 Ola	2347
 Helga	2339
-Lina	2282
+Lina	2287
 Antonia	2265
 Miriam	2265
 Eulalia	2262
@@ -417,8 +417,8 @@ Jana	1798
 Augustyna	1786
 Isabella	1784
 Arletta	1777
+Mira	1762
 Sofiya	1761
-Mira	1750
 Palina	1711
 Ala	1703
 Klaudyna	1693
@@ -467,7 +467,7 @@ Sabrina	1465
 Alesia	1448
 Hanka	1445
 Scholastyka	1439
-Alice	1426
+Alice	1429
 Gabriella	1406
 Liana	1399
 Lyubov	1376
@@ -484,6 +484,7 @@ Dalia	1296
 Benigna	1295
 Ingeborga	1292
 Simona	1272
+Melisa	1271
 Viktoriya	1259
 Cristina	1252
 Hermina	1249
@@ -491,7 +492,6 @@ Vlada	1249
 Celestyna	1243
 Ksawera	1241
 Lilly	1238
-Melisa	1234
 Maia	1228
 Caroline	1226
 Wanesa	1225
@@ -532,7 +532,7 @@ Ludomira	1072
 Abigail	1067
 Aliona	1056
 Elizaveta	1054
-Melissa	1052
+Melissa	1054
 Liliya	1026
 Leila	1022
 Berenika	1017
@@ -588,9 +588,9 @@ Valiantsina	793
 Karen	791
 Lucia	784
 Karin	780
+Elisa	774
 Bernardeta	773
 Cyryla	773
-Elisa	772
 Zoya	767
 Inha	762
 Żanetta	759
@@ -693,6 +693,7 @@ Włodzimiera	547
 Marija	545
 Oliviia	541
 Chiara	536
+Elif	536
 Amira	535
 Hilda	535
 Rymma	535
@@ -723,9 +724,9 @@ Hiacynta	500
 Stephanie	500
 Wielisława	499
 Walburga	498
+Yasmin	495
 Daiana	494
 Filipina	493
-Yasmin	492
 Rachel	490
 Fryda	489
 Valeriya	486
@@ -852,9 +853,9 @@ Olesya	344
 Hildegard	343
 Roni	343
 Tadeusza	343
+Thi	343
 Alessandra	342
 Doris	342
-Thi	341
 Karine	340
 Mariami	340
 Marine	339
@@ -896,7 +897,6 @@ Vladislava	313
 Anja	312
 Merve	312
 Waltraud	312
-Elif	311
 Karmen	311
 Frida	310
 Leopolda	310
@@ -963,9 +963,9 @@ Edwina	271
 Kelly	271
 Lida	270
 Nadija	270
+Cecilia	269
 Evgeniia	269
 Julieta	268
-Cecilia	267
 Denise	266
 Iliana	266
 Ofelia	266
@@ -4679,7 +4679,7 @@ Kazimierz	387564
 Mateusz	387283
 Ryszard	367907
 Marian	341270
-Antoni	320225
+Antoni	320228
 Dariusz	318914
 Władysław	316201
 Franciszek	315999
@@ -4690,7 +4690,7 @@ Roman	276748
 Rafał	276716
 Jacek	265312
 Janusz	260581
-Kamil	258301
+Kamil	258336
 Szymon	252128
 Dawid	245958
 Mirosław	236069
@@ -4717,7 +4717,7 @@ Eugeniusz	164668
 Zygmunt	162022
 Mikołaj	158733
 Leszek	157638
-Adrian	153892
+Adrian	153894
 Waldemar	145536
 Bogdan	144959
 Arkadiusz	144739
@@ -4768,7 +4768,7 @@ Tymoteusz	41354
 Lech	40411
 Yurii	39885
 Vladyslav	39869
-Emil	39672
+Emil	39675
 Mykhailo	39344
 Ihor	38844
 Vasyl	38469
@@ -4780,7 +4780,7 @@ Bohdan	36281
 Eryk	35621
 Oleh	35531
 Błażej	35026
-Viktor	31287
+Viktor	31290
 Alojzy	30821
 Alfred	29328
 Oleksii	27550
@@ -4853,7 +4853,7 @@ Milan	9935
 Leopold	9722
 Nikita	9490
 Kyrylo	9400
-Oliver	9294
+Oliver	9298
 Albin	9261
 Aleksy	9228
 Daniil	9168
@@ -4901,8 +4901,8 @@ Uladzimir	5646
 Beniamin	5620
 Iwo	5585
 Vitali	5559
+Victor	5528
 Yury	5527
-Victor	5525
 Mikhail	5246
 Jeremi	5245
 Kordian	5216
@@ -4969,6 +4969,7 @@ Jacob	3044
 Yuriy	3044
 Hugo	3039
 Iurii	3029
+Ali	2998
 Horst	2979
 Kiryl	2899
 Max	2891
@@ -4988,11 +4989,10 @@ Roch	2616
 John	2607
 Orest	2591
 Tytus	2588
+Timur	2576
 Lev	2567
-Timur	2566
 Kasper	2565
 Heronim	2552
-Ali	2539
 Kiril	2523
 Yan	2514
 Kryspin	2471
@@ -5014,9 +5014,9 @@ Dymitr	2318
 Liam	2312
 Mohamed	2309
 Davit	2299
-Christopher	2273
+Christopher	2275
 Eligiusz	2259
-Vincent	2206
+Vincent	2208
 Maxim	2198
 Arsenii	2168
 Philip	2165
@@ -5025,7 +5025,7 @@ Andreas	2155
 Heorhii	2155
 Anatoli	2146
 Mihail	2135
-Damir	2125
+Damir	2128
 Rafael	2121
 Vitaliy	2110
 Mykhaylo	2107
@@ -5118,6 +5118,7 @@ Omar	1288
 Henry	1287
 Reinhold	1284
 Sergiu	1276
+Ibrahim	1273
 Samir	1268
 Wolfgang	1264
 Rodion	1257
@@ -5185,6 +5186,7 @@ January	972
 Ludomir	970
 Pablo	966
 Alejandro	965
+Ismail	963
 Ricardo	959
 Murat	951
 Zachary	949
@@ -5193,7 +5195,6 @@ Karim	945
 Beka	944
 Bogusz	943
 Markiian	941
-Ibrahim	939
 Dmitri	937
 Gniewomir	930
 Dyonizy	928
@@ -5205,7 +5206,7 @@ Dmitry	919
 Jakob	918
 Iaroslav	917
 Pedro	907
-Michal	898
+Michal	900
 Wasyl	893
 Hasan	888
 Oswald	882
@@ -5271,7 +5272,6 @@ Yusuf	740
 Jean	737
 Armen	733
 Gela	730
-Ismail	727
 Ahmad	726
 Md	722
 Georg	721
@@ -5336,6 +5336,7 @@ Mike	619
 Davide	614
 Gleb	612
 Arkadii	611
+Emir	611
 Elias	607
 Shota	606
 Patrik	602
@@ -5353,8 +5354,8 @@ Danila	583
 Emre	582
 Gotfryd	579
 Koba	579
+Robin	577
 Paata	575
-Robin	575
 Ben	569
 Gustavo	565
 Jurij	563
@@ -5368,21 +5369,22 @@ Karen	556
 Wieńczysław	555
 Abdullah	554
 Nikolay	553
+Elvin	545
 Lukian	544
-Elvin	541
 Valeri	541
 Makary	539
 Marcelo	539
 Alon	538
 Arman	535
 Sylweriusz	535
+Deniz	534
 Vyacheslav	534
 Dimitri	532
 Jurand	531
 Oleksander	529
 Illya	528
+André	527
 Bastian	527
-André	525
 Erich	523
 Avtandil	522
 Rajnard	522
@@ -5393,7 +5395,6 @@ Gia	519
 Brandon	518
 Michele	518
 Yosyp	516
-Emir	514
 Artemii	513
 Jonas	512
 Raul	512
@@ -5411,16 +5412,17 @@ Georgios	496
 Ievgenii	496
 Roy	496
 Temur	495
+José	494
 Tycjan	494
 Ido	493
 Philippe	493
 Yuval	492
 Wawrzyn	491
 Jaroslav	489
-José	489
 Viorel	489
 Hlieb	488
 Sean	488
+Hüseyin	486
 Witalij	485
 Heliodor	481
 Winicjusz	481
@@ -5440,7 +5442,6 @@ Iuri	461
 Marin	460
 Noam	460
 Ramin	460
-Ali	459
 Erhard	459
 Teimuraz	459
 Zviad	458
@@ -5453,12 +5454,12 @@ Orkhan	451
 Tomer	449
 Badri	448
 Dmitriy	448
+Islam	447
 Phillip	447
 Dmitro	446
 Sambor	446
 Anar	441
 Murad	441
-Islam	440
 Mert	440
 Vasilii	439
 Ramazan	438
@@ -5473,10 +5474,11 @@ Kakhaber	435
 Noe	435
 Eyal	434
 Radzisław	434
+Ramil	432
 Tim	431
 Zinovii	431
 Olek	430
-Ramil	430
+Fatih	428
 Elnur	427
 Stefano	427
 Barys	426
@@ -5488,8 +5490,8 @@ Nikola	424
 Pierre	424
 Maxime	423
 Gilbert	422
+Aziz	421
 Tamaz	419
-Deniz	418
 Farid	418
 Johan	418
 Francis	417
@@ -5498,6 +5500,7 @@ Itay	415
 Xawery	413
 Darius	412
 Konstantyn	412
+Sami	412
 Abraham	411
 Azamat	409
 Jürgen	406
@@ -5520,16 +5523,14 @@ Norman	395
 Akaki	394
 Antony	394
 Ustym	394
+Antoine	393
 Marcos	393
-Sami	393
 Sławek	393
 Tsimur	393
-Aziz	392
 Kostyantyn	392
 Mathias	392
 Vital	392
 Witosław	392
-Antoine	391
 Onufry	391
 Tykhon	391
 Kamal	390
@@ -5551,10 +5552,12 @@ Matias	382
 Erazm	381
 Romeo	381
 Sandro	381
+Emin	380
 Givi	380
 Tal	380
 Jaime	378
 Ori	378
+Said	378
 Aslan	377
 German	377
 Heorhi	377
@@ -5576,7 +5579,6 @@ Nurlan	369
 Rostislav	369
 Andrej	368
 Lotar	368
-Said	368
 Napoleon	367
 Fiodor	366
 Anatoliusz	364
@@ -5596,10 +5598,12 @@ Youssef	357
 Daniele	355
 Guram	355
 Sylwiusz	355
+Yasin	355
 Eugen	353
 Rene	353
 Georgi	352
 Gregor	350
+Bilal	348
 Dobiesław	347
 István	347
 Bernhard	346
@@ -5611,7 +5615,6 @@ Wendelin	344
 Moshe	343
 Rajnhold	343
 Wenancjusz	343
-Emin	341
 Ghenadie	340
 Hassan	340
 Natanael	340
@@ -5651,10 +5654,7 @@ Glib	322
 Julien	321
 Rajesh	321
 Urban	321
-Ibrahim	320
 Nicolás	320
-Gniewosz	319
-Hektor	319
 
 [masculine-1880]
 Stanisław	234

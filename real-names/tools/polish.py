@@ -85,8 +85,12 @@ def counted(path, form=cased):
 
 
 def build(source, resource, file, most, form=cased):
-    """Writes a list from one of the PESEL register's workbooks."""
-    lists.write(out, file, list(counted(fetch(f"{source}.xlsx", resource), form)), most)
+    """Writes a list from one of the PESEL register's workbooks, rows written alike (ALI and ALİ) counted
+    together."""
+    counts = Counter()
+    for name, count in counted(fetch(f"{source}.xlsx", resource), form):
+        counts[name] += count
+    lists.write(out, file, counts.items(), most)
 
 
 build("imiona-zenskie", 1159639, "feminine", GIVEN, given)
