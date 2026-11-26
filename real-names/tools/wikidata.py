@@ -87,6 +87,7 @@ CULTURES = {
     "scottish": {"country": "Q145", "within": "Q22"},
     "spanish": {"country": "Q29"},
     "swedish": {"country": "Q34"},
+    "swiss": {"country": "Q39"},
     "turkish": {"country": "Q43", "born": ["Q12560"]},
     "ukrainian": {"country": "Q212", "born": ["Q15180", "Q133356"], "feminine": [
         ("skyi", "ska"), ("sky", "ska"), ("ov", "ova"), ("ev", "eva"), ("in", "ina"), ("yn", "yna"), ("nyi", "na"),

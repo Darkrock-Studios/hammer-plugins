@@ -47,6 +47,7 @@ options = [
 	{ value = "scottish", label = "Scottish" },
 	{ value = "spanish", label = "Spanish" },
 	{ value = "swedish", label = "Swedish" },
+	{ value = "swiss", label = "Swiss" },
 	{ value = "turkish", label = "Turkish" },
 	{ value = "ukrainian", label = "Ukrainian" },
 ]
