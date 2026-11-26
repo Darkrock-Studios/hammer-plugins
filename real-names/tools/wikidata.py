@@ -131,6 +131,12 @@ def write(file, counts, most, decade=False):
     lists.write(out, file, [] if too_few else kept, most)
 
 
+# A name's English label, or where it has none its label for every language written in Latin letters
+# ("mul"), which many name items have in its place.
+LABEL = """OPTIONAL { ?name rdfs:label ?en. FILTER(LANG(?en) = "en") }
+    OPTIONAL { ?name rdfs:label ?mul. FILTER(LANG(?mul) = "mul") }
+    BIND(COALESCE(?en, ?mul) AS ?label) FILTER(BOUND(?label))"""
+
 # Keyed by (sex, decade), with decade None for all of them. A person's first given name counts: one
 # without a place in the series of their names, or first in it. A query for each decade, as one for
 # all of a country's people runs out of time.
@@ -146,7 +152,7 @@ for sex, sex_item in SEXES.items():
                   {born}
                   ?p p:P735 ?statement. ?statement ps:P735 ?name.
                   FILTER NOT EXISTS {{ ?statement pq:P1545 ?place. FILTER(?place != "1") }}
-                  ?name rdfs:label ?label. FILTER(LANG(?label) = "en")
+                  {LABEL}
                 }} GROUP BY ?label""")
             for row in rows:
                 name = written(row["label"])
@@ -156,7 +162,7 @@ for sex, sex_item in SEXES.items():
             rows = ask(f"surnames-{sex}-{decade}-{country}", f"""
                 SELECT ?label (COUNT(DISTINCT ?p) AS ?count) WHERE {{
                   {born}
-                  ?p wdt:P734 ?name. ?name rdfs:label ?label. FILTER(LANG(?label) = "en")
+                  ?p wdt:P734 ?name. {LABEL}
                 }} GROUP BY ?label""")
             for row in rows:
                 name = written(row["label"])
