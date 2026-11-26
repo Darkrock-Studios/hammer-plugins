@@ -290,6 +290,19 @@ Fuente: INEGI. Shared under INEGI's Términos de Libre Uso de la Información de
 https://www.inegi.org.mx/inegi/terminos.html, which allow copying, adapting, and commercial use with
 the credit "Fuente: INEGI" and a note of any changes made. The other lists are from Wikidata, below.
 
+new_zealander.txt
+
+feminine, masculine, and the lists by decade of birth since the 1900s hold the 1,000 most common
+given names of each sex among births registered in New Zealand from 1900 to 2025, over all those years
+and within each decade, the 2020s to 2025. From the Department of Internal Affairs' Baby name
+popularity over time, https://catalogue.data.govt.nz/dataset/baby-name-popularity-over-time, which
+leaves out a name given fewer than 10 times in a year. It garbles a few letters with accents or
+macrons; the script restores them, counts spellings differing only in capitals together, and leaves
+out "Baby", which stands in for a name. A name over 20 times as common for the other sex is left out.
+Crown copyright, the Department of Internal Affairs, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. surnames and the lists for earlier decades are from
+Wikidata, below.
+
 slovenian.txt
 
 feminine and masculine hold the 1,000 most common given names of each sex among those living in

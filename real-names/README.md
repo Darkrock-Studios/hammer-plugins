@@ -7,7 +7,7 @@ and adds the ones you pick to the encyclopedia as people.
 
 Generate real-world names, on Project Home or an encyclopedia entry, asks for:
 
-- **Culture:** one of 41, from American to Ukrainian.
+- **Culture:** one of 42, from American to Ukrainian.
 - **Born in:** any time, or a decade from the 1880s to the 2020s.
 - **Given names:** any, feminine, or masculine.
 - **Names:** common (only from the most common names, which half the people have between them), a
@@ -39,7 +39,7 @@ they differ. A full name is `{given} {surname}` unless a `format` list's line sa
 
 `tools/` builds the lists, a script for each culture with published statistics (American, Argentine,
 Australian, Austrian, Belgian, Brazilian, Canadian and Québécois, Chinese, Czech, English, Finnish,
-French, German, Irish, Israeli and Levantine, Italian, Mexican, Norwegian, Polish, Scottish, Slovenian,
-Spanish, Swedish, Swiss) and `wikidata.py` for the rest, from the people Wikidata has born since 1880. Each replaces the lists it builds in the culture's file and keeps the
+French, German, Irish, Israeli and Levantine, Italian, Mexican, New Zealander, Norwegian, Polish,
+Scottish, Slovenian, Spanish, Swedish, Swiss) and `wikidata.py` for the rest, from the people Wikidata has born since 1880. Each replaces the lists it builds in the culture's file and keeps the
 others. `resources/names/NOTICE.txt` gives each list's source and terms; the
 Chinese lists are for non-commercial use only.

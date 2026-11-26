@@ -42,6 +42,7 @@ answering from the old ones. `argentine.py` takes surnames' accents from `spanis
 | Italian | italian.py | it | decades since the 2000s | overall, surnames, earlier decades |
 | Levantine | israeli.py | il | all (Arab sectors) | none |
 | Mexican | mexican.py | mx | 2010s and 2020s, surnames | overall, earlier decades |
+| New Zealander | new_zealander.py | nz | overall, decades 1900s to 2020s | surnames, masculine before the 1900s |
 | Norwegian | norwegian.py | no | all | none |
 | Polish | polish.py | pl | overall, decades since 2000, surnames | earlier decades |
 | Québécois | canadian.py | ca | overall, decades since the 1980s | surnames, earlier decades |
@@ -371,6 +372,34 @@ Japanese, Korean, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
   count first given names. Accents restored from Wikidata and a hand list (`FORMS`). N-for-Ñ spellings
   (Munoz) kept as registered.
 - **Considered and not used:** INEGI birth microdata has no names; the census does not publish them.
+
+### New Zealander
+- **Lists:** feminine, masculine, decades 1900s to 2020s. Surnames, masculine-1880 and masculine-1890
+  from Wikidata (New Zealand Q664; no one Wikidata has born in New Zealand since 1880 is a citizen of
+  the Colony or Dominion of New Zealand alone). Wikidata has too few women for a feminine decade before
+  the 1900s.
+- **Source:** Department of Internal Affairs (DIA), Baby name popularity over time,
+  https://catalogue.data.govt.nz/dataset/baby-name-popularity-over-time: `baby-names-1900-to-2025.csv`
+  (Year, Sex, Name, Count) and `top-names-by-year-1900-2025.xlsx` (the same names a column a year).
+- **Licence:** CC BY 4.0 per DIA's copyright page, https://www.dia.govt.nz/Legal-Copyright-Index:
+  "attribute the work to the Department of Internal Affairs", with the source and its copyright status
+  (Crown copyright) acknowledged. The catalogue page, which should state the dataset's own licence,
+  answered with a bot check and was not read.
+- **Coverage:** births registered 1900 to 2025, names given 10+ times in a year. Decade lists run short
+  of 1,000 (feminine 222 to 745, masculine 170 to 739; fewest in the 1900s). The 2020s are 2020 to 2025.
+- **Rebuild:** download the CSV into `cache/nz` by hand; the catalogue answers automated requests
+  with a bot check.
+- **Caveats:** the CSV mixes encodings: é as 0x82 (code page 437) in some rows and 0xe9 (Latin-1) in
+  others, ö as 0xf6, ī and ō as 0x8d and 0x8f (Nīkau, Kōwhai), and in 2025 "?" for a macron's letter
+  (?ria, M?ia), restored from the workbook and earlier years. It writes Zoë as Zoé to 2024, where the
+  workbook has Zoë. Spellings differing only in marks stay apart as registered (Zoe, Zoë; Maia, Māia),
+  but the CSV counts some 2022 and 2023 macron spellings under the plain one (its Maia of 2023 is the
+  workbook's Maia and Māia), so macron spellings are short in those years. Spellings differing only in
+  capitals are counted together (Jo-Anne, Mackenzie, McKenzie). "Baby" (2006 to 2008) dropped. A
+  name given under 10 times every year is missing, so tails are undercounted.
+- **Considered and not used:** the workbook's counts: for 2022 and 2023 they run a little lower than
+  the CSV's (likely an earlier extract) and split those macron spellings out; it
+  is used only to check spellings. No official surname statistics.
 
 ### Norwegian
 - **Lists:** all.
