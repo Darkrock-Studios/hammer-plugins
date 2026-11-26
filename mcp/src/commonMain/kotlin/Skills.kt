@@ -70,8 +70,11 @@ internal fun frontmatter(text: String): Map<String, String> {
 	}
 }
 
-/** Whether YAML reads [value] as itself: a string with no quoting, comment, nesting, or other type. */
-private fun isPlainString(value: String) = value.first() !in "\"'&*!|>%@`#{}[],-?:~ " &&
+/**
+ * Whether YAML reads [value] as itself: a string with no quoting, comment, nesting, or other type. Tabs
+ * are refused outright, since YAML trims them where they border a plain string.
+ */
+private fun isPlainString(value: String) = value.first() !in "\"'&*!|>%@`#{}[],-?:~ " && '\t' !in value &&
 	value.last() != ' ' && ": " !in value && " #" !in value && !value.endsWith(":") &&
 	!value.matches(NOT_A_STRING)
 

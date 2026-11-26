@@ -190,7 +190,7 @@ class McpTest {
 
 	@Test
 	fun frontmatterRefusesWhatItCannotServeVerbatim() {
-		for (line in listOf("description: \"quoted\"", "description: a: b", "description: yes", "description: 12", "metadata:", "  nested: x", "description: x # comment")) {
+		for (line in listOf("description: \"quoted\"", "description: a: b", "description: yes", "description: 12", "metadata:", "  nested: x", "description: x # comment", "description: hello\t")) {
 			assertFailsWith<IllegalArgumentException>(line) { frontmatter("---\nname: a\n$line\n---\n") }
 		}
 		assertFailsWith<IllegalArgumentException> { frontmatter("# No frontmatter\n") }
