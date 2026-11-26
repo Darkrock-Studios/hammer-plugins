@@ -11531,6 +11531,7 @@ Carey	4
 Clem	4
 Con	4
 Cornelius	4
+D'Arcy	4
 Dallas	4
 Derrick	4
 Elliot	4
@@ -13641,7 +13642,6 @@ Stanislav	5
 Stirling	5
 Tibor	5
 Timmothy	5
-Unnmaed	5
 Wilfred	5
 Wilhelmus	5
 Zoltan	5
@@ -13781,6 +13781,7 @@ Virgilio	4
 Winston	4
 Wladyslaw	4
 Yuri	4
+Zacharias	4
 
 [masculine-1970]
 David	3666
@@ -14539,6 +14540,7 @@ Cheyne	5
 Clark	5
 Clemente	5
 Craige	5
+D'Arcy	5
 Declan	5
 Dejan	5
 Deryck	5
@@ -14782,7 +14784,6 @@ Bronson	3
 Carlyle	3
 Carney	3
 Celestino	3
-Chantal	3
 
 [masculine-1980]
 Matthew	3926
@@ -16394,6 +16395,7 @@ Clancy	10
 Coby	10
 Cole	10
 Corbin	10
+D'Arcy	10
 Darian	10
 Davin	10
 Dyllan	10
@@ -16786,7 +16788,6 @@ Zechariah	5
 Aarron	4
 Aedan	4
 Ajay	4
-Akira	4
 
 [masculine-2000]
 Jack	1856
@@ -21035,7 +21036,6 @@ Cato	3
 Cayzer	3
 Cester	3
 Chaffey	3
-Champion de Crespigny baronets	3
 Chaseling	3
 Chatfield	3
 Cheek	3

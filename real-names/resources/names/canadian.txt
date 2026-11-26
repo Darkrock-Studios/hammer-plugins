@@ -1404,7 +1404,6 @@ Dorathy	60
 Loreen	60
 Roma	60
 Johanna	59
-Stillbirth	59
 Gabrielle	58
 Alda	57
 Dorine	57
@@ -3954,7 +3953,6 @@ Carin	17
 Dallas	17
 Fiorella	17
 Kate	17
-Newborn	17
 Velda	17
 Antonina	16
 Carey	16
@@ -4131,6 +4129,7 @@ Bianca	6
 Calogera	6
 Candis	6
 Cara	6
+Carlene	6
 
 [feminine-1960]
 Susan	18196
@@ -13199,7 +13198,6 @@ Wray	63
 Lee	61
 Steven	61
 Emil	60
-Stillbirth	60
 Adélard	59
 Delmer	59
 Eddie	59
@@ -15364,7 +15362,6 @@ Dane	36
 Henricus	36
 Jerald	36
 Jules	36
-Newborn	36
 Clifton	35
 Collin	35
 Elio	35
@@ -15630,7 +15627,6 @@ Harris	7
 Jeff	7
 Joseph-André	7
 Kendall	7
-Livebirth	7
 Luigino	7
 Tommaso	7
 Vytautas	7

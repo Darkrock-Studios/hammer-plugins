@@ -180,10 +180,10 @@ George	14
 Hani	14
 Wael	14
 Abdullah	13
+Gamal	13
 Ramy	13
 Abdel Moneim	12
 Ashraf	12
-Gamal	12
 Mehammad	12
 Mohsen	12
 Moustafa	12
@@ -224,6 +224,7 @@ Adham	7
 Haytham	7
 Hazem	7
 Jamal	7
+Kamel	7
 Muhammed	7
 Sayyid	7
 Yehia	7
@@ -235,7 +236,6 @@ Ammar	6
 Essam	6
 Fathy	6
 Joseph	6
-Kamel	6
 Mohamad	6
 Naguib	6
 Nour	6
