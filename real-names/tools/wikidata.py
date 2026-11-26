@@ -132,8 +132,11 @@ def people():
     home = options["country"]
     within = f" ?p wdt:P19/wdt:P131* wd:{options['within']}." if "within" in options else ""
     patterns = {home: f"?p wdt:P27 wd:{home}.{within}"}
-    for country in options.get("born", []):
-        patterns[country] = f"?p wdt:P27 wd:{country}; wdt:P19/wdt:P17 wd:{home}. FILTER NOT EXISTS {{ ?p wdt:P27 wd:{home}. }}"
+    if options.get("born"):
+        # One pattern for all of "born", as a query counts a person once.
+        earlier = " ".join(f"wd:{country}" for country in options["born"])
+        patterns["-".join(options["born"])] = f"""VALUES ?earlier {{ {earlier} }}
+            ?p wdt:P27 ?earlier; wdt:P19/wdt:P17 wd:{home}. FILTER NOT EXISTS {{ ?p wdt:P27 wd:{home}. }}"""
     return patterns
 
 

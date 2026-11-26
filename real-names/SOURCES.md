@@ -14,8 +14,9 @@ run asks for nothing. From `real-names/tools/`:
     python3 wikidata.py <culture> cache/wd ../resources/names/<culture>.txt
     python3 <culture>.py cache/<code> ../resources/names/<culture>.txt
 
-Some scripts download what they need; others need files put in the cache first, as each script's
-docstring says.
+`canadian.py` and `israeli.py` also write a second culture's file, given as a third argument
+(`quebecois.txt` and `levantine.txt`). Some scripts download what they need; others need files put in
+the cache first, as each script's docstring says.
 
 A cached answer is kept under its culture and query's name, not the query's text, so after changing a
 query delete the cache files it wrote (for `wikidata.py`, `cache/wd/<culture>-<name>.json`) or it keeps
@@ -413,10 +414,10 @@ Japanese, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
 - **Source:** Department of Internal Affairs (DIA), Baby name popularity over time,
   https://catalogue.data.govt.nz/dataset/baby-name-popularity-over-time: `baby-names-1900-to-2025.csv`
   (Year, Sex, Name, Count) and `top-names-by-year-1900-2025.xlsx` (the same names a column a year).
-- **Licence:** CC BY 4.0 per DIA's copyright page, https://www.dia.govt.nz/Legal-Copyright-Index:
-  "attribute the work to the Department of Internal Affairs", with the source and its copyright status
-  (Crown copyright) acknowledged. The catalogue page, which should state the dataset's own licence,
-  answered with a bot check and was not read.
+- **Licence:** CC BY 4.0, as the dataset's catalogue page states ("Creative Commons Attribution 4.0
+  International", read in a browser November 2026). DIA's copyright page,
+  https://www.dia.govt.nz/Legal-Copyright-Index, asks to "attribute the work to the Department of
+  Internal Affairs", with the source and its copyright status (Crown copyright) acknowledged.
 - **Coverage:** births registered 1900 to 2025, names given 10+ times in a year. Decade lists run short
   of 1,000 (feminine 222 to 745, masculine 170 to 739; fewest in the 1900s). The 2020s are 2020 to 2025.
 - **Rebuild:** download the CSV into `cache/nz` by hand; the catalogue answers automated requests

@@ -1206,7 +1206,7 @@ Imre	876
 Tibor	865
 Károly	773
 Miklós	754
-Pál	669
+Pál	668
 Attila	665
 Jenő	502
 Mihály	499
@@ -1235,7 +1235,7 @@ Andor	177
 Viktor	166
 Bálint	164
 Szabolcs	151
-Dénes	149
+Dénes	148
 Norbert	148
 Máté	146
 Elemér	143
@@ -1338,7 +1338,6 @@ Előd	15
 Kevin	15
 Miksa	15
 Mózes	15
-Otto	15
 Victor	15
 Andreas	14
 Gabriel	14
@@ -1347,6 +1346,7 @@ Laszlo	14
 Lóránd	14
 Menyhért	14
 Oliver	14
+Otto	14
 Ármin	14
 Adam	13
 Domonkos	13
@@ -1445,7 +1445,6 @@ Aleksandr	5
 Alexandre	5
 Arisztid	5
 Carl	5
-Edgár	5
 Edmund	5
 Eduard	5
 Franc	5
@@ -1482,6 +1481,7 @@ Brúnó	4
 Bódog	4
 Chaim	4
 Demeter	4
+Edgár	4
 Edward	4
 Emeric	4
 Emerich	4
@@ -1610,7 +1610,7 @@ Károly	88
 László	88
 Imre	77
 Géza	66
-Pál	64
+Pál	63
 Dezső	62
 Ernő	59
 György	58
@@ -1632,7 +1632,7 @@ Gábor	22
 Emil	21
 András	20
 Artúr	20
-Dénes	20
+Dénes	19
 Zsigmond	19
 Oszkár	18
 Nándor	17
@@ -1932,7 +1932,6 @@ Kornél	4
 Ladislas	4
 Loránd	4
 Lóránd	4
-Otto	4
 Peter	4
 Samu	4
 Victor	4
@@ -1948,6 +1947,7 @@ Louis	3
 Lóránt	3
 Mózes	3
 Nicholas	3
+Otto	3
 Pavel	3
 Rajmund	3
 Stefan	3
@@ -3284,7 +3284,6 @@ Fáy	16
 Földesi	16
 Garai	16
 Horányi	16
-Jávor	16
 Kurucz	16
 Merényi	16
 Mikes	16
@@ -3314,6 +3313,7 @@ Dienes	15
 Donáth	15
 Forrai	15
 Gellért	15
+Jávor	15
 Keleti	15
 Kende	15
 Komlós	15
@@ -4124,7 +4124,6 @@ Gelei	6
 Gereben	6
 Gerendás	6
 Ghyczy	6
-Gombosi	6
 Gombás	6
 Gross	6
 Grünbaum	6
@@ -4414,6 +4413,7 @@ Gerendai	5
 Gerlóczy	5
 Goda	5
 Godó	5
+Gombosi	5
 Granasztói	5
 Grandpierre	5
 Gregor	5
@@ -5371,7 +5371,6 @@ Csuhaj	3
 Csuja	3
 Csupor	3
 Csutorás	3
-Csánky	3
 Csátaljay	3
 Csáth	3
 Csávás	3

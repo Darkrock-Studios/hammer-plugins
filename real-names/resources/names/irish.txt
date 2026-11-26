@@ -8732,11 +8732,10 @@ David	8
 Mick	8
 Desmond	7
 Harry	7
-Hugh	7
 Jack	7
 George	6
 Gerry	6
-Noel	6
+Hugh	6
 Richard	6
 Tim	6
 Arthur	5
@@ -8748,10 +8747,10 @@ Eamonn	5
 Joe	5
 Johnny	5
 Maurice	5
+Noel	5
 Pádraig	5
 Robert	5
 Séamus	5
-Basil	4
 Bobby	4
 Brian	4
 Colm	4
@@ -8760,7 +8759,6 @@ Dermot	4
 Donal	4
 Eddie	4
 Francis	4
-Frederick	4
 Martin	4
 Mickey	4
 Norman	4
@@ -8768,6 +8766,7 @@ Vincent	4
 Willie	4
 Alan	3
 Anthony	3
+Basil	3
 Cathal	3
 Christopher	3
 Con	3
@@ -8775,9 +8774,9 @@ Cornelius	3
 Danny	3
 Donald	3
 Eoin	3
+Frederick	3
 Gerard	3
 Ian	3
-Jackie	3
 Jeremiah	3
 Josie	3
 Ned	3

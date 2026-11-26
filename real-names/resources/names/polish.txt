@@ -1001,9 +1001,9 @@ Wisława	250
 Kayla	249
 
 [feminine-1890]
-Maria	126
+Maria	125
 Zofia	66
-Janina	50
+Janina	49
 Helena	45
 Anna	36
 Jadwiga	36
@@ -1017,10 +1017,10 @@ Aniela	19
 Irena	19
 Marianna	15
 Bronisława	14
-Eugenia	11
 Kazimiera	11
 Władysława	11
 Antonina	10
+Eugenia	10
 Felicja	10
 Aleksandra	9
 Julia	9
@@ -1032,8 +1032,8 @@ Franciszka	7
 Wiktoria	7
 Alicja	6
 Barbara	6
-Ewa	6
 Apolonia	5
+Ewa	5
 Hanna	5
 Elżbieta	4
 Feliksa	4
@@ -1060,7 +1060,7 @@ Jadwiga	78
 Anna	70
 Helena	70
 Irena	53
-Wanda	47
+Wanda	46
 Halina	44
 Stanisława	27
 Stefania	27
@@ -1068,8 +1068,8 @@ Bronisława	25
 Krystyna	24
 Aniela	23
 Józefa	23
-Eugenia	20
 Marianna	20
+Eugenia	19
 Julia	18
 Ewa	17
 Aleksandra	16
@@ -1143,7 +1143,7 @@ Wacława	3
 
 [feminine-1910]
 Maria	153
-Zofia	100
+Zofia	99
 Irena	85
 Jadwiga	80
 Janina	75
@@ -1191,11 +1191,11 @@ Henryka	6
 Lidia	6
 Regina	6
 Waleria	6
-Alicja	5
 Gertruda	5
 Małgorzata	5
 Nina	5
 Sabina	5
+Alicja	4
 Anastazja	4
 Evgenia	4
 Lucyna	4
@@ -5659,9 +5659,9 @@ Hektor	319
 [masculine-1880]
 Stanisław	234
 Jan	213
-Józef	174
-Władysław	130
-Kazimierz	124
+Józef	173
+Władysław	129
+Kazimierz	123
 Tadeusz	118
 Franciszek	97
 Stefan	88
@@ -5701,11 +5701,11 @@ Wincenty	18
 Gustaw	17
 Maksymilian	17
 Piotr	17
-Wojciech	17
 Konstanty	16
-Teodor	16
+Wojciech	16
 Zdzisław	16
 Rudolf	15
+Teodor	15
 Leopold	14
 Emil	13
 Romuald	13
@@ -5725,11 +5725,11 @@ Alfons	7
 August	7
 Ryszard	7
 Samuel	7
-Bogdan	6
 Klemens	6
 Otton	6
 Abraham	5
 Bernard	5
+Bogdan	5
 Bruno	5
 Ferdynand	5
 Florian	5
@@ -5778,9 +5778,9 @@ Walenty	3
 Wawrzyniec	3
 
 [masculine-1890]
-Stanisław	418
-Jan	344
-Józef	327
+Stanisław	416
+Jan	343
+Józef	326
 Władysław	224
 Tadeusz	186
 Kazimierz	179
@@ -5788,15 +5788,15 @@ Stefan	176
 Franciszek	157
 Antoni	125
 Zygmunt	116
-Marian	109
-Adam	106
-Mieczysław	105
-Jerzy	103
+Marian	108
+Adam	105
+Mieczysław	104
+Jerzy	102
 Aleksander	100
 Wacław	98
-Henryk	97
+Henryk	96
 Edward	73
-Bolesław	67
+Bolesław	66
 Michał	65
 Leon	64
 Karol	61
@@ -5839,15 +5839,15 @@ Jakub	14
 Zbigniew	14
 Alfons	13
 Szymon	13
-Teodor	13
 Gustaw	12
 Leopold	12
 Ryszard	12
-Leonard	11
+Teodor	12
 Rafał	11
 Seweryn	11
 Teofil	11
 Walerian	11
+Leonard	10
 Marcin	10
 Ferdynand	8
 Abraham	7
@@ -5867,7 +5867,6 @@ Hieronim	6
 Israel	6
 Ivan	6
 Klemens	6
-Maurycy	6
 Robert	6
 Bernard	5
 Bogusław	5
@@ -5875,6 +5874,7 @@ Dawid	5
 Ernest	5
 Felicjan	5
 Leszek	5
+Maurycy	5
 Olgierd	5
 Oskar	5
 Otton	5
@@ -5928,12 +5928,12 @@ Viktor	3
 Łukasz	3
 
 [masculine-1900]
-Stanisław	416
+Stanisław	415
 Jan	345
 Józef	316
 Tadeusz	222
 Władysław	200
-Kazimierz	168
+Kazimierz	167
 Franciszek	160
 Jerzy	157
 Antoni	151
@@ -5945,13 +5945,13 @@ Mieczysław	110
 Adam	98
 Aleksander	97
 Bolesław	84
-Witold	82
-Leon	81
+Witold	81
+Leon	80
 Michał	78
 Wacław	78
 Czesław	71
 Edward	71
-Zbigniew	67
+Zbigniew	66
 Roman	65
 Eugeniusz	61
 Karol	59
@@ -5963,7 +5963,7 @@ Włodzimierz	54
 Andrzej	49
 Feliks	49
 Paweł	47
-Zdzisław	46
+Zdzisław	45
 Julian	37
 Janusz	36
 Wojciech	36
@@ -5986,23 +5986,23 @@ Alfons	14
 Emil	14
 Leonard	13
 Teodor	13
-Mikołaj	12
 Szymon	12
 Walenty	12
 Alojzy	11
 Artur	11
 Grzegorz	11
 Jacek	11
+Mikołaj	11
 Wiesław	11
 Maciej	10
 Marek	10
 Robert	10
 Romuald	10
 Rudolf	10
-Teofil	10
 Konrad	9
 Lech	9
 Szczepan	9
+Teofil	9
 Wilhelm	9
 Abraham	8
 Albin	8
@@ -6012,7 +6012,6 @@ Bogusław	8
 David	8
 Florian	8
 Gustaw	8
-Izrael	8
 Jarosław	8
 Joseph	8
 Lucjan	8
@@ -6020,6 +6019,7 @@ Mirosław	8
 Seweryn	8
 Anatol	7
 Bogdan	7
+Izrael	7
 Leszek	7
 Walerian	7
 Augustyn	6
@@ -6030,7 +6030,6 @@ Salomon	6
 Daniel	5
 Eustachy	5
 Felicjan	5
-Herbert	5
 Klemens	5
 Norbert	5
 Sylwester	5
@@ -6040,9 +6039,9 @@ Cyprian	4
 Ferdynand	4
 Fryderyk	4
 Georges	4
+Herbert	4
 Herman	4
 Hilary	4
-Israel	4
 Ivan	4
 Ksawery	4
 Leo	4
@@ -6066,6 +6065,7 @@ Hugon	3
 Igor	3
 Ireneusz	3
 Isaac	3
+Israel	3
 Jacques	3
 Krzysztof	3
 Longin	3
@@ -6082,7 +6082,7 @@ Wolf	3
 Łukasz	3
 
 [masculine-1910]
-Stanisław	337
+Stanisław	336
 Jan	322
 Józef	251
 Tadeusz	249
@@ -6113,7 +6113,7 @@ Zdzisław	50
 Bronisław	49
 Eugeniusz	45
 Karol	45
-Janusz	43
+Janusz	42
 Ludwik	40
 Ryszard	38
 Edmund	37
@@ -6178,13 +6178,13 @@ Emil	6
 Jacek	6
 Josef	6
 Sergiusz	6
-Teofil	6
 Eryk	5
 Gerard	5
 Gustaw	5
 Marceli	5
 Przemysław	5
 Szczepan	5
+Teofil	5
 Walerian	5
 Albin	4
 Aleksy	4
@@ -6203,7 +6203,6 @@ Joachim	4
 Klemens	4
 Michel	4
 Miron	4
-Nathan	4
 Norbert	4
 Robert	4
 Shlomo	4
@@ -6231,6 +6230,7 @@ Longin	3
 Maurycy	3
 Mojżesz	3
 Moshe	3
+Nathan	3
 Otto	3
 Otton	3
 Peter	3
@@ -6238,11 +6238,11 @@ Rafał	3
 
 [masculine-1920]
 Jerzy	478
-Stanisław	439
+Stanisław	438
 Tadeusz	399
 Jan	395
-Zbigniew	273
 Józef	272
+Zbigniew	272
 Andrzej	235
 Henryk	222
 Kazimierz	219
@@ -6260,8 +6260,8 @@ Czesław	113
 Antoni	96
 Eugeniusz	92
 Franciszek	88
-Roman	83
 Witold	83
+Roman	82
 Bolesław	78
 Aleksander	73
 Włodzimierz	70
@@ -6275,9 +6275,9 @@ Edmund	53
 Piotr	46
 Leon	42
 Ludwik	39
-Bogusław	37
 Julian	37
 Bogdan	36
+Bogusław	36
 Karol	34
 Zenon	34
 Lech	33
@@ -6414,18 +6414,18 @@ Zbyszko	3
 
 [masculine-1930]
 Jerzy	504
-Andrzej	483
+Andrzej	482
 Jan	467
-Stanisław	375
+Stanisław	374
 Tadeusz	286
 Józef	252
 Janusz	238
 Zbigniew	228
-Ryszard	219
+Ryszard	218
 Henryk	206
 Marian	197
 Kazimierz	190
-Zdzisław	144
+Zdzisław	143
 Edward	133
 Władysław	120
 Mieczysław	118
