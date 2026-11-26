@@ -2,13 +2,13 @@
 // that adds it to the project's encyclopedia as a person. The page's state holds the list's seed and
 // options, so pressing a name rebuilds the same list, marking the names already added.
 //
-// Each culture is a directory, resources/names/<culture>/, of lists with a name and how many people
-// have it on each line, a tab between them: feminine.txt and masculine.txt, optionally
-// feminine-<decade>.txt and masculine-<decade>.txt for those born in a decade, such as
-// feminine-1950.txt, and optionally surnames.txt, or surnames-feminine.txt and surnames-masculine.txt
-// where they differ. A name is picked as often as it is common. A full name is "{given} {surname}"
-// unless format.txt says otherwise, such as "{surname} {given}". Adding a
-// culture is a directory and an option in the manifest's culture field.
+// Each culture is a file, resources/names/<culture>.txt, of lists, each a line "[<list>]" and then a
+// name and how many people have it on each line, a tab between them: feminine and masculine,
+// optionally feminine-<decade> and masculine-<decade> for those born in a decade, such as
+// feminine-1950, and optionally surnames, or surnames-feminine and surnames-masculine where they
+// differ. A name is picked as often as it is common. A full name is "{given} {surname}" unless the
+// format list's line says otherwise, such as "{surname} {given}". Adding a culture is a file and an
+// option in the manifest's culture field.
 import hammer.ActionReply
 import hammer.ActionReply.Button
 import hammer.ActionReply.Page
@@ -17,7 +17,7 @@ import hammer.OperationException
 import hammer.input
 import hammer.ops.EntryKind
 import hammer.ops.Hammer
-import hammer.resourceText
+import hammer.resource
 import hammer.state
 import hammer.stateOf
 import kotlin.random.Random
@@ -41,16 +41,24 @@ class NamesInput(
 /** Names from [lines], each `name<tab>count`, the most common first. */
 class NameList(lines: List<String>) {
 	private val names = ArrayList<String>()
-	private val totals = ArrayList<Long>()
+	private val totals: LongArray
+
+	/** How many of the most common names half the people have between them. */
+	private val common: Int
 
 	init {
+		val running = LongArray(lines.size)
+		var total = 0L
 		for (line in lines) {
 			if (line.isBlank()) continue
 			val count = line.substringAfter('\t', "").trim().toLongOrNull() ?: 0
 			if (count <= 0 || line.startsWith('\t')) error("A name list has a name without a count")
+			total += count
+			running[names.size] = total
 			names += line.substringBefore('\t')
-			totals += (totals.lastOrNull() ?: 0) + count
 		}
+		totals = running.copyOf(names.size)
+		common = totals.indexOfFirst { it * 2 >= total } + 1
 	}
 
 	fun isEmpty() = names.isEmpty()
@@ -62,35 +70,121 @@ class NameList(lines: List<String>) {
 	 * half the people have between them; for a `rare` one, any of the rest, each as often as another.
 	 */
 	fun pick(random: Random, rarity: String = "typical"): String {
-		val common = totals.indexOfFirst { it * 2 >= totals.last() } + 1
 		if (rarity == "rare" && common < names.size) return names[random.nextInt(common, names.size)]
 		val at = random.nextLong(if (rarity == "common") totals[common - 1] else totals.last())
-		return names[totals.indexOfFirst { it > at }]
+		// The first name whose running total passes [at]; the totals only grow.
+		var low = 0
+		var high = totals.size - 1
+		while (low < high) {
+			val mid = (low + high) ushr 1
+			if (totals[mid] > at) high = mid else low = mid + 1
+		}
+		return names[low]
 	}
 }
 
-/** The culture's list in `<file>.txt`, or null when it has none. */
-fun nameList(culture: String, file: String): NameList? =
-	resourceText("names/$culture/$file.txt")?.let { NameList(it.lines()) }?.takeUnless { it.isEmpty() }
+/**
+ * Where each list lies in a culture's file, each list a line `[<list>]` and then its lines. The
+ * interpreter Hammer runs plugins in is slow at going through text, so the file is gone through once,
+ * as bytes, to find its lists, and a list is decoded only when it is asked for.
+ */
+class CultureFile(bytes: ByteArray) {
+	/** Where each list's lines lie in the file's bytes, by the list's name. */
+	private val lists = HashMap<String, IntRange>()
+
+	init {
+		var list: String? = null
+		var start = 0
+		var lineStart = if (bytes.size >= 3 && bytes[0] == BOM[0] && bytes[1] == BOM[1] && bytes[2] == BOM[2]) 3 else 0
+		for (i in lineStart..bytes.size) {
+			if (i < bytes.size && bytes[i] != NEWLINE) continue
+			val end = if (i > lineStart && bytes[i - 1] == RETURN) i - 1 else i
+			if (end - lineStart > 1 && bytes[lineStart] == OPEN && bytes[end - 1] == CLOSE) {
+				list?.let { lists[it] = start until lineStart }
+				list = bytes.decodeToString(lineStart + 1, end - 1)
+				start = minOf(i + 1, bytes.size)
+			} else if (list == null && (lineStart until end).any { bytes[it] != SPACE && bytes[it] != TAB }) {
+				error("A culture's file has lines before its first list")
+			}
+			lineStart = i + 1
+		}
+		list?.let { lists[it] = start until bytes.size }
+	}
+
+	operator fun contains(name: String) = name in lists
+
+	/** The lines of the list [name] in the file's [bytes], or null when there is no such list. */
+	fun list(bytes: ByteArray, name: String): List<String>? {
+		val range = lists[name] ?: return null
+		return bytes.decodeToString(range.first, range.last + 1).lines().filter { it.isNotBlank() }
+	}
+
+	private companion object {
+		const val OPEN = '['.code.toByte()
+		const val CLOSE = ']'.code.toByte()
+		const val NEWLINE = '\n'.code.toByte()
+		const val RETURN = '\r'.code.toByte()
+		const val SPACE = ' '.code.toByte()
+		const val TAB = '\t'.code.toByte()
+		val BOM = byteArrayOf(0xEF.toByte(), 0xBB.toByte(), 0xBF.toByte())
+	}
+}
+
+/** A culture's file's lists, those built from it so far, and how it writes a full name. */
+private class Culture(val file: CultureFile, val format: String) {
+	val lists = HashMap<String, NameList?>()
+}
+
+// Hammer drops a plugin whose heap grows too large, and phones have little to spare, so only the
+// cultures used last are kept, the most recent last, and a file's bytes only for the call that read them.
+private const val KEPT_CULTURES = 3
+private val cultures = LinkedHashMap<String, Culture>()
+
+/** A culture's lists for one call, which reads the culture's file only to build a list it has not kept. */
+private class Lookup(private val culture: String) {
+	private var read: ByteArray? = null
+
+	private fun bytes(): ByteArray? = read ?: resource("names/$culture.txt")?.also { read = it }
+
+	/** The culture, or null when there is no such culture. */
+	val known: Culture? = (cultures.remove(culture) ?: bytes()?.let { bytes ->
+		val file = CultureFile(bytes)
+		Culture(file, file.list(bytes, "format")?.firstOrNull()?.trim() ?: "{given} {surname}")
+	})?.also {
+		cultures[culture] = it
+		while (cultures.size > KEPT_CULTURES) cultures.remove(cultures.keys.first())
+	}
+
+	/** The culture's list [name], or null when it has none. */
+	fun list(name: String): NameList? {
+		val known = known ?: return null
+		if (name in known.lists) return known.lists[name]
+		val list = if (name in known.file) known.file.list(bytes()!!, name)?.let(::NameList)?.takeUnless { it.isEmpty() } else null
+		return list.also { known.lists[name] = it }
+	}
+}
+
+/** The culture's list [name], or null when it has none. */
+fun nameList(culture: String, name: String): NameList? = Lookup(culture).list(name)
 
 /** The culture's given names of a kind for the decade nearest [era] that has a list, within 30 years, or for all years. */
-private fun givenNames(culture: String, kind: String, era: String): NameList {
+private fun givenNames(lookup: Lookup, kind: String, era: String): NameList {
 	val decades = era.toIntOrNull()?.let { decade -> listOf(0, -10, 10, -20, 20, -30, 30).map { decade + it } }.orEmpty()
-	return decades.firstNotNullOfOrNull { nameList(culture, "$kind-$it") }
-		?: nameList(culture, kind)
+	return decades.firstNotNullOfOrNull { lookup.list("$kind-$it") }
+		?: lookup.list(kind)
 		?: error("There are no names for that culture")
 }
 
 /** The names [seed] gives for [input]. */
 fun generate(seed: Long, input: NamesInput): List<String> {
-	val culture = input.culture
+	val lookup = Lookup(input.culture)
 	val kinds = listOf("feminine", "masculine").filter { input.gender == "any" || input.gender == it }.ifEmpty { listOf("feminine", "masculine") }
 	// Each kind's given names with its surnames, which a culture may have a list of for each.
 	val lists = kinds.map { kind ->
-		givenNames(culture, kind, input.era) to
-			if (input.surnames) nameList(culture, "surnames-$kind") ?: nameList(culture, "surnames") else null
+		givenNames(lookup, kind, input.era) to
+			if (input.surnames) lookup.list("surnames-$kind") ?: lookup.list("surnames") else null
 	}
-	val format = resourceText("names/$culture/format.txt")?.trim() ?: "{given} {surname}"
+	val format = lookup.known!!.format
 	val random = Random(seed)
 	return List(input.count.coerceIn(1, MAX_NAMES)) {
 		val (given, surnames) = lists.random(random)

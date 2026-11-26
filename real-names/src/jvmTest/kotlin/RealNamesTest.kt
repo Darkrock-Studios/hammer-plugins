@@ -100,6 +100,31 @@ class RealNamesTest {
 	}
 
 	@Test
+	fun `a culture's file holds its lists under their names`() {
+		val bytes = "[format]\n{surname} {given}\n\n[feminine-1950]\r\nJané\t4\r\n[feminine]\nMary\t9\nAnn\t3\n\n[surnames-x]\n[surnames]".encodeToByteArray()
+		val file = CultureFile(bytes)
+		assertEquals(listOf("{surname} {given}"), file.list(bytes, "format"))
+		assertEquals(listOf("Jané\t4"), file.list(bytes, "feminine-1950"))
+		assertEquals(listOf("Mary\t9", "Ann\t3"), file.list(bytes, "feminine"))
+		assertEquals(emptyList(), file.list(bytes, "surnames-x"))
+		assertEquals(emptyList(), file.list(bytes, "surnames"))
+		assertNull(file.list(bytes, "masculine"))
+		assertFailsWith<IllegalStateException> { CultureFile("Mary\t9\n[feminine]\n".encodeToByteArray()) }
+		assertFailsWith<IllegalStateException> { CultureFile("\n Mary\t9\n[feminine]\n".encodeToByteArray()) }
+		val marked = "﻿\n \r\n[feminine]\nMary\t9\n".encodeToByteArray()
+		assertEquals(listOf("Mary\t9"), CultureFile(marked).list(marked, "feminine"))
+		assertNull(nameList("atlantean", "feminine"))
+		// More cultures than are kept, then the first again once it has been let go.
+		listOf("american", "french", "japanese", "russian", "greek", "american").forEach { culture ->
+			assertEquals(8, generate(1, NamesInput(culture = culture, era = "1950", count = 8)).size, culture)
+		}
+		assertEquals(generate(7, NamesInput(culture = "japanese")), generate(7, NamesInput(culture = "japanese")))
+		val files = java.io.File("resources/names").list()!!.filter { it.endsWith(".txt") && it != "NOTICE.txt" }.map { it.removeSuffix(".txt") }
+		val manifest = java.io.File("manifest.toml").readText()
+		assertTrue(files.size > 20 && files.all { "value = \"$it\"" in manifest }, "$files")
+	}
+
+	@Test
 	fun `surnames are written as they usually are`() {
 		val surnames = nameList("american", "surnames")!!
 		assertTrue(listOf("O'Brien", "McDonald", "De La Cruz", "St. John").all { it in surnames })

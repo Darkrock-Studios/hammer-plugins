@@ -1,4 +1,4 @@
-"""Builds resources/names/scottish/: the most common given names by sex, since 1974 and for each decade
+"""Builds resources/names/scottish.txt: the most common given names by sex, since 1974 and for each decade
 of birth since, and the most common surnames, each with its count; see resources/names/NOTICE.txt.
 Run it after wikidata.py, whose lists for earlier decades it leaves. Needs, in the working directory,
 from National Records of Scotland's Babies' First Names and Most Common Surnames publications,
@@ -7,13 +7,15 @@ https://www.nrscotland.gov.uk/publications/:
     full-list-1974-2025.csv           from all-names-given-to-babies-between-1974-to-2025.zip
     most-common-surnames-2025.xlsx
 
-    python3 scottish.py <working directory> <resources/names/scottish directory>
+    python3 scottish.py <working directory> <resources/names/scottish.txt>
 """
 import csv
 import os
 import re
 import sys
 from collections import Counter
+
+import lists
 
 from xlsx import sheets
 
@@ -23,14 +25,6 @@ SURNAMES = 5000
 OTHER_SEX = 20
 
 work, out = sys.argv[1], sys.argv[2]
-os.makedirs(out, exist_ok=True)
-
-
-def write(path, counts, most):
-    ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most]
-    with open(path, "w", encoding="utf-8") as f:
-        f.writelines(f"{name}\t{count}\n" for name, count in ranked)
-    print(os.path.basename(path), len(ranked))
 
 
 # Keyed by (sex, decade), with decade None for all years.
@@ -45,7 +39,7 @@ for (sex, decade), counts in sorted(given.items(), key=lambda item: (item[0][0],
     kind = {"Girl": "feminine", "Boy": "masculine"}[sex]
     other = given[("Boy" if sex == "Girl" else "Girl", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(os.path.join(out, f"{kind}-{decade}.txt" if decade else f"{kind}.txt"), counts, GIVEN)
+    lists.write(out, f"{kind}-{decade}" if decade else kind, counts.items(), GIVEN)
 
 # The surnames in the registers of births, marriages, and deaths of every fifth year from 1975 to
 # 2010 and each year since 2013: the sheet's rows are a year, a surname, its number, and its rank.
@@ -57,4 +51,4 @@ for name, rows in sheets(os.path.join(work, "most-common-surnames-2025.xlsx")):
                 # "Mcdonald", "O'neill", and the like are written with one capital.
                 surname = re.sub(r"^(Mc|O'|D')(.)", lambda m: m.group(1) + m.group(2).upper(), row[1])
                 surnames[surname] += int(row[2])
-write(os.path.join(out, "surnames.txt"), surnames, SURNAMES)
+lists.write(out, "surnames", surnames.items(), SURNAMES)

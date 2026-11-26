@@ -1,11 +1,11 @@
-"""Builds resources/names/french/: the most common given names by sex, over all years and for each
+"""Builds resources/names/french.txt: the most common given names by sex, over all years and for each
 decade of birth, and the most common surnames, each with its count; see resources/names/NOTICE.txt.
 Needs, in the working directory:
 
     nat2022.csv              https://www.insee.fr/fr/statistiques/fichier/7633685/nat2022_csv.zip, unzipped
     noms2008nat_txt.txt      https://www.insee.fr/fr/statistiques/fichier/3536630/noms2008nat_txt.zip, unzipped
 
-    python3 french.py <working directory> <resources/names/french directory>
+    python3 french.py <working directory> <resources/names/french.txt>
 """
 import csv
 import os
@@ -13,6 +13,8 @@ import re
 import sys
 import unicodedata
 from collections import Counter
+
+import lists
 
 GIVEN = 1000
 SURNAMES = 5000
@@ -47,15 +49,7 @@ def cased(name):
     return re.sub(r"(^|[ '-])(.)", lambda m: m.group(1) + m.group(2).upper(), name.lower())
 
 
-def write(path, counts, most):
-    ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:most]
-    with open(path, "w", encoding="utf-8") as f:
-        f.writelines(f"{name}\t{count}\n" for name, count in ranked)
-    print(os.path.basename(path), len(ranked))
-
-
 work, out = sys.argv[1], sys.argv[2]
-os.makedirs(out, exist_ok=True)
 
 # Keyed by (sex, decade), with decade None for all years.
 given = {}
@@ -70,7 +64,7 @@ for (sex, decade), counts in sorted(given.items(), key=lambda item: (item[0][0],
     kind = {"1": "masculine", "2": "feminine"}[sex]
     other = given[("1" if sex == "2" else "2", decade)]
     counts = {name: count for name, count in counts.items() if other[name] <= OTHER_SEX * count}
-    write(os.path.join(out, f"{kind}-{decade}.txt" if decade else f"{kind}.txt"), counts, GIVEN)
+    lists.write(out, f"{kind}-{decade}" if decade else kind, counts.items(), GIVEN)
 
 forms = {}
 for name, _ in (given[("1", None)] + given[("2", None)]).most_common()[::-1]:
@@ -85,4 +79,4 @@ with open(os.path.join(work, "noms2008nat_txt.txt"), encoding="ascii") as f:
             continue
         name = forms.get(row[0]) or re.sub(r"iere$", "ière", cased(row[0]))
         surnames[name] += sum(int(count) for count in row[1:])
-write(os.path.join(out, "surnames.txt"), surnames, SURNAMES)
+lists.write(out, "surnames", surnames.items(), SURNAMES)

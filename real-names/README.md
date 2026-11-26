@@ -30,15 +30,15 @@ Written in Kotlin. It asks for `entry.create` and nothing else. The page works a
 generators' do: an inline button per name, the page's `state` holding the list's seed, options, and
 which names were added, and a page-level error when the encyclopedia refuses a name.
 
-Each culture is a folder, `resources/names/<culture>/`, of lists with a name and how many people have
-it on each line, a tab between them, most common first: `feminine.txt` and `masculine.txt`, optionally
-`feminine-<decade>.txt` and `masculine-<decade>.txt` for those born in a decade, such as
-`feminine-1950.txt`, and optionally `surnames.txt`, or `surnames-feminine.txt` and
-`surnames-masculine.txt` where they differ. A full name is `{given} {surname}` unless `format.txt`
-says otherwise, such as `{surname} {given}`. Adding a culture is a folder and an option in the
-manifest's `culture` field.
+Each culture is a file, `resources/names/<culture>.txt`, of lists, each a line `[<list>]` and then a
+name and how many people have it on each line, a tab between them, most common first: `feminine` and
+`masculine`, optionally `feminine-<decade>` and `masculine-<decade>` for those born in a decade, such
+as `feminine-1950`, and optionally `surnames`, or `surnames-feminine` and `surnames-masculine` where
+they differ. A full name is `{given} {surname}` unless a `format` list's line says otherwise, such as
+`{surname} {given}`. Adding a culture is a file and an option in the manifest's `culture` field.
 
 `tools/` builds the lists, a script for each culture with published statistics (American, Chinese,
 English, French, Irish, Norwegian, Polish, Scottish) and `wikidata.py` for the rest, from the people
-Wikidata has born since 1880. `resources/names/NOTICE.txt` gives each list's source and terms; the
+Wikidata has born since 1880. Each replaces the lists it builds in the culture's file and keeps the
+others. `resources/names/NOTICE.txt` gives each list's source and terms; the
 Chinese lists are for non-commercial use only.
