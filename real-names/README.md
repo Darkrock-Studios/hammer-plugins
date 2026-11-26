@@ -39,7 +39,8 @@ they differ. A full name is `{given} {surname}` unless a `format` list's line sa
 
 `tools/` builds the lists, a script for each culture with published statistics (American, Argentine,
 Australian, Austrian, Belgian, Brazilian, Canadian and Québécois, Chinese, Czech, English, Finnish,
-French, German, Irish, Israeli and Levantine, Italian, Mexican, New Zealander, Norwegian, Polish,
-Scottish, Slovenian, Spanish, Swedish, Swiss) and `wikidata.py` for the rest, from the people Wikidata has born since 1880. Each replaces the lists it builds in the culture's file and keeps the
-others. `resources/names/NOTICE.txt` gives each list's source and terms; the
-Chinese lists are for non-commercial use only.
+French, German, Irish, Israeli and Levantine, Italian, Korean, Mexican, New Zealander, Norwegian,
+Polish, Scottish, Slovenian, Spanish, Swedish, Swiss) and `wikidata.py` for the rest, from the people
+Wikidata has born since 1880. Each replaces the lists it builds in the culture's file and keeps the
+others. `resources/names/NOTICE.txt` gives each list's source and terms; the Chinese lists are for
+non-commercial use only.

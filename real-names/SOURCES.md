@@ -40,6 +40,7 @@ answering from the old ones. `argentine.py` takes surnames' accents from `spanis
 | Irish | irish.py | ie | overall, decades since the 1960s, surnames | earlier decades |
 | Israeli | israeli.py | il | all since the 1940s (Jewish sector) | masculine before the 1940s |
 | Italian | italian.py | it | decades since the 2000s | overall, surnames, earlier decades |
+| Korean | korean.py | kr | surnames | the rest |
 | Levantine | israeli.py | il | all (Arab sectors) | none |
 | Mexican | mexican.py | mx | 2010s and 2020s, surnames | overall, earlier decades |
 | New Zealander | new_zealander.py | nz | overall, decades 1900s to 2020s | surnames, masculine before the 1900s |
@@ -53,7 +54,7 @@ answering from the old ones. `argentine.py` takes surnames' accents from `spanis
 | Swiss | swiss.py | ch | overall, decades since the 1920s, surnames | masculine before the 1920s |
 
 Every other culture is Wikidata's alone: Danish, Dutch, Egyptian, Filipino, Greek, Hungarian, Indian, Iranian,
-Japanese, Korean, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
+Japanese, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
 
 ## Cultures with official statistics
 
@@ -356,6 +357,37 @@ Japanese, Korean, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
 - **Considered and not used:** replacing the overall lists, since newborns since 1999 are not the
   population; nothing official covers surnames.
 
+### Korean
+- **Lists:** surnames. Given names and decades from Wikidata (citizens of South Korea).
+- **Source:** Statistics Korea (since October 2025 the Ministry of Data and Statistics, 국가데이터처),
+  2015 Population and Housing Census: KOSIS table DT_1IN15SD, 성씨ㆍ본관별 인구(5인 이상) - 전국
+  (population by surname and clan seat, 5+ people, nationwide),
+  https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1IN15SD, viewed by surname and downloaded
+  as xlsx. Spellings from one Wikidata query: South Korea's people with a family name, with their
+  English and Korean labels and their family name's Korean label.
+- **Licence:** KOSIS's terms, https://kosis.kr/serviceInfo/useGuide.do: free to use, reuse and
+  redistribute, commercially too, with the source cited (agency, survey, date, table, URL); figures
+  must not be altered, nor sold unprocessed. Copyright is 국가데이터처's. No KOGL type is stated for
+  statistics (only for publications). International and North Korean statistics are non-commercial
+  only; this table is neither.
+- **Coverage:** the whole population in the 2015 census; surnames 5+ people have. 532 rows of surname
+  and hanja make 191 hangul surnames and 188 English ones; the 91,107 people under 기타 (other) are left
+  out.
+- **Rebuild:** download the table by hand into `cache/kr/` as `kosis-DT_1IN15SD-view.xlsx` (surname
+  level only, 2015); one Wikidata query (11 MB), kept as `wikidata-people.json`.
+- **Caveats:** a surname's hanja are one English surname (姜 and 康 are both Kang). Each is spelled
+  as more of South Korea's people on Wikidata with its hangul spell it than any other way, where 2+
+  do, and in the Revised Romanization otherwise. A person counts when their Korean label starts with
+  their family name's hangul (not a stage name); their spelling is their English label's first or last
+  word, not hyphened, and starting with a letter the hangul allows, whichever more of that surname's
+  people have. Wikidata's labels lean to the Revised Romanization: Eom (30) over Um (19) and Uhm (11),
+  Cheon over Chun, Gong over Kong, and Jung only just over Jeong (462 to 444). 이 and 리 are both Lee,
+  조 and 초 both Cho, 선 and 순 both Sun; 유 (Yoo) and 류 (Ryu) stay apart, as do 나 (Na) and 라 (Ra).
+  Revised Romanization for lack of data gives Hyeong, Du, Beom (often Hyung, Doo, Bum), one-letter A
+  (阿), and Japanese surnames naturalized in hangul (등정, 藤井, as Deungjeong).
+- **Considered and not used:** the KOSIS OpenAPI, whose key needs Korean identity verification; the
+  Supreme Court's given-name viewer, which has no download.
+
 ### Mexican
 - **Lists:** feminine-2010, masculine-2010, feminine-2020, masculine-2020, surnames. Overall and earlier
   decades from Wikidata.
@@ -568,9 +600,6 @@ Checked November 2026; each stays on Wikidata.
   foreign access and gives only top-N in Persian script.
 - **Japanese:** no government name statistics; Meiji Yasuda's yearly survey of policyholders' children
   is a top 100 in kanji, all rights reserved.
-- **Korean:** given names: only the Supreme Court's top-N viewer, no download. Surnames: KOSIS table
-  DT_1IN15SD (2015 census, surname by clan seat, 5+ people) is reusable with citation, but bulk access
-  needs a free KOSIS OpenAPI key.
 - **Russian, Ukrainian:** no national or surname statistics; Moscow and Ukraine's Ministry of Justice
   publish newborn top lists without full counts.
 - **Turkish:** TÜİK's population portal gives only the top 30 per year, sex and province (2018 to 2025).

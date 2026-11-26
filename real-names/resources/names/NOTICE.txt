@@ -273,6 +273,19 @@ lists stop short of a year's rarer names, so a name that could be among the most
 from its count in each year. A name over 20 times as common for the other sex is left out. The other
 lists are from Wikidata, below.
 
+korean.txt
+
+surnames holds the surnames of South Korea's population in the 2015 Population and Housing Census
+that 5 or more people have, each with how many have it. From Statistics Korea's (now the Ministry of
+Data and Statistics, 국가데이터처) table DT_1IN15SD, population by surname and clan seat (5 or more
+people), nationwide, on KOSIS, https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1IN15SD,
+accessed November 2026; source: 「인구총조사」, 국가데이터처. It gives each surname in hangul and
+hanja; the script counts those of the same hangul as one, and spells each as more of South Korea's
+people on Wikidata spell it in English than any other way, or in the Revised Romanization of Korean
+where fewer than 2 of them do, counting surnames spelled alike together. KOSIS's terms allow its statistics to
+be used, reused, and redistributed for any purpose, commercial included, with their source cited,
+https://kosis.kr/serviceInfo/useGuide.do. The other lists are from Wikidata, below.
+
 mexican.txt
 
 feminine-2010 and masculine-2010 hold the most common given names of each sex among births
@@ -363,7 +376,7 @@ terms "Open use. Must provide the source.", https://opendata.swiss/en/terms-of-u
 FSO, STATPOP. The lists for earlier decades are from Wikidata, below.
 
 danish.txt, dutch.txt, filipino.txt, greek.txt, hungarian.txt, indian.txt, iranian.txt,
-japanese.txt, korean.txt, nigerian.txt, russian.txt, turkish.txt, ukrainian.txt, and what the above
+japanese.txt, nigerian.txt, russian.txt, turkish.txt, ukrainian.txt, and what the above
 lack
 
 The lists hold the first given names and the family names of each country's people born since 1880
