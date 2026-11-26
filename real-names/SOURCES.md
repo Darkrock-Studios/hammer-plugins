@@ -20,6 +20,7 @@ docstring says.
 | Culture | Script | Cache | Official lists | From Wikidata |
 |---|---|---|---|---|
 | American | american.py | | all | none |
+| Argentine | argentine.py | ar | all since the 1920s | masculine before the 1920s |
 | Australian | australian.py | au | overall, decades 1940s to 2020s | surnames, earlier decades |
 | Austrian | austrian.py | at | decades since the 1980s | overall, surnames, earlier decades |
 | Belgian | belgian.py | be | overall, decades since the 1990s, surnames | earlier decades |
@@ -59,6 +60,30 @@ Japanese, Korean, Maghrebi, Nigerian, Russian, Turkish, Ukrainian.
 - **Rebuild:** unzip both into the working directory first.
 - **Caveats:** SSA writes names without spaces, hyphens or inner capitals; the census writes surnames
   in capitals without punctuation, which the script restores for the common ones.
+
+### Argentine
+- **Lists:** feminine, masculine, decades 1920s to 2010s (whole given names), 2020s (single given
+  names), surnames. masculine-1880 to 1910 from Wikidata.
+- **Source:** RENAPER (Registro Nacional de las Personas): Nombres de personas físicas,
+  https://infra.datos.gob.ar/catalog/otros/dataset/2/distribution/2.1/download/historico-nombres.zip
+  (its dataset page is gone); Nombres propios en Argentina,
+  https://datos.gob.ar/dataset/nombres-propios-en-argentina1; Distribución de apellidos en Argentina,
+  https://datos.gob.ar/dataset/distribucion-de-apellidos-en-argentina1. CSV URLs in `argentine.py`.
+- **Licence:** CC BY 4.0; attribute RENAPER.
+- **Coverage:** whole given names as registered, by year of birth 1922 to 2015. The 2020s: births 2020
+  to 2024, each given name counted on its own (a person with two counts twice). Surnames: residents in
+  December 2021, those more than 10 of a province's residents have, summed over provinces. Yearly
+  totals run above births from 1975 to 1996 and jump in 2012, so read counts as shares.
+- **Rebuild:** about 78 MB of downloads and 4 Wikidata queries; about 3 minutes from cache. Reads
+  spanish.txt and mexican.txt beside the output for surname accents.
+- **Caveats:** the source has no sex. A word tells one when Argentines on Wikidata, or RENAPER's top 20
+  by sex, have it over 20 times as often for one sex; other words learn it from the names they appear
+  in; a name takes the sex of its first word that tells one (José María, María José). 0.48% of people
+  are left out; a hand check of 400 names found no errors. Accents from Wikidata, RENAPER's own accented
+  records, and the Spanish and Mexican lists, with small fix lists. Spanish particles lowercase (de la
+  Fuente), Italian capitalized (De Luca). The 2020s tails keep real misspellings (Bejamín).
+- **Considered and not used:** the 2012 to 2024 single-name file for the whole-name lists (it counts
+  words, not names); the top-20 surname files.
 
 ### Australian
 - **Lists:** feminine, masculine, decades 1940s to 2010s from South Australia's complete lists; 2020s from
