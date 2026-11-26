@@ -60,6 +60,7 @@ CULTURES = {
     # The United Kingdom's people: asking for those born in England runs out of time.
     "english": {"country": "Q145", "born": ["Q174193"]},
     "filipino": {"country": "Q928"},
+    "finnish": {"country": "Q33", "born": ["Q62633", "Q34266"]},
     "german": {"country": "Q183", "born": ["Q43287", "Q41304", "Q7318", "Q16957", "Q713750"]},
     "greek": {"country": "Q41", "feminine": [
         ("poulos", "poulou"), ("idis", "idou"), ("adis", "adou"), ("akis", "aki"), ("os", "ou"), ("is", "i"), ("as", "a"),
