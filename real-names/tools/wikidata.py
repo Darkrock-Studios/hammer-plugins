@@ -100,6 +100,7 @@ CULTURES = {
         ("oy", "aya"), ("ny", "naya"),
     ], "sure": ("ova", "eva", "skaya")},
     "scottish": {"country": "Q145", "within": "Q22"},
+    "slovenian": {"country": "Q215", "born": ["Q36704", "Q83286", "Q28513"]},
     "spanish": {"country": "Q29"},
     "swedish": {"country": "Q34"},
     "swiss": {"country": "Q39"},

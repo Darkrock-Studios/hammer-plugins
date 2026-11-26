@@ -53,6 +53,7 @@ options = [
 	{ value = "quebecois", label = "Québécois" },
 	{ value = "russian", label = "Russian" },
 	{ value = "scottish", label = "Scottish" },
+	{ value = "slovenian", label = "Slovenian" },
 	{ value = "spanish", label = "Spanish" },
 	{ value = "swedish", label = "Swedish" },
 	{ value = "swiss", label = "Swiss" },
