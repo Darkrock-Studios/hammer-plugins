@@ -71,9 +71,9 @@ Leave a scene untagged, and list it as unsure with your reason, when:
 applies:
 
 1. A `pov-` tag the project already has for this character, exactly as it is, capitals and all: its
-   name part is the entry's name or one of its aliases, whatever the case. If that name part fits more
-   than one person's entry, the tag doesn't say whose it is: ask the writer before using it for
-   either.
+   name part is the entry's name or one of its aliases, whatever the case, with spaces as `-` and
+   other marks dropped (`pov-mary-ann` is Mary Ann). If that name part fits more than one person's
+   entry, the tag doesn't say whose it is: ask the writer before using it for either.
 2. The name the narration calls them by, when that is the entry's name or one of its aliases and no
    other person's entry shares it: `pov-mara` for Mara Vell.
 3. The entry's full name, or with no entry, the name as the scene gives it.
@@ -88,8 +88,8 @@ move the scene to unsure. A quote may leave out markdown marks such as `*`, writ
 straight, and write a run of spaces as one, and differ in nothing else. `text_find` checks one: the
 quote as `term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It never
 matches across a paragraph break: check a quote that runs over one a paragraph at a time, and see in
-the text you read that those paragraphs follow one another in that order. No match means the quote
-isn't there.
+the text you read that those paragraphs follow one another in that order, with nothing left out
+between them. No match means the quote isn't there.
 
 ## Propose
 

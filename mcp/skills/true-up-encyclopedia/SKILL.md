@@ -134,7 +134,8 @@ as `*`, write curly quotes straight, and write a run of spaces as one, and diffe
 `text_find` checks one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and
 `caseSensitive: true`. It never matches across a paragraph break: check a quote that runs over one a
 paragraph at a time, and see in the text you read that those paragraphs follow one another in that
-order. No match means the quote isn't there. Never quote from a `search` snippet.
+order, with nothing left out between them. No match means the quote isn't there. Never quote from a
+`search` snippet.
 
 ## Report
 

@@ -81,7 +81,8 @@ quote you can't find. A quote may leave out markdown marks such as `*`, write cu
 and write a run of spaces as one, and differ in nothing else. `text_find` checks one: the quote as
 `term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It never matches
 across a paragraph break: check a quote that runs over one a paragraph at a time, and see in the text
-you read that those paragraphs follow one another in that order. No match means the quote isn't there.
+you read that those paragraphs follow one another in that order, with nothing left out between them.
+No match means the quote isn't there.
 
 ## Report
 
