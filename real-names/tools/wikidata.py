@@ -68,6 +68,7 @@ CULTURES = {
     "greek": {"country": "Q41", "feminine": [
         ("poulos", "poulou"), ("idis", "idou"), ("adis", "adou"), ("akis", "aki"), ("os", "ou"), ("is", "i"), ("as", "a"),
     ]},
+    "hungarian": {"country": "Q28", "born": ["Q171150", "Q28513"]},
     "indian": {"country": "Q668", "born": ["Q129286"]},
     "iranian": {"country": "Q794"},
     "irish": {"country": "Q27", "born": ["Q174193", "Q145"]},

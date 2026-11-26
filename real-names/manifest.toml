@@ -34,6 +34,7 @@ options = [
 	{ value = "french", label = "French" },
 	{ value = "german", label = "German" },
 	{ value = "greek", label = "Greek" },
+	{ value = "hungarian", label = "Hungarian" },
 	{ value = "indian", label = "Indian" },
 	{ value = "iranian", label = "Iranian" },
 	{ value = "irish", label = "Irish" },
