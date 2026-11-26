@@ -79,7 +79,7 @@ class RealNamesTest {
 	@Test
 	fun `every culture in the manifest gives names of each gender and rarity`() {
 		val manifest = java.io.File("manifest.toml").readText()
-		val cultures = Regex("value = \"(\\w+)\", label = \"[A-Z]\\w+\" }").findAll(manifest.substringBefore("key = \"era\"")).map { it.groupValues[1] }.toList()
+		val cultures = Regex("value = \"(\\w+)\", label = \"[^\"]+\" }").findAll(manifest.substringBefore("key = \"era\"")).map { it.groupValues[1] }.toList()
 		assertTrue(cultures.size > 20 && "american" in cultures)
 		for (culture in cultures) for (gender in listOf("feminine", "masculine")) for (rarity in listOf("common", "typical", "rare")) {
 			val names = generate(11, NamesInput(culture, "1950", gender, rarity, 5))
