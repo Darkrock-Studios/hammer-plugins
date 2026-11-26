@@ -49,7 +49,8 @@ Use the first of these that answers it, and record which one did:
 
 1. **Already tagged:** the scene has `pov-` or `pov_` tags. Leave them; never change an existing POV
    tag. If most of the scene reads as another character's, or as no one character's, report it under
-   Mismatch. A few stray lines in another head are not a mismatch.
+   Mismatch. A few stray lines in another head are not a mismatch. If a whole section, set off by a
+   break, is another character's and the scene has no tag for them, propose that tag as an addition.
 2. **Metadata:** the outline or notes name the POV character.
 3. **Inferred:** the first-person narrator, or the one character whose thoughts and sensations the
    narration reports directly. Take one short quote that shows it.
@@ -82,8 +83,9 @@ Hammer tags hold only letters, digits, `-`, and `_`, so turn spaces into `-` and
 
 Confirm each quote appears verbatim in the scene's `markdown`. If it doesn't, find one that does or
 move the scene to unsure. A quote may leave out markdown marks such as `*`, and nothing else.
-`text_find` checks one exactly: the quote as `term`, the scene's id in `ids`, and `wholeWord: false`.
-No match means the quote isn't there.
+`text_find` checks one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and
+`caseSensitive: true`. It reads curly and straight quotes as the same. No match means the quote isn't
+there.
 
 ## Propose
 
@@ -92,6 +94,7 @@ No match means the quote isn't there.
 - <scene name> (id <id>): pov-<name> (inferred) "<exact quote>"
 - <scene name> (id <id>): pov-<name>, pov-<name> (inferred, switches at a break) "<quote>" / "<quote>"
 - <scene name> (id <id>): pov-<name> (from outline | from notes)
+- <scene name> (id <id>): add pov-<name> (tagged pov-<name>, a section is <Name>'s) "<exact quote>"
 - Unsure <scene name> (id <id>): <why>
 - Mismatch <scene name> (id <id>): tagged pov-<name>, reads as <Name | no one character>: "<exact quote>"
 ```

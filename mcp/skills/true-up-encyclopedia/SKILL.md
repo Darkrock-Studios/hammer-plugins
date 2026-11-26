@@ -97,9 +97,11 @@ Keep one row per alias, with the scenes it appears in.
 An entry is unused when nothing in the scenes names it, by name or any alias. Capitals and a leading
 "the" don't matter: "the harbor seal" names The Harbor Seal.
 
-Call `text_count` with every entry's name and aliases as `terms`, up to 50 a call, and neither
-`group` nor `ids`. It counts whole-word uses in the scenes' text, ignoring capitals, so "the Gull"
-doesn't count "the gulls". An entry whose name and aliases all come to zero is unused.
+Call `text_count` with every entry's name and aliases as `terms`, up to 50 a call, and neither `group`
+nor `ids`. It counts whole-word uses in the scenes' text, ignoring capitals, so "the Gull" doesn't
+count "the gulls". An entry whose name and aliases all come to zero is unused. A name that is also an
+ordinary word (a boat called Gull) is counted where it means something else: look at such an entry's
+uses with `text_find`, and if none means the entry, it is unused too.
 
 Without `text_count`, this check means reading the whole book and noting each entry you see named.
 `search` won't do: it matches inside longer words and matches scene titles.
@@ -126,9 +128,9 @@ skill; if you notice it, name the scenes in one closing line.
 
 Confirm every scene quote appears verbatim in its scene's `markdown`, and every entry quote in the
 entry's text. Drop any finding whose quote you can't find. A quote may leave out markdown marks such
-as `*`, and nothing else. `text_find` checks one exactly: the quote as `term`, the scene's id in
-`ids`, and `wholeWord: false`. No match means the quote isn't there. Never quote from a `search`
-snippet.
+as `*`, and nothing else. `text_find` checks one: the quote as `term`, the scene's id in `ids`,
+`wholeWord: false`, and `caseSensitive: true`. It reads curly and straight quotes as the same. No
+match means the quote isn't there. Never quote from a `search` snippet.
 
 ## Report
 

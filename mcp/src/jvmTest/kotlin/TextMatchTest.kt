@@ -25,6 +25,13 @@ class TextMatchTest {
 	}
 
 	@Test
+	fun `a padded or styled term is still a whole word`() {
+		val text = "The harbormaster left the harbor."
+		assertEquals(1, count(" harbor ", text))
+		assertEquals(1, count("*harbor*", text))
+	}
+
+	@Test
 	fun `case is ignored unless asked for`() {
 		assertEquals(3, count("vell", "Vell, VELL, vell."))
 		assertEquals(1, count("Vell", "Vell, VELL, vell.", caseSensitive = true))

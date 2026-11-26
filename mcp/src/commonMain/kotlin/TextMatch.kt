@@ -77,8 +77,10 @@ private fun markLength(text: String, at: Int): Int {
  */
 class TextMatcher(term: String, private val caseSensitive: Boolean, wholeWord: Boolean) {
 	val term = normalizeText(term, paragraphs = false)
-	private val boundedBefore = wholeWord && term.isNotEmpty() && isWordChar(term.first())
-	private val boundedAfter = wholeWord && term.isNotEmpty() && isWordChar(term.last())
+
+	// this.term: the bare name is the constructor's raw term.
+	private val boundedBefore = wholeWord && this.term.isNotEmpty() && isWordChar(this.term.first())
+	private val boundedAfter = wholeWord && this.term.isNotEmpty() && isWordChar(this.term.last())
 
 	/** Where each match in [text] starts, left to right; matches don't overlap. Each is [term]'s length. */
 	fun matches(text: String): List<Int> {

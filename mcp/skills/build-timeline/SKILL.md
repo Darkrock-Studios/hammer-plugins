@@ -25,7 +25,7 @@ belongs to the writer.
 1. If the project isn't named, call `project_list` and ask which one.
 2. Call `timeline_settings_read`, then `timeline_list` for the main timeline. This skill builds from
    empty. If the timeline already has events, say how many and ask: build on a new timeline beside it,
-   or stop. Never add to or rearrange events the writer placed.
+   and under what name, or stop. Never add to or rearrange events the writer placed.
 3. Call `scene_tree` for the scenes and groups in story order, with word counts. This skill reads the
    whole book, since a date in one chapter often rests on a line in another. Say how much that is ("62
    scenes, about 91,000 words") and, over about 30,000 words, wait for a go-ahead.
@@ -164,10 +164,12 @@ there need to be at least two lanes. If the evidence supports no split, use no l
 
 ## Check your quotes
 
-Before showing the plan, confirm every quote appears verbatim in its scene's `markdown` or its entry's
-text. Drop any placement whose quote you can't find. A quote may leave out markdown marks such as `*`,
-and nothing else. `text_find` checks one exactly: the quote as `term`, the scene's id in `ids`, and
-`wholeWord: false`. No match means the quote isn't there.
+Before showing the plan, confirm every quote appears verbatim where it came from: the scene's
+`markdown`, its `meta.outline` or `meta.notes`, or the entry's text. Drop any placement whose quote
+you can't find. A quote may leave out markdown marks such as `*`, and nothing else. `text_find` checks
+one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It
+reads curly and straight quotes as the same. No match means the quote isn't there. It doesn't search
+outlines or notes: check a quote from one against the `meta` you read.
 
 ## The plan
 
@@ -185,9 +187,9 @@ Lanes: <lane>, <lane>, ... | none
 | ... | | | | | | Story order |
 ```
 
-Evidence from an entry is cited as (entry: <entry name>). Write When as a reader would ("14 Nov 1923,
-7:00 pm", "Day 3", "9:30 pm"); on a manual timeline it is the label, and the rows are in timeline
-order.
+Evidence from an entry is cited as (entry: <entry name>), and from a scene's outline or notes as
+(<scene name>, outline) or (<scene name>, notes). Write When as a reader would ("14 Nov 1923, 7:00
+pm", "Day 3", "9:30 pm"); on a manual timeline it is the label, and the rows are in timeline order.
 
 For each plain event, also give the title and text you would record and the entries it would refer to.
 Then, across all timelines:
@@ -214,7 +216,9 @@ Only the approved plan, in this order:
    `"manual"`), `calendar` for a dated one, and `laneOrder` as the lane names in order; leave out what
    the plan doesn't have, and skip the call if the settings already match. For a second one,
    `timeline_def_create` with `name` and the same fields; it returns an id to pass as `timeline` in
-   the calls below.
+   the calls below. If the main timeline already had events, it gets no calls at all, settings
+   included: every timeline in the plan is made with `timeline_def_create`, and every event call
+   carries its `timeline`.
 2. **Events,** in timeline order, one call each:
    - `timeline_place` for a scene or event entry: `kind`, `subject` (the scene's or entry's id), and
      `start`, `end`, `lane`, `milestone` where the plan has them.

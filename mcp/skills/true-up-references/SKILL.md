@@ -63,9 +63,10 @@ Leave everything else alone.
 
 Every confirm and dismiss gives a short quote from the scene as evidence. Before proposing, confirm
 each quote appears verbatim in the scene's `markdown`. Drop any proposal whose quote you can't find. A
-quote may leave out markdown marks such as `*`, and nothing else. `text_find` checks one exactly: the
-quote as `term`, the scene's id in `ids`, and `wholeWord: false`. No match means the quote isn't
-there. A clear needs no quote: say the entry no longer appears.
+quote may leave out markdown marks such as `*`, and nothing else. `text_find` checks one: the quote as
+`term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It reads curly and
+straight quotes as the same. No match means the quote isn't there. A clear needs no quote: say the
+entry no longer appears.
 
 ## Propose
 

@@ -42,7 +42,8 @@ Use the first of these that answers it, and record which one did:
    digits, `-`, and `_`: it drops a tag with a colon and splits one with a space, so never suggest
    either. A name's spaces are written `-` (`pov-mary-ann`). Several `pov-` tags mean the scene
    switches at its breaks: those are its POV characters, and you match each section to one of them by
-   reading it. The name in a tag may be an entry's name or one of its aliases; match it ignoring case.
+   reading it. The name in a tag may be an entry's name or one of its aliases; match it ignoring case,
+   with the name's spaces as `-` and its other marks dropped: `pov-obrien` is O'Brien.
 2. **Metadata:** the outline or notes naming the POV character.
 3. **Inferred:** from the text: the first-person narrator, or the one character whose thoughts and
    sensations the narration reports directly.
@@ -78,8 +79,9 @@ Don't flag:
 
 Every finding quotes the scene exactly. Before reporting, confirm each quote appears verbatim in the
 scene's `markdown`. Drop any finding whose quote you can't find. A quote may leave out markdown marks
-such as `*`, and nothing else. `text_find` checks one exactly: the quote as `term`, the scene's id in
-`ids`, and `wholeWord: false`. No match means the quote isn't there.
+such as `*`, and nothing else. `text_find` checks one: the quote as `term`, the scene's id in `ids`,
+`wholeWord: false`, and `caseSensitive: true`. It reads curly and straight quotes as the same. No
+match means the quote isn't there.
 
 ## Report
 
