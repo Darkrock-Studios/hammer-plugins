@@ -72,8 +72,9 @@ applies:
 
 1. A `pov-` tag the project already has for this character, exactly as it is, capitals and all: its
    name part is the entry's name or one of its aliases, whatever the case, with spaces as `-` and
-   other marks dropped (`pov-mary-ann` is Mary Ann). If that name part fits more than one person's
-   entry, the tag doesn't say whose it is: ask the writer before using it for either.
+   anything a tag can't hold dropped (`pov-mary-ann` is Mary Ann, `pov-anne-marie` is Anne-Marie). If
+   that name part fits more than one person's entry, the tag doesn't say whose it is: ask the writer
+   before using it for either.
 2. The name the narration calls them by, when that is the entry's name or one of its aliases and no
    other person's entry shares it: `pov-mara` for Mara Vell.
 3. The entry's full name, or with no entry, the name as the scene gives it.

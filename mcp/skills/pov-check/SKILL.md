@@ -43,7 +43,8 @@ Use the first of these that answers it, and record which one did:
    either. A name's spaces are written `-` (`pov-mary-ann`). Several `pov-` tags mean the scene
    switches at its breaks: those are its POV characters, and you match each section to one of them by
    reading it. The name in a tag may be an entry's name or one of its aliases; match it ignoring case,
-   with the name's spaces as `-` and its other marks dropped: `pov-obrien` is O'Brien.
+   with the name's spaces as `-` and anything a tag can't hold dropped: `pov-obrien` is O'Brien,
+   `pov-anne-marie` is Anne-Marie.
 2. **Metadata:** the outline or notes naming the POV character.
 3. **Inferred:** from the text: the first-person narrator, or the one character whose thoughts and
    sensations the narration reports directly.
