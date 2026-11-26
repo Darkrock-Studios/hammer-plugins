@@ -73,7 +73,8 @@ private fun markLength(text: String, at: Int): Int {
  * Finds [term] in text from [normalizeText]. The term is normalised the same way, with no paragraph
  * breaks, so a match never spans two paragraphs. Unless [caseSensitive], case is ignored a character at
  * a time. With [wholeWord], a match may not have a letter or digit directly before it when the term
- * starts with one, nor directly after it when the term ends with one.
+ * starts with one, nor directly after it when the term ends with one. Past U+FFFF only ideographs count
+ * as letters.
  */
 class TextMatcher(term: String, private val caseSensitive: Boolean, wholeWord: Boolean) {
 	val term = normalizeText(term, paragraphs = false)

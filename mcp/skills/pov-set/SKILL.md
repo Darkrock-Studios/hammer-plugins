@@ -30,7 +30,7 @@ Each scene is decided on its own, so never read more than was asked for.
 ## Gather
 
 1. Call `entry_list` with `type: "person"` for character names and aliases.
-2. Call `tag_list` for the tags the project already uses, to see which `pov-` tags exist.
+2. Call `tag_list` for the tags the project already uses, to see which `pov-` and `pov_` tags exist.
 3. Read with `scene_read_many`, passing `group` (a group's id) or `ids`, or neither for the whole
    book. Each scene comes with its `path` of group names and its `meta` (`tags`, `outline`, `notes`).
    When the result has a non-null `next`, call again with `after: next`. For a single scene,
@@ -70,17 +70,18 @@ Leave a scene untagged, and list it as unsure with your reason, when:
 `pov-` followed by the character's name. A new tag is all lower-case. Use the first of these that
 applies:
 
-1. A `pov-` tag the project already has for this character, exactly as it is, capitals and all: its
-   name part is the entry's name or one of its aliases, whatever the case, with spaces as `-` and
-   anything a tag can't hold dropped (`pov-mary-ann` is Mary Ann, `pov-anne-marie` is Anne-Marie). If
-   that name part fits more than one person's entry, the tag doesn't say whose it is: ask the writer
-   before using it for either.
+1. A `pov-` or `pov_` tag the project already has for this character, exactly as it is, prefix,
+   capitals and all: its name part is the entry's name or one of its aliases, whatever the case, with
+   spaces as `-` and anything a tag can't hold dropped (`pov-mary-ann` is Mary Ann, `pov-anne-marie`
+   is Anne-Marie). If that name part fits more than one person's entry, the tag doesn't say whose it
+   is: ask the writer before using it for either.
 2. The name the narration calls them by, when that is the entry's name or one of its aliases and no
    other person's entry shares it: `pov-mara` for Mara Vell.
 3. The entry's full name, or with no entry, the name as the scene gives it.
 
 Hammer tags hold only letters, digits, `-`, and `_`, so turn spaces into `-` and drop anything else:
-`pov-mary-ann`, `pov-obrien`. Use the same tag for the same character everywhere.
+`pov-mary-ann`, `pov-obrien`. Use the same tag for the same character everywhere. If two characters
+come out with the same tag (O'Brien and Obrien), ask the writer what to call each.
 
 ## Check your quotes
 
