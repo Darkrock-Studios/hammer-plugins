@@ -2305,106 +2305,3010 @@ Viviana	3
 Ylenia	3
 
 [feminine-2000]
-Sara	39
-Giulia	38
-Martina	35
-Sofia	34
-Francesca	31
-Alice	30
-Chiara	30
-Anna	28
-Elisa	27
-Giorgia	27
-Beatrice	26
-Alessia	19
-Federica	19
-Gaia	19
-Maria	19
-Elena	18
-Emma	17
-Laura	16
-Valentina	16
-Caterina	14
-Vittoria	14
-Giada	13
-Marta	13
-Matilde	13
-Silvia	12
-Carlotta	11
-Margherita	11
-Nicole	11
-Rebecca	11
-Alessandra	10
-Asia	10
-Aurora	10
-Eleonora	10
-Angela	9
-Noemi	9
-Serena	9
-Anita	8
-Arianna	8
-Ilaria	8
-Linda	8
-Veronica	8
-Claudia	7
-Greta	7
-Irene	7
-Lucrezia	7
-Ludovica	7
-Angelica	6
-Camilla	6
-Carolina	6
-Elisabetta	6
-Gloria	6
-Lara	6
-Manuela	6
-Melissa	6
-Roberta	6
-Virginia	6
-Antonietta	5
-Benedetta	5
-Cristina	5
-Daniela	5
-Gabriella	5
-Lavinia	5
-Letizia	5
-Lisa	5
-Marika	5
-Sarah	5
-Alexandra	4
-Anastasia	4
-Bianca	4
-Emanuela	4
-Eva	4
-Flavia	4
-Ginevra	4
-Luna	4
-Nadine	4
-Paola	4
-Rachele	4
-Sabrina	4
-Allegra	3
-Ambra	3
-Barbara	3
-Camila	3
-Chantal	3
-Cinzia	3
-Clara	3
-Clarissa	3
-Iris	3
-Isabella	3
-Jennifer	3
-Katharina	3
-Lucia	3
-Miriam	3
-Monica	3
-Nadia	3
-Simona	3
-Sonia	3
-Sophie	3
-Valeria	3
-Vanessa	3
-Viola	3
+Giulia	98032
+Martina	80159
+Sara	74287
+Chiara	71418
+Alessia	65612
+Sofia	60767
+Francesca	55526
+Giorgia	52759
+Aurora	43071
+Alice	41996
+Elisa	37506
+Anna	36531
+Giada	33439
+Gaia	33197
+Federica	32831
+Elena	28576
+Beatrice	25632
+Valentina	24758
+Ilaria	23371
+Arianna	23332
+Noemi	22408
+Alessandra	22035
+Matilde	20946
+Eleonora	20818
+Emma	20723
+Rebecca	20115
+Marta	20016
+Maria	19562
+Asia	19258
+Laura	19217
+Camilla	18425
+Irene	17109
+Nicole	16885
+Silvia	16818
+Greta	16721
+Benedetta	15877
+Serena	15369
+Ludovica	15282
+Claudia	14853
+Vittoria	14684
+Angelica	13547
+Veronica	12876
+Michela	12688
+Caterina	12624
+Roberta	12549
+Sabrina	12429
+Angela	11926
+Lucia	11845
+Margherita	11293
+Valeria	11101
+Melissa	11000
+Carlotta	10989
+Miriam	10957
+Ginevra	10685
+Viola	10378
+Marika	9882
+Letizia	9826
+Erika	9770
+Simona	9738
+Lucrezia	9249
+Denise	8857
+Vanessa	8453
+Cristina	7869
+Rachele	7866
+Elisabetta	7816
+Lisa	7624
+Gloria	7400
+Flavia	6971
+Linda	6859
+Virginia	6591
+Paola	6504
+Marianna	6502
+Emanuela	6500
+Teresa	6297
+Rosa	6184
+Giovanna	6103
+Anita	5985
+Fabiana	5908
+Antonella	5865
+Cecilia	5772
+Ilenia	5712
+Michelle	5618
+Desiree	5555
+Maddalena	5438
+Jessica	5416
+Agnese	5368
+Carolina	5292
+Daniela	5225
+Isabella	4984
+Bianca	4822
+Lara	4685
+Annalisa	4664
+Erica	4643
+Stefania	4597
+Rossella	4478
+Rita	4448
+Sonia	4149
+Carmen	4016
+Jennifer	4016
+Eva	4015
+Manuela	3963
+Anastasia	3815
+Clara	3645
+Emily	3643
+Francesca Pia	3549
+Lavinia	3491
+Sharon	3454
+Stella	3449
+Carola	3365
+Sarah	3362
+Nadia	3336
+Monica	3324
+Raffaella	3309
+Gioia	3274
+Siria	3255
+Giusy	3237
+Carmela	3232
+Luisa	3203
+Ambra	3146
+Azzurra	3125
+Sophia	3098
+Maria Chiara	3054
+Iris	3019
+Giuseppina	2903
+Carla	2873
+Dalila	2869
+Ester	2834
+Annamaria	2803
+Miriana	2800
+Marina	2798
+Adriana	2789
+Adele	2780
+Maria Vittoria	2673
+Jasmine	2647
+Ylenia	2639
+Morena	2622
+Debora	2575
+Diana	2558
+Gabriella	2517
+Clarissa	2483
+Diletta	2424
+Barbara	2420
+Agata	2415
+Costanza	2369
+Viviana	2342
+Maria Pia	2315
+Fatima	2217
+Anna Maria	2211
+Susanna	2196
+Giuliana	2178
+Desirè	2172
+Luna	2161
+Melania	2142
+Isabel	2129
+Antonia	2128
+Antonietta	2104
+Maria Grazia	2088
+Grazia	2065
+Lorena	2045
+Maria Francesca	2045
+Emilia	2035
+Daria	2034
+Yasmine	2020
+Marzia	1986
+Samantha	1974
+Mariachiara	1963
+Aya	1960
+Sveva	1954
+Victoria	1944
+Milena	1937
+Matilda	1925
+Luana	1913
+Maya	1900
+Marica	1891
+Lorenza	1878
+Livia	1874
+Annachiara	1872
+Fabiola	1871
+Zoe	1815
+Gemma	1761
+Mariapia	1760
+Mariagrazia	1757
+Katia	1756
+Maria Teresa	1720
+Rosaria	1667
+Sophie	1650
+Mara	1631
+Nicoletta	1620
+Julia	1586
+Concetta	1578
+Assunta	1568
+Natalia	1567
+Patrizia	1558
+Rossana	1549
+Giulia Maria	1544
+Alexandra	1518
+Lidia	1508
+Celeste	1487
+Rosanna	1480
+Filomena	1475
+Syria	1455
+Maria Rosaria	1454
+Micaela	1454
+Nunzia	1439
+Allegra	1435
+Vincenza	1400
+Annarita	1393
+Deborah	1381
+Nicol	1317
+Naomi	1312
+Eliana	1253
+Immacolata	1232
+Mariam	1202
+Nina	1198
+Micol	1189
+Mariangela	1186
+Malak	1175
+Delia	1164
+Ilary	1162
+Mariarosaria	1155
+Hiba	1154
+Cristiana	1147
+Hajar	1140
+Francesca Maria	1127
+Pamela	1121
+Mia	1069
+Marwa	1049
+Nora	1039
+Alyssa	1036
+Iman	1036
+Ines	1034
+Clelia	1017
+Amanda	1001
+Elettra	992
+Myriam	991
+Flaminia	988
+Vera	982
+Alisia	970
+Chiara Maria	970
+Samira	964
+Samanta	956
+Amelia	947
+Mariasole	945
+Yasmin	944
+Maria Cristina	938
+Romina	938
+Ida	927
+Amina	918
+Mariateresa	911
+Alexia	910
+Maria Giulia	897
+Enrica	892
+Helena	887
+Nada	882
+Maria Elena	871
+Sofia Maria	843
+Elvira	830
+Swami	830
+Leila	824
+Chantal	816
+Salma	815
+Lina	813
+Alba	806
+Lea	788
+Nancy	784
+Tania	784
+Maia	783
+Alessia Maria	778
+Liliana	775
+Cinzia	771
+Maria Luisa	767
+Amira	766
+Amalia	764
+Maria Sole	762
+Silvana	759
+Evelyn	754
+Petra	747
+Olivia	746
+Anna Chiara	743
+Giusi	743
+Jenny	741
+Selene	740
+Giordana	731
+Maria Sofia	730
+Tamara	728
+Tiziana	728
+Rosita	725
+Marisol	712
+Morgana	712
+Dafne	711
+Natasha	709
+Alissa	706
+Zaira	703
+Jasmin	700
+Giorgia Maria	691
+Ikram	688
+Maria Antonietta	687
+Olga	687
+Sara Maria	682
+Manila	679
+Floriana	676
+Khadija	674
+Rosalia	674
+Annunziata	673
+Aida	672
+Sandra	668
+Domenica	662
+Aurora Maria	658
+Adelaide	657
+Annalaura	654
+Loredana	652
+Marcella	651
+Lia	648
+Martina Maria	646
+Luciana	641
+Rosalba	641
+Ivana	640
+Maria Giovanna	640
+Raffaela	635
+Iolanda	632
+Graziana	631
+Marilena	629
+Donatella	628
+Eugenia	626
+Asya	622
+Imane	620
+Noemy	619
+Aicha	614
+Miryam	608
+Giuditta	604
+Sabina	604
+Mariafrancesca	600
+Corinne	599
+Esmeralda	597
+Lena	587
+Elena Sofia	576
+Flora	570
+Carol	564
+Martina Pia	560
+Maria Rita	553
+Mariarita	547
+Rosy	540
+Maria Laura	537
+Melanie	536
+Giada Maria	527
+Maira	527
+Omaima	526
+Manal	525
+Ada	523
+Aisha	523
+Priscilla	523
+Ramona	520
+Karol	518
+Penelope	518
+Elena Maria	515
+Laila	515
+Kristel	514
+Mariavittoria	514
+Elisa Maria	512
+Gessica	512
+Marisa	512
+Mariantonietta	506
+Doriana	505
+Nour	500
+Elisabeth	497
+Gaia Maria	497
+Felicia	491
+Mary	487
+Federica Maria	483
+Soraya	483
+Basma	477
+Ottavia	477
+Alicia	475
+Dalia	474
+Rania	474
+Samuela	474
+Dora	470
+Gilda	470
+Ornella	469
+Alice Maria	466
+Beatrice Maria	466
+Olimpia	464
+Enza	463
+Kimberly	461
+Denisa	460
+Maria Letizia	458
+Rim	458
+Amal	457
+Kiara	456
+Bruna	452
+Maura	451
+Gabriela	448
+Melisa	448
+Cassandra	447
+Lucilla	445
+Anna Pia	444
+Danila	444
+Annapia	439
+Maria Concetta	439
+Mariarca	438
+Giuseppa	437
+Bianca Maria	436
+Cloe	435
+Fiorella	434
+Tatiana	432
+Sirya	430
+Brenda	425
+Ludovica Maria	423
+Megan	422
+Marialuisa	419
+Pasqualina	419
+Francesca Romana	417
+Mariana	414
+Margot	411
+Jana	410
+Chanel	408
+Karen	408
+Elsa	404
+Maria Stella	402
+Imma	400
+Tonia	400
+Dorotea	399
+Perla	399
+Maila	397
+Nadine	397
+Oriana	395
+Anna Rita	392
+Grace	392
+Rosamaria	384
+Asja	383
+Alina	379
+Mirea	378
+Alessia Pia	376
+Monia	374
+Daiana	373
+Maryam	371
+Alessandra Maria	369
+Luigia	367
+Wissal	366
+Natalie	363
+Asia Maria	362
+Evelin	360
+Safaa	358
+Asmaa	357
+Licia	355
+Maria Carmela	354
+Tea	354
+Anna Laura	352
+Alena	351
+Vittoria Maria	350
+Natascia	349
+Pia	348
+Karola	346
+Alma	345
+Nicla	345
+Kawtar	344
+Brigida	343
+Marialaura	343
+Sefora	343
+Tecla	343
+Klea	342
+Angelina	341
+Magdalena	338
+Maria Rosa	337
+Selma	337
+Assia	336
+Daisy	336
+Maria Lucia	336
+Graziella	335
+Maristella	335
+Piera	335
+Angela Maria	334
+Amelie	333
+Elide	331
+Noa	329
+Hilary	325
+Marie	325
+Viktoria	325
+Maria Paola	323
+Maria Elisa	322
+Michaela	322
+Mariagiulia	321
+Meriem	320
+Zineb	320
+Hannah	313
+Benedetta Maria	312
+Ingrid	312
+Melany	311
+Anna Giulia	309
+Mariem	308
+Alida	307
+Cristel	306
+Maria Beatrice	306
+Rebecca Maria	306
+Aurelia	304
+Gaya	304
+Yousra	302
+Josephine	301
+Mila	296
+Celine	295
+Alesia	294
+Fabrizia	294
+Corinna	291
+Domitilla	291
+Antonina	289
+Anja	288
+Chiara Pia	288
+Manar	287
+Alisea	286
+Douaa	285
+Altea	284
+Annagiulia	283
+Kristina	282
+Wiam	282
+Isotta	280
+Sabrin	280
+Doha	279
+Esther	278
+Karin	277
+Maria Aurora	277
+Katharina	276
+Mariarosa	275
+Mariaelena	274
+Marta Maria	274
+Irma	273
+Guendalina	272
+Miranda	272
+Charlotte	271
+Mariacristina	271
+Mariagiovanna	269
+Valery	269
+Matilde Maria	268
+Mirella	268
+Consuelo	267
+Maja	267
+Noemi Maria	267
+Leonie	265
+Fatima Zahra	263
+Selena	262
+Federica Pia	261
+Genny	261
+Emma Maria	259
+Eleonora Maria	257
+Elisea	257
+Amy	256
+Fiamma	255
+Greta Maria	255
+Giulia Pia	253
+Hanna	253
+Jacqueline	253
+Karima	253
+Selina	253
+Ileana	252
+Sabrine	251
+Dea	250
+Glenda	250
+Irene Maria	250
+Magda	248
+Veronika	248
+Ginevra Maria	247
+Aleksandra	246
+Naike	245
+Sasha	245
+Aurora Pia	244
+Hafsa	244
+Francesca Paola	242
+Rosa Maria	241
+Samia	241
+Sindi	241
+Egle	240
+Giorgia Pia	240
+Meriam	240
+Maria Assunta	239
+Carlotta Maria	238
+Frida	238
+Kelly	236
+Teodora	236
+Angelica Maria	234
+Renata	234
+Cristal	233
+Dana	232
+Astrid	230
+Damiana	229
+Annapaola	228
+Dania	228
+Nathalie	228
+Ana	227
+Gaetana	227
+Anna Sofia	226
+Johanna	226
+Caterina Maria	225
+Elizabeth	225
+Emmanuela	225
+Clementina	224
+Gianna	224
+Zainab	224
+Emiliana	223
+Laura Maria	222
+Angela Pia	219
+Jamila	219
+Nives	219
+Alaa	218
+Imen	218
+Verena	218
+Annalena	217
+Roberta Maria	217
+Francescapia	216
+Israa	216
+Larissa	216
+Gaja	215
+Iole	215
+Maram	215
+Claudia Maria	214
+Donia	214
+Desy	213
+Jolanda	213
+Ana Maria	212
+Houda	212
+Andreina	210
+Ariel	209
+Brunella	208
+Marilisa	208
+Marinella	208
+Clotilde	207
+Fortuna	207
+Ilaria Maria	206
+Verdiana	206
+Yassmine	206
+Tanya	205
+Rahma	204
+Rosangela	204
+Tina	204
+Yara	204
+Inas	203
+India	203
+Klaudia	203
+Maria Caterina	203
+Naima	201
+Doaa	200
+Mina	200
+Regina	200
+Consiglia	198
+Suami	198
+Megi	196
+Fiorenza	195
+Anisa	194
+Cindy	194
+Iside	194
+Orsola	194
+Shakira	194
+Giada Pia	193
+Serena Maria	193
+Vivian	193
+Nisrine	192
+Safa	192
+Dounia	191
+Marilù	191
+Valentina Maria	191
+Camilla Maria	190
+Emy	190
+Fatma	190
+Maria Maddalena	190
+Isabelle	189
+Mariastella	189
+Mery	189
+Sibilla	189
+Crystal	188
+Fiona	188
+Silvia Maria	188
+Hind	186
+Rosalinda	186
+Dina	185
+Mariella	185
+Alison	184
+Daphne	184
+Dominique	184
+Domiziana	184
+Farah	184
+Chloe	183
+Elisabetta Maria	183
+Oumaima	183
+Raissa	183
+Selenia	183
+Letizia Maria	182
+Sara Pia	182
+Mayra	181
+Stephanie	181
+Erminia	180
+Kristal	180
+Vita	180
+Annika	179
+Klara	179
+Lucrezia Maria	179
+Anna Paola	178
+Emili	178
+Helen	178
+Noelia	178
+Irina	177
+Marialucia	177
+Mariapaola	177
+Anais	176
+Ersilia	176
+Maria Anna	176
+Maria Elisabetta	176
+Marlene	176
+Chiara Francesca	174
+Maria Martina	174
+Noemi Pia	172
+Tosca	172
+Awa	171
+Flavia Maria	171
+Luce	171
+Sofia Elena	171
+Asma	170
+Elda	170
+Gina	169
+Giulia Francesca	169
+Lucia Pia	169
+Mikaela	169
+Safia	169
+Santina	169
+Alberta	168
+Emi	168
+Palma	168
+Sandy	168
+Ariana	167
+Katrin	167
+Moira	167
+Fiammetta	166
+Leda	166
+Guia	165
+Catia	164
+Felisia	164
+Gea	164
+Sofia Pia	164
+Allison	163
+Christine	163
+Demetra	163
+Katerina	163
+Maria Angela	163
+Antea	162
+Fatou	161
+Dayana	160
+Fernanda	160
+Francesca Rita	160
+Giulia Rita	160
+Marissa	160
+Rihab	160
+Maria Celeste	159
+Martina Anna	159
+Meryem	159
+Maria Benedetta	158
+Adelina	157
+Alisa	157
+Julie	157
+Gelsomina	156
+Swamy	156
+Vania	156
+Aminata	155
+Annabella	155
+Franziska	155
+Nikol	155
+Tasnim	155
+Ania	154
+Arianna Maria	154
+Maroua	154
+Renee	154
+Eloisa	153
+Maria Antonia	153
+Maria Ludovica	153
+Stefanie	153
+Antonella Pia	152
+Eliza	152
+Abir	151
+Bernadette	151
+Caroline	151
+Eya	151
+Gloria Maria	151
+Krizia	150
+Yasmina	149
+Alessandra Pia	148
+Justine	148
+Maria Clara	148
+Anna Lisa	147
+Ashley	147
+Lodovica	147
+Maria Michela	147
+Nohaila	147
+Sarra	147
+Alisya	145
+Anthea	145
+Kejsi	145
+Veronica Maria	145
+Emilie	144
+Gaia Pia	144
+Martina Francesca	144
+Desideria	143
+Ilham	143
+Lilia	143
+Nicole Maria	143
+Omayma	143
+Tessa	143
+Maria Alessandra	142
+Nikole	142
+Xhesika	142
+Alexa	141
+Cora	141
+Fadwa	141
+Jlenia	141
+Nausicaa	141
+Rachel	141
+Yvonne	141
+Anna Lucia	140
+Malek	140
+Suamy	140
+Alissia	139
+Maria Lourdes	139
+Melita	139
+Sheila	139
+Siham	139
+Valeria Maria	139
+Michela Pia	138
+Nikita	138
+Noura	138
+Ranim	138
+Riham	138
+Stefany	138
+Evelina	137
+Maria Alessia	137
+Leonora	136
+Margherita Maria	136
+Monika	136
+Carla Maria	135
+Giulia Elena	135
+Ilaria Pia	135
+Violante	135
+Addolorata	134
+Chiara Rita	134
+Francesca Anna	134
+Sally	134
+Isabella Maria	133
+Mafalda	133
+Tanja	133
+Thea	133
+Giulia Andrea	131
+Paola Maria	131
+Salwa	131
+Viola Maria	131
+Kaoutar	130
+Michela Maria	130
+Sara Francesca	130
+Simran	129
+Zahra	129
+Ibtissam	128
+Leyla	128
+Santa	128
+Alessia Francesca	127
+Doris	127
+Ermelinda	127
+Maria Carmen	127
+Rachele Maria	127
+Deva	126
+Pia Francesca	126
+Xin Yi	126
+Ahlam	125
+Andrea Giulia	125
+Brigitta	125
+Dominga	125
+Maria Virginia	125
+Mariaconcetta	125
+Martina Rita	125
+Simona Maria	125
+Sonja	125
+Teresa Maria	125
+Keisi	124
+Maria Serena	124
+Selvaggia	124
+Erika Maria	123
+Evita	123
+Francesca Chiara	123
+Germana	123
+Giovanna Pia	123
+Giulia Anna	123
+Giulia Sofia	123
+Leandra	123
+Maria Gabriella	123
+Mayla	123
+Rosa Pia	123
+Angel	122
+Giulietta	122
+Malika	122
+Marika Pia	122
+Mathilde	122
+Sirin	122
+Sofia Francesca	122
+Abigail	121
+Jasmeen	121
+Roberta Pia	121
+Violetta	121
+Arwa	120
+Emma Sofia	120
+Giustina	120
+Mascia	120
+Susan	120
+Yassmin	120
+Annalucia	119
+Maria Domenica	119
+Cristina Maria	118
+Gerarda	118
+Virginia Maria	118
+Yosra	118
+Florinda	117
+Lucy	117
+Mame Diarra	117
+Sabrina Maria	117
+Stela	117
+Gaia Francesca	116
+Gisella	116
+Jannat	116
+Sofia Anna	116
+Agnese Maria	115
+Aia	115
+Angelika	115
+Annarosa	115
+Aurora Francesca	115
+Hana	115
+Jole	115
+Martha	115
+Sofia Rita	115
+Alessia Elena	114
+Cira	114
+Jihan	114
+Mariacarmela	114
+Halima	113
+Jasmina	113
+Youssra	113
+Zaineb	113
+Elenia	112
+Giovanna Maria	112
+Ketty	112
+Maria Sara	112
+Mariasofia	112
+Sanaa	112
+Asia Pia	111
+Mikela	111
+Nadin	111
+Serafina	111
+Serena Pia	111
+Jada	110
+Karolina	110
+Paula	110
+Vanessa Maria	110
+Wanda	110
+Cecilia Maria	109
+Dajana	109
+Jennyfer	109
+Lejla	109
+Maria Immacolata	109
+Maria Lucrezia	109
+Sofia Vittoria	109
+Andreana	108
+Blanca	108
+Clizia	108
+Elma	108
+Eva Maria	108
+Maria Federica	108
+Soukaina	108
+Valentina Pia	108
+Chiara Lucia	107
+Elison	107
+Gurleen	107
+Melissa Maria	107
+Nicolina	107
+Costanza Maria	106
+Giorgia Francesca	106
+Lucia Maria	106
+Nabila	106
+Elektra	105
+Klarisa	105
+Layla	105
+Mariassunta	105
+Rawan	105
+Alicya	104
+Maria Carolina	104
+Medina	104
+Chaimaa	103
+Fulvia	103
+Habiba	103
+Mira	103
+Norma	103
+Vivien	103
+Febe	102
+Isra	102
+Joy	102
+Maria Claudia	102
+Marysol	102
+Sirine	102
+Ema	101
+Hoda	101
+Ludovica Pia	101
+
+[feminine-2010]
+Sofia	75290
+Giulia	68845
+Aurora	55307
+Giorgia	42854
+Martina	41308
+Emma	40148
+Alice	38088
+Sara	36857
+Chiara	36362
+Greta	32100
+Anna	31566
+Ginevra	30401
+Gaia	29416
+Alessia	26858
+Beatrice	26815
+Francesca	26295
+Matilde	25907
+Noemi	25865
+Vittoria	24216
+Nicole	23627
+Viola	22232
+Elisa	20769
+Giada	20308
+Arianna	20304
+Elena	20214
+Rebecca	19644
+Ludovica	19628
+Camilla	18441
+Marta	16449
+Bianca	16389
+Maria	15382
+Asia	14818
+Melissa	13802
+Mia	13332
+Eleonora	12765
+Adele	12168
+Miriam	12156
+Benedetta	11929
+Angelica	11681
+Serena	11676
+Irene	11650
+Ilaria	11490
+Carlotta	11422
+Gioia	11324
+Margherita	10707
+Alessandra	10516
+Caterina	10412
+Federica	9968
+Anita	9715
+Valentina	9301
+Emily	9064
+Cecilia	8747
+Laura	8648
+Rachele	8632
+Lucia	8609
+Eva	8129
+Isabel	7495
+Azzurra	7447
+Linda	7209
+Isabella	6753
+Angela	6492
+Ambra	6463
+Diletta	6257
+Gloria	6205
+Flavia	6172
+Claudia	6138
+Stella	5939
+Sophia	5902
+Chloe	5767
+Virginia	5755
+Letizia	5538
+Silvia	5517
+Veronica	5498
+Elisabetta	5455
+Sveva	5390
+Lara	5344
+Lucrezia	5147
+Michela	5102
+Lavinia	5077
+Zoe	5063
+Agata	4917
+Amelia	4911
+Clara	4909
+Diana	4885
+Agnese	4842
+Celeste	4585
+Anastasia	4547
+Maya	4520
+Vanessa	4475
+Desiree	4462
+Sabrina	4429
+Michelle	4355
+Maddalena	4339
+Olivia	4270
+Nina	4229
+Roberta	4227
+Valeria	4164
+Teresa	4160
+Cloe	4102
+Lisa	4018
+Rosa	3986
+Denise	3969
+Sophie	3893
+Carolina	3791
+Iris	3741
+Marika	3734
+Fatima	3678
+Cristina	3588
+Clarissa	3495
+Nora	3389
+Marianna	3337
+Victoria	3315
+Ester	3287
+Jasmine	3188
+Ilenia	3167
+Luna	3090
+Carola	3087
+Rita	3067
+Erika	3064
+Paola	3062
+Maria Vittoria	2996
+Gemma	2961
+Emanuela	2957
+Giovanna	2914
+Antonia	2813
+Malak	2787
+Livia	2773
+Sarah	2680
+Sharon	2631
+Ilary	2571
+Carmen	2553
+Dalila	2507
+Simona	2497
+Siria	2425
+Amira	2383
+Antonella	2355
+Yasmine	2350
+Carla	2338
+Maria Francesca	2316
+Matilda	2301
+Jennifer	2296
+Penelope	2283
+Emilia	2220
+Morena	2213
+Costanza	2155
+Nadia	2142
+Annalisa	2107
+Aya	2078
+Allegra	2023
+Daniela	1998
+Sofia Maria	1995
+Chanel	1986
+Mariasole	1952
+Erica	1916
+Marwa	1868
+Sonia	1868
+Luisa	1855
+Lina	1844
+Stefania	1822
+Giusy	1819
+Rossella	1817
+Evelyn	1815
+Jessica	1804
+Annamaria	1767
+Mya	1728
+Raffaella	1724
+Annachiara	1719
+Fabiana	1719
+Giulia Maria	1680
+Ines	1678
+Alyssa	1587
+Amelie	1587
+Anna Maria	1577
+Amanda	1568
+Vera	1568
+Marisol	1566
+Marina	1555
+Melania	1546
+Delia	1527
+Maria Chiara	1512
+Jannat	1500
+Ylenia	1492
+Maia	1477
+Desirè	1473
+Daria	1468
+Micol	1460
+Nour	1459
+Elettra	1453
+Dafne	1450
+Carmela	1443
+Gabriella	1428
+Adriana	1410
+Francesca Pia	1409
+Mariam	1405
+Khadija	1398
+Aida	1389
+Lea	1389
+Mariachiara	1377
+Myriam	1376
+Yasmin	1363
+Ariel	1359
+Clelia	1354
+Syria	1348
+Carol	1341
+Adelaide	1337
+Helena	1336
+Lia	1327
+Manuela	1311
+Julia	1270
+Hiba	1256
+Maria Sole	1250
+Lidia	1245
+Monica	1238
+Alexandra	1234
+Alisia	1205
+Aurora Maria	1196
+Amina	1186
+Amalia	1181
+Grace	1172
+Grazia	1166
+Milena	1163
+Patrizia	1143
+Naomi	1141
+Leila	1122
+Susanna	1121
+Flaminia	1089
+Marica	1080
+Olimpia	1065
+Dalia	1057
+Alessia Maria	1054
+Nada	1047
+Ada	1029
+Micaela	1025
+Miriana	1023
+Rim	1021
+Natalia	1007
+Petra	1005
+Alba	1003
+Mariagrazia	995
+Hajar	982
+Sole	981
+Alma	977
+Viviana	975
+Perla	973
+Miryam	970
+Esmeralda	966
+Giuseppina	966
+Lorena	966
+Aisha	960
+Giuliana	953
+Israa	948
+Maryam	947
+Karol	936
+Bianca Maria	931
+Maria Sofia	929
+Samira	920
+Rosaria	914
+Flora	895
+Aicha	880
+Morgana	880
+Soraya	871
+Nicol	862
+Mara	860
+Marzia	859
+Luce	849
+Swami	842
+Kristel	841
+Barbara	836
+Francesca Maria	829
+Samantha	829
+Mariafrancesca	827
+Maria Grazia	824
+Alissa	821
+Frida	815
+Eliana	812
+Giordana	809
+Rosanna	808
+Chantal	804
+Fabiola	789
+Giorgia Maria	789
+Antonietta	780
+Elsa	778
+Annarita	775
+Maria Elena	772
+Yara	770
+Margot	768
+Zaira	768
+Mariavittoria	763
+Sara Maria	746
+Debora	742
+Nunzia	740
+Tea	734
+Emma Maria	730
+Selene	727
+Mariarosaria	723
+Lena	722
+Maria Teresa	709
+Amy	708
+Rania	703
+Ida	702
+Maria Rosaria	698
+Charlotte	696
+Safaa	696
+Megan	694
+Ginevra Maria	693
+Nicoletta	692
+Dora	690
+Beatrice Maria	685
+Maria Giulia	676
+Miranda	673
+Katia	668
+Noa	666
+Greta Maria	656
+Violante	650
+Assia	649
+Maira	646
+Jana	644
+Elisabeth	633
+Klea	630
+Assunta	628
+Jasmin	626
+Lorenza	626
+Tessa	626
+Vittoria Maria	625
+Chiara Maria	622
+Dorotea	620
+Crystal	619
+Noemy	610
+Basma	603
+Maria Pia	602
+Filomena	601
+Lucilla	599
+Salma	595
+Viktoria	594
+Laila	584
+Marie	582
+Iman	580
+Dea	579
+Natalie	573
+Cristel	572
+Alaa	564
+Giuditta	563
+Raffaela	562
+Elodie	559
+Isabelle	557
+Rebecca Maria	557
+Daisy	551
+Ikram	551
+Inas	547
+Elisa Maria	544
+Alice Maria	542
+Ottavia	542
+Mariapia	539
+Cassandra	537
+Malika	537
+Maila	532
+Mayra	532
+Ritaj	526
+Samanta	526
+Ludovica Maria	523
+Sirya	522
+Liliana	519
+Elizabeth	516
+Nancy	516
+Fatima Zahra	515
+Fiamma	515
+Concetta	513
+Elide	513
+Elena Maria	511
+Sofia Elena	506
+Wiam	506
+Melisa	504
+Rossana	494
+Kimberly	492
+Silvana	492
+Gaia Maria	484
+Mariateresa	483
+Arwa	480
+Elena Sofia	480
+Deborah	478
+Emili	477
+Mariarita	476
+Olga	474
+Anna Chiara	472
+Vincenza	470
+Alisa	469
+Hilary	464
+Hafsa	463
+Brenda	455
+Luana	455
+Immacolata	453
+Zainab	447
+Alisya	444
+Gabriela	444
+Mila	441
+Nives	439
+Athena	435
+Maram	430
+Matilde Maria	430
+Nicole Maria	429
+Leandra	428
+Loredana	428
+Ana Maria	423
+Karola	419
+Mariangela	415
+Maja	414
+Angelina	413
+Maria Cristina	413
+Selena	411
+Amal	410
+Iside	409
+Elvira	408
+Maria Stella	407
+Martina Maria	406
+Rosy	406
+Priscilla	404
+Alina	399
+Cristiana	389
+Evelin	385
+Alicia	381
+Pamela	381
+Teodora	381
+Annalaura	377
+Giada Maria	376
+Maria Luisa	375
+Gilda	373
+Imane	372
+Maria Rita	372
+Romina	372
+Safa	372
+Yousra	372
+Alysia	369
+Rosalia	361
+Ariana	360
+Nadine	356
+Astrid	354
+Zineb	353
+Abigail	351
+Alyson	351
+Farah	351
+Tecla	351
+Arya	348
+Clotilde	348
+Egle	348
+Marilena	346
+Yassmine	343
+Tasnim	342
+Kiara	341
+Noemi Maria	341
+Iole	340
+Alexia	337
+Corinne	337
+Alison	336
+Daphne	336
+Celine	333
+Alida	332
+Esther	332
+Diamante	331
+Layla	330
+Mariastella	330
+Rosalba	329
+Mariem	328
+Gioia Maria	327
+Razan	327
+Dina	324
+Evelina	323
+Elisea	322
+Kawtar	322
+Gea	321
+Iolanda	321
+Marlene	321
+Nathalie	321
+Manila	320
+Jenny	318
+Allison	317
+Isabella Maria	315
+Doha	314
+Meriem	314
+Arianna Maria	313
+Eva Maria	313
+Maristella	312
+Regina	312
+Fatou	311
+Enrica	310
+Aria	309
+Daria Maria	308
+Maelle	308
+Marisa	308
+Maria Antonietta	307
+Asia Maria	306
+Tamara	306
+Anisa	305
+Carlotta Maria	305
+Domenica	305
+Emy	305
+Josephine	305
+Tania	305
+Ema	304
+Allyson	303
+Maria Giovanna	303
+Daiana	302
+Manar	302
+Thea	302
+Doaa	301
+Hanna	301
+Altea	297
+Awa	297
+Viola Maria	297
+Melanie	296
+Teresanna	296
+Sandra	295
+Deva	294
+Mirea	294
+Antonia Maria	293
+Leda	293
+Mame Diarra	291
+Adelina	290
+Leonie	289
+Pia	289
+Riham	289
+Bruna	288
+Manal	288
+Noelia	288
+Felicia	287
+Mariagiulia	286
+Larissa	285
+Mina	284
+Zahra	284
+Dayana	283
+Eugenia	283
+Imma	282
+Magdalena	282
+Ajla	280
+Aminata	279
+India	279
+Krystal	279
+Naima	279
+Rosita	278
+Anna Sofia	276
+Maria Aurora	276
+Marta Maria	276
+Melany	276
+Tiffany	276
+Klara	275
+Ramona	273
+Giulia Elena	271
+Ashley	270
+Asya	270
+Eliza	269
+Arij	268
+Aurora Pia	267
+Leyla	267
+Assil	266
+Christel	266
+Kristal	266
+Ingrid	265
+Natasha	265
+Alessandra Maria	264
+Alessia Elena	264
+Kate	264
+Joy	263
+Miral	261
+Alisea	260
+Anais	260
+Benedetta Maria	260
+Israe	260
+Selina	260
+Soleil	260
+Alexandra Maria	258
+Sefora	255
+Guendalina	254
+Samia	254
+Tiziana	254
+Lilia	253
+Atena	252
+Donatella	252
+Fiammetta	252
+Helen	252
+Anna Giulia	251
+Denisa	251
+Angel	249
+Angela Maria	249
+Ayesha	249
+Naike	249
+Aurelia	248
+Isotta	247
+Luciana	247
+Douaa	246
+Giusi	245
+Meryem	245
+Selma	245
+Ana	242
+Cinzia	242
+Jacqueline	242
+Marcella	242
+Mariana	242
+Maria Lucia	241
+Mariaelena	240
+Mayla	240
+Sabina	240
+Medina	239
+Melody	239
+Asmaa	237
+Vivian	237
+Annagiulia	235
+Emi	235
+Fiorella	235
+Mira	234
+Marialuisa	232
+Alessia Ioana	231
+Anja	231
+Sabrin	231
+Safia	231
+Karen	230
+Maria Laura	230
+Mariarca	230
+Marysol	228
+Wissal	228
+Adele Maria	227
+Azzurra Maria	227
+Emmanuela	227
+Ivana	227
+Melissa Maria	227
+Licia	226
+Angelica Maria	225
+Glenda	225
+Kloe	225
+Wendy	224
+Marissa	223
+Annika	222
+Noor	222
+Annunziata	221
+Nicla	221
+Serena Maria	221
+Jamila	219
+Sabrine	219
+Veronika	219
+Andreea	218
+Giselle	218
+Irma	218
+Annabel	217
+Gloria Maria	217
+Cristal	216
+Isra	216
+Maria Letizia	216
+Mariantonietta	216
+Nikol	216
+Venere	216
+Yassmin	216
+Katerina	215
+Mary	215
+Johanna	214
+Safae	212
+Lavinia Maria	211
+Marialaura	211
+Sibilla	211
+Sirine	211
+Cataleya	210
+Oriana	210
+Giorgia Pia	209
+Rihanna	208
+Ella	207
+Zara	207
+Domitilla	206
+Ranim	206
+Magda	205
+Marilù	204
+Laura Maria	203
+Ornella	203
+Giulia Pia	202
+Brigida	201
+Gurleen	201
+Kristina	200
+Anna Rita	198
+Graziana	198
+Diletta Maria	197
+Maria Beatrice	197
+Maria Elisa	197
+Maria Celeste	196
+Alea	195
+Federica Maria	195
+Hana	195
+Ilaria Maria	195
+Norah	195
+Renee	195
+Selvaggia	195
+Rachel	194
+Inass	193
+Irina	193
+Ranya	193
+Alae	191
+Aleksandra	191
+Erina	191
+Rachele Maria	191
+Febe	190
+Alesia	189
+Mathilde	189
+Sally	189
+Aura	188
+Hannah	188
+Sophia Maria	188
+Rahma	187
+Caterina Maria	186
+Eleonora Maria	186
+Mariasofia	186
+Sofia Pia	186
+Hidaya	185
+Rosamaria	185
+Alena	184
+Rosa Maria	184
+Bayan	183
+Dana	183
+Alisha	182
+Nausicaa	182
+Annabella	181
+Aysha	181
+Enza	181
+Kejsi	181
+Mariarosa	181
+Rebeca	181
+Camilla Maria	180
+Carla Maria	179
+Clio	179
+Giulietta	179
+Omaima	178
+Swamy	178
+Violetta	178
+Khady	177
+Maura	177
+Tina	177
+Camila	176
+Cecilia Maria	176
+Emilie	176
+Floriana	176
+Kelly	176
+Emma Sofia	175
+Flavia Maria	175
+Gaya	175
+Martina Pia	175
+Anaya	174
+Anna Pia	174
+Julie	174
+Nikole	174
+Sofia Anna	173
+Youssra	173
+Meriam	172
+Sofia Rita	172
+Ania	171
+Rihab	171
+Demetra	170
+Francesca Romana	170
+Nataly	170
+Delia Maria	169
+Margaret	169
+Maria Luce	169
+Marialuce	169
+Rayhana	169
+Greis	168
+Maria Concetta	168
+Ayla	165
+Fatma	164
+Houda	164
+Leni	164
+Tonia	164
+Clementina	163
+Isabel Maria	163
+Maria Isabella	163
+Nihal	163
+Agatha	162
+Jolanda	162
+Karima	162
+Maria Paola	162
+Raissa	162
+Doriana	161
+Maria Rosa	160
+Marilyn	160
+Sveva Maria	160
+Kenza	159
+Mikaela	159
+Sofia Vittoria	159
+Danila	158
+Elektra	158
+Eloisa	158
+Eloise	158
+Katharina	158
+Nisrine	158
+Anastasia Maria	157
+Jasleen	157
+Annapaola	156
+Dania	156
+Vita	156
+Aila	155
+Anthea	155
+Elda	155
+Elis	155
+Irene Maria	155
+Marialucia	155
+Samuela	155
+Elisabetta Maria	154
+Insaf	154
+Janat	154
+Paula	154
+Chahd	153
+Elif	153
+Erisa	153
+Nilde	153
+Sofia Ioana	153
+Antea	152
+Fiona	152
+Firdaws	152
+Maria Caterina	152
+Nicoleta	152
+Asiya	151
+Diana Maria	151
+Elenoire	151
+Anamaria	150
+Cora	150
+Erika Maria	150
+Margherita Maria	150
+Melita	150
+Mirella	150
+Sofia Francesca	150
+Anna Laura	149
+Clara Maria	149
+Harleen	149
+Mariagiovanna	149
+Maroua	149
+Camelia	148
+Gurnoor	148
+Martha	148
+Bernadette	147
+Melek	147
+Valery	147
+Agnese Maria	146
+Annalena	146
+Dominique	146
+Annapia	145
+Anya	145
+Ayat	145
+Hanaa	145
+Lola	145
+Meghan	145
+Roberta Maria	145
+Tara	145
+Corinna	144
+Lucrezia Maria	144
+Aissatou	143
+Clizia	143
+Emily Maria	143
+Ioana	143
+Keisi	143
+Ritej	143
+Zelda	142
+Jessica Maria	141
+Maria Antonia	141
+Megi	141
+Alessia Pia	140
+Aylin	140
+Bassma	140
+Halima	140
+Gianna	139
+Jole	139
+Malek	139
+Daria Elena	138
+Eden	138
+Krystel	138
+Masha	138
+Virginia Maria	138
+Alicya	137
+Amna	137
+Amra	137
+Cindy	137
+Dounia	137
+Kamila	137
+Karolina	137
+Lejla	137
+Lucy	137
+Rosemary	137
+Stephanie	137
+Giulia Sofia	136
+Evita	135
+Mariapaola	135
+Asma	133
+Suamy	133
+Desideria	132
+Fatima Ezzahra	132
+Firdaous	132
+Karina	132
+Kayla	132
+Adela	131
+Habiba	131
+Victoria Maria	131
+Ecaterina	130
+Elma	130
+Kendra	130
+Maria Nicole	130
+Giulia Rita	129
+Hargun	129
+Klarisa	129
+Mayar	129
+Samyra	129
+Suela	129
+Artemisia	128
+Chiara Pia	128
+Chloe Maria	128
+Mariama	128
+Sirin	128
+Tosca	128
+Yasmina	128
+Esma	127
+Katherine	127
+Pasqualina	127
+Stella Maria	127
+Anika	126
+Anita Maria	126
+Caroline	126
+Donia	126
+Ghita	126
+Keira	126
+Maria Elisabetta	126
+Medea	126
+Mihaela	126
+Amaranta	125
+Erin	125
+Giulia Francesca	125
+Graziella	125
+Michaela	125
+Nikita	125
+Anabia	124
+Futura	124
+Valentina Maria	124
+Anna Lucia	123
+Christine	123
+Letizia Maria	123
+Shakira	123
+Yvonne	123
+Guia	122
+Iris Maria	122
+Rawan	122
+Carola Maria	121
+Katrin	121
+Renata	121
+Luigia	120
+Maria Maddalena	120
+Stela	120
+Annalucia	119
+Dua	119
+Maria Clara	119
+Maryem	119
+Safiria	119
+Claudia Maria	118
+Gessica	118
+Sara Elena	118
+Francesca Rita	117
+Jasmina	117
+Lodovica	117
+Maria Alessia	117
+Suami	117
+Marilisa	116
+Mery	116
+Reina	116
+Vivien	116
+Desy	115
+Silvia Maria	115
+Ahlam	114
+Annabelle	114
+Jolie	114
+Vanessa Maria	114
+Alessia Gabriela	113
+Cleo	113
+Erminia	113
+Gaia Pia	113
+Greta Pia	113
+Leonora	113
+Marinella	113
+Althea	112
+Annalia	112
+Emiliana	112
+Mariella	112
+Nadin	112
+Vanesa	112
+Ambra Maria	111
+Sindi	111
+Edda	110
+Noemi Pia	110
+Arina	109
+Thais	109
+Xin Yi	109
+Eya	108
+Jasmeen	108
+Mathilda	108
+Amber	107
+Oumaima	107
+Yosra	107
+Gioia Pia	106
+Ester Maria	105
+Saja	105
+Maya Maria	104
+Esraa	103
+Salwa	103
+
+[feminine-2020]
+Sofia	15073
+Aurora	13813
+Ginevra	12273
+Vittoria	11901
+Giulia	11327
+Beatrice	10074
+Ludovica	9324
+Alice	9069
+Matilde	8045
+Emma	7868
+Camilla	6462
+Anna	6395
+Bianca	5894
+Chiara	5630
+Nicole	5422
+Greta	5392
+Giorgia	5368
+Azzurra	5310
+Isabel	4715
+Gaia	4553
+Arianna	4407
+Martina	4359
+Noemi	4241
+Sara	4150
+Rebecca	3953
+Adele	3787
+Elena	3784
+Chloe	3741
+Ambra	3712
+Mia	3661
+Diana	3625
+Viola	3618
+Cecilia	3322
+Francesca	3223
+Margherita	3161
+Gioia	3089
+Sole	3038
+Emily	2997
+Anita	2854
+Marta	2845
+Elisa	2833
+Carlotta	2686
+Nina	2666
+Amelia	2648
+Eleonora	2616
+Lavinia	2476
+Maria	2421
+Luna	2371
+Celeste	2324
+Eva	2273
+Giada	2214
+Olivia	2197
+Alessia	2189
+Sophie	2094
+Rachele	2086
+Diletta	2049
+Asia	2021
+Miriam	2017
+Irene	2011
+Anastasia	1971
+Caterina	1925
+Benedetta	1905
+Melissa	1880
+Lucia	1744
+Iris	1715
+Isabella	1710
+Virginia	1710
+Nora	1677
+Stella	1533
+Sveva	1515
+Zoe	1513
+Agata	1491
+Serena	1432
+Clara	1403
+Soleil	1395
+Sophia	1354
+Lara	1331
+Victoria	1325
+Clarissa	1258
+Angelica	1251
+Alessandra	1238
+Cloe	1235
+Linda	1207
+Mariasole	1160
+Agnese	1156
+Livia	1115
+Gloria	1080
+Celine	1069
+Amira	1050
+Laura	1047
+Fatima	1023
+Desiree	1019
+Maria Vittoria	1011
+Alma	1010
+Rosa	993
+Letizia	986
+Flavia	976
+Elisabetta	947
+Maddalena	935
+Evelyn	928
+Ilaria	909
+Lea	876
+Jasmine	875
+Delia	869
+Angela	866
+Lucrezia	862
+Teresa	835
+Penelope	834
+Alba	816
+Federica	787
+Dalila	757
+Dafne	737
+Michela	737
+Olimpia	728
+Amelie	711
+Grace	710
+Emilia	708
+Valentina	707
+Ariel	706
+Antonia	694
+Maya	686
+Luce	682
+Silvia	679
+Allegra	663
+Lia	639
+Ester	635
+Claudia	622
+Rita	617
+Lina	609
+Carolina	604
+Costanza	603
+Helena	601
+Maria Sole	600
+Michelle	600
+Lisa	575
+Vera	558
+Perla	544
+Amanda	543
+Athena	536
+Veronica	532
+Nour	524
+Giovanna	523
+Carola	522
+Ines	505
+Clelia	501
+Dalia	495
+Elodie	493
+Jannat	490
+Selene	487
+Valeria	486
+Denise	482
+Marisol	482
+Maria Francesca	475
+Paola	474
+Carmen	470
+Flaminia	467
+Nadia	467
+Elettra	458
+Ada	449
+Marianna	448
+Ilary	447
+Sabrina	445
+Carla	443
+Soraya	442
+Aida	441
+Aria	440
+Leila	437
+Antonella	436
+Amalia	433
+Gemma	426
+Chanel	422
+Petra	413
+Matilda	410
+Arya	406
+Ottavia	406
+Annachiara	398
+Flora	397
+Yasmine	397
+Atena	396
+Sarah	390
+Roberta	389
+Vanessa	382
+Sharon	380
+Mariam	376
+Dea	371
+Naomi	369
+Cristina	368
+Luisa	365
+Violante	357
+Megan	348
+Alyssa	336
+Annalisa	336
+Deva	329
+Raffaella	329
+Esmeralda	325
+Mariavittoria	321
+Emanuela	319
+Erika	318
+Lidia	316
+Sofia Maria	314
+Iside	310
+Amina	308
+Micol	308
+Yasmin	304
+Adelaide	302
+Malak	295
+Khadija	293
+Siria	293
+Giusy	292
+Daniela	291
+Ilenia	291
+Ayla	289
+Rim	287
+Marina	286
+Aisha	285
+Vittoria Maria	285
+Leyla	279
+Mirea	278
+Cataleya	272
+Margot	271
+Miral	269
+Aya	268
+Marika	267
+Adriana	261
+Alysia	259
+Jennifer	259
+Giulia Maria	254
+Bianca Maria	253
+Desirè	252
+Elide	252
+Anna Maria	250
+Ida	250
+Charlotte	248
+Futura	247
+Stefania	245
+Alisia	243
+Swami	242
+Annamaria	239
+Maryam	239
+Dorotea	238
+Erica	238
+Yara	235
+Aurora Maria	233
+Julia	233
+Tea	233
+Ginevra Maria	230
+Isabelle	230
+Venere	230
+Maia	229
+Mya	228
+Alyson	226
+Carmela	225
+Razan	225
+Elisabeth	223
+Assil	221
+Morena	221
+Nilde	220
+Daria	219
+Nives	219
+Crystal	216
+Patrizia	216
+Elizabeth	213
+Gabriella	213
+Tessa	212
+Beatrice Maria	210
+Dora	210
+Zaira	210
+Aicha	209
+Giuditta	207
+Altea	205
+Carol	204
+Frida	202
+Selena	201
+Marwa	199
+Morgana	199
+Natalia	196
+Grazia	195
+Sonia	195
+Francesca Pia	194
+Karol	191
+Monica	191
+Miranda	190
+Maria Chiara	187
+Miryam	187
+Mariachiara	186
+Alissa	185
+Israa	183
+Simona	182
+Lena	181
+Tasnim	178
+Allyson	177
+Elsa	175
+Milena	174
+Eva Maria	173
+Eliana	171
+Rossella	171
+Allison	170
+Giordana	170
+Rosaria	170
+Viktoria	167
+Bayan	162
+Klea	162
+Ludovica Maria	162
+Ritaj	161
+Lilia	160
+Azzurra Maria	159
+Melody	159
+Samira	159
+Mara	158
+Melania	158
+Anaya	156
+Zainab	156
+Jana	155
+Emma Maria	153
+Alisea	150
+Dua	149
+Eloise	149
+Brenda	148
+Alisya	147
+Micaela	147
+Marie	146
+Ajla	145
+Ayesha	145
+Rosanna	145
+Dina	144
+Mina	144
+Cassandra	143
+Dayana	143
+Kimberly	143
+Mila	143
+Alea	142
+Annarita	142
+Fiamma	142
+Mariafrancesca	142
+Myriam	142
+Noa	141
+Anabia	139
+Assia	139
+Leandra	139
+Jessica	137
+Aurelia	136
+Daisy	136
+Regina	135
+Layan	134
+Natalie	134
+Alexandra	133
+Diamante	133
+Liliana	133
+Gea	132
+Daiana	131
+Mariarosaria	131
+Hafsa	130
+Laila	130
+Lorena	130
+Mira	130
+Viviana	130
+Syria	129
+Inas	128
+Manuela	128
+Meghan	128
+Mirha	128
+Susanna	128
+Tecla	127
+Aura	126
+Egle	125
+Mariagrazia	125
+Nicol	125
+Daphne	124
+Hiba	124
+Rehmat	122
+Astrid	121
+Ayat	121
+Fabiana	121
+Giuliana	121
+Teodora	119
+Zahra	119
+Ella	117
+Janna	117
+Jasmin	117
+Layla	117
+Samantha	117
+Alina	116
+Amal	116
+Marzia	116
+Nunzia	116
+Gioia Maria	115
+Inaya	115
+Evelin	114
+Giuseppina	114
+Abigail	113
+Francesca Maria	113
+Hana	112
+Alaa	111
+Iole	111
+Lucilla	111
+Mariarita	111
+Maria Rosaria	110
+Miriana	109
+Ylenia	109
+Artemisia	108
+Fatou	108
+Leonie	108
+Alice Maria	107
+Amy	107
+Antonietta	107
+Anthea	106
+Malika	106
+Maria Sofia	106
+Maria Teresa	106
+Thea	105
+Hidaya	104
+Maria Elena	104
+Barbara	103
+Lorenza	103
+Nicole Maria	103
+Rania	103
+Rosalia	103
+Clotilde	102
+Mayra	102
+Leda	101
+Alison	100
+Maria Grazia	100
+Nadine	100
+Ariana	99
+Demetra	99
+Elena Maria	99
+Joudia	99
+Katalea	99
+Matilde Maria	99
+Gilda	98
+Noor	98
+Angelina	97
+Aylin	97
+Nada	97
+Lodovica	96
+Marilù	96
+Solei	96
+Basma	95
+Deborah	95
+Noemy	95
+Zelda	95
+Camelia	94
+Maira	94
+Nathalie	94
+Raffaela	94
+Sole Maria	94
+Assunta	93
+Cristel	93
+Filomena	93
+Greta Maria	93
+Kristel	92
+Saja	92
+Alisa	90
+Awa	90
+Joy	90
+Arwa	89
+Chantal	89
+Sibilla	89
+Aila	88
+Aminata	88
+Gresya	88
+Isabel Maria	88
+Isotta	88
+Zara	88
+Almas	87
+Febe	87
+Sara Maria	87
+Antea	86
+Asil	86
+Elvira	86
+Evelina	86
+Giselle	86
+Annabel	85
+Kenza	85
+Kloe	85
+Manila	85
+Nancy	85
+Althea	83
+Cora	83
+Debora	83
+Farah	83
+Fiammetta	83
+Loredana	83
+Luna Maria	83
+Marica	83
+Anais	82
+Esther	82
+Hanna	82
+Marlene	82
+Safaa	82
+Wendy	82
+Hajar	81
+Safa	81
+Yousra	81
+Ayra	80
+Teresanna	80
+Alisha	79
+Elena Sofia	79
+Krystal	79
+Minerva	79
+Norah	79
+Renee	79
+Renesmee	79
+Rihanna	79
+Arij	78
+Chiara Maria	78
+Esraa	78
+Fatima Zahra	78
+Josephine	78
+Nicoletta	78
+Sofia Elena	78
+Fabiola	77
+Giorgia Maria	77
+Kiara	77
+Melany	77
+Noelia	77
+Alida	76
+Camila	76
+Katia	76
+Rebecca Maria	76
+Silvana	76
+Ellie	75
+Maria Giulia	75
+Marysol	75
+Olga	74
+Tiffany	74
+Eda	73
+Reina	73
+Selin	73
+Chloe Maria	72
+Elif	72
+Salma	72
+Adelina	71
+Aurora Pia	71
+Aysha	71
+Maila	71
+Maria Pia	71
+Pia	71
+Amber	70
+Kylie	70
+Clizia	69
+Emili	69
+Gaia Maria	69
+Maria Luce	69
+Mariama	69
+Silia	69
+Vincenza	69
+Ayzal	68
+Mariateresa	68
+Carlotta Maria	67
+Kayla	67
+Luana	67
+Mame Diarra	67
+Aizal	66
+Asees	66
+Jacqueline	66
+Klara	66
+Adea	65
+Era	65
+Fatiha	65
+Immacolata	65
+Jamila	65
+Leni	65
+Nina Maria	65
+Adele Maria	64
+Anastasia Maria	64
+Priscilla	64
+Agatha	63
+Ambra Maria	63
+Eden	63
+Elisa Maria	63
+Giulietta	63
+Marialuce	63
+Afnan	62
+Blu	62
+Isra	62
+Yassmine	62
+Concetta	61
+Muntaha	61
+Abrar	60
+Anna Chiara	60
+Arisha	60
+Domenica	60
+Kataleya	60
+Maristella	60
+Mayla	60
+Rea	60
+Safia	60
+Alessia Maria	59
+Corinne	59
+Hilary	59
+Ingrid	59
+Iolanda	59
+Lavinia Maria	59
+Mirta	59
+Taylor	59
+Doha	58
+Gabriela	58
+Maja	58
+Manha	58
+Mariapia	58
+Raisa	58
+Diora	57
+Elisea	57
+Firdaws	57
+Lilith	57
+Maelle	57
+Marisa	57
+Selina	57
+Anya	56
+Asiya	56
+Bruna	56
+Helen	56
+Irha	56
+Khloe	56
+Kristal	56
+Mabel	56
+Naima	56
+Swamy	56
+Annabelle	55
+Halima	55
+Imma	55
+Melanie	55
+Noelle	55
+Rachel	55
+Rosy	55
+Talia	55
+Diletta Maria	54
+Isabella Maria	54
+Liana	54
+Mannat	54
+Mariarca	54
+Mariem	54
+Medea	54
+Meryem	54
+Rosalba	54
+Viola Maria	54
+Arianna Maria	53
+Fiorella	53
+Levante	53
+Medina	53
+Purity	53
+Amelia Maria	52
+Eline	52
+Ghazal	52
+Inara	52
+Magdalena	52
+Marilena	52
+Melek	52
+Raissa	52
+Rawan	52
+Rayhana	52
+Alicia	51
+Anna Sofia	51
+Asya	51
+Eloisa	51
+Gloria Maria	51
+Irma	51
+Mary	51
+Rossana	51
+Anna Rita	50
+Bella	50
+Camilla Maria	50
+Iman	50
+Iris Maria	50
+Maria Rita	50
+Myrea	50
+Nami	50
+Rose	50
+Aiza	49
+Hannah	49
+Maria Luisa	49
+Mirabel	49
+Rahma	49
+Selvaggia	49
+Sidra	49
+Amra	48
+Ana	48
+Anna Vittoria	48
+Dania	48
+Elina	48
+Jara	48
+Libera	48
+Madison	48
+Maria Celeste	48
+Maria Stella	48
+Mayar	48
+Miracle	48
+Nerea	48
+Siara	48
+Victoria Maria	48
+Yassmin	48
+Zaynab	48
+Benedetta Maria	47
+Cecilia Maria	47
+Cinzia	47
+Clara Maria	47
+Cleo	47
+Divine	47
+Eugenia	47
+Giulia Pia	47
+Irina	47
+Johanna	47
+Kamila	47
+Maria Cristina	47
+Mariarosa	47
+Vita	47
+Zoya	47
+Aliza	46
+Amla	46
+Azzurra Pia	46
+Freya	46
+Glenda	46
+Gurnaaz	46
+India	46
+Jouri	46
+Mariangela	46
+Meriem	46
+Olympia	46
+Rosemary	46
+Summer	46
+Alia	45
+Annaluce	45
+Ashley	45
+Fatema	45
+Gianna	45
+Israe	45
+Sirya	45
+Anna Giulia	44
+Maite	44
+Sofia Pia	44
+Soleil Maria	44
+Tiziana	44
+Amara	43
+Aseel	43
+Avleen	43
+Celeste Maria	43
+Domitilla	43
+Donatella	43
+Enrica	43
+Ghita	43
+Naike	43
+Nicla	43
+Wiam	43
+Wissal	43
+Zimal	43
+Angel	42
+Azalea	42
+Dilara	42
+Fatoumata	42
+Ivana	42
+Khady	42
+Maria Beatrice	42
+Nausicaa	42
+Sihana	42
+Yakout	42
+Anisa	41
+Clea	41
+Diana Maria	41
+Dorothea	41
+Ema	41
+Giada Maria	41
+Jolie	41
+Larissa	41
+Lejla	41
+Margaret	41
+Mariastella	41
+Minha	41
+Ofelia	41
+Rosa Maria	41
+Vivien	41
+Annalaura	40
+Antonia Maria	40
+Aqsa	40
+Eileen	40
+Elin	40
+Eliza	40
+Ghalia	40
+Inass	40
+Karen	40
+Kate	40
+Malia	40
+Nusaiba	40
+Romina	40
+Sojoud	40
+Solen	40
+Vittoria Pia	40
+Cristal	39
+Eleonora Maria	39
+Emy	39
+Humaira	39
+Ikram	39
+Natasha	39
+Selena Maria	39
+Tania	39
+Tara	39
+Alya	38
+Annabella	38
+Calliope	38
+Hania	38
+Kawtar	38
+Leah	38
+Lily	38
+Maram	38
+Margherita Maria	38
+Maria Antonietta	38
+Marta Maria	38
+Nikita	38
+Noemi Maria	38
+Paula	38
+Yusra	38
+Zuleyha	38
+Adela	37
+Christel	37
+Elis	37
+Emilie	37
+Faiza	37
+Felicia	37
+Gurleen	37
+Luce Maria	37
+Mariagiulia	37
+Marialuisa	37
+Melisa	37
+Melissa Maria	37
+Noela	37
+Reem	37
+Sefora	37
+Treasure	37
+Vittoria Rita	37
+Albachiara	36
+Arizona	36
+Artemide	36
+Brianna	36
+Carla Maria	36
+Claire	36
+Cleopatra	36
+Delia Maria	36
+Esma	36
+Isobel	36
+Lilian	36
+Lucia Maria	36
+Luciana	36
+Naila	36
+Sophia Maria	36
+Vittoria Anna	36
+Vivienne	36
+Alena	35
+Amaris	35
+Angela Maria	35
+Anita Maria	35
+Gresia	35
+Lujain	35
+Maria Giovanna	35
+Mariaelena	35
+Ohana	35
+Sienna	35
+Sofia Vittoria	35
+Tassnim	35
+Violetta	35
+Vivian	35
+Zahira	35
+Zineb	35
+Aira	34
+Aksa	34
+Annagiulia	34
+Asia Maria	34
+Brigida	34
+Caroline	34
+Emi	34
+Giulia Rita	34
+Kejsi	34
+Licia	34
+Maria Aurora	34
+Mariana	34
+Martina Maria	34
+Mathilde	34
+Nataly	34
+Nimrat	34
+Nur	34
+Sofia Sole	34
+Solea	34
+Veronika	34
+Aissatou	33
+Amanat	33
+Amayra	33
+Andra	33
+Anna Luce	33
+Audrey	33
+Beatrice Rita	33
+Bernadette	33
+Caterina Maria	33
+Dana	33
+Desideria	33
+Elektra	33
+Elisabetta Maria	33
+Emily Maria	33
+Fortuna	33
+Greis	33
+Heidi	33
+Hoorain	33
+Keisi	33
+Maria Ginevra	33
+Milana	33
+Muskan	33
+Rachele Maria	33
+Sally	33
+Samanta	33
+Seynabou	33
+Sila	33
+Stella Maria	33
+Stephanie	33
+Success	33
+Tosca	33
+Alaya	32
+Ameli	32
+Astou	32
+Baya	32
+Clarice	32
+Clementina	32
+Emma Sofia	32
+Giorgia Pia	32
+Hargun	32
+Jenny	32
+Liv	32
+Lucy	32
+Ludovica Pia	32
+Maria Lucia	32
+Marlena	32
+Martha	32
+Olivia Maria	32
+Oriana	32
+Renesme	32
+Silya	32
+Virginia Maria	32
+Youssra	32
+Abeeha	31
+Amaya	31
+Arina	31
+Ava	31
+Beatriz	31
+Judy	31
+Lydia	31
+Sabina	31
+Sofija	31
+Sveva Maria	31
+Tamara	31
+Theresa	31
+Vittoria Sofia	31
+Abiha	30
+Alma Maria	30
+Ania	30
+Annaluna	30
+Asja	30
+Blessing	30
+Coumba	30
+Dahlia	30
+Dominique	30
+Eva Luna	30
+Evelyn Maria	30
+Fatma	30
+Ginevra Pia	30
+Mahira	30
+Marcella	30
+Marissa	30
+Mirella	30
+Ndeye Fatou	30
+Ramona	30
+Rosamaria	30
+Sabrin	30
+Selma	30
+Sirat	30
+Annalucia	29
+Annunziata	29
+Aurora Rita	29
+Blue	29
+Doriana	29
+Edith	29
+Elea	29
+Elma	29
+Gift	29
+Gurnoor	29
+Harleen	29
+Ilde	29
+Jane	29
+Kesya	29
+Keyla	29
+Lola	29
+Maimouna	29
+Marilyn	29
+Nathaly	29
+Princess	29
+Ranim	29
+Rosita	29
+Sandra	29
+Selenia	29
+Sofia Ioana	29
+Thalia	29
+Zulema	29
+Aleksandra	28
+Amabel	28
 
 [masculine]
 Giuseppe	3813
@@ -7080,145 +9984,3010 @@ Tobias	3
 Valentino	3
 
 [masculine-2000]
-Matteo	133
-Alessandro	121
-Lorenzo	114
-Francesco	98
-Andrea	86
-Riccardo	71
-Davide	70
-Mattia	70
-Tommaso	70
-Federico	63
-Marco	63
-Luca	61
-Gabriele	54
-Filippo	52
-Simone	48
-Leonardo	44
-Edoardo	39
-Samuele	36
-Antonio	35
-Nicolò	33
-Stefano	33
-Jacopo	32
-Giacomo	31
-Giovanni	30
-Alessio	27
-Pietro	27
-Giuseppe	24
-Alberto	23
-Daniele	20
-Fabio	20
-Manuel	20
-Nicola	20
-Christian	19
-Emanuele	19
-Thomas	18
-Niccolò	15
-Paolo	15
-Salvatore	14
-Diego	13
-Elia	13
-Luigi	13
-Carlo	12
-Daniel	12
-Enrico	12
-Gianluca	12
-Kevin	12
-Michele	11
-Roberto	11
-Alex	10
-Gianmarco	10
-Massimo	10
-Claudio	9
-Franco	9
-Giorgio	9
-Giulio	9
-Nicholas	9
-Nicolas	9
-Samuel	8
-Vincenzo	8
-Angelo	7
-Bruno	7
-Cristian	7
-David	7
-Domenico	7
-Ettore	7
-Fabrizio	7
-Flavio	7
-Mario	7
-Michael	7
-Mirko	7
-Damiano	6
-Dario	6
-Dennis	6
-Gennaro	6
-Giancarlo	6
-Ivan	6
-Lucas	6
-Ludovico	6
-Patrick	6
-Raffaele	6
-Rocco	6
-Sergio	6
-Aldo	5
-Cristiano	5
-Leon	5
-Oliver	5
-Piero	5
-Renato	5
-Sebastiano	5
-Achille	4
-Cesare	4
-Denis	4
-Gabriel	4
-Gaetano	4
-Leo	4
-Liam	4
-Luciano	4
-Mauro	4
-Nicolo	4
-Pasquale	4
-Robert	4
-Romano	4
-Simon	4
-Valerio	4
-Vittorio	4
-Agostino	3
-Agustín	3
-Amedeo	3
-Antonino	3
-Benjamin	3
-Brian	3
-Cosimo	3
-Elio	3
-Emiliano	3
-Emmanuele	3
-Enzo	3
-Erik	3
-Eugenio	3
-Filip	3
-Giammarco	3
-Gianmaria	3
-Gioele	3
-Jean	3
-Leandro	3
-Mark	3
-Martin	3
-Martino	3
-Mathias	3
-Matias	3
-Mohamed	3
-Philipp	3
-Pio	3
-Santiago	3
-Theo	3
-Tobia	3
-Tobias	3
-Umberto	3
-Valentino	3
-Walter	3
+Francesco	101384
+Alessandro	92314
+Andrea	90878
+Matteo	87214
+Lorenzo	80164
+Luca	63006
+Mattia	59795
+Gabriele	58104
+Davide	57831
+Marco	55442
+Simone	54756
+Riccardo	51644
+Giuseppe	48273
+Antonio	43767
+Federico	43356
+Alessio	40207
+Giovanni	38915
+Leonardo	38317
+Tommaso	37774
+Filippo	34962
+Daniele	32616
+Michele	31398
+Samuele	30959
+Pietro	27495
+Christian	27312
+Emanuele	27298
+Nicolò	26233
+Edoardo	24606
+Giacomo	23599
+Stefano	23207
+Salvatore	22739
+Vincenzo	22691
+Nicola	22556
+Cristian	22175
+Manuel	20744
+Jacopo	17951
+Luigi	17405
+Diego	16720
+Fabio	16208
+Paolo	16150
+Alberto	15178
+Domenico	13832
+Angelo	13478
+Thomas	12970
+Mario	12394
+Gianluca	12254
+Giorgio	11813
+Raffaele	11731
+Giulio	11454
+Daniel	11241
+Niccolò	10781
+Enrico	10721
+Alex	10547
+Roberto	10461
+Valerio	10142
+Mirko	9798
+Kevin	9448
+Gabriel	8796
+Pasquale	8552
+Flavio	8500
+Carlo	8420
+Francesco Pio	8400
+Elia	8329
+Samuel	8158
+Dario	7471
+Nicolas	7352
+Michael	7133
+Claudio	6782
+Ivan	6722
+Vittorio	6522
+Nicholas	6388
+Antonino	6107
+Gioele	6091
+Massimo	6041
+Sebastiano	6041
+Gaetano	5459
+Fabrizio	5317
+Omar	5196
+Damiano	5155
+Gianmarco	5140
+Gennaro	5024
+Carmine	4980
+Ciro	4672
+Danilo	4553
+Rocco	4050
+David	4042
+Cristiano	4001
+Loris	3773
+Massimiliano	3750
+Dennis	3704
+Vito	3485
+Denis	3367
+Umberto	3359
+Adam	3105
+Mohamed	3081
+Ludovico	3071
+Rosario	2972
+Mauro	2952
+Cosimo	2818
+Bruno	2761
+Sergio	2696
+Adriano	2656
+Marcello	2654
+Valentino	2621
+Ettore	2502
+Cesare	2475
+Carmelo	2442
+Alfonso	2440
+Tiziano	2409
+Michelangelo	2322
+Martino	2228
+Mirco	2222
+Emanuel	2114
+Maurizio	2020
+Saverio	1994
+Patrick	1990
+Alfredo	1984
+Emiliano	1950
+Biagio	1946
+Jonathan	1941
+Gregorio	1914
+Luciano	1913
+William	1884
+Erik	1883
+Youssef	1859
+Donato	1848
+Yuri	1844
+Karim	1829
+Gerardo	1820
+Guido	1803
+Aldo	1748
+Armando	1737
+Giuliano	1722
+Eugenio	1682
+Giordano	1668
+Pierpaolo	1667
+Ruben	1618
+Pierluigi	1611
+Antonio Pio	1591
+Enea	1580
+Sebastian	1578
+Rayan	1577
+Ferdinando	1561
+Martin	1557
+Francesco Maria	1555
+Emilio	1531
+Giuseppe Pio	1520
+Kristian	1506
+Iacopo	1477
+Ahmed	1474
+Giosuè	1459
+Guglielmo	1437
+Anthony	1425
+Agostino	1398
+Zakaria	1370
+Felice	1349
+Manuele	1298
+Renato	1297
+Aniello	1283
+Alexander	1278
+Giancarlo	1231
+Simon	1229
+Francesco Paolo	1224
+Gianluigi	1196
+Silvio	1188
+Bryan	1162
+Ayoub	1151
+Amedeo	1144
+Walter	1141
+Lapo	1134
+Corrado	1115
+Hamza	1109
+Calogero	1100
+Achille	1097
+Emmanuel	1073
+Anas	1055
+Franco	1049
+Dylan	1047
+Mathias	1046
+Mariano	1045
+Brian	1039
+Nunzio	1027
+Ernesto	1025
+Walid	1006
+Elias	1003
+Eros	998
+Ali	987
+Gianni	971
+Pierfrancesco	965
+Oscar	960
+Amin	950
+Yassin	937
+Eduardo	924
+Eric	919
+Leo	911
+Piero	911
+Raul	910
+Yassine	904
+Benedetto	903
+Tomas	897
+Matthias	890
+Morgan	888
+Nico	887
+Emmanuele	886
+Gianmaria	875
+Lukas	873
+Ayman	868
+Fabiano	866
+Bilal	818
+Lucio	806
+Gianfranco	798
+Patrizio	785
+Maicol	781
+Brando	780
+Elio	779
+Arturo	765
+Ignazio	765
+Leandro	759
+Orazio	749
+Tobia	744
+Alan	736
+Nikolas	735
+Giovanni Paolo	734
+Mohammed	734
+Noah	727
+Fabian	726
+Julian	721
+Antonello	717
+Vincenzo Pio	715
+Sami	710
+Joele	709
+Joseph	704
+Samir	699
+Enzo	695
+Salvatore Pio	693
+Christopher	692
+Costantino	691
+Gian Marco	691
+Amir	679
+Alvise	662
+Gianpaolo	659
+Santo	659
+Stefan	656
+Amine	651
+Steven	648
+Joshua	647
+Gaspare	643
+Giovanni Maria	643
+Duccio	641
+Giovanni Pio	636
+Michele Pio	633
+Ismaele	632
+Tobias	620
+Graziano	619
+Francesco Antonio	618
+Antony	617
+Leon	615
+Zeno	609
+Giammarco	599
+Mattias	598
+Ryan	592
+Jonas	589
+Robert	589
+Gioacchino	587
+Augusto	585
+Denny	579
+Ibrahim	569
+Francesco Giuseppe	568
+Aaron	567
+Aurelio	567
+Jason	562
+Karol	562
+Ismail	560
+Devid	558
+Bernardo	551
+Filippo Maria	545
+Romeo	540
+Alfio	535
+Alexandru	532
+Fernando	532
+Sandro	532
+Igor	531
+Nathan	530
+Alessandro Pio	527
+Andrei	525
+Danny	522
+Matias	520
+Francesco Saverio	516
+Ilias	515
+Lorenzo Maria	515
+Raoul	515
+Attilio	509
+Giovanni Battista	508
+Achraf	503
+Nizar	498
+Maximilian	496
+Reda	488
+Gianvito	484
+Devis	480
+Moreno	478
+Ilyas	475
+Arcangelo	474
+Saad	471
+Marko	470
+Zaccaria	467
+Felix	458
+Luis	457
+Younes	456
+Domenico Pio	455
+Matteo Pio	452
+Manfredi	444
+Piergiorgio	444
+Ruggero	442
+Luigi Pio	436
+Nabil	435
+Orlando	433
+Andrea Pio	430
+Pablo	426
+Liam	425
+Dante	424
+Max	424
+Patrik	424
+Gabriele Pio	422
+Juri	419
+Hannes	417
+Joel	417
+Victor	414
+Yari	412
+Antimo	411
+Giuseppe Maria	411
+Natale	409
+Benito	408
+Adrian	406
+Alessandro Maria	406
+Andreas	403
+Carlo Alberto	398
+Gabriele Maria	397
+Yassir	393
+Leone	390
+Alexandro	389
+Bartolomeo	389
+Ruggiero	389
+Giona	386
+Paride	386
+Ugo	386
+Luka	385
+Angelo Pio	381
+Nikola	380
+Fausto	379
+Geremia	378
+Yahya	378
+Antonio Maria	376
+Edoardo Maria	375
+Florian	374
+Giuseppe Antonio	374
+Isacco	374
+Antonio Francesco	372
+Lucas	367
+Akram	366
+Fulvio	366
+Sasha	365
+Peter	363
+Jordan	362
+Adem	357
+Carlo Maria	356
+Giuseppe Francesco	353
+Girolamo	351
+Livio	350
+Savino	347
+Cataldo	345
+Rayen	345
+Riccardo Maria	340
+Aiman	339
+Demetrio	339
+Jan	339
+Oliver	336
+Osama	335
+Niko	331
+Pio	331
+Nadir	330
+Sabino	329
+Egidio	327
+Simone Pio	325
+Camillo	324
+Fortunato	323
+Dominik	322
+Jakob	320
+Michel	319
+Aron	318
+Matteo Maria	318
+Yousef	318
+Elvis	317
+Endri	316
+Giampaolo	315
+Rayane	315
+Yasser	314
+Lorenzo Pio	313
+Mattia Pio	313
+Andrea Maria	311
+Federico Maria	311
+Francescopio	311
+Rodolfo	311
+Santiago	310
+Catello	306
+Philipp	303
+Cristopher	302
+Giandomenico	301
+Maikol	299
+Eduard	298
+Anass	297
+Rida	297
+Andrea Giuseppe	296
+Amos	295
+Badr	295
+Ilyass	295
+Marco Pio	294
+Dimitri	293
+Emanuele Pio	293
+Taha	293
+Aleandro	291
+Raffaello	291
+Axel	290
+Raimondo	290
+Richard	290
+Raphael	289
+Andrea Francesco	288
+Marco Antonio	288
+Mateo	288
+Beniamino	287
+Francesco Giovanni	287
+Justin	287
+Raffaele Pio	287
+Benjamin	286
+Pasquale Pio	286
+Manolo	281
+Milo	281
+Paul	281
+Anwar	280
+Ilario	280
+Mohamed Amin	280
+Moritz	278
+Ottavio	276
+Giovanni Antonio	273
+Giampiero	272
+Mohamed Amine	271
+Ermanno	269
+Gianpiero	268
+Mouad	266
+Davide Pio	264
+Mouhamed	264
+Damian	262
+Teodoro	262
+André	260
+Marino	260
+Matteo Francesco	260
+Enrico Maria	259
+Filip	259
+Wassim	259
+Braian	257
+Ivano	257
+Alessio Pio	256
+Ethan	256
+Stiven	255
+Clemente	253
+Pio Francesco	253
+Nicola Pio	252
+Gabriele Giuseppe	251
+Pietro Maria	250
+Emil	249
+Alen	248
+Gino	248
+Kledi	248
+Ian	247
+Rafael	247
+Giovanni Francesco	246
+Cosimo Damiano	245
+Natan	245
+Gabriele Antonio	244
+Josef	244
+Marzio	243
+Pietro Paolo	241
+Teo	240
+Alessandro Antonio	239
+Mario Pio	239
+Pier Paolo	239
+Leopoldo	237
+Sean	236
+Tancredi	236
+Tommaso Maria	236
+Ennio	235
+Mattia Francesco	235
+Aymen	233
+Dino	232
+Gregory	232
+Isaia	232
+Italo	232
+Luca Pio	232
+Ziad	229
+Sabatino	228
+Johannes	227
+Evan	226
+Onofrio	224
+Christian Pio	223
+Klevis	223
+Tony	223
+Crescenzo	219
+Davide Maria	219
+Gabriele Francesco	219
+Vincenzo Maria	219
+Alberto Maria	218
+Andrea Giovanni	218
+Matteo Giuseppe	218
+Mehdi	218
+Abdellah	217
+Mattia Giuseppe	217
+Silvano	216
+Alessandro Giuseppe	215
+Hassan	214
+Imad	214
+Luca Maria	214
+Youness	213
+Ascanio	212
+Gilberto	211
+Matteo Antonio	210
+Leonardo Maria	209
+Nassim	208
+Sabato	208
+Silvestro	208
+Mark	207
+Vincent	207
+Aleksandar	206
+Neri	206
+Oreste	206
+Alejandro	205
+Ismael	205
+Islam	202
+Soufiane	202
+Francesco Luigi	201
+Gian Luca	201
+Lorenzo Giuseppe	201
+Daniele Pio	200
+Lorenzo Antonio	199
+Andrea Antonio	198
+Ossama	198
+Ezio	197
+Gianmario	197
+James	197
+Leonard	197
+Matthew	196
+Pietro Pio	196
+Mahmoud	195
+Anis	193
+Marwan	193
+Pierangelo	193
+Ricardo	192
+Ramon	189
+Dennys	188
+Armin	187
+Mattia Antonio	186
+Maxim	186
+Brayan	183
+Giuseppe Emanuele	183
+Pier Francesco	183
+Pierluca	183
+Rudy	183
+Brandon	182
+Luigi Maria	182
+Tommy	182
+Said	181
+Luca Antonio	180
+Otman	180
+Lorenzo Francesco	179
+Saimon	179
+Vasco	179
+Yasin	179
+Oussama	178
+Davide Francesco	177
+Davide Giuseppe	177
+Marvin	177
+Matteo Giovanni	177
+Nino	177
+Paolo Pio	177
+Andrew	176
+Leonardo Pio	176
+Valerio Massimo	176
+Gianfilippo	175
+Noel	175
+Timothy	175
+Agatino	174
+Gian Maria	174
+Jeremy	174
+Sante	174
+Andi	173
+Giacomo Maria	172
+Nikita	172
+Salvo	172
+Antonio Giuseppe	169
+Gabriele Salvatore	169
+Simone Francesco	169
+Carmine Pio	167
+Gionata	166
+Giovanni Luca	166
+Lodovico	166
+Mosè	166
+Samuele Pio	165
+Emanuele Maria	164
+Francesco Emanuele	164
+Jurgen	164
+Giulio Maria	163
+Miguel	163
+Rami	163
+Giacinto	162
+René	162
+Philip	161
+Dorian	160
+Michele Maria	160
+Edward	159
+Tiberio	159
+Tomaso	159
+Antonino Pio	157
+Emanuele Francesco	157
+Abdullah	156
+Alessandro Francesc	156
+Boris	156
+Davide Antonio	156
+Fabio Massimo	156
+José	156
+Salvatore Francesco	156
+Abderrahman	155
+Aleksander	155
+Renzo	155
+Chris	154
+Davis	154
+Mohamed Ali	154
+Adil	153
+Alessandro Giovanni	153
+Mahdi	153
+Matia	153
+Pellegrino	153
+Simone Maria	153
+Eliseo	152
+Erion	152
+Marco Giuseppe	152
+Noè	152
+Salim	152
+Alesio	151
+Andrea Salvatore	151
+Eddy	151
+Iliass	151
+Klajdi	151
+Santino	151
+Albert	150
+Federico Pio	150
+Markus	150
+Tito	150
+Erasmo	149
+Francesco Gabriele	149
+Jacopo Maria	148
+Adolfo	147
+Anouar	147
+Hicham	147
+Simone Giuseppe	147
+Domenico Francesco	146
+Enis	146
+Fedele	146
+Remo	146
+Salvatore Emanuele	146
+Sofian	146
+Angelo Gabriele	145
+Jack	145
+Brajan	144
+Marco Maria	144
+Riccardo Giuseppe	144
+Salah	144
+Gionatan	143
+Isaac	143
+Tullio	143
+Fahd	142
+Gaetano Pio	142
+Giorgio Maria	142
+Giuseppe Andrea	142
+Mattia Giovanni	142
+Soufian	142
+Johnny	141
+Manuel Pio	141
+Robin	141
+Andres	140
+Luca Francesco	140
+Yahia	140
+Liberato	139
+Mario Francesco	139
+Tarik	139
+Jonatan	138
+Mounir	138
+Riccardo Antonio	138
+Romano	138
+Aleks	137
+Domenico Antonio	137
+Francesco Mario	137
+Klaudio	137
+Lorenz	137
+Luca Giuseppe	137
+Santi	137
+Aimen	136
+Demis	136
+Lorenzo Giovanni	136
+Rubens	136
+Bilel	135
+Brendon	135
+Andy	134
+Antonio Emanuele	134
+Emanuele Giuseppe	134
+Federico Antonio	134
+Federico Giuseppe	134
+Marcel	134
+Adnan	133
+Cristian Pio	133
+Mikael	133
+Emir	132
+Niklas	132
+Simone Antonio	132
+Ahmad	131
+Carlos	131
+Fiorenzo	131
+Francesco Michele	131
+Morris	131
+Serafino	131
+Valentin	131
+Angelo Antonio	130
+Endi	130
+Fares	130
+Marco Francesco	130
+Zaid	130
+Francesco Domenico	129
+Giovanbattista	129
+Osvaldo	129
+Pasqualino	129
+Aziz	128
+Fallou	128
+Giambattista	128
+Giuseppe Gabriele	128
+Khalid	128
+Riccardo Francesco	128
+Ibrahima	127
+Paolo Francesco	127
+Piergiuseppe	127
+Sirio	127
+Stefano Pio	127
+Andrea Luigi	126
+Marwane	126
+Michele Antonio	125
+Romolo	125
+Vitantonio	125
+Donatello	124
+Elton	124
+Gabriele Giovanni	124
+Jamal	124
+Khaled	124
+Rodrigo	124
+Angelo Francesco	123
+Angelo Raffaele	123
+Aymane	123
+Gianpietro	123
+Nour	123
+Virgilio	123
+Felipe	122
+Michele Francesco	122
+Moad	122
+Olmo	122
+Alessio Francesco	121
+Dominique	121
+Khalil	121
+Liborio	121
+Theo	121
+Abramo	120
+Erjon	120
+Pier Luigi	120
+Placido	120
+Riad	120
+Salvatore Maria	120
+Tristan	120
+Viktor	120
+Arnaldo	119
+Francesco Andrea	119
+Francesco Salvatore	119
+Dilan	118
+Gherardo	118
+Luigi Antonio	118
+Samuele Francesco	118
+Ares	117
+Arian	117
+Hao	117
+John	117
+Jury	117
+Paolo Maria	117
+Pietro Francesco	117
+Simone Pietro	117
+Vincenzo Antonio	117
+Alessandro Luigi	116
+Gian Paolo	116
+Salvatore Giuseppe	116
+Enes	115
+Firas	115
+Marian	115
+Rinaldo	115
+Issam	114
+Lino	114
+Mattia Salvatore	114
+Giuseppe Junior	113
+Khadim	113
+Nello	113
+Sossio	113
+Christian Giuseppe	112
+Francesco Angelo	112
+Giovan Battista	112
+Matteo Salvatore	112
+Rocco Pio	112
+Tiago	112
+Alesandro	111
+Germano	111
+Vito Antonio	111
+Francesco Junior	110
+Jordi	110
+Micheal	110
+Rikardo	110
+Alessandro Mario	109
+Antonio Junior	109
+Giuseppe Mattia	109
+Pietro Antonio	109
+Stefano Maria	109
+Vittorio Maria	109
+Amerigo	108
+Angelo Maria	108
+Ariel	108
+Efrem	108
+Emanuele Antonio	108
+Libero	108
+Alessio Giuseppe	107
+Bartolo	107
+Davide Giovanni	107
+Filiberto	107
+Giuseppe Salvatore	107
+Laurin	107
+Mustafa	107
+Nicolò Maria	107
+Riccardo Pio	107
+Sonny	107
+Vittorio Emanuele	107
+Vladimir	107
+Gennaro Pio	106
+Kilian	106
+Marc	106
+Mostafa	106
+Mustapha	106
+Tarek	106
+Antonio Salvatore	105
+Artur	105
+Brahim	105
+Cristoforo	105
+Dominic	105
+Isidoro	105
+Nazareno	105
+Nazario	105
+Ulisse	105
+Anes	104
+Christian Antonio	104
+Erick	104
+Gianlorenzo	104
+Louis	104
+Nicolò Francesco	104
+Salvatore Antonio	104
+Samuele Giuseppe	104
+Vieri	104
+Xavier	104
+Alban	103
+Giovanni Andrea	103
+Marco Valerio	103
+Pierre	103
+Pietro Giovanni	103
+Roberto Pio	103
+Vincenzo Francesco	103
+Deniel	102
+Fiore	102
+Francesco Mattia	102
+Gerardo Pio	102
+Arlind	101
+Ermes	101
+Mike	101
+Oliviero	101
+Othman	101
+Antonio Giovanni	100
+Lorenzo Luigi	100
+Mamadou	100
+Salvatore Gabriele	100
+Adamo	99
+Edoardo Francesco	99
+Haitam	99
+Mohamed Aziz	99
+Pascal	99
+Roman	99
+Rosario Pio	99
+Souhail	99
+Stanislao	99
+Alfonso Pio	98
+Cristofer	98
+Errico	98
+Leonardo Antonio	98
+Luigi Francesco	98
+Moustafa	98
+Rachid	98
+Saul	98
+Sohaib	98
+Adel	97
+Kamal	97
+Matteo Luigi	97
+Rei	97
+Savio	97
+Vittorio Pio	97
+Andrea Vincenzo	96
+Angel	96
+Ervin	96
+Federico Francesco	96
+Gianmichele	96
+Moussa	96
+Semir	96
+Yannick	96
+Alessandro Pietro	95
+Arber	95
+Eraldo	95
+Francesco Pietro	95
+Klejdi	95
+Moustapha	95
+Muhamed	95
+Ricky	95
+Alain	94
+Alvin	94
+Emanuele Salvatore	94
+Emidio	94
+Hossam	94
+Nicodemo	94
+Paolo Antonio	94
+Riccardo Giovanni	94
+Samuele Antonio	94
+Abdallah	93
+Daniele Giuseppe	93
+Gerlando	93
+Giovanni Giuseppe	93
+Giovanni Marco	93
+Aris	92
+Filippo Pio	92
+Francesco Vincenzo	92
+Marouan	92
+Nikolò	92
+Wael	92
+Alfonso Maria	91
+Dejan	91
+Edoardo Antonio	91
+Esteban	91
+Federico Giovanni	91
+Francesco Lorenzo	91
+Leonardo Francesco	91
+Manuel Francesco	91
+Abderrahmane	90
+Anton	90
+Calogero Pio	90
+Marco Aurelio	90
+Marco Salvatore	90
+Mathieu	90
+Nicolò Pio	90
+Paolino	90
+Simone Giovanni	90
+Alessio Antonio	89
+Domenico Maria	89
+Harman	89
+Marco Andrea	89
+Albi	88
+Daniele Antonio	88
+Filippo Francesco	88
+Ludovico Maria	88
+Marco Giovanni	88
+Nazzareno	88
+Sabri	88
+Andrea Domenico	87
+Ardit	87
+Francesco Karol	87
+Gabriel Pio	87
+George	87
+Jarno	87
+Lorenzo Mario	87
+Pedro	87
+Toni	87
+Valter	87
+Farouk	86
+Giampietro	86
+Salah Eddine	86
+Alessandro Paolo	85
+Andrea Angelo	85
+Cosmo	85
+Giovanni Emanuele	85
+Ilir	85
+
+[masculine-2010]
+Francesco	82588
+Alessandro	68894
+Lorenzo	65530
+Andrea	63479
+Leonardo	62674
+Mattia	60343
+Gabriele	55738
+Matteo	53669
+Riccardo	46114
+Tommaso	41277
+Davide	37492
+Giuseppe	35160
+Federico	33937
+Edoardo	32939
+Antonio	32906
+Marco	30229
+Giovanni	29674
+Diego	29189
+Samuele	29129
+Luca	29124
+Nicolò	28538
+Pietro	27997
+Christian	27784
+Simone	26224
+Filippo	25390
+Alessio	23468
+Michele	21257
+Emanuele	20594
+Gabriel	19600
+Daniele	18634
+Cristian	18292
+Giacomo	17443
+Jacopo	17275
+Salvatore	16992
+Vincenzo	16503
+Manuel	15770
+Giulio	15089
+Thomas	14186
+Gioele	13736
+Stefano	13171
+Nicola	12913
+Samuel	12704
+Luigi	12541
+Giorgio	12244
+Elia	12175
+Daniel	11996
+Domenico	10448
+Angelo	10236
+Paolo	10029
+Raffaele	9841
+Mario	9531
+Alberto	9309
+Niccolò	9127
+Kevin	8964
+Flavio	8716
+Enea	8591
+Adam	8418
+Nicolas	8088
+Alex	8015
+Valerio	7755
+Carlo	7580
+Nicholas	7006
+Fabio	6898
+Ettore	6816
+Enrico	6038
+Roberto	5911
+Pasquale	5858
+Nathan	5825
+Rayan	5822
+Vittorio	5713
+Dario	5644
+Massimo	5595
+David	5447
+Sebastiano	5307
+Mirko	5238
+Damiano	5150
+Liam	4660
+Sebastian	4296
+Gianluca	4281
+Michael	4270
+Antonino	4262
+Francesco Pio	4184
+Cesare	4063
+Noah	4054
+Claudio	4051
+Omar	4011
+Ivan	3922
+Carmine	3744
+Bryan	3740
+Youssef	3719
+Ciro	3667
+Gennaro	3607
+Gaetano	3582
+Ludovico	3560
+Cristiano	3461
+Martino	3456
+Santiago	3330
+Achille	3250
+Mohamed	3241
+Gregorio	3223
+Amir	3092
+Loris	3076
+Rocco	3002
+Adriano	2966
+Mathias	2707
+Valentino	2645
+Fabrizio	2638
+Gianmarco	2611
+Giosuè	2504
+Brando	2493
+Emanuel	2466
+Bruno	2395
+Denis	2334
+Ryan	2333
+Vito	2308
+Alexander	2236
+Cosimo	2194
+Dylan	2186
+Rosario	2100
+Zeno	2072
+Giordano	2064
+Sergio	2057
+Massimiliano	2039
+Michelangelo	2031
+Umberto	2022
+Leone	1995
+Leo	1969
+William	1962
+Martin	1847
+Jonathan	1833
+Marcello	1777
+Danilo	1766
+Aaron	1696
+Ethan	1644
+Leon	1636
+Thiago	1634
+Alfonso	1628
+Erik	1621
+Aron	1610
+Elias	1609
+Mauro	1601
+Anthony	1596
+Gerardo	1596
+Lucas	1574
+Anas	1534
+Carmelo	1522
+Emmanuel	1512
+Dennis	1501
+Tiziano	1462
+Luciano	1452
+Biagio	1425
+Ahmed	1411
+Maurizio	1409
+Francesco Maria	1408
+Zakaria	1366
+Aldo	1349
+Joele	1334
+Emiliano	1304
+Saverio	1304
+Guido	1299
+Alfredo	1294
+Matthias	1261
+Karim	1254
+Jason	1246
+Emilio	1243
+Brian	1214
+Christopher	1206
+Ali	1192
+Donato	1181
+Leandro	1177
+Matias	1174
+Lucio	1169
+Romeo	1159
+Imran	1151
+Mirco	1151
+Ruben	1149
+Luis	1144
+Oscar	1139
+Ilyas	1130
+Yahya	1130
+Ferdinando	1122
+Bilal	1117
+Guglielmo	1112
+Oliver	1104
+Dante	1092
+Kristian	1064
+Agostino	1060
+Amedeo	1058
+Ayoub	1048
+Armando	1030
+Alexandru	1028
+Ibrahim	1024
+Patrick	1014
+Elio	1013
+Mohammed	1013
+Tobia	1010
+Yassine	1010
+Yuri	1008
+Yassin	1007
+Giuliano	999
+Nizar	996
+Lapo	993
+Felice	989
+Alan	988
+Arturo	982
+Hamza	973
+Eugenio	968
+Iacopo	957
+Ayman	954
+Eric	948
+Ismaele	942
+Joel	930
+Lukas	930
+Raul	930
+Jonas	928
+Mattias	925
+Evan	920
+Saad	918
+Eros	917
+Joshua	917
+Noel	917
+Renato	902
+Andrei	898
+Ernesto	893
+Francesco Paolo	893
+Eduardo	885
+Manuele	865
+Gianmaria	857
+Giona	857
+Simon	856
+Walid	853
+Aniello	850
+Antonio Pio	850
+Ascanio	845
+Sami	842
+Nikolas	840
+Orlando	839
+Stefan	824
+Giuseppe Pio	817
+Julian	812
+Brayan	794
+Joseph	775
+Ian	768
+Alvise	767
+Corrado	764
+Eduard	757
+Manfredi	749
+Franco	747
+Mouhamed	746
+Ismail	740
+Pierluigi	739
+Mariano	725
+Justin	724
+Jad	723
+Calogero	722
+Giancarlo	720
+Maicol	709
+Nico	704
+Rafael	704
+Ziad	699
+Amin	696
+Silvio	695
+Pierpaolo	691
+Nunzio	688
+Tomas	687
+Duccio	681
+Paride	672
+Natan	665
+Benedetto	664
+Geremia	663
+Damian	662
+Robert	655
+Walter	650
+Emmanuele	645
+Yasser	643
+Anwar	633
+Victor	620
+Milo	619
+Jordan	617
+Tancredi	613
+Ziyad	603
+Pierfrancesco	598
+Aurelio	597
+Reda	595
+Raoul	593
+David Andrei	591
+Patrizio	586
+Gianluigi	580
+Edward	568
+Adrian	566
+Raphael	565
+Samir	562
+Giovanni Maria	558
+Younes	558
+Mohamed Amine	557
+Steven	554
+Bernardo	552
+Amine	547
+Dominik	547
+Tiago	544
+Morgan	539
+Fabian	535
+Giovanni Paolo	531
+Enzo	530
+Ilias	529
+Pablo	523
+Tobias	523
+Fernando	519
+Braian	513
+Lorenzo Maria	511
+Aleandro	509
+Akram	507
+Devid	499
+Leonard	499
+Francesco Antonio	492
+Costantino	485
+Piero	484
+Benjamin	483
+Maximilian	478
+Santo	474
+Ilyass	473
+Alvin	472
+Devis	470
+Augusto	469
+Max	465
+Karol	461
+Yousef	461
+Isacco	460
+Felix	457
+Gianni	457
+Jakob	457
+Axel	452
+Paul	452
+Wassim	447
+Taha	446
+Gianfranco	445
+Rayane	442
+Ruggero	442
+Dominic	441
+Iyad	440
+Alejandro	439
+Leonida	435
+Muhammad	429
+Carlos	425
+Adem	424
+Ignazio	424
+Edoardo Maria	417
+Mohamed Amin	416
+Rayen	416
+Maxim	410
+Andreas	403
+Francesco Giuseppe	402
+Livio	402
+Teo	402
+Antonio Maria	395
+Filippo Maria	394
+Islam	394
+Amos	393
+Vincenzo Pio	390
+Luka	389
+Nikita	389
+Louis	386
+Filip	381
+Dorian	380
+Gaspare	378
+James	377
+Orazio	377
+Giovanni Pio	375
+Vincent	374
+Mark	370
+Riccardo Maria	370
+Francesco Saverio	369
+Abdullah	363
+Yassir	360
+Denny	356
+Jeremy	356
+Matei	355
+Alfio	352
+Mouad	351
+Zaccaria	351
+Antony	350
+Gabriele Maria	348
+Haroun	345
+Badr	344
+Gianpaolo	341
+Michele Pio	340
+Alessandro Maria	339
+Marko	338
+Salvatore Pio	337
+Tito	337
+Brandon	335
+Giuseppe Maria	335
+Neri	334
+Logan	333
+Gioacchino	332
+David Gabriel	331
+Carlo Alberto	327
+Leonardo Maria	325
+Sandro	324
+Yari	324
+Libero	320
+Moreno	320
+Marwan	316
+Giovanni Battista	314
+Antimo	313
+Theo	312
+Attilio	311
+Emil	307
+Camillo	305
+Mateo	305
+Alexandro	303
+Mehdi	302
+Elvis	301
+Antonello	298
+Gabriele Pio	298
+Salim	295
+Marzio	294
+Nadir	292
+Hassan	291
+Sirio	290
+Isaia	289
+Ismael	288
+Bartolomeo	286
+Denis Andrei	285
+Sasha	285
+Maikol	283
+Carlo Maria	282
+Graziano	281
+Vasco	281
+Moritz	280
+Richard	280
+Stiven	278
+Amar	276
+Andrea Maria	274
+Brajan	274
+Arcangelo	273
+Viktor	273
+Anouar	272
+Nikola	272
+Noè	272
+Peter	271
+Darius	269
+Jan	269
+Iago	268
+Eduard Andrei	267
+Ayaan	266
+Ayan	265
+Ares	261
+Chris	261
+Eduard Gabriel	261
+Giammarco	260
+Nabil	260
+Ahmad	259
+Cristopher	256
+Serigne Fallou	256
+Ennio	255
+Luigi Pio	255
+Ajan	253
+Igor	253
+Yahia	253
+Natale	251
+Demetrio	250
+Tommaso Maria	250
+Pietro Maria	248
+Alessandro Pio	247
+Klevis	247
+Ottavio	247
+Haron	246
+Anis	245
+Fallou	245
+Isaac	244
+Mohamed Ali	241
+Ruggiero	241
+Achraf	239
+Raian	239
+Rajan	239
+Hannes	237
+Piergiorgio	237
+Tommy	237
+Florian	236
+Matthew	235
+Giuseppe Francesco	233
+Rodolfo	233
+Juri	231
+Fausto	230
+Anuar	228
+George	228
+Gianvito	228
+Ibrahima	228
+Marco Antonio	227
+Federico Maria	226
+Teodoro	226
+Anass	225
+Iyed	225
+Raimondo	225
+Antonio Francesco	223
+Aryan	223
+Lionel	223
+Safwan	223
+Riad	222
+Youness	222
+Andres	221
+Anton	221
+Arian	221
+Andy	220
+Adnan	219
+Domenico Pio	219
+Fabiano	219
+Enis	218
+Fortunato	217
+Mattia Francesco	217
+Enes	216
+Imrane	215
+Brendon	214
+Miguel	214
+Rida	214
+Alen	213
+Andrea Giuseppe	213
+Giuseppe Antonio	213
+Riyad	213
+Tony	213
+David Stefan	212
+Raffaello	212
+Egidio	211
+Girolamo	211
+Fares	210
+Yasin	210
+Artur	208
+Luca Andrei	208
+Rodrigo	208
+Matteo Pio	207
+Mattia Pio	207
+Zaid	207
+Danny	206
+Abdellah	205
+Nino	205
+Angelo Pio	203
+Andrea Pio	202
+Matteo Maria	201
+Mohammad	201
+Ugo	201
+Alexandru Gabriel	200
+Andrea Francesco	200
+Rejan	200
+Francesco Giovanni	199
+Tristan	199
+Abderrahman	198
+Denis Gabriel	198
+Endri	198
+Cataldo	197
+Ulisse	197
+Matia	196
+Matteo Gabriel	196
+Aleks	194
+Emir	194
+Maksim	194
+Philipp	194
+Lian	192
+Soufiane	192
+Teodor	192
+Yanis	192
+Aleksander	191
+Dion	191
+Roan	191
+Gabriel Pio	190
+Beniamino	189
+Niko	189
+Jack	188
+Kilian	188
+Mattia Giuseppe	188
+Albert	187
+Vincenzo Maria	187
+Alberto Maria	186
+Armaan	185
+Josef	185
+Pietro Paolo	185
+Aymen	184
+Mikael	184
+Sean	184
+Giulio Maria	183
+Johannes	183
+Mustafa	183
+Andrew	182
+Erick	181
+Gino	180
+Niklas	180
+Savino	180
+Gabriele Giuseppe	179
+Leopoldo	179
+Ariele	178
+Gian Marco	178
+Nassim	178
+Dimitri	177
+Giorgio Maria	177
+Dominick	176
+Fulvio	176
+Laurin	176
+Aiden	175
+Arthur	175
+Crescenzo	175
+Emanuele Pio	175
+Jago	175
+Italo	173
+Lorenzo Pio	173
+Luigi Maria	173
+Sante	173
+Catello	172
+Clemente	172
+Omer	172
+Pasquale Pio	172
+Valentin	172
+Manolo	171
+Yuvraj	171
+David Alexandru	170
+Jacob	170
+Matteo Francesco	170
+Robert Andrei	170
+Cristian Andrei	169
+Darius Andrei	168
+Fahd	168
+Gabriele Francesco	168
+Giovanni Francesco	168
+Enrico Maria	167
+Francescopio	167
+Gregory	166
+Levi	166
+Leonardo Antonio	165
+Gabriele Antonio	164
+David Ionut	163
+Mahdi	163
+Davide Maria	162
+Giandomenico	162
+Kimi	162
+Luca Gabriel	162
+Patrik	162
+Vieri	162
+Lorenzo Antonio	161
+Serigne Saliou	161
+Timothy	161
+Alessandro Antonio	160
+Efrem	160
+Rami	160
+Sabatino	160
+Ermes	159
+Moussa	158
+Oreste	158
+Derek	157
+Sabino	157
+Christian Pio	156
+Marco Aurelio	156
+Mattia Antonio	156
+Rayyan	156
+Saimon	156
+Imad	155
+Khalil	155
+Abel	154
+Ermanno	154
+Ilario	154
+Ledion	154
+Mohammed Amine	154
+Toni	154
+Vladimir	154
+Ammar	153
+Khadim	153
+Leonardo Francesco	153
+Matteo Andrei	153
+Michele Maria	153
+Aris	151
+Dino	151
+Mahmoud	151
+Moustapha	151
+Firas	150
+Giovanni Antonio	150
+Laerte	150
+Lorenzo Francesco	150
+Oussama	150
+Jamal	149
+Jayden	149
+Stephan	149
+Benito	148
+Othman	148
+Sohaib	148
+Marino	146
+Raffaele Pio	146
+Andrea Giovanni	145
+Ianis	145
+Lodovico	145
+Lorenz	145
+Malek	145
+Muhamed	145
+Osama	145
+Robin	145
+Vlad	145
+Gael	144
+Mamadou	144
+Michel	144
+Aiman	143
+Giacomo Maria	143
+Bogdan	142
+Lion	142
+Said	142
+Diego Antonio	141
+Dilan	141
+Majd	141
+Sabato	141
+Deniel	140
+Lorenzo Giuseppe	140
+Francesco Salvatore	139
+Reis	139
+Ricardo	139
+Sebastian Andrei	139
+John	138
+Andi	137
+Emanuele Maria	137
+Salman	137
+Marcel	136
+Remo	136
+Giampaolo	135
+Zayd	135
+Arham	134
+Johnny	134
+Alessandro Giuseppe	133
+André	133
+Mario Pio	133
+Wissam	133
+Adil	132
+Andrea Antonio	132
+David Cristian	131
+Khalid	131
+Leonardo Pio	131
+Mohammed Amin	131
+Pedro	131
+Rei	131
+Tomaso	131
+Valerio Massimo	131
+Alessandro Francesc	130
+Boris	130
+Destiny	130
+Gurnoor	130
+Silvestro	130
+Eliseo	129
+Francesco Mario	129
+Mohamed Reda	129
+Pierdavide	129
+Yusuf	129
+Francesco Junior	128
+Francesco Luigi	128
+Gionata	128
+Jacopo Maria	128
+Nathaniel	128
+Gabriel Francesco	127
+Hasan	127
+Marco Maria	127
+Nicolas Andrei	127
+Cosimo Damiano	126
+David Constantin	126
+Iliass	126
+Noa	126
+Riccardo Antonio	126
+Silvano	126
+Vinicio	126
+Erdi	125
+Felipe	125
+Ishak	125
+Philip	125
+Alessio Gabriel	124
+Leart	124
+Mohamed Rayan	124
+Musa	124
+Salvo	124
+Gilberto	123
+Mattia Salvatore	123
+Aleksandr	122
+Angelo Maria	122
+Antonio Giuseppe	122
+Aymane	122
+Soufian	122
+Paolo Maria	121
+Gabriel Antonio	120
+Mattia Giovanni	120
+Robert Gabriel	120
+Wasim	120
+Abdoulaye	119
+Armin	119
+Cristian Pio	119
+Gabriele Salvatore	119
+Otman	119
+Salah	119
+Tyler	119
+Almir	118
+Davis	118
+Devin	118
+Diar	118
+Ianis Andrei	118
+José	118
+Kevin Andrei	118
+Marco Pio	118
+Roel	118
+Dean	117
+Ezio	117
+Henry	117
+Leonardo Giuseppe	117
+Matteo Giovanni	117
+Pietro Pio	117
+Santi	117
+Tiberio	117
+Andrea Salvatore	116
+Arman	116
+Davide Andrei	116
+Francesco Emanuele	116
+Lorenzo Mattia	116
+Alessio Pio	115
+Elion	115
+Gianfilippo	115
+Olmo	115
+Antonio Junior	114
+Davide Francesco	114
+Matteo Antonio	114
+Riccardo Giuseppe	114
+Salvatore Maria	114
+Alesio	113
+Eris	113
+Gian Maria	113
+Lenny	113
+Marouane	113
+Matteo Giuseppe	113
+Ossama	113
+Vladislav	113
+Davide Pio	112
+Francesco Mattia	112
+Lyam	112
+Riccardo Francesco	112
+Luca Maria	111
+Abderrahmane	110
+Aleksandar	110
+Hadi	110
+Karam	110
+Marvin	110
+Rikardo	110
+Diego Maria	109
+Giuseppe Salvatore	109
+Marc	109
+Anes	108
+Erion	108
+Francesco Domenico	108
+Pier Paolo	108
+Salvatore Francesco	108
+Babacar	107
+Cristian Gabriel	107
+Ilyes	107
+Gurfateh	106
+Pietro Antonio	106
+David Nicolas	105
+Jihad	105
+Ramon	105
+Raniero	105
+Rehan	105
+Samuele Pio	105
+Yaakoub	105
+Domenico Antonio	104
+Luigi Antonio	104
+Marius	104
+Mosè	104
+Nick	104
+Ekam	103
+Marcus	103
+Nicola Pio	103
+Agatino	102
+Francesco Gabriele	102
+Gianpiero	102
+Jordi	102
+Davide Antonio	101
+Farhan	101
+Farouk	101
+Haitam	101
+Jimmy	101
+Mathis	101
+Michele Antonio	101
+Prince	101
+Souhail	101
+Alessio Andrei	100
+Denis Stefan	100
+Malik	100
+Onofrio	100
+Pietro Francesco	100
+Abdallah	99
+Aronne	99
+Henri	99
+Jasin	99
+Saliou	99
+Simone Pio	99
+Alessandro Giovanni	98
+Ensar	98
+Esteban	98
+Mael	98
+Markus	98
+Noar	98
+Pavel	98
+Saif	98
+Vittorio Maria	98
+Elyas	97
+Endi	97
+Gabriele Giovanni	97
+Giuseppe Junior	97
+Hermes	97
+Ivano	97
+Lorik	97
+Nicolas Gabriel	97
+Saul	97
+Francesco Karol	96
+Javier	96
+Renzo	96
+Wael	96
+Alexandru Ionut	95
+Aziz	95
+David Ioan	95
+Rian	95
+Yosef	95
+Adamo	94
+Amerigo	94
+Fabio Massimo	94
+Gionatan	94
+Lorenzo Giovanni	94
+Luca Antonio	94
+Marian	94
+Muhammad Ali	94
+Tullio	94
+Xavier	94
+Etienne	93
+Folco	93
+Mahir	93
+Nicolò Maria	93
+Osvaldo	93
+Raffaele Maria	93
+Roman	93
+Samuele Antonio	93
+Simone Maria	93
+Sofian	93
+Tarik	93
+Alexis	92
+Angelo Raffaele	92
+Christian Giuseppe	92
+Demis	92
+Mario Francesco	92
+Angelo Gabriele	91
+Carmine Pio	91
+Davide Giuseppe	91
+Mostafa	91
+Samuele Francesco	91
+Ariel	90
+Edoardo Francesco	90
+Francesco Andrea	90
+Francesco Pietro	90
+Albi	89
+Andrej	89
+Cristofer	89
+Daniil	89
+Darius Gabriel	89
+Eduard Constantin	89
+Kledi	89
+Louay	89
+Mouhamadou	89
+Paolo Francesco	89
+Rey	89
+Vito Antonio	89
+Yasir	89
+Antonino Pio	88
+Giuseppe Emanuele	88
+Kamal	88
+Riccardo Pio	88
+Rudy	88
+Stefano Maria	88
+Albion	87
+Araf	87
+Diego Francesco	87
+Francesco Angelo	87
+Pier Francesco	87
+Alexandru Andrei	86
+Gabryel	86
+Gherardo	86
+Moustafa	86
+Rayhan	86
+Virgilio	86
+David Mihai	85
+Gianmario	85
+Ioan	85
+Mohamed Aziz	85
+Gabriel Giuseppe	84
+Santhiago	84
+Alexandru Stefan	83
+Ekamjot	83
+Jurgen	83
+Mohammed Ali	83
+Mohamed Taha	82
+Andrea Luigi	81
+Giuseppe Mattia	81
+Harman	81
+Abhijot	80
+Angelo Francesco	80
+Battista	80
+
+[masculine-2020]
+Leonardo	21564
+Edoardo	16170
+Tommaso	13871
+Francesco	13556
+Alessandro	13313
+Mattia	12956
+Lorenzo	12350
+Gabriele	11821
+Riccardo	10858
+Andrea	10080
+Nicolò	8262
+Diego	8191
+Matteo	7804
+Giuseppe	7752
+Enea	7338
+Antonio	7182
+Federico	6954
+Samuele	6268
+Giovanni	6183
+Pietro	6076
+Filippo	6008
+Giulio	5207
+Davide	4936
+Gioele	4804
+Michele	4681
+Christian	4488
+Elia	4484
+Gabriel	4480
+Noah	4269
+Marco	4036
+Salvatore	3970
+Luca	3788
+Liam	3769
+Vincenzo	3716
+Thomas	3648
+Emanuele	3467
+Nathan	3124
+Alessio	3093
+Ettore	3084
+Giorgio	3012
+Giacomo	2989
+Samuel	2984
+Jacopo	2977
+Luigi	2723
+Simone	2679
+Damiano	2676
+Daniele	2666
+Raffaele	2588
+Manuel	2515
+Domenico	2419
+Santiago	2353
+Daniel	2281
+Nicola	2238
+Ludovico	2214
+Cesare	2153
+Angelo	2107
+Carlo	2086
+Cristian	2079
+Vittorio	2038
+Niccolò	1930
+Stefano	1853
+Mario	1840
+Flavio	1792
+Paolo	1747
+Achille	1730
+Adam	1724
+Bryan	1680
+Rayan	1654
+Gregorio	1587
+Alberto	1573
+Alex	1481
+Brando	1480
+Kevin	1458
+Nicholas	1442
+Thiago	1428
+Nicolas	1355
+Valerio	1307
+Massimo	1280
+Pasquale	1221
+Sebastiano	1198
+Ethan	1192
+Martino	1150
+Dario	1117
+Roberto	1085
+Leone	1078
+Leo	1073
+Amir	1058
+Dylan	1051
+Zeno	1042
+Sebastian	1041
+Ciro	1020
+Mathias	1009
+Michael	969
+Enrico	949
+David	947
+Antonino	929
+Carmine	911
+Gennaro	868
+Ryan	814
+Dante	775
+Francesco Pio	763
+Gaetano	762
+Adriano	754
+Romeo	736
+Michelangelo	731
+Claudio	730
+Bruno	718
+Fabio	690
+Omar	672
+Aron	668
+Leon	649
+Mohamed	647
+Youssef	633
+Mirko	626
+Theo	615
+Cosimo	606
+Giosuè	600
+Ivan	597
+Loris	595
+Lucio	591
+Rocco	581
+Elias	556
+Alexander	553
+Anas	524
+Valentino	520
+Giordano	495
+Umberto	491
+Aaron	484
+Rosario	480
+Vito	480
+Oliver	467
+Gianmarco	464
+Leandro	455
+Lucas	453
+Sergio	449
+Matthias	440
+Tancredi	440
+Elio	436
+Brayan	434
+Maurizio	431
+Gianluca	429
+Jason	420
+Emanuel	418
+Evan	418
+Milo	414
+Cristiano	413
+Fabrizio	409
+William	409
+Jad	403
+Martin	402
+Massimiliano	395
+Ascanio	393
+Yanis	392
+Imran	391
+Orlando	391
+Teo	387
+Alfonso	377
+Gianmaria	374
+Manfredi	374
+Zakaria	373
+Ilyas	372
+Marcello	372
+Arturo	367
+Ismaele	365
+Ibrahim	364
+Erik	362
+Carmelo	350
+Emilio	349
+Ali	338
+Anthony	333
+Gerardo	332
+Brian	331
+Jonathan	331
+Amedeo	328
+Jordan	327
+Leonida	326
+Noel	320
+Joele	318
+Tobia	316
+Aurelio	315
+Luciano	312
+Luis	312
+Guglielmo	309
+Sirio	308
+Matias	304
+Biagio	301
+Christopher	298
+Muhammad	297
+Emmanuel	296
+Guido	294
+Mauro	289
+Ferdinando	287
+Alvise	283
+Francesco Maria	279
+Geremia	275
+Saverio	271
+Amar	266
+Agostino	265
+Donato	265
+Paride	265
+Eros	264
+Yahya	262
+Ahmed	261
+Haron	256
+Mouhamed	254
+Joel	253
+Rafael	253
+Aldo	247
+Damian	247
+Alan	245
+Alfredo	242
+Armando	242
+Ares	237
+Dennis	237
+Ayan	236
+Danilo	233
+Haroun	233
+Denis	230
+Eric	223
+Mohammed	220
+Ian	215
+Eugenio	211
+Ayman	210
+Lapo	210
+Karim	208
+Felice	207
+Nico	204
+Giona	203
+Ziyad	202
+Jonas	201
+Logan	201
+Ziad	200
+Sami	198
+Eduardo	196
+Mattias	193
+Corrado	187
+Ghali	185
+Ismail	184
+Mark	184
+Joseph	183
+Giuliano	181
+Tiziano	181
+Younes	181
+Calogero	180
+Lukas	180
+Safwan	179
+Edoardo Maria	176
+Ernesto	176
+Renato	173
+Bilal	172
+Francesco Paolo	171
+Oscar	171
+Yasser	169
+Axel	165
+James	164
+Antonio Pio	163
+Joshua	163
+Raul	163
+Libero	162
+Victor	162
+Hamza	161
+Aniello	160
+Yassin	160
+Ayoub	158
+Duccio	158
+Tiago	158
+Yassine	158
+Bernardo	157
+Emiliano	157
+Giancarlo	156
+Iyad	155
+Raphael	155
+Anwar	154
+Giuseppe Pio	154
+Julian	154
+Enzo	150
+Dominic	149
+Abdullah	148
+Benjamin	148
+Franco	148
+Yuri	147
+Ismael	146
+Leonardo Maria	146
+Livio	146
+Silvio	145
+Benedetto	143
+Nikolas	143
+Kylian	142
+Mirco	142
+Nunzio	142
+Gurbaaz	141
+Islam	139
+Natan	138
+Dion	137
+Saad	136
+Mariano	135
+Edward	134
+Iacopo	134
+Tito	132
+Ruben	131
+Nizar	130
+Alexandru	128
+Jakob	128
+Amin	127
+Roel	127
+Simon	127
+Felix	126
+Aiden	125
+Max	125
+Musa	121
+Riccardo Maria	121
+Zayan	120
+Lionel	119
+Akram	118
+Aureliano	117
+Camillo	117
+Leonard	117
+Paul	116
+Roan	115
+Amos	114
+Arham	114
+Lorenzo Maria	114
+Taha	114
+Adrian	113
+Emmanuele	113
+Dominik	112
+Siar	112
+Matei	111
+Patrick	111
+Augusto	110
+Carlo Alberto	110
+Isaac	110
+Pierpaolo	110
+Santhiago	110
+Justin	109
+Sultan	109
+Neri	108
+Robert	108
+Anis	107
+Filippo Maria	107
+Tomas	107
+Chris	106
+Kristian	106
+Santo	106
+Oussaid	105
+Wassim	105
+Vincent	104
+Walter	104
+Louis	103
+Patrizio	103
+Teodoro	103
+Ennio	102
+Gianfranco	102
+Maicol	102
+Zohan	102
+Arthur	101
+Brandon	101
+Levi	101
+Andreas	100
+Antonio Maria	100
+Isaia	100
+Maximilian	100
+Pierfrancesco	100
+Stefan	100
+Rayen	99
+Noè	98
+Walid	98
+Adem	96
+Lodovico	96
+Emil	95
+Jayden	95
+Luka	95
+Malik	95
+Rian	95
+Tobias	95
+Zaccaria	95
+Giovanni Maria	94
+Fernando	92
+Noa	92
+Amine	91
+Filip	91
+Kilian	91
+Pablo	91
+Piero	91
+Rajan	91
+Sanad	91
+Costantino	90
+Ilias	90
+Ulisse	90
+Eduard	89
+Isacco	89
+Noar	89
+Tommaso Maria	89
+Braian	88
+Fabian	88
+Ignazio	88
+Carlo Maria	87
+Gabriele Maria	87
+Jeremy	87
+Lian	87
+Viktor	87
+Yusuf	87
+Aryan	86
+Ayaan	86
+Manuele	86
+Dorian	84
+Gaspare	84
+Hassan	84
+Zayn	83
+Pierluigi	82
+Orazio	81
+Reis	81
+Ahmad	80
+Alfio	80
+Damir	80
+Raoul	80
+Tyler	80
+Azlan	79
+Ilyass	79
+Joud	79
+Ruggero	79
+Marzio	78
+Moussa	78
+Rejan	78
+Riyad	78
+Yousef	78
+Carlos	77
+Fateh	77
+Gianni	77
+Jacob	77
+Ottavio	77
+Adnan	76
+Mohammad	76
+Samir	76
+Teodor	76
+Anuar	75
+Deon	75
+Andrei	74
+Arcangelo	74
+Mael	74
+Salim	74
+Steven	74
+Alessandro Maria	73
+Attilio	73
+Riad	73
+Toni	73
+Lion	72
+Nolan	72
+Rio	72
+Derek	71
+Maxim	71
+Nikita	71
+Serigne Saliou	71
+Alvin	70
+Bartolomeo	70
+Elian	70
+Gael	70
+Nadir	70
+Fortunato	69
+Maverick	69
+Nathaniel	69
+Reda	69
+Richard	69
+Aleandro	68
+Darius	68
+Fares	68
+Giuseppe Maria	68
+Raiyan	68
+Francesco Antonio	67
+Jan	67
+Matthew	67
+Sulaiman	67
+Dean	65
+Francesco Saverio	65
+Gino	65
+Mateo	65
+Raffaello	65
+Zaid	65
+Arkan	64
+Artur	64
+Gianluigi	64
+Ibrahima	64
+Leonardo Antonio	64
+Michele Pio	64
+Mustafa	64
+Ajan	63
+Eithan	63
+Gioacchino	63
+Giovanni Pio	63
+Nino	63
+Salvatore Pio	62
+Yari	62
+Zorawar	62
+Antimo	61
+Brendon	61
+Demetrio	61
+Eden	61
+Einar	61
+Francesco Giuseppe	61
+Giulio Maria	61
+Yazid	61
+Anouar	60
+Aris	60
+Domenico Pio	60
+Nassim	60
+Sandro	60
+Vincenzo Pio	60
+Devis	59
+Gurfateh	59
+Leonardo Pio	59
+Yacoub	59
+Yassir	59
+Yuvraj	59
+Anton	58
+Arian	58
+Destiny	58
+Eiden	58
+Miguel	58
+Moritz	58
+Osaid	58
+Raian	58
+Teseo	58
+Ariele	57
+Dior	57
+Eyad	57
+Serigne Fallou	57
+Dilan	56
+Ilyan	56
+Josef	56
+Kian	56
+Lio	56
+Badr	55
+Emir	55
+Federico Maria	55
+Morgan	55
+Muhammad Ali	55
+Ruggiero	55
+Yasin	55
+Alejandro	54
+Devid	54
+Nouh	54
+Ercole	53
+Eren	53
+Ghaith	53
+Henry	53
+Laerte	53
+Lorenzo Pio	53
+Mikael	53
+Yazan	53
+Cosmo	52
+Faris	52
+Majd	52
+Omer	52
+Remo	52
+Rodolfo	52
+Sajid	52
+Salman	52
+Tommy	52
+Zion	52
+Alessandro Pio	51
+Andres	51
+Eitan	51
+Elvis	51
+Enes	51
+Firas	51
+Hussain	51
+Iago	51
+Lupo	51
+Marco Aurelio	51
+Zain	51
+Andrea Maria	50
+Marwan	50
+Vincenzo Maria	50
+Yaakoub	50
+Achraf	49
+Araf	49
+Diego Maria	49
+Enea Francesco	49
+Fulvio	49
+Harun	49
+Ianis	49
+Idris	49
+Laurin	49
+Luigi Pio	49
+Lyam	49
+Manraj	49
+Natale	49
+Rodrigo	49
+Yahia	49
+Adriel	48
+Antony	48
+Arken	48
+Daris	48
+Iyed	48
+Mamadou	48
+Mohamed Ali	48
+Mohamed Ghali	48
+Oliviero	48
+Peter	48
+Zayd	48
+Antonello	47
+Ermes	47
+Fahd	47
+Fausto	47
+Finn	47
+Leonardo Giuseppe	47
+Luigi Maria	47
+Mahdi	47
+Mohamed Amin	47
+Pietro Maria	47
+Yichen	47
+Amjad	46
+Catello	46
+Dimitri	46
+Girolamo	46
+Issa	46
+Miran	46
+Sante	46
+Seydina Mouhamed	46
+Aleksander	45
+Beniamino	45
+Jago	45
+John	45
+Juri	45
+Marko	45
+Mehdi	45
+Mohamed Amine	45
+Rayyan	45
+André	44
+Bjorn	44
+Diar	44
+Edoardo Giuseppe	44
+Levante	44
+Ludovico Maria	44
+Maikol	44
+Tristan	44
+Vieri	44
+Abrar	43
+Davide Maria	43
+Gabriele Pio	43
+Graziano	43
+Hermes	43
+Jibril	43
+Leopoldo	43
+Muhammad Musa	43
+Owen	43
+Abdoulaye	42
+Aren	42
+Diego Antonio	42
+José	42
+Kai	42
+Leonardo Francesco	42
+Marvin	42
+Mehtab	42
+Mouhamed Rassoul	42
+Niklas	42
+Olmo	42
+Rayane	42
+Shayan	42
+Clemente	41
+David Andrei	41
+Fallou	41
+Italo	41
+Karam	41
+Niko	41
+Nirvair	41
+Raimondo	41
+Tiberio	41
+Andrea Pio	40
+Edoardo Francesco	40
+Etienne	40
+Giovanni Battista	40
+Giuseppe Antonio	40
+Imrane	40
+Ishaq	40
+Johannes	40
+Lorik	40
+Oreste	40
+Ahnaf	39
+Alen	39
+Boris	39
+Eliah	39
+Giammarco	39
+Haider	39
+Marco Antonio	39
+Miracle	39
+Priam	39
+Sabino	39
+Selim	39
+Christian Pio	38
+Elijah	38
+Eliseo	38
+Erick	38
+Ezra	38
+Florian	38
+George	38
+Gianvito	38
+Giovanni Paolo	38
+Javier	38
+Jonah	38
+Lorenz	38
+Malek	38
+Mattia Giuseppe	38
+Ousmane	38
+Rei	38
+René	38
+Stiven	38
+Timothy	38
+Youness	38
+Abel	37
+Andrew	37
+Antonio Junior	37
+Denny	37
+Devin	37
+Ekam	37
+Enea Maria	37
+Gherardo	37
+Jamal	37
+Kroi	37
+Mohamed Amir	37
+Moreno	37
+Moustapha	37
+Muhammed	37
+Rahim	37
+Travis	37
+Ahil	36
+Bogdan	36
+Edoardo Antonio	36
+Filiberto	36
+Jannik	36
+Jon	36
+Marino	36
+Mattia Pio	36
+Mouad	36
+Sasha	36
+Yasir	36
+Yousuf	36
+Aymen	35
+Egidio	35
+Erasmo	35
+Ermanno	35
+Maksim	35
+Muhammad Ibrahim	35
+Ossaid	35
+Roy	35
+Timo	35
+Wasim	35
+Wisdom	35
+Albert	34
+Ammar	34
+Azan	34
+Dominick	34
+Gabriele Antonio	34
+Haris	34
+Igor	34
+Marcus	34
+Nathan Pio	34
+Orhan	34
+Saifan	34
+Sam	34
+Siraj	34
+Vasco	34
+Vinicio	34
+Willi	34
+Zein	34
+Antonio Francesco	33
+Arjan	33
+Cataldo	33
+Farhan	33
+Gregory	33
+Ishak	33
+Khadim	33
+Kinan	33
+Nael	33
+Nicolò Maria	33
+Nikola	33
+Othman	33
+Oussama	33
+Rafsan	33
+Raiden	33
+Ricardo	33
+Rohan	33
+Soufiane	33
+Talha	33
+Yannis	33
+Adama	32
+Adil	32
+Ahmadou Bamba	32
+Babacar	32
+Bader	32
+Edoardo Pio	32
+Ezio	32
+Felipe	32
+Hakim	32
+Ilyes	32
+Leonardo Giovanni	32
+Marcel	32
+Matteo Pio	32
+Mattia Francesco	32
+Nick	32
+Robin	32
+Arish	31
+Arman	31
+Cristopher	31
+Dino	31
+Elyas	31
+Gabriel Pio	31
+Gianpaolo	31
+Gioele Pio	31
+Gregorio Maria	31
+Hannes	31
+Leonardo Liam	31
+Lior	31
+Matteo Maria	31
+Muaz	31
+Osman	31
+Piergiorgio	31
+Rey	31
+Stephan	31
+Valentin	31
+Yaaqoub	31
+Agam	30
+Alessandro Antonio	30
+Alessandro Giuseppe	30
+Angelo Pio	30
+Ariyan	30
+Armaan	30
+Caleb	30
+Enea Antonio	30
+Giorgio Maria	30
+Luca Andrei	30
+Milan	30
+Muhamed	30
+Nicolò Pio	30
+Saif Eddine	30
+Saliou	30
+Vittorio Maria	30
+Yaniss	30
+Aarav	29
+Agamjot	29
+Ahad	29
+Alberto Maria	29
+Andrea Giuseppe	29
+Aviraj	29
+Ayden	29
+Emanuele Maria	29
+Giovanni Antonio	29
+Haroon	29
+Josué	29
+Jusuf	29
+Kyle	29
+Lorenzo Antonio	29
+Michele Maria	29
+Muhammad Zohan	29
+Pasquale Pio	29
+Sabatino	29
+Salah	29
+Santi	29
+Sulayman	29
+Theodor	29
+Timoteo	29
+Yuchen	29
+Yussef	29
+Amadou	28
+Anass	28
+Arber	28
+Arion	28
+Brajan	28
+David Gabriel	28
+Elion	28
+Emanuele Pio	28
+Francescopio	28
+Gabriele Salvatore	28
+Hamdan	28
+Hasan	28
+Luan	28
+Mathis	28
+Mattia Antonio	28
+Muhammad Azlan	28
+Nicolò Antonio	28
+Raffaele Pio	28
+Rami	28
+Roen	28
+Roman	28
+Tian	28
+Usman	28
+Waris	28
+Alteo	27
+Amaris	27
+Dariel	27
+Desmond	27
+Diego Armando	27
+Divine	27
+Elliot	27
+Gabriele Giuseppe	27
+Gurtaj	27
+Isa	27
+Matia	27
+Mike	27
+Nicola Pio	27
+Noah Gabriel	27
+Otto	27
+Riccardo Antonio	27
+Rois	27
+Savino	27
+Umar	27
+Abdur Rahman	26
+Amerigo	26
+Andrea Antonio	26
+Brando Maria	26
+Edoardo Giovanni	26
+Eduard Gabriel	26
+Francesco Salvatore	26
+Gioele Maria	26
+Hadi	26
+Ilario	26
+Jesse	26
+Lino	26
+Mario Pio	26
+Michele Antonio	26
+Noah Francesco	26
+Raffaele Maria	26
+Rean	26
+Riccardo Pio	26
+Sabato	26
+Salvatore Maria	26
+Santiago Pio	26
+Solaiman	26
+Tony	26
+Vincenzo Junior	26
+Viraj	26
+Vlad	26
+Alexandro	25
+Andi	25
+Andrea Francesco	25
+Baraa	25
+Crescenzo	25
+Denzel	25
+Enea Giuseppe	25
+Ezekiel	25
+Fatehveer	25
+Francesco Michele	25
+Gurjaap	25
+Idriss	25
+Ilan	25
+Khalid	25
+Leone Maria	25
+Lorenzo Giuseppe	25
+Mosè	25
+Nicolò Francesco	25
+Raniero	25
+Renzo	25
+Rion	25
+Riyan	25
+Saif	25
+Sohaib	25
+Takrim	25
+Zakariya	25
+Abraham	24
+Aziz	24
+Demian	24
+Domenico Maria	24
+Dominion	24
+Edoardo Paolo	24
+Efrem	24
+Enis	24
+Francesco Junior	24
+Gabriele Francesco	24
+Giacomo Maria	24
+Giammaria	24
+Lenny	24
+Marvelous	24
+Mattia Salvatore	24
+Mohamed Jad	24
+Nelson	24
+Philipp	24
+Prince	24
+Sajed	24
+Salvatore Junior	24
+Salvo	24
+Silvano	24
+Souleymane	24
+Ugo	24
+Uriel	24
+Wael	24
+Yakoub	24
+Agatino	23
+Akil	23
+Aleksandr	23
+Alif	23
+Anes	23
+Angelo Maria	23
+Ben	23
+Cheikh	23
+Cosimo Damiano	23
+Demir	23
+Dominic Andrei	23
+Eduard Andrei	23
+Francesco Enea	23
+Galileo	23
 
 [surnames]
 Rossi	516
