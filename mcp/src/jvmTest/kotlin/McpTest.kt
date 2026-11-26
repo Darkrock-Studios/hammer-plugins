@@ -130,7 +130,7 @@ class McpTest {
 	fun skillsListHasEveryFolderWithItsDigestAndSize() {
 		val skills = send("skills/list", version = MODERN).result().getValue("skills").jsonArray.map { it.jsonObject }
 		val folders = File("skills").listFiles()!!.filter { File(it, "SKILL.md").isFile }.map { it.name }.sorted()
-		assertEquals(4, folders.size)
+		assertEquals(10, folders.size)
 		assertEquals(folders, skills.map { it.getValue("frontmatter").jsonObject.getValue("name").jsonPrimitive.content })
 		for (skill in skills) {
 			val name = skill.getValue("frontmatter").jsonObject.getValue("name").jsonPrimitive.content

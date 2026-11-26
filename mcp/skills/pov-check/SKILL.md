@@ -18,23 +18,31 @@ tool for the writer, not a replacement.
 
 1. If the project isn't named, call `project_list` and ask which one.
 2. Call `scene_tree` for the scenes and groups in story order, with word counts. Groups are chapters
-   or parts. Resolve what the writer asked for to a group id, a list of scene ids, or everything.
-3. Call `entry_list` with `type: "person"` for character names and aliases, so you can tell who a
+   or parts. Resolve what the writer asked for to a group id or a list of scene ids. Each scene is
+   checked on its own, so if they named no scene or chapter, ask which; don't assume the whole book.
+3. Say how much that is ("14 scenes, about 38,000 words") before reading. Up to about 30,000 words,
+   read it in one go. Over that, wait for a go-ahead, then work one top-level group at a time (scenes
+   outside any group count as one more), giving each group's findings as you finish it and carrying
+   straight on to the next.
+4. Call `entry_list` with `type: "person"` for character names and aliases, so you can tell who a
    pronoun or nickname refers to.
-4. Read with `scene_read_many`, passing `group` or `ids` (or neither, for the whole book). Each scene
+5. Read with `scene_read_many`, passing `group` or `ids`. Each scene
    comes with its `path` of group names and its `meta` (`tags`, `outline`, `notes`). When the result
    has a non-null `next`, call again with `after: next` for the following page. For a single scene,
    `scene_read` is enough.
 
 Check each page before reading the next, and keep only your findings and each scene's POV, not the
-text of earlier pages. The word counts from `scene_tree` tell you up front how many pages to expect.
+text of earlier pages.
 
 ## Decide each scene's POV
 
 Use the first of these that answers it, and record which one did:
 
-1. **Tag:** a scene tag like `pov-Name` or `pov_Name`. Hammer tags hold only letters, digits, `-`, and
-   `_`: it drops a tag with a colon and splits one with a space, so never suggest either.
+1. **Tag:** a scene tag like `pov-name` or `pov_name`, in any case. Hammer tags hold only letters,
+   digits, `-`, and `_`: it drops a tag with a colon and splits one with a space, so never suggest
+   either. A name's spaces are written `-` (`pov-mary-ann`). Several `pov-` tags mean the scene
+   switches at its breaks: those are its POV characters, and you match each section to one of them by
+   reading it. The name in a tag may be an entry's name or one of its aliases; match it ignoring case.
 2. **Metadata:** the outline or notes naming the POV character.
 3. **Inferred:** from the text: the first-person narrator, or the one character whose thoughts and
    sensations the narration reports directly.
@@ -69,7 +77,9 @@ Don't flag:
 ## Check your quotes
 
 Every finding quotes the scene exactly. Before reporting, confirm each quote appears verbatim in the
-`markdown` from `scene_read`. Drop any finding whose quote you can't find.
+scene's `markdown`. Drop any finding whose quote you can't find. A quote may leave out markdown marks
+such as `*`, and nothing else. `text_find` checks one exactly: the quote as `term`, the scene's id in
+`ids`, and `wholeWord: false`. No match means the quote isn't there.
 
 ## Report
 
@@ -87,8 +97,8 @@ Then list the scenes checked with no findings on one line, and end with totals: 
 slips, borderline. Mark a finding Borderline when a reasonable writer could read it as the POV
 character's inference.
 
-If POV was inferred for any scene, say so at the top: tagging scenes `pov-Name` makes the next check
-more reliable.
+If POV was inferred for any scene, say so at the top: tagging scenes `pov-name` makes the next check
+more reliable, and the `pov-set` skill does that.
 
 ## Saving the report
 

@@ -77,7 +77,9 @@ offstage reveal. Mention it instead of flagging.
 ## Check your quotes
 
 Confirm each quote in a finding appears verbatim in that scene's `markdown`. Drop any finding whose
-quote you can't find.
+quote you can't find. A quote may leave out markdown marks such as `*`, and nothing else. `text_find`
+checks one exactly: the quote as `term`, the scene's id in `ids`, and `wholeWord: false`. No match
+means the quote isn't there.
 
 ## Report
 

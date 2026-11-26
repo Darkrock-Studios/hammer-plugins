@@ -121,12 +121,32 @@ they find with quotes from your scenes, and never suggest rewrites.
   holds even in a client that drops the server's instructions. Install it alongside the others.
 
 - **pov-check:** point-of-view slips (head-hopping) in a scene, a chapter, or the whole book. Tag
-  scenes `pov-Name` for the most reliable results.
+  scenes `pov-name` for the most reliable results.
+- **pov-set:** works out whose point of view each scene is told from and tags it `pov-name`, one tag
+  per character where a scene switches at a break. It tags only the scenes you approve, and needs
+  "Let AI agents make changes" on to tag them.
+- **tense-check:** tense slips in a scene or a chapter: narration that drifts from past to present or
+  back, leaving dialogue, thoughts, and flashbacks alone.
 - **who-knows-what:** tracks what each character learns and when, and flags characters acting on
   things they haven't learned yet, or forgetting what they have.
 - **true-up-references:** checks which encyclopedia entries each scene references, proposing to
   dismiss ones only mentioned, confirm ones really in the scene, and clear ones cut from it. It applies
   only the changes you approve, and needs "Let AI agents make changes" on to apply them.
+- **true-up-encyclopedia:** checks the encyclopedia against the scenes: people, places, and things on
+  the page with no entry, names an entry lacks as an alias, entries nothing mentions, and entries the
+  page contradicts. It adds only the entries and aliases you approve, as a name and a type; it never
+  writes an entry's text.
+- **outline-check:** compares each scene's outline with what the scene does, and reports what is
+  missing, different, or not in the outline. If you ask, it brings an outline up to date with the
+  page, showing you the change first.
+- **style-sheet:** builds a copyeditor's style sheet from the book: how it spells names and invented
+  terms, capitalises, hyphenates, writes numbers, and punctuates, and where it departs from its own
+  usual form. Saved as a note, it lets later checks read only the scenes you name.
+- **build-timeline:** reads the book for every statement of when something happens and builds the
+  timeline from it: scenes, encyclopedia events, and dated backstory, in lanes, with durations where
+  the text gives them. It shows the plan and the quotes behind it first, reports dates that
+  contradict each other, and never guesses a date the page doesn't give. It needs "Let AI agents make
+  changes" on to build; without it, it stops at the plan.
 
 The server serves them itself through the MCP
 [Skills extension](https://modelcontextprotocol.io/extensions/skills/overview), so a client that
