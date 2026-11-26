@@ -2,7 +2,7 @@
 name: pov-set
 description: Work out whose point of view each scene in a Hammer project is told from, through the Hammer MCP server, and tag the scene pov-name with the writer's approval. Use when the writer asks to set, tag, or label POV, or to prepare scenes for pov-check, for one scene, a chapter, or the whole book. Never writes prose.
 ---
- # POV set
+# POV set
 
 Decide the point-of-view character of each scene and record it as a `pov-name` tag, which `pov-check`
 and the writer's own filters read. You propose; the writer approves; only then do you tag.
@@ -84,8 +84,9 @@ Hammer tags hold only letters, digits, `-`, and `_`, so turn spaces into `-` and
 Confirm each quote appears verbatim in the scene's `markdown`. If it doesn't, find one that does or
 move the scene to unsure. A quote may leave out markdown marks such as `*`, and nothing else.
 `text_find` checks one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and
-`caseSensitive: true`. It reads curly and straight quotes as the same, and any run of spaces as one.
-No match means the quote isn't there.
+`caseSensitive: true`. It reads curly and straight quotes as the same, and any run of spaces as one,
+but never matches across a paragraph break: check a quote that runs over one a paragraph at a time. No
+match means the quote isn't there.
 
 ## Propose
 

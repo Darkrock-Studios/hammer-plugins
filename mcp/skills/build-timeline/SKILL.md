@@ -2,7 +2,7 @@
 name: build-timeline
 description: Build a Hammer project's timeline from what the manuscript says about when things happen, through the Hammer MCP server - scenes, encyclopedia events, and dated backstory, in lanes, with durations, each placement backed by a quote and applied with the writer's approval. Use when the writer asks to build, fill in, or generate a timeline, or to check that the story's dates add up. Never writes prose, and never guesses a date the page doesn't give.
 ---
- # Build timeline
+# Build timeline
 
 Read the book for every statement of when something happens, work out what those statements fix, and
 lay the result out on Hammer's timeline: scenes, events from the encyclopedia, and things that happen
@@ -168,7 +168,8 @@ Before showing the plan, confirm every quote appears verbatim where it came from
 `markdown`, its `meta.outline` or `meta.notes`, or the entry's text. Drop any placement whose quote
 you can't find. A quote may leave out markdown marks such as `*`, and nothing else. `text_find` checks
 one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It
-reads curly and straight quotes as the same, and any run of spaces as one. No match means the quote
+reads curly and straight quotes as the same, and any run of spaces as one, but never matches across a
+paragraph break: check a quote that runs over one a paragraph at a time. No match means the quote
 isn't there. It doesn't search outlines or notes: check a quote from one against the `meta` you read.
 
 ## The plan
@@ -217,8 +218,8 @@ Only the approved plan, in this order:
    the plan doesn't have, and skip the call if the settings already match. For a second one,
    `timeline_def_create` with `name` and the same fields; it returns an id to pass as `timeline` in
    the calls below. If the main timeline already had events, it gets no calls at all, settings
-   included: every timeline in the plan is made with `timeline_def_create`, and every event call
-   carries its `timeline`.
+   included: every timeline in the plan is made with `timeline_def_create`, and every `timeline_place`
+   and `timeline_create` carries its `timeline`.
 2. **Events,** in timeline order, one call each:
    - `timeline_place` for a scene or event entry: `kind`, `subject` (the scene's or entry's id), and
      `start`, `end`, `lane`, `milestone` where the plan has them.
@@ -227,7 +228,7 @@ Only the approved plan, in this order:
 3. **On a manual timeline** there is no `start` or `end`. Events land in the order you make the calls,
    so keep to the plan's order. Give a plain event its when as `label` in `timeline_create`. A placed
    scene or entry takes its label straight afterwards: `timeline_set` with the event id that
-   `timeline_place` returned, and `label`.
+   `timeline_place` returned, and `label`, and nothing else: a `timeline` there moves the event.
 4. `timeline_list` to confirm what landed, and report it: counts by kind, lanes, and anything a tool
    refused. If a tool refuses a date, give its message; don't try other dates.
 

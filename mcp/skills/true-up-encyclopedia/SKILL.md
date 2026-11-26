@@ -2,7 +2,7 @@
 name: true-up-encyclopedia
 description: Check a Hammer project's encyclopedia against its scenes through the Hammer MCP server - people, places, and things on the page with no entry, names an entry lacks as an alias, entries nothing mentions, and entries the page contradicts. Use when the writer asks to check, audit, or true up the encyclopedia, find missing entries, or find unused ones. Adds entries and aliases only with the writer's approval. Never writes prose or entry text.
 ---
- # True up encyclopedia
+# True up encyclopedia
 
 The encyclopedia is the writer's record of the story's people, places, things, events, and ideas. It
 falls behind the manuscript: a character appears who was never entered, one goes by a nickname the
@@ -90,7 +90,8 @@ Only when the scene makes plain who or what is meant. If the form, or the name i
 fit another entry ("Vell" or "Miss Vell", with two Vells in the encyclopedia), report it with that
 warning: the bare name can't be added as an alias without matching both.
 
-Keep one row per alias, with the scenes it appears in.
+Keep one row per alias, with the scenes it appears in. `text_count` gives those scenes exactly; with
+`caseSensitive: true` it counts "Father" apart from "father".
 
 ## Unused entries
 

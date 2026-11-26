@@ -2,7 +2,7 @@
 name: outline-check
 description: Compare each scene's outline with what the scene actually does, in a Hammer project through the Hammer MCP server, and report where they have drifted apart. Use when the writer asks to check outlines against scenes, whether a scene follows its outline, or which outlines are out of date, for one scene, a chapter, or the whole book. Can bring an outline up to date with the page, only when the writer asks. Never writes prose.
 ---
- # Outline check
+# Outline check
 
 Every Hammer scene can carry an outline: the writer's note of what the scene is meant to do. Scenes
 change as they are written and the outline is left behind. You read both and report where they differ.
@@ -67,9 +67,10 @@ Different and Not-in-the-outline findings quote the scene exactly; Missing and D
 outline point. Confirm each scene quote appears verbatim in the scene's `markdown`, and drop any
 finding whose quote you can't find. A quote may leave out markdown marks such as `*`, and nothing
 else. `text_find` checks one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and
-`caseSensitive: true`. It reads curly and straight quotes as the same, and any run of spaces as one.
-No match means the quote isn't there. Quote the words that show the thing happening, not only the
-nearest short line.
+`caseSensitive: true`. It reads curly and straight quotes as the same, and any run of spaces as one,
+but never matches across a paragraph break: check a quote that runs over one a paragraph at a time. No
+match means the quote isn't there. Quote the words that show the thing happening, not only the nearest
+short line.
 
 ## Report
 

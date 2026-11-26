@@ -79,8 +79,9 @@ offstage reveal. Mention it instead of flagging.
 Confirm each quote in a finding appears verbatim in that scene's `markdown`. Drop any finding whose
 quote you can't find. A quote may leave out markdown marks such as `*`, and nothing else. `text_find`
 checks one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive:
-true`. It reads curly and straight quotes as the same, and any run of spaces as one. No match means
-the quote isn't there.
+true`. It reads curly and straight quotes as the same, and any run of spaces as one, but never matches
+across a paragraph break: check a quote that runs over one a paragraph at a time. No match means the
+quote isn't there.
 
 ## Report
 

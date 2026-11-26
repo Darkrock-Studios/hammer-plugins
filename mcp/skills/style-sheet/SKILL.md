@@ -2,7 +2,7 @@
 name: style-sheet
 description: Build a copyeditor's style sheet for a Hammer project through the Hammer MCP server - how the manuscript spells its names and invented terms, capitalises, hyphenates, writes numbers, and punctuates - and flag every place that departs from it. Use when the writer asks for a style sheet, a consistency check on spelling, capitalisation, or hyphenation, or to check scenes against the style sheet. Reports quoted evidence only; never rewrites prose.
 ---
- # Style sheet
+# Style sheet
 
 A style sheet records the choices a manuscript makes where more than one would be correct: grey or
 gray, the King or the king, farmhouse or farm-house. You build it from what the book already does, and
@@ -68,8 +68,10 @@ One row per form:
 Note forms as you read; don't keep a tally. Then count with `text_count`, which counts every
 occurrence in the scenes' text: all the forms of one choice as `terms` in one call, up to 50. It
 matches whole words, so "till" doesn't count "still", and ignores capitals unless `caseSensitive` is
-true. Set that when the forms differ only by a capital. A hyphen or space is matched as written, so
-give each spelling.
+true. Set that when the forms differ only by a capital. A hyphen or space inside a term is matched as
+written, so give each spelling. Neither tool sees italics or tells curly quotes from straight ones,
+and a mark on its own (a spaced hyphen) matches wherever the mark is: take punctuation and emphasis
+from reading, and say in the sheet that they are by eye.
 
 `text_find` lists every occurrence of one form with its scene and the text around it. Use it to see
 which uses are sentence starts, to find each departure's scenes, and to take exact quotes from.
@@ -86,7 +88,8 @@ For each choice:
 
 A rule that covers several words is one choice, counted in distinct words, not uses: "colour",
 "favour", and "honoured" are three words on the -our side, and "harbor" is one on the -or side,
-however many times it appears. Give both sides with their words.
+however many times it appears. A word's other endings and its compounds count with it: "coloured" with
+"colour", "harbormaster" with "harbor". Give both sides with their words.
 
 Words that merely resemble each other are not rival forms: "Master" and "Mr.", "until" and "till",
 "Midsummer" and "midwinter" are different words. Note each under its heading and leave it at that.
@@ -134,8 +137,9 @@ departure: list it as new.
 Confirm every quote appears verbatim in its scene's `markdown`. Drop any finding whose quote you can't
 find. A quote may leave out markdown marks such as `*`, and nothing else. `text_find` checks one: the
 quote as `term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It reads
-curly and straight quotes as the same, and any run of spaces as one. No match means the quote isn't
-there. Never quote from a `search` snippet: it is not the scene's exact text.
+curly and straight quotes as the same, and any run of spaces as one, but never matches across a
+paragraph break: check a quote that runs over one a paragraph at a time. No match means the quote
+isn't there. Never quote from a `search` snippet: it is not the scene's exact text.
 
 ## Report
 

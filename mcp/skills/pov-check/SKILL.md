@@ -67,6 +67,7 @@ Flag a passage when the narration gives something the POV character couldn't kno
 - **Knowledge ahead of the story:** "Little did he know", "It would be years before", unless the POV
   is a narrator telling the story afterwards.
 - **A switch mid-section:** the narration settles into a different character's head without a break.
+  Consecutive sentences in one other head are one finding of this kind, not one each.
 
 Don't flag:
 
