@@ -16,7 +16,7 @@ kits in hammer-plugin-sdk. Each directory is one plugin.
 | `scifi-names` | Kotlin | Made-up names for science fiction, an action for each of characters (aliens, handles, machines), worlds, and things (ships, companies), each name with a button adding it to the encyclopedia as a person, place, or thing; names follow each style's patterns over its lists (`resources/`), and worlds sound like the stars and moons, whose names `tools/` fetches |
 | `character-interview` | Kotlin | Interviews a character from Project Home, a page of questions at a time, then writes the answers into a new person entry and opens it; the questions are a quick set, a full one, or those of the confession album Proust filled in around 1890 (public domain, in our own English wording), each a markdown file of pages and questions (`resources/sets/`), and the run is kept when the dialog is closed |
 | `first-meeting` | Kotlin | Finds the first scene, in story order, with both of two characters in its References, run from Project Home or from a character's entry (picked first); picks the pair by name (`entity` fields), names the scene with its chapter, lists the other scenes they share with a button opening each of the first ten, and when they share none, says if either is in no scene's References at all |
-| `harper-grammar` | Rust | English grammar on [Harper](https://github.com/Automattic/harper), underlined in the editor, with settings for each category of check and for long sentences; pre-initialized with Wizer |
+| `harper-grammar` | Rust | English grammar on [Harper](https://github.com/Automattic/harper), underlined in the editor, with settings for each category of check and for long sentences |
 | `languagetool` | Rust | Grammar, punctuation, and style from [LanguageTool](https://languagetool.org), underlined in the editor, through its free service, Premium with your own API key, or your own server; sends the text over HTTP (`permissions.http`), in batches under the service's limits, and caches each paragraph's matches by its text so a scene opened again is not sent again |
 | `name-checker` | Rust | For names from the encyclopedia: underlines slips of a name and names in lower case in the editor, and reports each entry's mentions, likely misspellings, and names with no entry; ships word lists as resources (`resources/words/`) for English, French, German, Spanish, Italian, and Ukrainian, and checks any language with a list there |
 | `mcp` | Kotlin | An MCP server for AI agents, as the `hammer mcp` command: reads your projects and, when its settings allow, organizes and edits the material around the prose, but never writes the prose itself; see its [README](mcp/README.md) |
@@ -32,8 +32,7 @@ packages as the run's `plugins` artifact. Each language needs:
 
 - C: clang with the wasm32 target and lld (`sudo apt install clang lld`), and zip.
 - Rust: [rustup](https://rustup.rs) and `rustup target add wasm32-unknown-unknown`. `harper-grammar` also
-  needs wabt, Binaryen (on PATH, or its `bin` in `BINARYEN`), python3, and `cargo install wizer
-  --all-features`.
+  needs wabt, Binaryen (on PATH, or its `bin` in `BINARYEN`), and python3.
 - Kotlin: a JDK; `./gradlew` fetches Gradle.
 
 ## Releasing

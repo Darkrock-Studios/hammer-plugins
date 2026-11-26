@@ -13,7 +13,6 @@ permissions:
 
 env:
   BINARYEN_VERSION: '120'
-  WIZER_VERSION: '10.0.0'
 
 jobs:
   plugins:
@@ -46,13 +45,9 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
 
-      # Also keeps ~/.cargo/bin, so Wizer is built once.
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: hammer-plugins
-
-      - name: Install Wizer
-        run: cargo install wizer --version "$WIZER_VERSION" --all-features --locked
 
       - name: Install Binaryen
         working-directory: ${{ runner.temp }}
