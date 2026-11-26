@@ -51,6 +51,7 @@ ARABIC = {"spelled": True, "scholarly": True, "particles": {
 }}
 CULTURES = {
     "australian": {"country": "Q408"},
+    "austrian": {"country": "Q40", "born": ["Q28513", "Q533534"]},
     "belgian": {"country": "Q31"},
     "brazilian": {"country": "Q155"},
     "dutch": {"country": "Q55", "born": ["Q29999"]},
