@@ -54,6 +54,7 @@ CULTURES = {
     "austrian": {"country": "Q40", "born": ["Q28513", "Q533534"]},
     "belgian": {"country": "Q31"},
     "brazilian": {"country": "Q155"},
+    "canadian": {"country": "Q16"},
     "dutch": {"country": "Q55", "born": ["Q29999"]},
     # Egypt's earlier states and the Ottoman Empire, of which Egyptians were subjects before 1914.
     "egyptian": {"countries": ["Q79"], "born": ["Q127861", "Q370173", "Q124943", "Q3087763", "Q170468", "Q12560"],
@@ -82,6 +83,7 @@ CULTURES = {
     "polish": {"country": "Q36", "born": ["Q211274", "Q207272"], "feminine": [
         ("ski", "ska"), ("cki", "cka"), ("dzki", "dzka"),
     ], "sure": ("ska", "cka", "dzka")},
+    "quebecois": {"country": "Q16", "within": "Q176"},
     "russian": {"country": "Q159", "born": ["Q15180", "Q34266"], "feminine": [
         ("sky", "skaya"), ("skiy", "skaya"), ("ov", "ova"), ("ev", "eva"), ("in", "ina"), ("tsyn", "tsyna"),
         ("oy", "aya"), ("ny", "naya"),
