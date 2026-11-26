@@ -38,6 +38,7 @@ DECADES = range(1880, 2030, 10)
 # man's surname a woman's, for a surname list for each sex, with "sure", the woman's endings that are
 # no man's.
 CULTURES = {
+    "australian": {"country": "Q408"},
     "brazilian": {"country": "Q155"},
     "dutch": {"country": "Q55", "born": ["Q29999"]},
     # The United Kingdom's people: asking for those born in England runs out of time.
