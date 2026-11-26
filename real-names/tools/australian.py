@@ -42,7 +42,7 @@ DECADES = range(1940, 2030, 10)
 RECENT = range(2020, 2030)
 AGENT = "hammer-plugins real-names/tools/australian.py"
 # Names that stand in for one, and "MC", the start of one cut short.
-PLACEHOLDERS = {"UNNAMED", "BABY", "MC"}
+PLACEHOLDERS = {"UNNAMED", "UNNMAED", "BABY", "MC"}
 
 work, out = sys.argv[1], sys.argv[2]
 os.makedirs(work, exist_ok=True)
@@ -95,7 +95,7 @@ def ranked(rows):
     for row in rows:
         if len(row) >= 2 and row[1].strip().isdigit():
             name = row[0].strip().upper()
-            if name.replace("-", "") not in PLACEHOLDERS and re.fullmatch(r"[^\W\d_]{2,}(?:['-][^\W\d_]+)*", name):
+            if name.replace("-", "") not in PLACEHOLDERS and re.fullmatch(r"(?:[^\W\d_]{2,}|[^\W\d_]'[^\W\d_]{2,})(?:['-][^\W\d_]+)*", name):
                 yield name, int(row[1])
 
 

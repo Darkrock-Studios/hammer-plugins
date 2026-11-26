@@ -83,7 +83,7 @@ def counted(path, sheet):
     for name, rows in sheets(path):
         if name == sheet:
             for row in rows:
-                if len(row) >= 2 and row[1].isdecimal() and row[0] not in NOT_NAMES and "." not in row[0] \
+                if len(row) >= 2 and row[1].isdecimal() and len(row[0]) > 1 and row[0] not in NOT_NAMES and "." not in row[0] \
                         and not any(len(word) > 1 and word.isupper() for word in re.split(r"[ '-]", row[0])):
                     yield row[0], int(row[1])
 

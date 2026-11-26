@@ -60,7 +60,8 @@ SOURCES = {
 
 # Entries for a child not yet named, or for its sex.
 PLACEHOLDERS = {"BABY", "BEBE", "UNNAMED", "UN-NAMED", "INFANT", "TWIN", "MALE", "FEMALE", "BOY", "GIRL", "FILLE",
-                "GARCON", "INCONNU", "INCONNUE", "NONAME", "NO-NAME", "NO", "NONE"}
+                "GARCON", "INCONNU", "INCONNUE", "NONAME", "NO-NAME", "NO", "NONE", "NEWBORN", "STILLBIRTH",
+                "STILLBORN", "LIVEBIRTH", "UNKNOWN"}
 # Ontario's abbreviations of names, mostly of those born before the 1930s.
 ABBREVIATIONS = {"WM": "WILLIAM", "JOS": "JOSEPH", "CHAS": "CHARLES", "THOS": "THOMAS", "ROBT": "ROBERT",
                  "GEO": "GEORGE", "JAS": "JAMES", "JNO": "JOHN"}

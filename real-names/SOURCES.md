@@ -17,6 +17,11 @@ run asks for nothing. From `real-names/tools/`:
 Some scripts download what they need; others need files put in the cache first, as each script's
 docstring says.
 
+A cached answer is kept under its culture and query's name, not the query's text, so after changing a
+query delete the cache files it wrote (for `wikidata.py`, `cache/wd/<culture>-<name>.json`) or it keeps
+answering from the old ones. `argentine.py` takes surnames' accents from `spanish.txt` and
+`mexican.txt`, so run it after their scripts.
+
 | Culture | Script | Cache | Official lists | From Wikidata |
 |---|---|---|---|---|
 | American | american.py | | all | none |

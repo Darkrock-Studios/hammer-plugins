@@ -280,7 +280,11 @@ left_out = sum(count for key, count in names.items() if not name_sex(key, words)
 print(f"{left_out} of {sum(names.values())} people's given names tell no sex", file=sys.stderr)
 write_given(None, names)
 for decade in DECADES:
-    write_given(decade, Counter({key: count for (year, key), count in born.items() if decade <= year < decade + 10}))
+    in_decade = Counter()
+    for (year, key), count in born.items():
+        if decade <= year < decade + 10:
+            in_decade[key] += count
+    write_given(decade, in_decade)
 
 recent = Counter()
 for row in table(WORDS):

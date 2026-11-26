@@ -169,6 +169,9 @@ def written(label):
         label = unscholarly(label)
     if len(label) < 2 or not label[0].isupper() or not re.fullmatch(r"[^\W\d_]+(?:[ '-][^\W\d_]+)*", label):
         return None
+    # A family's label rather than a name's, such as "Champion de Crespigny baronets".
+    if not any(c.isupper() for c in label.split()[-1]):
+        return None
     return label if all("LATIN" in unicodedata.name(c, "") for c in label if c.isalpha()) else None
 
 
@@ -217,8 +220,8 @@ def fold(text):
 
 def spelled(person, spellings, last=False):
     """Where in `person`, a person's label, one of `spellings` is, as (start, end, spelling): the first,
-    or with `last` the last, and the longest there, with the person's own hyphens and case if the name
-    has them. Where none is, the words that start the label, or with `last` end it, if they are a
+    or with `last` the last, and the longest there, preferring the spelling with the person's own hyphens
+    and case where the name has one. Where none is, the words that start the label, or with `last` end it, if they are a
     spelling of the same name; None when they are not."""
     person = unicodedata.normalize("NFC", person)
     if options.get("scholarly"):

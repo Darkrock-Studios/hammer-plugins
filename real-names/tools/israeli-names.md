@@ -1,6 +1,6 @@
 # Transliterating Israeli register names (Hebrew script) into their usual English spelling
 
-The conventions `israeli-names.tsv` follows: each row is a sector, a kind (given or surname), a name in
+The conventions `israeli-names.tsv` follows: each row is a sector, a kind (feminine, masculine, or surname), a name in
 Hebrew letters, and its spelling, or "-" for a name left out. Keep new rows to these rules.
 
 The input is names from Israel's Central Bureau of Statistics (CBS): given names from the population
