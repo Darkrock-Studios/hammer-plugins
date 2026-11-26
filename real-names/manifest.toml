@@ -20,6 +20,7 @@ default = "american"
 options = [
 	{ value = "american", label = "American" },
 	{ value = "australian", label = "Australian" },
+	{ value = "belgian", label = "Belgian" },
 	{ value = "brazilian", label = "Brazilian" },
 	{ value = "chinese", label = "Chinese" },
 	{ value = "dutch", label = "Dutch" },

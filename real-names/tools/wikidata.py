@@ -39,6 +39,7 @@ DECADES = range(1880, 2030, 10)
 # no man's.
 CULTURES = {
     "australian": {"country": "Q408"},
+    "belgian": {"country": "Q31"},
     "brazilian": {"country": "Q155"},
     "dutch": {"country": "Q55", "born": ["Q29999"]},
     # The United Kingdom's people: asking for those born in England runs out of time.
