@@ -166,11 +166,12 @@ there need to be at least two lanes. If the evidence supports no split, use no l
 
 Before showing the plan, confirm every quote appears verbatim where it came from: the scene's
 `markdown`, its `meta.outline` or `meta.notes`, or the entry's text. Drop any placement whose quote
-you can't find. A quote may leave out markdown marks such as `*`, and nothing else. `text_find` checks
-one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It
-reads curly and straight quotes as the same, and any run of spaces as one, but never matches across a
-paragraph break: check a quote that runs over one a paragraph at a time. No match means the quote
-isn't there. It doesn't search outlines or notes: check a quote from one against the `meta` you read.
+you can't find. A quote may leave out markdown marks such as `*`, write curly quotes straight, and
+write a run of spaces as one, and differ in nothing else. `text_find` checks one: the quote as `term`,
+the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It never matches across a
+paragraph break: check a quote that runs over one a paragraph at a time, and see in the text you read
+that those paragraphs follow one another in that order. No match means the quote isn't there. It
+doesn't search outlines or notes: check a quote from one against the `meta` you read.
 
 ## The plan
 
