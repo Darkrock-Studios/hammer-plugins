@@ -80,8 +80,8 @@ Don't flag:
 Every finding quotes the scene exactly. Before reporting, confirm each quote appears verbatim in the
 scene's `markdown`. Drop any finding whose quote you can't find. A quote may leave out markdown marks
 such as `*`, and nothing else. `text_find` checks one: the quote as `term`, the scene's id in `ids`,
-`wholeWord: false`, and `caseSensitive: true`. It reads curly and straight quotes as the same. No
-match means the quote isn't there.
+`wholeWord: false`, and `caseSensitive: true`. It reads curly and straight quotes as the same, and any
+run of spaces as one. No match means the quote isn't there.
 
 ## Report
 
