@@ -1003,11 +1003,64 @@ Johanna	1818
 Aleksandra	1816
 Jade	1815
 
+[feminine-1890]
+María	40
+Maria	24
+Carmen	23
+Teresa	16
+Pilar	13
+Mercedes	12
+Concepción	9
+Dolores	8
+Matilde	8
+Rosa	8
+Ana	7
+Carme	7
+Consuelo	7
+Elisa	7
+Elvira	7
+Francisca	7
+Josefina	7
+Julia	7
+Concepció	6
+Felisa	6
+Josefa	6
+Luisa	6
+Margarita	6
+Emilia	5
+Juana	5
+Manuela	5
+María Luisa	5
+Mercè	5
+Anna	4
+Aurora	4
+Catalina	4
+Isabel	4
+Justa	4
+Rosario	4
+Clara	3
+Cristina	3
+Elena	3
+Emília	3
+Enriqueta	3
+Eugenia	3
+Fidela	3
+Gloria	3
+Herminia	3
+Irene	3
+Jesusa	3
+María Concepción	3
+María Josefa	3
+María del Carmen	3
+Regina	3
+Victoria	3
+Ángela	3
+
 [feminine-1900]
 María	70
 Carmen	39
-Maria	38
-Pilar	22
+Maria	37
+Pilar	21
 Rosa	19
 Josefina	18
 Mercedes	18
@@ -1015,16 +1068,18 @@ Teresa	16
 Isabel	15
 Marta	14
 Carme	12
-Josefa	12
+Dolores	12
 Montserrat	12
 Ana	11
 Concepción	11
-Dolores	11
+Josefa	11
 Julia	11
+María del Carmen	11
 Elena	10
 Francisca	10
 Rosario	10
 Elvira	9
+María Teresa	9
 Matilde	9
 Antonia	8
 Aurora	8
@@ -1034,18 +1089,17 @@ Manuela	7
 Margarita	7
 Mercè	7
 Adela	6
-Anna	6
+Amparo	6
 Catalina	6
 Consuelo	6
 Irene	6
 Juana	6
-Lola	6
 Luisa	6
+María Luisa	6
 Núria	6
 Amalia	5
 Amelia	5
-Amparo	5
-Ana María	5
+Anna	5
 Asunción	5
 Beatriz	5
 Carlota	5
@@ -1055,11 +1109,13 @@ Cristina	5
 Emilia	5
 Enriqueta	5
 Gloria	5
+Lola	5
 Magdalena	5
 María Isabel	5
 Raquel	5
 Ángeles	5
 Alicia	4
+Ana María	4
 Anna Maria	4
 Elisa	4
 Francesca	4
@@ -1085,7 +1141,6 @@ Ignacia	3
 Laura	3
 Lolita	3
 Mariana	3
-Maruja	3
 María Dolores	3
 Natividad	3
 Nieves	3
@@ -1097,29 +1152,31 @@ Trinidad	3
 
 [feminine-1910]
 María	61
-Maria	54
+Maria	53
 Carmen	40
 Isabel	17
+Pilar	17
+Teresa	17
 Carme	16
-Pilar	16
-Teresa	16
 Dolores	15
-Mercedes	14
-Rosa	14
+Mercedes	15
+Rosa	15
 Aurora	13
 Manuela	12
+María Luisa	12
 Julia	11
 Consuelo	10
 Josefina	10
 Ana	9
+Elena	9
 Elvira	9
+Josefa	9
+María Teresa	9
 Montserrat	9
 Dolors	8
-Elena	8
 Elisa	8
 Enriqueta	8
 Francisca	8
-Josefa	8
 Margarita	8
 Antònia	7
 Juana	7
@@ -1133,18 +1190,21 @@ Rosario	6
 Adela	5
 Blanca	5
 Emilia	5
+Magdalena	5
 Ángeles	5
 Anna	4
+Asunción	4
 Celia	4
-Magdalena	4
 Margarida	4
 Marina	4
 Maruja	4
+María del Carmen	4
 Matilde	4
 Neus	4
 Nieves	4
 Paquita	4
 Pepita	4
+Petra	4
 Purificación	4
 Sofía	4
 Trinidad	4
@@ -1152,7 +1212,6 @@ Alicia	3
 Amelia	3
 Angelina	3
 Antonia	3
-Asunción	3
 Casilda	3
 Cecilia	3
 Concepció	3
@@ -1170,7 +1229,6 @@ Núria	3
 Olga	3
 Palmira	3
 Paulina	3
-Petra	3
 Piedad	3
 Sara	3
 Soledad	3
@@ -13105,32 +13163,32 @@ Jean Pierre	1513
 
 [masculine-1880]
 José	294
-Manuel	180
+Manuel	181
+Antonio	145
 Josep	145
-Antonio	144
 Francisco	132
 Juan	103
 Luis	93
 Joan	84
 Rafael	79
 Ramón	74
-Pedro	69
+Pedro	70
 Enrique	65
 Fernando	65
 Vicente	50
 Antoni	44
 Francesc	44
 José María	43
+Ángel	41
 Emilio	40
-Ángel	40
-Ramon	39
-Miguel	38
+Ramon	40
+Miguel	39
 Pere	38
 Eduardo	37
 Salvador	36
 Carlos	35
+Joaquín	35
 Lluís	35
-Joaquín	34
 Jesús	33
 Ricardo	33
 Jaume	31
@@ -13138,8 +13196,8 @@ Joaquim	27
 Miquel	27
 Alfonso	26
 Julio	26
+Mariano	25
 Domingo	24
-Mariano	24
 Josep Maria	23
 Enric	21
 Ignacio	20
@@ -13147,11 +13205,11 @@ Eugenio	19
 Santiago	19
 Tomás	19
 Alberto	17
+Andrés	17
 Federico	17
 Gregorio	17
 Adolfo	16
 Agustín	16
-Andrés	16
 Daniel	15
 Félix	15
 Julián	15
@@ -13163,15 +13221,16 @@ Víctor	14
 Alejandro	13
 Diego	12
 Lorenzo	12
+Nicolás	12
 Bernardo	11
 Germán	11
 Gonzalo	11
 Jaime	11
-Nicolás	11
+Javier	11
+Juan Bautista	11
 Aurelio	10
 Felipe	10
 Ignasi	10
-Javier	10
 Luís	10
 Teodoro	10
 Arturo	9
@@ -13192,6 +13251,7 @@ Camilo	7
 César	7
 Emili	7
 Emiliano	7
+Ferran	7
 Francesc de Paula	7
 Gerardo	7
 Pau	7
@@ -13257,6 +13317,7 @@ Isidro	4
 José Luis	4
 Juan José	4
 Louis	4
+Luciano	4
 Marcial	4
 Martin	4
 Maximiliano	4
@@ -13269,6 +13330,7 @@ Romualdo	4
 Román	4
 Rossend	4
 Samuel	4
+Saturnino	4
 Sebastián	4
 Severino	4
 Alfred	3
@@ -13309,15 +13371,14 @@ Juli	3
 Julià	3
 Leandro	3
 Leon	3
-Luciano	3
 Magí	3
 Mateo	3
 Mauro	3
 Maximino	3
+Onofre	3
 Primitivo	3
 Rodrigo	3
 Santos	3
-Saturnino	3
 Sergio	3
 Telmo	3
 Tomàs	3
@@ -13326,40 +13387,40 @@ Xavier	3
 Álvaro	3
 
 [masculine-1890]
-José	355
-Manuel	224
-Antonio	170
-Josep	155
+José	358
+Manuel	226
+Antonio	171
+Josep	154
 Francisco	150
 Juan	147
-Luis	113
+Luis	114
 Joan	108
-Rafael	87
+Rafael	89
 José María	81
 Ramón	79
 Pedro	74
 Joaquín	68
-Fernando	63
-Enrique	56
-Miguel	56
-Eduardo	53
-Jesús	52
+Fernando	64
+Miguel	58
+Enrique	57
+Eduardo	54
+Jesús	53
 Carlos	51
-Francesc	51
 Lluís	51
+Antoni	50
+Francesc	50
 Vicente	49
-Antoni	48
 Ángel	48
 Mariano	43
 Jaume	41
 Emilio	40
-Josep Maria	39
+Josep Maria	40
 Ricardo	39
+Julio	37
 Pere	37
-Julio	36
 Enric	31
+Ramon	30
 Félix	29
-Ramon	29
 Salvador	29
 Andrés	28
 Tomás	28
@@ -13373,11 +13434,11 @@ Alfonso	22
 Gabriel	22
 Ignacio	21
 Agustín	20
+Jose	20
 Pablo	19
 Arturo	18
 Víctor	18
 Eugenio	17
-Jose	17
 Julián	16
 Federico	15
 Jaime	15
@@ -13392,6 +13453,7 @@ Carles	12
 César	12
 Daniel	12
 Gregorio	12
+Adolfo	11
 Diego	11
 Felipe	11
 Gerardo	11
@@ -13399,9 +13461,10 @@ Nicolás	11
 Pascual	11
 Xavier	11
 Álvaro	11
-Adolfo	10
 Eduard	10
+Ferran	10
 Guillermo	10
+Juan Bautista	10
 Lorenzo	10
 Marcelino	10
 Paulino	10
@@ -13415,6 +13478,8 @@ Marià	9
 Ramiro	9
 Roberto	9
 Agustí	8
+Florentino	8
+Guillem	8
 Isidro	8
 José Luis	8
 Luís	8
@@ -13430,17 +13495,18 @@ Blas	7
 Cayetano	7
 Claudio	7
 Cristóbal	7
-Florentino	7
-Guillem	7
+Cándido	7
 Isaac	7
 Isidoro	7
 Jacinto	7
 Leopoldo	7
+Pau	7
 Anselmo	6
+Augusto	6
 Benigno	6
 Carmelo	6
 Clemente	6
-Cándido	6
+Eladio	6
 Ernest	6
 Eusebio	6
 Gumersindo	6
@@ -13448,12 +13514,11 @@ José Manuel	6
 Justo	6
 Martín	6
 Mauricio	6
-Pau	6
 Virgilio	6
 Amador	5
 Aniceto	5
-Augusto	5
 Avelino	5
+Bartolomé	5
 Bernardo	5
 Bonaventura	5
 Constantino	5
@@ -13465,7 +13530,6 @@ Fermín	5
 José Ramón	5
 Juan José	5
 Llorenç	5
-Luciano	5
 Martí	5
 Mateo	5
 Narcís	5
@@ -13479,6 +13543,7 @@ Alfred	4
 Amado	4
 Anastasio	4
 Bernardino	4
+Camilo	4
 Casimiro	4
 Celestino	4
 Celso	4
@@ -13494,6 +13559,7 @@ Ignasi	4
 Juan Manuel	4
 Leandro	4
 León	4
+Luciano	4
 Mateu	4
 Melchor	4
 Patricio	4
@@ -13505,11 +13571,12 @@ Saturnino	4
 Sebastián	4
 Segundo	4
 Severino	4
+Silvestre	4
+Valeriano	4
 Amadeo	3
 Amós	3
 Angel	3
 Aquilino	3
-Camilo	3
 Casto	3
 Cecilio	3
 Cesáreo	3
@@ -13520,6 +13587,7 @@ Estanislao	3
 Esteve	3
 Evaristo	3
 Fortunato	3
+Francesc de Paula	3
 Francisco de Paula	3
 Fèlix	3
 Gaspar	3
@@ -13542,6 +13610,7 @@ Magí	3
 Manolo	3
 Marcial	3
 Martin	3
+Maximiliano	3
 Máximo	3
 Pepe	3
 Peregrin	3
@@ -13550,24 +13619,23 @@ Regino	3
 Rodolfo	3
 Romualdo	3
 Samuel	3
-Silvestre	3
 Simón	3
-Valeriano	3
+Timoteo	3
 Victorino	3
 Xesús	3
 
 [masculine-1900]
 José	477
-Manuel	377
-Antonio	273
-Juan	206
-Josep	204
-Francisco	185
+Manuel	379
+Antonio	272
+Josep	206
+Juan	205
+Francisco	186
 Luis	174
-Ramón	137
-Joan	131
+Ramón	138
+Joan	132
 Pedro	111
-José María	93
+José María	94
 Enrique	88
 Carlos	85
 Rafael	85
@@ -13576,16 +13644,16 @@ Jesús	82
 Fernando	78
 Francesc	70
 Vicente	67
-Joaquín	66
 Miguel	66
+Joaquín	65
 Eduardo	64
-Antoni	59
+Antoni	60
 Emilio	59
 Pere	56
 Lluís	55
 Ramon	52
 Julio	51
-Salvador	50
+Salvador	49
 Jaume	47
 Josep Maria	44
 Miquel	42
@@ -13600,8 +13668,8 @@ Víctor	31
 Andrés	30
 Gabriel	30
 Arturo	29
+Ignacio	29
 Federico	28
-Ignacio	28
 Javier	28
 Daniel	27
 Domingo	27
@@ -13612,12 +13680,12 @@ Eugenio	26
 Agustín	25
 Jaime	25
 José Antonio	25
+Jose	24
 Adolfo	23
 Enric	23
 Felipe	23
 Luís	23
 César	22
-Jose	22
 Pablo	21
 Benito	18
 Carles	18
@@ -13634,11 +13702,12 @@ Lorenzo	15
 Alberto	14
 Emili	14
 Jacinto	14
-José Manuel	14
 Marcelino	14
 Roberto	14
 Augusto	13
+Ferran	13
 Jorge	13
+José Manuel	13
 Juan José	13
 Andreu	12
 Benigno	12
@@ -13647,15 +13716,15 @@ Ernesto	12
 Justo	12
 Marià	12
 Modesto	12
+Ricard	12
 Valentín	12
 Vicent	12
 Albert	11
+Esteban	11
 Juan Manuel	11
-Ricard	11
 Tomàs	11
 Xavier	11
 Agustí	10
-Esteban	10
 Gustavo	10
 Victoriano	10
 Álvaro	10
@@ -13663,6 +13732,7 @@ Armando	9
 Avelino	9
 Bernardo	9
 Domènec	9
+Eladio	9
 Esteve	9
 Faustino	9
 Francisco Javier	9
@@ -13673,7 +13743,6 @@ José Ramón	9
 Leopoldo	9
 Mario	9
 Máximo	9
-Pau	9
 Teodoro	9
 Abel	8
 Amadeo	8
@@ -13685,6 +13754,7 @@ Martin	8
 Martí	8
 Narciso	8
 Narcís	8
+Pau	8
 Rodrigo	8
 Rogelio	8
 Román	8
@@ -13720,6 +13790,7 @@ Emiliano	6
 Estanislao	6
 Eusebio	6
 Ginés	6
+Jenaro	6
 Joan Baptista	6
 Jordi	6
 José Ignacio	6
@@ -13741,7 +13812,6 @@ Gaspar	5
 Higinio	5
 Hilario	5
 Ildefonso	5
-Jenaro	5
 Juan Carlos	5
 Juan Luis	5
 Magí	5
@@ -13761,6 +13831,7 @@ Urbano	5
 Óscar	5
 Aquilino	4
 Baldomero	4
+Bartolomé	4
 Bernabé	4
 Bonifacio	4
 Buenaventura	4
@@ -13776,12 +13847,14 @@ Gumersindo	4
 Hipólito	4
 Horacio	4
 Ignasi	4
+Inocencio	4
 Isaac	4
 Ismael	4
 Iñaki	4
 Jacobo	4
 José Carlos	4
 Julian	4
+Marino	4
 Miguel Ángel	4
 Moisés	4
 Nemesio	4
@@ -13806,7 +13879,9 @@ Bienvenido	3
 Cayetano	3
 Cosme	3
 Cristóbal	3
+Darío	3
 Desiderio	3
+Emeterio	3
 Eulogio	3
 Feliciano	3
 Felix	3
@@ -13817,10 +13892,10 @@ Gustau	3
 Heriberto	3
 Honorio	3
 Ignazio	3
-Inocencio	3
 Jerónimo	3
 Jesus	3
 José Fernando	3
+Juan Bautista	3
 Juan Pedro	3
 Józef	3
 Leonardo	3
@@ -13847,38 +13922,38 @@ Xoán	3
 Ánxel	3
 
 [masculine-1910]
-José	374
+José	375
 Manuel	292
-Antonio	225
-Francisco	198
+Antonio	226
+Francisco	197
 Josep	170
-Juan	164
-Luis	134
+Juan	166
+Luis	135
 Joan	110
-Rafael	81
-José María	78
+José María	80
+Rafael	80
 Ramón	76
 Ángel	71
 Carlos	68
 Enrique	68
-Vicente	65
+Vicente	66
 Jesús	62
 Miguel	61
 Jaume	58
+Fernando	55
 Antoni	54
-Fernando	54
-Pedro	51
+Pedro	52
 Francesc	45
 Salvador	45
 Ramon	43
 Santiago	43
 Julio	42
 Miquel	41
+Ricardo	41
 Eduardo	40
-Ricardo	40
-Joaquín	38
+Joaquín	39
 Pere	38
-Emilio	36
+Emilio	37
 Ignacio	34
 Lluís	34
 José Luis	33
@@ -13894,7 +13969,7 @@ Tomás	26
 Guillermo	25
 Víctor	25
 Félix	24
-Domingo	22
+Domingo	23
 Jaime	22
 Alberto	21
 Alfredo	21
@@ -13966,6 +14041,7 @@ Ricard	8
 Alfred	7
 Avelino	7
 Daniel	7
+Ferran	7
 Julian	7
 Leonardo	7
 Lino	7
@@ -13982,10 +14058,12 @@ Evaristo	6
 Isidre	6
 Marcelo	6
 Ramiro	6
+Sebastián	6
 Segundo	6
 Valentín	6
 Anastasio	5
 Antón	5
+Bartolomé	5
 Carles	5
 Casimiro	5
 Claudio	5
@@ -13994,11 +14072,11 @@ Ernest	5
 Felix	5
 Fèlix	5
 Isidoro	5
+Juli	5
 Llorenç	5
 Octavio	5
 Pau	5
 Saturnino	5
-Sebastián	5
 Albino	4
 Amadeu	4
 Angel	4
@@ -14019,7 +14097,6 @@ Fidel	4
 Florentino	4
 Heliodoro	4
 Jacinto	4
-Juli	4
 Laureano	4
 Leandro	4
 Luciano	4
@@ -14058,6 +14135,7 @@ Eliseo	3
 Epifanio	3
 Esteve	3
 Eulogio	3
+Feliciano	3
 Ginés	3
 Hermenegildo	3
 Hipólito	3
@@ -14096,10 +14174,12 @@ Simón	3
 Teófilo	3
 Tomàs	3
 Urbano	3
+Valentí	3
 Ventura	3
 Vicent	3
 Vicenç	3
 Victoriano	3
+Xosé	3
 Xosé María	3
 
 [masculine-1920]

@@ -8720,7 +8720,7 @@ Peter	17
 Tom	15
 William	14
 Jim	13
-Jimmy	12
+Jimmy	11
 Kevin	11
 Liam	11
 Frank	10
@@ -8785,6 +8785,7 @@ Niall	3
 Pat	3
 Proinsias	3
 Robin	3
+Terry	3
 Timothy	3
 Tomás	3
 Éamonn	3
@@ -8793,7 +8794,7 @@ Tomás	3
 John	55
 Michael	37
 Seán	30
-Patrick	28
+Patrick	29
 Paddy	20
 Tom	20
 Mick	19
@@ -8806,9 +8807,9 @@ Martin	14
 Noel	14
 Jim	13
 Brian	12
+Frank	12
 Joe	12
 Brendan	11
-Frank	11
 Séamus	11
 Joseph	10
 Tony	10
@@ -8834,6 +8835,7 @@ Pádraig	6
 Robert	6
 Ronnie	6
 Seamus	6
+Terry	6
 Willie	6
 Austin	5
 Bobby	5
@@ -8851,6 +8853,7 @@ Bernard	4
 Eamonn	4
 Fergus	4
 Francis	4
+George	4
 Ian	4
 Oliver	4
 Ray	4
@@ -8865,7 +8868,6 @@ Colm	3
 Derek	3
 Don	3
 Gene	3
-George	3
 Gerald	3
 Gerard	3
 Kenneth	3
@@ -8885,7 +8887,7 @@ Michael	51
 Mick	27
 James	26
 Jim	25
-Pat	24
+Pat	25
 Seán	24
 Patrick	23
 Joe	22
@@ -8906,6 +8908,7 @@ Tommy	13
 Brian	12
 Jimmy	12
 Denis	10
+George	10
 Richard	10
 Thomas	10
 Alan	9
@@ -8913,15 +8916,14 @@ Anthony	9
 Billy	9
 Christy	9
 Eamonn	9
-George	9
 Johnny	9
-Paddy	9
 Sean	9
 Donal	8
 Eamon	8
 Eddie	8
 Hugh	8
 Nicholas	8
+Paddy	8
 Robert	8
 Seamus	8
 Barry	7
@@ -8932,16 +8934,17 @@ Ned	7
 Vincent	7
 Desmond	6
 Jack	6
-Oliver	6
 Philip	6
 Pádraig	6
 Ray	6
+Terry	6
 Eric	5
 Jackie	5
 Jonathan	5
 Joseph	5
 Matt	5
 Niall	5
+Oliver	5
 Patsy	5
 Roger	5
 Tim	5
@@ -8976,6 +8979,7 @@ Kieran	3
 Mickey	3
 Raymond	3
 Ronnie	3
+Rory	3
 Teddy	3
 
 [masculine-1950]
@@ -8987,9 +8991,9 @@ Pat	26
 Brendan	23
 Martin	23
 Paul	23
+Seán	21
 Gerard	20
 Sean	20
-Seán	20
 Liam	19
 Joe	17
 Kevin	17
@@ -9085,9 +9089,11 @@ Marty	3
 Mickey	3
 Mike	3
 Patsy	3
+Pierce	3
 Raymond	3
 Robbie	3
 Shane	3
+Terry	3
 Tim	3
 
 [masculine-1960]

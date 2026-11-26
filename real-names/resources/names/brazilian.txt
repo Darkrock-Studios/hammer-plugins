@@ -11341,7 +11341,7 @@ Valdinei	35501
 Mikael	35365
 Lindomar	35348
 Divino	35211
-Kléber	35168
+Kleber	35168
 Washington	35115
 Tales	34828
 Cosme	34779
@@ -12031,12 +12031,12 @@ Francisco	19
 Luís	15
 Manuel	15
 Mário	14
+Pedro	13
 Joaquim	12
-Pedro	12
 Alfredo	11
 Armando	11
+Augusto	10
 Artur	9
-Augusto	9
 Henrique	9
 Álvaro	9
 Heitor	7
@@ -12062,6 +12062,7 @@ Gastão	4
 Gustavo	4
 Leopoldo	4
 Luiz	4
+Manoel	4
 Maurício	4
 Miguel	4
 Octavio	4
@@ -12093,7 +12094,7 @@ Roberto	3
 Vicente	3
 
 [masculine-1890]
-José	58
+José	57
 João	50
 Francisco	41
 Antônio	28
@@ -12104,10 +12105,11 @@ Luís	13
 Alberto	12
 Manuel	12
 Pedro	12
+Raimundo	12
 Henrique	11
-Raimundo	11
+Augusto	10
+Manoel	10
 Alfredo	9
-Augusto	9
 Frederico	9
 Joaquim	8
 Jorge	8
@@ -12193,6 +12195,7 @@ Roberto	14
 Oscar	13
 Osvaldo	13
 Vicente	13
+Manoel	12
 Alberto	11
 Benedito	10
 Eduardo	10
@@ -12288,6 +12291,7 @@ José Luiz	3
 João José	3
 László	3
 Moisés	3
+Mozart	3
 Murilo	3
 Nilo	3
 Octavio	3
@@ -12317,6 +12321,7 @@ Henrique	16
 Jorge	16
 Alberto	15
 Alfredo	15
+Manoel	15
 Orlando	14
 Hélio	13
 Augusto	12
@@ -12331,6 +12336,7 @@ Nelson	10
 Raul	10
 Sebastião	10
 Aldo	9
+Lauro	9
 Oswaldo	9
 Roberto	9
 Wilson	9
@@ -12340,7 +12346,6 @@ César	8
 Edmundo	8
 Guilherme	8
 Júlio	8
-Lauro	8
 Newton	8
 Osvaldo	8
 Romeu	8
@@ -12374,6 +12379,7 @@ Ivo	5
 Rodolfo	5
 Abraham	4
 Adolfo	4
+Affonso	4
 Alexandre	4
 Aloysio	4
 Américo	4
@@ -12455,7 +12461,7 @@ Waldir	3
 Zé	3
 
 [masculine-1920]
-José	161
+José	162
 Antônio	64
 João	62
 Paulo	53
@@ -12465,7 +12471,7 @@ Mário	35
 Luiz	34
 Antonio	30
 Jorge	28
-Roberto	26
+Roberto	27
 Fernando	25
 Hélio	25
 Geraldo	24
@@ -12478,6 +12484,7 @@ Renato	15
 Alfredo	14
 Eduardo	14
 Luís	14
+Manoel	14
 Manuel	14
 Sebastião	14
 Armando	13
@@ -12579,6 +12586,7 @@ Octávio	4
 Olavo	4
 Otto	4
 Ulisses	4
+Valdir	4
 William	4
 Ângelo	4
 Acácio	3
@@ -13372,7 +13380,7 @@ Breno	112
 Deolindo	112
 Raphael	112
 Benvindo	111
-Hipólito	111
+Hipolito	111
 Venceslau	111
 Albérico	110
 Aquiles	110
@@ -13543,7 +13551,7 @@ Kazuo	81
 Olmiro	81
 Armelindo	80
 Arquimedes	80
-Kléber	80
+Kleber	80
 Valfredo	80
 Vasco	80
 Algemiro	79
@@ -14551,7 +14559,7 @@ Liberato	252
 Valmiro	252
 Alan	251
 Hélcio	251
-Kléber	251
+Kleber	251
 Lucimar	251
 Teobaldo	251
 Wilsom	251
@@ -15227,7 +15235,7 @@ Diomar	886
 Sabastião	884
 Bernardino	881
 Ruben	880
-Kléber	879
+Kleber	879
 Adélio	877
 Alan	876
 Dione	875
@@ -16006,7 +16014,7 @@ Deusdete	2673
 Arthur	2670
 Norberto	2662
 René	2662
-Kléber	2661
+Kleber	2661
 Jacinto	2660
 Genilson	2659
 Edvan	2653
@@ -16844,7 +16852,7 @@ Amarildo	8559
 Jefferson	8534
 Marcus	8529
 Cosme	8505
-Kléber	8451
+Kleber	8451
 Genival	8437
 Amilton	8367
 David	8357
@@ -17831,7 +17839,7 @@ Domingos	12306
 Emanuel	12276
 Fagner	12225
 Edmar	12195
-Kléber	11960
+Kleber	11960
 Cássio	11789
 Ivanildo	11753
 Jonatas	11488
@@ -18962,7 +18970,7 @@ Cleison	5129
 Ygor	5117
 Christian	5112
 Edvan	5101
-Kléber	5087
+Kleber	5087
 Maikon	5080
 Mikael	5057
 Weslley	5035
@@ -19983,7 +19991,7 @@ Matias	3502
 George	3490
 Hebert	3460
 Cleberson	3456
-Kléber	3455
+Kleber	3455
 Cassiano	3453
 Frederico	3407
 Gerson	3386
@@ -21051,7 +21059,7 @@ Sebastian	2004
 Vanderson	1999
 Denilson	1991
 Elano	1990
-Kléber	1985
+Kleber	1985
 Ytalo	1974
 Conrado	1935
 Kawan	1927
@@ -22301,7 +22309,7 @@ Benicius	358
 Sílvio	358
 Valentino	357
 Nadson	355
-Kléber	354
+Kleber	354
 Braiam	351
 Edward	351
 Reinaldo	350
@@ -23347,7 +23355,7 @@ Alexandrino	19778
 Nova	19736
 Forte	19726
 Berto	19673
-Hipólito	19671
+Hipolito	19671
 Alburquerque	19558
 Fróes	19481
 Pestana	19459
@@ -23461,6 +23469,7 @@ Bacelar	15298
 Paranhos	15288
 Zago	15258
 Olegário	15231
+Gômez	15220
 Felisberto	15214
 Barata	15198
 Dasilva	15180
@@ -25833,7 +25842,7 @@ Bina	2234
 Trentini	2232
 Paladino	2231
 Bianchin	2230
-Burigo	2230
+Búrigo	2230
 Arquino	2227
 Crema	2227
 Dickel	2227
@@ -27660,7 +27669,6 @@ Gallego	1372
 Kubo	1372
 Salvo	1372
 Soldera	1371
-Bemvindo	1370
 Cidrão	1370
 Fries	1370
 Pigatto	1370
