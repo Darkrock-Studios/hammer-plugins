@@ -51,6 +51,7 @@ ARABIC = {"spelled": True, "scholarly": True, "particles": {
 }}
 CZECH_CONSONANTS = "bcčdďfghjklmnňpqrřsštťvwxzž"
 CULTURES = {
+    "argentine": {"country": "Q414"},
     "australian": {"country": "Q408"},
     "austrian": {"country": "Q40", "born": ["Q28513", "Q533534"]},
     "belgian": {"country": "Q31"},

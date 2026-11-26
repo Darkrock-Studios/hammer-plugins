@@ -19,6 +19,7 @@ label = "Culture"
 default = "american"
 options = [
 	{ value = "american", label = "American" },
+	{ value = "argentine", label = "Argentine" },
 	{ value = "australian", label = "Australian" },
 	{ value = "austrian", label = "Austrian" },
 	{ value = "belgian", label = "Belgian" },
