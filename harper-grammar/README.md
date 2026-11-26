@@ -34,10 +34,11 @@ off by name but take no parameters, so the 40-word limit is fixed.
 Written in Rust on `harper-core`. `./build.sh harper-grammar` runs this folder's `build.sh`, which needs
 wabt, Binaryen (on PATH, or its `bin` in `BINARYEN`), and python3; CI uses Binaryen 120.
 
-The module is about 8 MB, 3 MB zipped. Harper builds its dictionary and rules for the project's dialect
-on the first check, which measured about 16 seconds on desktop under chasm (0.6 natively, 5.7 on Android
-compiled to DEX) and about 140 MB of memory, hence `limits.memory = 256`. Only one dialect's linter is
-kept, so moving between projects of different dialects builds it again.
+The module is about 8 MB, 3 MB zipped. Harper builds its dictionary and rules on the first check,
+which measured about 16 seconds on desktop under chasm (0.6 natively, 5.7 on Android compiled to DEX)
+and about 140 MB of memory, hence `limits.memory = 256`. The dictionary serves every dialect, but only
+one dialect's rules are kept, so moving between projects of different dialects builds the rules again,
+which measured under half a second.
 
 Loading the module measured about 1.1 seconds on desktop, and a paragraph after the first check about
 0.4.

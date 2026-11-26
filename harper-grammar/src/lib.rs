@@ -100,6 +100,8 @@ fn check(request: &Request, dialect: Dialect) -> Reply {
     let mut reply = Reply::default();
     LINTER.with_borrow_mut(|cached| {
         if cached.as_ref().is_none_or(|(built, _)| *built != dialect) {
+            // Dropped first, so two linters are never held at once.
+            *cached = None;
             *cached = Some((dialect, new_linter(dialect)));
         }
         let (_, linter) = cached.as_mut().unwrap();
