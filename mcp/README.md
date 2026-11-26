@@ -66,7 +66,16 @@ show up in the open project.
 
 ## Connecting an agent
 
-Claude Code:
+Claude Code: install the `hammer` plugin, which connects the server and adds the [skills](#skills).
+In Claude Code, run:
+
+```
+/plugin marketplace add Darkrock-Studios/hammer-plugins
+/plugin install hammer@hammer-plugins
+```
+
+If you added the server by hand before, remove it with `claude mcp remove hammer` so it isn't connected
+twice. For just the server without the skills, or for development data, add it by hand instead:
 
 ```sh
 claude mcp add --scope user hammer -- hammer mcp
@@ -113,14 +122,23 @@ supports it gets them on connecting, with nothing to install: Claude Code from 2
 `/hammer:pov-check` and so on, approved once per version) and VS Code from 1.147, both in beta. They're
 built into the plugin from `skills/`, so rebuild it after changing one.
 
-For other clients, install the folders. For an older Claude Code, link each into `~/.claude/skills/`, from
-this directory:
+The Claude Code plugin includes them all as well, named `hammer:pov-check` and so on. For other
+clients, install the folders. For an older Claude Code without the plugin, link each into
+`~/.claude/skills/`, from this directory:
 
 ```sh
 ln -s "$PWD"/skills/* ~/.claude/skills/
 ```
 
-Other clients that support Agent Skills take the same folders; see their documentation for where.
+For other agents that support Agent Skills, such as Codex, Cursor, Gemini CLI, and GitHub Copilot, the
+[skills CLI](https://github.com/vercel-labs/skills) installs them, asking which agents to add them to:
+
+```sh
+npx skills add Darkrock-Studios/hammer-plugins
+```
+
+It installs only the skills, so connect the server to each agent too, as above. Clients it doesn't
+cover take the same folders; see their documentation for where.
 
 ## How it works
 

@@ -1,0 +1,14 @@
+{
+  "name": "hammer-plugins",
+  "owner": {
+    "name": "Darkrock Studios"
+  },
+  "description": "Plugins for Hammer, the app for writing stories and the worlds they live in.",
+  "plugins": [
+    {
+      "name": "hammer",
+      "source": "./mcp",
+      "description": "The Hammer MCP server and skills for working with your Hammer projects. Never writes prose."
+    }
+  ]
+}
