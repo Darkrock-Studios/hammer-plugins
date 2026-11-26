@@ -55,6 +55,7 @@ CULTURES = {
     "belgian": {"country": "Q31"},
     "brazilian": {"country": "Q155"},
     "canadian": {"country": "Q16"},
+    "danish": {"country": "Q756617"},
     "dutch": {"country": "Q55", "born": ["Q29999"]},
     # Egypt's earlier states and the Ottoman Empire, of which Egyptians were subjects before 1914.
     "egyptian": {"countries": ["Q79"], "born": ["Q127861", "Q370173", "Q124943", "Q3087763", "Q170468", "Q12560"],
