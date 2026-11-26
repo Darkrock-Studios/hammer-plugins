@@ -224,7 +224,7 @@ private fun JsonObject.int(key: String, default: Int, range: IntRange): Int {
 
 private const val TEXT_COUNT = "text_count"
 private const val TEXT_FIND = "text_find"
-private const val SCENE_READ_MANY = "scene.read_many"
+private const val SCENE_READ_MANY = "scene.read.many"
 private val INT_RANGE = Int.MIN_VALUE.toDouble()..Int.MAX_VALUE.toDouble()
 private const val MAX_TERMS = 50
 private const val DEFAULT_LIMIT = 50

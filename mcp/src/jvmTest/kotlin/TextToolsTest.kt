@@ -40,14 +40,14 @@ class TextToolsTest {
 					buildJsonObject {
 						putJsonArray("operations") {
 							add(op("ops.list", "read"))
-							add(op("scene.read_many", "read"))
+							add(op("scene.read.many", "read"))
 							// Named like the plugin's own tool, which wins.
 							add(op("text.count", "read"))
 							add(op("scene.delete", "destructive"))
 						}
 					}
 				},
-				"scene.read_many" to { input ->
+				"scene.read.many" to { input ->
 					readManyInputs += input
 					if (input["project"]?.jsonPrimitive?.content == "Stuck") {
 						return@to buildJsonObject {
@@ -209,7 +209,7 @@ class TextToolsTest {
 			putJsonArray("terms") { add(JsonPrimitive("harbor")) }
 		})
 		assertTrue(isError)
-		assertEquals("scene.read_many returned the same page twice", result.jsonPrimitive.content)
+		assertEquals("scene.read.many returned the same page twice", result.jsonPrimitive.content)
 	}
 
 	@Test
