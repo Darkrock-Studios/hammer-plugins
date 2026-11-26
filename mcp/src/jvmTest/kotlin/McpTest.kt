@@ -92,6 +92,13 @@ class McpTest {
 	}
 
 	@Test
+	fun instructionsPointAtTheHammerSkill() {
+		val instructions = send("server/discover", version = MODERN).result().getValue("instructions").jsonPrimitive.content
+		assertTrue(HAMMER_SKILL in instructions)
+		assertTrue("result" in send("skills/get", uriParams(HAMMER_SKILL), MODERN))
+	}
+
+	@Test
 	fun anUnsupportedVersionIsRefusedWithTheSupportedOnes() {
 		val error = send("tools/list", version = "1900-01-01").getValue("error").jsonObject
 		assertEquals(-32022, error.getValue("code").jsonPrimitive.int)
