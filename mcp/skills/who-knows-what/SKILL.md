@@ -22,17 +22,20 @@ for the writer, not a replacement.
   forged"). Use `search` with key terms to find the scenes that matter, but still read every scene
   from the first hit to the last, since a character can learn something without the keyword
   appearing.
+- **A range of scenes:** the scenes the writer names, and no others. What a character learned before
+  them is unknown to you, so the range can show forgetting and leaks, but not that someone never
+  learned a thing.
 
 ## Gather
 
 1. If the project isn't named, call `project_list` and ask which one.
 2. Call `scene_tree` for scenes and groups in story order with word counts, and `entry_list` with
    `type: "person"` for characters and aliases.
-3. Call `timeline_settings_read`, then `timeline_list` for the timeline the story's events are on: main,
-   unless the project has several and the writer names another. If the book isn't told in
-   chronological order (flashbacks, parallel timelines, a frame story), ask the writer which order
-   knowledge should follow, and use the timeline or their answer to place scenes in story-world time.
-   Otherwise story order is the order.
+3. If the book isn't told in chronological order (flashbacks, parallel timelines, a frame story), ask
+   the writer which order knowledge should follow. If the answer is the timeline, call
+   `timeline_settings_read`, then `timeline_list` for the one the story's events are on (main, unless
+   the project has several and the writer names another), and place scenes in story-world time by it.
+   Otherwise story order is the order, and the timeline isn't needed.
 
 ## Pass 1: build the ledger
 
@@ -71,13 +74,20 @@ Using story-world order, flag:
 - **Forgets:** an `ignorant` row after that character's `learns` row for the fact.
 - **Leak:** a fact spreading to a character with no plausible path from anyone who knew it.
 
+Over a range of scenes, a `uses` row with no `learns` row in the range is not a finding: list it under
+**Not learned in these scenes**, since it may have been learned earlier.
+
+If the narration itself accounts for what you would flag (it says she has forgotten, or shows he is
+lying), it is not a hole: say so in the finding's closing line.
+
 Before flagging, check the scene's `meta.outline` and `meta.notes`: the writer may have noted an
 offstage reveal. Mention it instead of flagging.
 
 ## Check your quotes
 
-Confirm each quote in a finding appears in that scene's `markdown`. Drop any finding whose quote you
-can't find. Write a quote as a reader sees the text: without the `*`, `_`, `~~`, or `==` around styled
+Confirm each quote in a finding appears in that scene's `markdown`: the quotes of every row the
+finding rests on, uses and learns alike. Drop any finding whose quote you can't find. The Ledger
+section gives no quotes, so its other rows need no check. Write a quote as a reader sees the text: without the `*`, `_`, `~~`, or `==` around styled
 words, the `#` or `>` that starts a line, or the backslash before an escaped character. Every other
 character stays as the scene has it, a backtick or apostrophe used as a quotation mark included,
 though curly quotes may be written straight and a run of spaces as one. `text_find` checks one: the
@@ -95,8 +105,11 @@ Most serious first:
 ### <character>: <kind> (F<n>: <fact>)
 - Uses it in <scene name> (id <id>): "<exact quote>"
 - Learns it in <scene name> (id <id>): "<exact quote>"  (or: never on the page)
-<One line on why this looks like a hole. Clear | Could be offstage>
+<One line on why this looks like a hole. Clear | Could be offstage | Explained on the page>
 ```
+
+After a range of scenes, then **Not learned in these scenes**, one line each: the character, the fact,
+and the scene where they use it.
 
 Then a short **Ledger** section: each fact with who learns it and where, in order, one line per
 learning. This lets the writer spot a wrong row and ask you to rerun from there. End with totals:

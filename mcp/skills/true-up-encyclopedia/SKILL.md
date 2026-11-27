@@ -50,7 +50,11 @@ outline or notes in its `meta`.
 Note every named person, place, thing, event, or idea of the story's world that matches no entry name
 or alias. Named means a proper name, an invented term, or a title used as a name: "Captain Reyes",
 "the Grey Keep", "ashroot", "the Duchess". Not "the innkeeper" or "the old road", however often they
-come up.
+come up. A common noun the book capitalises as someone's or something's name ("the Duck", "the
+Footman") is a title used as a name.
+
+A name that exists only inside something recited or told in the story (a poem, a song, a tale a
+character tells) is listed after the rest, with that as its note.
 
 Leave out real-world names the story only mentions in passing (a city, a brand, an author). If you
 can't tell whether a word is the story's own ("Midsummer"), list it with a note. If words match an
@@ -69,11 +73,14 @@ everything, recurring names first.
 ## Missing aliases
 
 A name on the page that plainly means an existing entry, and that Hammer's matching would miss. Hammer
-finds a scene's references by matching entry names and aliases, so a missing alias means missed
-references.
+finds a scene's references by matching entry names and aliases as whole words, written as the entry
+has them, capitals included, so a missing alias means missed references.
 
 Report:
 
+- the name written another way: in other capitals ("the caterpillar" for Caterpillar), with a hyphen
+  for a space ("rabbit-hole" for The Rabbit Hole), or without the entry's own "The" where the entry
+  has no alias without it;
 - a nickname or short form: "Mags" for Margaret Ashby;
 - a surname or given name used alone, or with a title ("Miss Vell"), when the entry lists only the
   other. Report the form as the page has it;
@@ -82,7 +89,7 @@ Report:
 
 Don't report:
 
-- a form that already contains the entry's name or an alias, ignoring a leading "the": "Master Holm"
+- a form that already contains the entry's name or an alias as the entry writes it: "Master Holm"
   where "Holm" is an alias;
 - an ordinary description, even if it means them every time: "the clerk", "the office", "her father".
 
@@ -106,7 +113,8 @@ with the article and without. It counts whole-word uses in the scenes' text, ign
 name that is also an ordinary word (a boat called Gull) is counted where it means something else: look
 at such an entry's uses with `text_find`, as whole words in any case, and if none means the entry, it
 is unused too. A hyphen is not a space: "Rabbit Hole" doesn't count "rabbit-hole", so count the
-hyphenated form as well before calling an entry unused.
+hyphenated form as well. An entry found only that way is used, and the hyphenated form is a missing
+alias.
 
 Without `text_count`, this check means reading the whole book and noting each entry you see named.
 `search` won't do: it matches inside longer words and matches scene titles.
@@ -114,8 +122,9 @@ Without `text_count`, this check means reading the whole book and noting each en
 For an unused entry, `entry_read` gives `referencedBy`: the ids of scenes that still confirm a
 reference to it. Name them from `scene_tree`; those references are stale.
 
-If an entry's name never appears and it is found only through an everyday alias ("the letter", "the
-charter"), it is not unused: list it apart, as named only by an alias.
+If an entry's name never appears and it is found only through an alias, whether a name ("Hatter" for
+Mad Hatter) or an everyday phrase ("the letter"), it is not unused: list it apart, as named only by an
+alias.
 
 Unused is not wrong: an entry may be backstory, or for a part not yet written. Report it and leave it.
 Never propose deleting one.
@@ -141,7 +150,8 @@ one. `text_find` checks one: the quote as `term`, the scene's id in `ids`, `whol
 paragraph at a time, and see in the text you read that those paragraphs follow one another in that
 order, with nothing left out between them. After no match, find a few plain words of the passage with
 `text_find` and take the quote from the `context` it returns. If none holds the passage, the quote
-isn't there. Never quote from a `search` snippet.
+isn't there. It reads scenes only: check an entry quote against the text `entry_read` gave. Never
+quote from a `search` snippet.
 
 ## Report
 

@@ -59,7 +59,8 @@ A scene with no outline gets no findings: list it as having none. An outline who
 is a plan, not a drift: list it as unwritten.
 
 Each scene is checked against its own outline only. Two scenes that disagree with each other are not
-this skill's business.
+this skill's business. If a Missing point is plainly on the page of another scene you read, add where
+to the finding: the outlines may have slipped out of step with the scenes.
 
 ## Check your quotes
 
@@ -82,7 +83,7 @@ Per scene with findings:
 
 ```
 ### <scene name> (id <id>)
-- Missing: outline says "<outline point>"; not in the scene.
+- Missing: outline says "<outline point>"; not in the scene. <It is in <scene name>, if it is>.
 - Different: outline says "<outline point>"; the scene has "<exact quote>"
 - Not in the outline: "<exact quote>" (<what happens, in a few plain words>)
 ```

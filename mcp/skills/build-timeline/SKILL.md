@@ -25,7 +25,8 @@ belongs to the writer.
 1. If the project isn't named, call `project_list` and ask which one.
 2. Call `timeline_settings_read`, then `timeline_list` for the main timeline. This skill builds from
    empty. If the timeline already has events, say how many and ask: build on a new timeline beside it,
-   and under what name, or stop. Never add to or rearrange events the writer placed.
+   or stop. The new one is called "From the text" unless the writer names it. Never add to or
+   rearrange events the writer placed.
 3. Call `scene_tree` for the scenes and groups in story order, with word counts. This skill reads the
    whole book, since a date in one chapter often rests on a line in another. Say how much that is ("62
    scenes, about 91,000 words") and, over about 30,000 words, wait for a go-ahead.
@@ -81,7 +82,9 @@ Mark a row instead of using it when:
    years, a Tuesday that can't be one. Keep both sides with their quotes. A contradicted item is not
    placed until the writer rules.
 5. **Precision:** no finer than the text. "In 1893" is a year, not a day; "that spring" is not a date
-   at all.
+   at all. A gap in weeks counts as seven days each, with "to the week" in its basis. A gap in months
+   or years moves a real date by that many, cut off at the month or year; on a count of days it only
+   orders.
 6. **Durations:** give something an end only when the text gives a length or an end, or when a later
    stated time in the same scene bounds it. Otherwise it is a single moment. Don't pad a scene to look
    like a span. Where the text gives them, spans are worth getting right: two things running at once
@@ -100,9 +103,11 @@ A timeline is **dated** or **manual**. On a dated one every event needs a start 
 events sort by it. On a manual one events have no dates: they sit in the order given, each with an
 optional `label` of free text for the when ("Long ago", "that winter").
 
-- **Dated,** when more than half the scenes have a stated or derived time that one calendar can hold.
-  A time of day alone ("at dawn") doesn't count: it needs a day to go with it.
-- **Manual,** when they don't. A manual timeline takes everything stated, derived, or ordered, in
+- **Dated,** when more than half the scenes have a stated or derived time that one calendar can hold,
+  and those times tell the scenes apart. A time of day alone ("at dawn") doesn't count: it needs a day
+  to go with it. If most of the dated scenes would share one start (a story inside a single day, with
+  no clock times), the dates say less than the order does: go manual.
+- **Manual,** otherwise. A manual timeline takes everything stated, derived, or ordered, in
   order, with the when as its label, in the text's own words, a span included ("noon to evening").
   Scenes with nothing against it go in story order, with "story order" as their basis; a scene the
   text places earlier (a flashback) goes where the text puts it. A happening goes in only where the
@@ -154,7 +159,10 @@ there need to be at least two lanes. If the evidence supports no split, use no l
 - **Scenes** with a place on the timeline: `kind: "scene"`. No lane: a scene sits above the lanes, and
   the lanes show what each person or thread was doing around it.
 - **Encyclopedia event entries:** `kind: "entry"`. Always prefer an existing entry to a new plain
-  event for the same thing. In a lane only if it belongs to one.
+  event for the same thing. In a lane only if it belongs to one. An entry its own text doesn't date
+  takes the time of the scene that shows it happening, with that scene's quote as its basis, and on a
+  manual timeline goes straight after that scene. Recalled or foretold in a scene is not happening in
+  it.
 - **Happenings** with no entry: a plain event, in the lane of the character or thread it concerns, or
   no lane if it concerns everyone or more than one lane. Its `references` are the ids of the entries
   its quote names or plainly means, the speaker included when they speak of themselves. Never create

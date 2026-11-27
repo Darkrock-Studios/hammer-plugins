@@ -33,7 +33,8 @@ To decide:
 
 Call `entry_list` first. An entry's name and aliases are the writer's own spelling of them, and the
 sheet takes the spelling as given. They don't settle capitals or a leading "the": an entry headed "The
-Harbor Seal" says nothing against "the harbor seal" in a sentence. For those, go by the scenes.
+Harbor Seal" says nothing against "the harbor seal" in a sentence. For those, go by the scenes. An
+entry name the scenes never use isn't on the sheet.
 
 Read with `scene_read_many`, passing neither `group` nor `ids` for the whole book, a page at a time;
 when `next` is non-null, call again with `after: next`. Finish each page's rows before reading the
@@ -66,12 +67,16 @@ One row per form:
 ### Counting
 
 Note forms as you read; don't keep a tally. Then count with `text_count`, which counts every
-occurrence in the scenes' text: all the forms of one choice as `terms` in one call, up to 50. It
-matches whole words, so "till" doesn't count "still", and ignores capitals unless `caseSensitive` is
-true. Set that when the forms differ only by a capital. A hyphen or space inside a term is matched as
-written, so give each spelling. Neither tool sees italics or tells curly quotes from straight ones,
-and a mark on its own (a spaced hyphen) matches wherever the mark is: take punctuation and emphasis
-from reading, and say in the sheet that they are by eye.
+occurrence in the scenes' text: all the forms of one choice as `terms` in one call, up to 50. Count a
+form where you saw a rival or one is likely ("today" beside "to-day"); a compound with no likely rival
+needs no count. It matches whole words, so "till" doesn't count "still", and ignores capitals unless
+`caseSensitive` is true. Set that when the forms differ only by a capital. A hyphen or space inside a
+term is matched as written, so give each spelling.
+
+A mark counts exactly with `wholeWord: false` when it needs no spaces to tell it by: a backtick, "--",
+"...", a figure. Spaces at a term's ends are ignored, so a spaced hyphen matches every hyphen, and
+neither tool sees italics or tells curly quotes from straight ones: take spacing, quotation marks, and
+emphasis from reading, and say in the sheet that they are by eye.
 
 `text_find` lists every occurrence of one form with its scene and the text around it. Use it to see
 which uses are sentence starts, to find each departure's scenes, and to take exact quotes from.
@@ -89,12 +94,17 @@ For each choice:
 A rule that covers several words is one choice, counted in distinct words, not uses: "colour",
 "favour", and "honoured" are three words on the -our side, and "harbor" is one on the -or side,
 however many times it appears. A word's other endings and its compounds count with it: "coloured" with
-"colour", "harbormaster" with "harbor". Give both sides with their words.
+"colour", "harbormaster" with "harbor". Give both sides with their words. A word the book itself writes both ways ("to-day" and
+"today") is its own choice, counted in uses, and counts on neither side of the rule.
+
+A form with no rival in the book is not a departure by count, however it sits with a rule. If it
+looks like a slip ("looking- glass", with a stray space), list it by eye.
 
 Words that merely resemble each other are not rival forms: "Master" and "Mr.", "until" and "till",
 "Midsummer" and "midwinter" are different words. Note each under its heading and leave it at that.
 
-A word that starts a sentence says nothing about its capital. Leave it out of the count.
+A word that starts a sentence says nothing about its capital. Leave it out of the count. That takes
+`text_find` on the capitalised form, so do it only where the book also has the lower-case one.
 
 Not every difference is an inconsistency. "The king" and "King Aldric" follow one rule; a character
 who speaks differently from the narration is voice; a letter or sign may be spelled its own way; the
@@ -157,9 +167,14 @@ After building, give the sheet, then:
 
 ## Undecided
 - <form> (<n>) and <form> (<n>): <scene name>: "<exact quote>" / <scene name>: "<exact quote>"
+
+## By eye
+- <what, in a few plain words>: <scene name> (id <id>): "<exact quote>"
 ```
 
-One line per departing form, with every scene it appears in. A form that is in a letter, a sign, or
+One line per departing form, with every scene it appears in. By eye holds what reading found and no
+count backs: spacing, quotation marks, emphasis. A quote can't show italics, so say in words what is
+marked. A form that is in a letter, a sign, or
 one character's speech is possibly deliberate: list it, with that note.
 
 After checking, give only the departures and the new names and terms, grouped by scene, and end with

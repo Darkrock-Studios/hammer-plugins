@@ -51,16 +51,19 @@ Use the first of these that answers it, and record which one did:
    tag. If most of the scene reads as another character's, or as no one character's, report it under
    Mismatch. A few stray lines in another head are not a mismatch. If a whole section, set off by a
    break, is another character's and the scene has no tag for them, propose that tag as an addition.
-2. **Metadata:** the outline or notes name the POV character.
+2. **Metadata:** the outline or notes name the POV character as such ("POV: Mara", "from Mara's
+   side"). An outline that only has a character as its subject ("Mara finds the letter") doesn't.
 3. **Inferred:** the first-person narrator, or the one character whose thoughts and sensations the
    narration reports directly. Take one short quote that shows it.
 
 A scene that is clearly one character's, with a few stray lines in another head, is that character's.
-Don't add a tag for the stray lines.
+Don't add a tag for the stray lines. A narrator with a voice of its own, who speaks to the reader or
+comments on the characters, doesn't change whose scene it is: go by whose thoughts are given.
 
 Leave a scene untagged, and list it as unsure with your reason, when:
 
-- it reads as deliberate omniscient narration;
+- it is omniscient: the narration gives the thoughts of two or more characters freely, from the start
+  of the scene to its end, and none of them carries it;
 - it moves between heads within a section too much to call;
 - the narrator is first person and never named;
 - you can't tell.

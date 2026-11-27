@@ -45,13 +45,22 @@ Use the first of these that answers it, and record which one did:
    reading it. The name in a tag may be an entry's name or one of its aliases; match it ignoring case,
    with the name's spaces as `-` and anything a tag can't hold dropped: `pov-obrien` is O'Brien,
    `pov-anne-marie` is Anne-Marie.
-2. **Metadata:** the outline or notes naming the POV character.
+2. **Metadata:** the outline or notes naming the POV character as such ("POV: Mara", "from Mara's
+   side"). An outline that only has a character as its subject ("Mara finds the letter") doesn't.
 3. **Inferred:** from the text: the first-person narrator, or the one character whose thoughts and
    sensations the narration reports directly.
 
-Also decide the mode: first person, close third, or omniscient. If a scene reads as deliberate
-omniscient, head-hopping is a choice, not a slip: say so and skip the scene rather than flag every
-sentence. If you can't tell whose scene it is, ask the writer instead of guessing.
+Also decide the mode, by whose inner life the narration gives:
+
+- **First person,** or **close third:** one character's thoughts and sensations carry the scene, and
+  anyone else's turn up in a few passages or not at all. A narrator with a voice of its own, who
+  speaks to the reader or comments on the characters, doesn't change that: the scene is still that
+  character's. Don't flag such a narrator's own asides, or what it knows ahead of the story.
+- **Omniscient:** the narration gives the thoughts of two or more characters freely, from the start
+  of the scene to its end, and none of them carries it. Head-hopping is then a choice, not a slip: say
+  so and skip the scene rather than flag every sentence.
+
+If you can't tell whose scene it is, ask the writer instead of guessing.
 
 A scene break (`---`, `***`, `* * *`, `#`, or similar on its own line) may switch POV. Treat each side
 as its own section with its own POV.
@@ -103,8 +112,8 @@ POV: <name>, <mode> (from <tag | outline | notes | inferred>)
   <Kind of slip>: <one line on whose head or what knowledge this is>. <Clear slip | Borderline>
 ```
 
-Then list the scenes checked with no findings on one line, and end with totals: scenes checked, clear
-slips, borderline. Mark a finding Borderline when a reasonable writer could read it as the POV
+Then list the scenes checked with no findings on one line, and the scenes skipped with the reason.
+End with totals: scenes checked (skipped ones not counted), clear slips, borderline. Mark a finding Borderline when a reasonable writer could read it as the POV
 character's inference.
 
 If POV was inferred for any scene, say so at the top: tagging scenes `pov-name` makes the next check

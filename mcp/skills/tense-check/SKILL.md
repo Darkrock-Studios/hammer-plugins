@@ -55,7 +55,7 @@ Flag a verb in the narration that is in the other tense with nothing to account 
 
 Don't flag:
 
-- **Dialogue,** or anything inside quotation marks.
+- **Dialogue,** or anything inside quotation marks, whatever marks the book uses for them.
 - **Direct thought:** thoughts given in the character's own words, in italics or not. "This is a
   mistake, she thought."
 - **Earlier events** told with "had" in a past-tense scene, or in simple past in a present-tense one.
