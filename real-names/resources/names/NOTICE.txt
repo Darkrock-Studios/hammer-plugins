@@ -77,9 +77,13 @@ polish.txt
 
 feminine and masculine hold the 1,000 most common first given names of each sex in Poland's
 PESEL register, and surnames-feminine and surnames-masculine the 5,000 most common surnames of
-each, the dead counted too. From the lists the Ministry of Digital Affairs shares at
-https://dane.gov.pl, datasets 1501 and 568, in the public domain (CC0). The lists by decade of birth
-are from Wikidata, below.
+each, the dead counted too. The lists by decade of birth since the 2000s hold the 1,000 most common
+first names given to children of each sex born in Poland from 2000 to 2025; the source leaves out
+a name given fewer than 5 times in a year up to 2012 and fewer than 2 times from 2013, and a name
+twenty times as common for the other sex is left out. All from the lists the Ministry of Digital
+Affairs shares at https://dane.gov.pl, datasets 1501, 568 and 219 ("Imiona nadawane dzieciom w
+Polsce"), in the public domain (CC0). The lists by decade of birth before 2000 are from Wikidata,
+below.
 
 scottish.txt
 
@@ -91,15 +95,311 @@ Surnames, https://www.nrscotland.gov.uk, shared under the Open Government Licenc
 https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/. A name over 20 times as
 common for the other sex is left out. Lists for earlier decades are from Wikidata, below.
 
-brazilian.txt, dutch.txt, filipino.txt, german.txt, greek.txt, indian.txt, iranian.txt,
-israeli.txt, italian.txt, japanese.txt, korean.txt, mexican.txt, nigerian.txt, russian.txt,
-spanish.txt, swedish.txt, turkish.txt, ukrainian.txt, and what the above lack
+argentine.txt
+
+feminine, masculine, and the lists by decade of birth from the 1920s to the 2010s hold the 1,000 most
+common whole given names of each sex among the people RENAPER, Argentina's national register of
+persons, has registered as born from 1922 to 2015, over all those years and within each decade, and
+the lists for the 2020s the 1,000 most common single given names of each sex among those born from
+2020 to 2024, a person with two names counted for each. surnames holds the 5,000 most common surnames
+of Argentina's residents in December 2021, of those more than 10 of a province's residents have. From
+RENAPER's Nombres de personas físicas,
+https://infra.datos.gob.ar/catalog/otros/dataset/2/distribution/2.1/download/historico-nombres.zip,
+and its Nombres propios en Argentina and Distribución de apellidos en Argentina,
+https://datos.gob.ar/dataset/nombres-propios-en-argentina1 and
+https://datos.gob.ar/dataset/distribucion-de-apellidos-en-argentina1, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. RENAPER gives no sex for a name; the script tells it
+from the name's words, by Wikidata's Argentine people and RENAPER's most common names of each sex, and
+leaves out the few names whose words tell none. It restores the accents RENAPER's records leave off.
+The lists by decade before the 1920s are from Wikidata, below.
+
+australian.txt
+
+feminine, masculine, and the lists by decade of birth from the 1940s to the 2010s hold the 1,000
+most common given names of each sex among births registered in South Australia from 1944 to 2017,
+over all those years and within each decade, the 1940s from 1944 and the 2010s to 2017; a name given
+only once in a decade is left out. From the Attorney-General's Department's Popular Baby Names,
+https://data.sa.gov.au/data/dataset/popular-baby-names, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. It gives names in capitals; the script restores them.
+The lists of the 2020s hold only the most common names: those among the 100 most common of each sex
+in a year from 2020 to 2025 in South Australia, New South Wales, or Victoria, each with how many were
+given it in the years and states it was among them. From the same South Australian data; the NSW
+Registry of Births, Deaths and Marriages' Popular Baby Names 1952 to 2025,
+https://data.nsw.gov.au/data/dataset/popular-baby-names-from-1952, shared under Creative Commons
+Attribution, of which the portal names no version; and the Registry of Births, Deaths and Marriages
+Victoria's Popular Baby Names, https://discover.data.vic.gov.au/dataset/popular-baby-names, shared
+under CC BY 4.0. A name over 20 times as common for the other sex is left out. surnames and the lists
+for earlier decades are from Wikidata, below.
+
+austrian.txt
+
+The lists by decade of birth since the 1980s hold the 1,000 most common first given names of each
+sex among babies born in Austria from 1984 to 2025, of Austrian citizens only until 2009 and of all
+since 2010. From Statistik Austria's open data Vornamen, OGDEXT_VORNAMEN_1,
+https://data.statistik.gv.at/web/meta.jsp?dataset=OGDEXT_VORNAMEN_1, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/ (Datenquelle: Statistik Austria, data.statistik.gv.at).
+It gives names without their marks other than umlauts; the script restores them from Statistik
+Austria's list of every first name given since 1984 as it was written,
+https://www.statistik.at/statistiken/bevoelkerung-und-soziales/bevoelkerung/geburten/vornamen-der-geborenen,
+which may be shared for any purpose with its source, STATISTIK AUSTRIA, named. A name over 20 times
+as common for the other sex is left out. The other lists are from Wikidata, below.
+
+belgian.txt
+
+feminine and masculine hold the 1,000 most common first names of each sex among everyone living in
+Belgium on 1 January 2026, and the lists by decade of birth since the 1990s the 1,000 most common
+first names of each sex given to babies born in Belgium from 1995 to 2025, a name counting in a year
+where 5 or more were given it. surnames holds the 5,000 most common surnames of everyone living in
+Belgium on 1 January 2026. From Statbel's first names and family names statistics,
+https://statbel.fgov.be/en/themes/population/names-and-first-names, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. It leaves out letters Latin-1 lacks; the script
+restores those of the common names, and counts together spellings that differ only in capitals. A
+name over 20 times as common for the other sex is left out. Lists for earlier decades are from
+Wikidata, below.
+
+brazilian.txt
+
+feminine, masculine, and the lists by decade of birth since the 1930s hold the 1,000 most common
+first given names of each sex among Brazil's residents on 1 August 2022, over all of them and by
+decade of birth, the 1930s list holding everyone born before 1940, and surnames the 5,000 most common
+surnames, each counted wherever it is among a person's surnames. From IBGE's Nomes no Brasil, from the
+2022 census, https://censo2022.ibge.gov.br/nomes/, through its API,
+https://servicodados.ibge.gov.br/api/v3/nomes/2022. It gives only names 20 or more people have, in
+small letters without accents; the script restores those of the common ones. It gives a decade's names
+for both sexes together, so a decade's split by sex is the name's split over all years. A name over 20
+times as common for the other sex is left out, as is a name a hundred times rarer than one a letter
+away from it, taken as a slip in writing that one. Also left out are a surname more people have as
+their first given name (most often a second given name the census counts among surnames), a given
+name a hundred times as many have as a surname, and words that are answers, particles, or
+abbreviations rather than surnames. IBGE states no licence for these lists; they are shared openly
+and used here with IBGE named as their source. The masculine lists for decades before the 1930s are
+from Wikidata, below.
+
+canadian.txt
+
+feminine, masculine, and the lists by decade of birth since the 1990s hold the 1,000 most common
+given names of each sex among births in Canada from 1991 to 2025, and within each decade. From
+Statistics Canada's table 17-10-0147-01, First names at birth by sex at birth, selected indicators,
+https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710014701, which gives names 5 or more were
+given in a year. Adapted from Statistics Canada, First names at birth by sex at birth, selected
+indicators, 1991 to 2025; this does not constitute an endorsement by Statistics Canada of this
+product. Shared under the Statistics Canada Open Licence,
+https://www.statcan.gc.ca/en/terms-conditions/open-licence. The lists for the 1980s add the births of
+Quebec (below), Ontario, Alberta, and British Columbia; those for the 1920s to the 1970s hold English
+Canada's, the births of Ontario and British Columbia only. From Ontario's top baby names,
+https://data.ontario.ca, names 5 or more were given in a year, which contains information licensed
+under the Open Government Licence – Ontario, https://www.ontario.ca/page/open-government-licence-ontario;
+British Columbia's most popular names for the past 100 years, https://www2.gov.bc.ca, which contains
+information licensed under the Open Government Licence – British Columbia,
+https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61; and Alberta's frequency and
+ranking of baby names, https://open.alberta.ca, which contains information licensed under the Open
+Government Licence – Alberta, https://open.alberta.ca/licence. Ontario's Marie and Joseph, often a
+French Canadian's first given name and not the one used, are counted as often as in British Columbia.
+The sources write names in capitals without accents; the script writes a French name as Quebec
+does, and one of English too as most of those who have it do. A name over 20 times as common for
+the other sex is left out. surnames and the lists for earlier decades are from Wikidata, below.
+
+quebecois.txt
+
+feminine, masculine, and the lists by decade of birth since the 1980s hold the 1,000 most common
+given names of each sex among children born in Quebec from 1980 to 2025 and eligible for family
+benefits, and within each decade. From Retraite Québec's Banque de prénoms, https://www.donneesquebec.ca,
+shared under CC BY 4.0, https://creativecommons.org/licenses/by/4.0/. It writes names in capitals
+without accents or hyphens, and gives a count under 5 as "<5", counted as 2; the script restores
+Quebec's accents and hyphens. A name over 20 times as common for the other sex is left out.
+surnames and the lists for earlier decades are from Wikidata, below: Canada's citizens born in Quebec.
+
+czech.txt
+
+feminine-2020 and masculine-2020 hold the 100 or so most common given names of each sex among
+births in Czechia in 2025, only the most common names. From the Czech Statistical Office's list of
+the 100 most common names of children born in 2025, https://csu.gov.cz, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/, per its terms of use,
+https://csu.gov.cz/podminky_pro_vyuzivani_a_dalsi_zverejnovani_statistickych_udaju_csu. A name over 20
+times as common for the other sex is left out. The other lists are from Wikidata, below.
+
+finnish.txt
+
+feminine and masculine hold the 1,000 most common first given names of each sex, and surnames the
+5,000 most common surnames, of the living Finnish citizens in the Population Information System, in
+Finland or abroad, as of 4 August 2026. From the Digital and Population Data Services Agency's names in
+the Population Information System, https://avoindata.suomi.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a,
+shared under CC BY 4.0, https://creativecommons.org/licenses/by/4.0/. It gives only given names 5 or
+more people have and surnames 20 or more have. A name over 20 times as common for the other sex is
+left out. The lists by decade of birth are from Wikidata, below.
+
+german.txt
+
+feminine-2010, masculine-2010, feminine-2020, and masculine-2020 hold the 1,000 most common first
+given names of each sex among babies of four large cities, over the years each shares within the
+decade: Berlin's births from 2017 to 2023, from BerlinOnline GmbH, auf Basis von Daten des Berliner
+Landesamtes für Bürger- und Ordnungsangelegenheiten (LABO),
+https://github.com/berlin/haeufige-vornamen-berlin, shared under CC BY 3.0 DE,
+https://creativecommons.org/licenses/by/3.0/de/, names given only once in the city left out;
+Cologne's births from 2019 to 2023, from the city of Cologne, https://www.offenedaten-koeln.de, shared
+under the Data licence Germany, Zero, version 2.0, https://www.govdata.de/dl-de/zero-2-0; Leipzig's
+from 2014 to 2023 and in 2025, from the city of Leipzig, https://opendata.leipzig.de; and Munich's
+residents under a year old at the end of each year from 2013 to 2025, from the city of Munich,
+https://opendata.muenchen.de, names 4 or fewer had (5 or fewer in 2025) left out; Leipzig's and
+Munich's shared under the Data licence Germany, Attribution, version 2.0,
+https://www.govdata.de/dl-de/by-2-0. They are these cities' babies, not Germany's. A name over 20
+times as common for the other sex is left out. The other lists are from Wikidata, below.
+
+israeli.txt, levantine.txt
+
+feminine, masculine, and the lists by decade of birth hold the 1,000 most common first given names of
+each sex in Israel's population register in April 2025 among those born from 1949 to 2024, over all
+those years and within each decade, the 1940s being 1949 alone; surnames holds the most common
+surnames of 2017. israeli.txt holds those of the Jewish sector, and levantine.txt those of the Muslim,
+Christian-Arab, and Druze sectors together. From the Central Bureau of Statistics' The Current Names of
+Those Born 1949-2024 (release 391/2025),
+https://www.cbs.gov.il/he/mediarelease/DocLib/2025/391/11_25_391t1.xlsx, and Last Names in Israel 2017
+(release 037/2019), https://www.cbs.gov.il/he/mediarelease/doclib/2019/037/, accessed November 2026,
+shared under the CBS Open License, https://www.cbs.gov.il/en/Pages/Enduser-license.aspx. They give
+names in Hebrew letters, which the script spells as each community usually writes them in English,
+from a table it keeps; names without a sure spelling are left out. A name is in the given names when 5
+or more people of its sex have it, in a year's count when 5 or more born that year have it, and in the
+surnames when more than 30 people have it. A name over 20 times as common for the other sex is left
+out. The lists of masculine names by decade before the 1940s in israeli.txt are from Wikidata, below.
+
+italian.txt
+
+The lists by decade of birth since the 2000s hold the 1,000 most common given names of each sex
+among births registered in Italy from 2000 to 2019 and 2022 to 2024. From ISTAT's Contanomi,
+https://www.istat.it/dati/calcolatori/contanomi/, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. It gives names in capitals, an accent as an
+apostrophe, and before 2011 mostly without accents; the script restores them. Before 2022 its yearly
+lists stop short of a year's rarer names, so a name that could be among the most common is counted
+from its count in each year. A name over 20 times as common for the other sex is left out. The other
+lists are from Wikidata, below.
+
+korean.txt
+
+surnames holds the surnames of South Korea's population in the 2015 Population and Housing Census
+that 5 or more people have, each with how many have it. From Statistics Korea's (now the Ministry of
+Data and Statistics, 국가데이터처) table DT_1IN15SD, population by surname and clan seat (5 or more
+people), nationwide, on KOSIS, https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1IN15SD,
+accessed November 2026; source: 「인구총조사」, 국가데이터처. It gives each surname in hangul and
+hanja; the script counts those of the same hangul as one, and spells each as more of South Korea's
+people on Wikidata spell it in English than any other way, or in the Revised Romanization of Korean
+where fewer than 2 of them do, counting surnames spelled alike together. KOSIS's terms allow its statistics to
+be used, reused, and redistributed for any purpose, commercial included, with their source cited,
+https://kosis.kr/serviceInfo/useGuide.do. The other lists are from Wikidata, below.
+
+mexican.txt
+
+feminine-2010 and masculine-2010 hold the most common given names of each sex among births
+registered in Mexico from 2017 to 2019, those given 745 times or more, and feminine-2020 and
+masculine-2020 those among births registered in 2020 and 2021, each name as registered, such as
+"María José". From INEGI's tables Nombres más populares de mujer y hombre, 2017-2021, and of 2020 and
+2021, the counts for 2017 to 2019 being those for 2017 to 2021 less those of 2020 and 2021. surnames
+holds the 5,000 most common surnames, first and second counted together, among those registered 20
+times or more from 2017 to 2020, from INEGI's Apellidos más comunes de mujer y hombre, 2017-2020. INEGI
+published both at https://cuentame.inegi.org.mx/poblacion/natalidad.aspx, and the Internet Archive
+keeps them, https://web.archive.org. They give names in capitals without accents; the script restores
+those of the names Mexico's people on Wikidata have and of the common ones, and counts a surname whose
+Ñ a record lost or doubled under its Ñ's. A name over 20 times as common for the other sex is left out.
+Fuente: INEGI. Shared under INEGI's Términos de Libre Uso de la Información del INEGI,
+https://www.inegi.org.mx/inegi/terminos.html, which allow copying, adapting, and commercial use with
+the credit "Fuente: INEGI" and a note of any changes made. The other lists are from Wikidata, below.
+
+new_zealander.txt
+
+feminine, masculine, and the lists by decade of birth since the 1900s hold the 1,000 most common
+given names of each sex among births registered in New Zealand from 1900 to 2025, over all those years
+and within each decade, the 2020s to 2025. From the Department of Internal Affairs' Baby name
+popularity over time, https://catalogue.data.govt.nz/dataset/baby-name-popularity-over-time, which
+leaves out a name given fewer than 10 times in a year. It garbles a few letters with accents or
+macrons; the script restores them, counts spellings differing only in capitals together, and leaves
+out "Baby", which stands in for a name. A name over 20 times as common for the other sex is left out.
+Crown copyright, the Department of Internal Affairs, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. surnames and the lists for earlier decades are from
+Wikidata, below.
+
+slovenian.txt
+
+feminine and masculine hold the 1,000 most common given names of each sex among those living in
+Slovenia on 1 January 2026, and surnames the 5,000 most common surnames among them. The lists by
+decade of birth from the 1930s to the 1980s hold the most common given names of each sex among those
+living then by period of birth: the 1930s those born up to 1940, and each later decade those born from
+its first year and one to its last and one, such as 1941 to 1950 for the 1940s. Those from the 1990s
+hold the given names of each sex given to 5 or more babies a year, from 1992 to 2025. From the
+Statistical Office of the Republic of Slovenia's SiStat tables 05X1005S, 05X1010S, 05X1015S to
+05X1018S, 05X2001S, and 05X2002S, https://pxweb.stat.si/SiStatData, and its Names and birthdays
+application, https://www.stat.si/ImenaRojstva, which count names with 5 or more bearers and hide some
+small counts. A name over 20 times as common for the other sex is left out. Source: SURS; the lists
+are drawn from its data, and are free to use for any purpose with SURS acknowledged as their source and
+changes marked, https://www.stat.si/StatWeb/en/StaticPages/Index/Copyright. Lists for earlier
+decades are from Wikidata, below.
+
+spanish.txt
+
+feminine and masculine hold the 1,000 most common given names of each sex among Spain's residents on
+1 January 2025, of the names 20 people or more have, and the lists by decade of birth since the 1920s
+the 1,000 most common among the 5,000 most common names of those born in each decade, the 1920s' being
+everyone born before 1930. surnames holds the 5,000 most common surnames, each counted as often as
+people have it as their first or second surname, as a full name draws both from it. From INE's annual
+population census, Apellidos y nombres más frecuentes,
+https://www.ine.es/daco/daco42/nombyapel/nombyapel2.htm, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/; adapted from data on INE's website, www.ine.es. It gives
+names in capitals without accents, and compound given names without their particles; the script
+restores accents from the spellings Wikidata has of them, and the particles of the compound names
+usually written with one, leaving out those it cannot be sure of. A name over 20 times as common for
+the other sex is left out. Lists for earlier decades are from Wikidata, below.
+
+swedish.txt
+
+feminine and masculine hold the 1,000 most common first names normally used of each sex among all
+those registered in Sweden at the end of 2020, and surnames the 5,000 most common surnames among
+them. The lists by decade of birth since the 2000s hold the 1,000 most common first names normally
+used of each sex given to newborns from 2000 to 2022, and those for the 1940s to the 1990s the first
+names normally used of each sex, of the 100 most common among those living at the end of 2021, by
+how many born in the decade were still living then, with a name's spellings counted together under
+one of them. From Statistics Sweden's tables BE0001TNamn10, BE0001ENamn10, BE0001Nyfodda, and
+BE0001T100, https://www.statistikdatabasen.scb.se, shared under CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/; source: Statistics Sweden. Names and surnames 10 or
+more have, and newborns' names given to 2 or more. A name over 20 times as common for the other sex
+is left out. Lists for earlier decades are from Wikidata, below.
+
+swiss.txt
+
+feminine, masculine, and the lists by decade of birth since the 1920s hold the 1,000 most common
+first given names of each sex among Switzerland's permanent resident population at the end of 2025,
+over all its years of birth and within each decade: those living in Switzerland then, wherever they
+were born, so a decade's list is of those of it still living. surnames holds the 5,000 most common
+surnames of the same population, its four language regions counted together. From the Federal
+Statistical Office's Female and Male first names of the population by year of birth, Switzerland,
+2025, and Last names of the permanent resident population by language region, at
+https://opendata.swiss, which leave out a name fewer than 3 people have (a surname, in a language
+region). A name over 20 times as common for the other sex is left out. Shared under opendata.swiss's
+terms "Open use. Must provide the source.", https://opendata.swiss/en/terms-of-use#terms_by; source:
+FSO, STATPOP. The lists for earlier decades are from Wikidata, below.
+
+danish.txt, dutch.txt, filipino.txt, greek.txt, hungarian.txt, indian.txt, iranian.txt,
+japanese.txt, nigerian.txt, russian.txt, turkish.txt, ukrainian.txt, and what the above
+lack
 
 The lists hold the first given names and the family names of each country's people born since 1880
-that Wikidata, https://www.wikidata.org, has, by their English labels, and how many of those people
-have each: names at least 3 have, and a decade's list where it has at least 500 people and 50 names. A
-country's people are its citizens, and those of the states before it born where it is now; England's
-are the United Kingdom's. Japanese names are without the marks on their letters. Greek,
+that Wikidata, https://www.wikidata.org, has, by their English labels or, where a name has none, its
+label for all languages, and how many of those people have each: names at least 3 have, and a decade's
+list where it has at least 500 people and 50 names. A country's people are its citizens, and those of
+the states before it born where it is now; England's are the United Kingdom's, and Quebec's are
+Canada's citizens born in Quebec. Japanese names are without the marks on their letters. Czech, Greek,
 Russian, and Ukrainian surnames are counted for both sexes together, and a woman's formed from a man's
-by its ending. They are the names of people of note, so follow the population's only roughly.
-Wikidata's data is in the public domain (CC0).
+by its ending, or as women have it where they do. They are the names of people of note, so follow the
+population's only roughly. Wikidata's data is in the public domain (CC0).
+
+egyptian.txt, maghrebi.txt
+
+The lists hold the first given names and the family names of Egypt's people (egyptian.txt), and of
+Morocco's, Algeria's, and Tunisia's together (maghrebi.txt), born since 1880 that Wikidata,
+https://www.wikidata.org, has, and how many of those people have each: names at least 3 have, and a
+decade's list where it has at least 500 people and 50 names. A country's people are its citizens, and
+those of the states before it born where it is now (for Egypt the Khedivate, Sultanate, Kingdom, and
+Republic of Egypt, the United Arab Republic, and the Ottoman Empire; for Tunisia the Beylik of Tunis,
+the French protectorate, and the Ottoman Empire), each counted once; France's citizens born in the
+Maghreb are not. Each name is spelled as the person's own English label spells it, as Wikidata often
+links a Mohamed to the name Muhammad; a name the label has in none of its spellings counts for no one,
+and the marks of a scholar's transliteration, as in Muḥammad, are left off. They are the names of
+people of note, so follow the population's only roughly. Wikidata's data is in the public domain
+(CC0).
