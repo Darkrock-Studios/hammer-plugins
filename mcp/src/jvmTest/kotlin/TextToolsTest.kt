@@ -32,6 +32,10 @@ class TextToolsTest {
 	)
 	private val readManyInputs = mutableListOf<JsonObject>()
 
+	/** Whether Hammer has text operations of its own. */
+	private var hostHasText = false
+	private val hostTextInputs = mutableListOf<JsonObject>()
+
 	init {
 		operations = null
 		host = FakeHammerHost(
@@ -41,11 +45,17 @@ class TextToolsTest {
 						putJsonArray("operations") {
 							add(op("ops.list", "read"))
 							add(op("scene.read.many", "read"))
-							// Named like the plugin's own tool, which wins.
-							add(op("text.count", "read"))
+							if (hostHasText) {
+								add(op("text.count", "read"))
+								add(op("text.find", "read"))
+							}
 							add(op("scene.delete", "destructive"))
 						}
 					}
+				},
+				"text.count" to { input ->
+					hostTextInputs += input
+					buildJsonObject { put("scenesScanned", 99) }
 				},
 				"scene.read.many" to { input ->
 					readManyInputs += input
@@ -125,7 +135,23 @@ class TextToolsTest {
 	}
 
 	@Test
-	fun `the text tools are listed as read tools, and win a name collision`() {
+	fun `Hammer's own text operations replace the plugin's`() {
+		hostHasText = true
+		val tools = tools()
+		assertEquals(listOf("scene_read_many", "text_count", "text_find"), tools.map { it["name"]!!.jsonPrimitive.content })
+		assertEquals("Host text.count", tools.single { it["name"]!!.jsonPrimitive.content == "text_count" }["description"]!!.jsonPrimitive.content)
+		assertEquals("Host text.find", tools.single { it["name"]!!.jsonPrimitive.content == "text_find" }["description"]!!.jsonPrimitive.content)
+
+		val arguments = args("terms" to listOf("harbor"))
+		val (result, isError) = call("text_count", arguments)
+		assertTrue(!isError)
+		assertEquals(99, result.jsonObject["scenesScanned"]!!.jsonPrimitive.int)
+		assertEquals(listOf(arguments), hostTextInputs)
+		assertTrue(readManyInputs.isEmpty())
+	}
+
+	@Test
+	fun `the text tools are listed as read tools`() {
 		val tools = tools()
 		assertEquals(listOf("scene_read_many", "text_count", "text_find"), tools.map { it["name"]!!.jsonPrimitive.content })
 		val count = tools.single { it["name"]!!.jsonPrimitive.content == "text_count" }

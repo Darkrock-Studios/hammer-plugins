@@ -21,7 +21,7 @@ import kotlinx.serialization.json.putJsonObject
 // An MCP server over stdio (https://modelcontextprotocol.io): Hammer hands `command` each line of
 // standard input, a JSON-RPC message, and writes back what it returns. Every operation this plugin is
 // granted is offered as a tool, writes and deletes only when its settings allow, along with the read
-// tools in TextTools.kt that it computes itself. Its manifest asks for no operation that writes a scene's
+// tools in TextTools.kt that it computes itself for a Hammer without them. Its manifest asks for no operation that writes a scene's
 // prose: Hammer's AI is a tool for the writer, not a replacement. It also serves the skills in skills/
 // (see Skills.kt). It speaks both the legacy revisions, which open with initialize, and the modern ones,
 // which carry their version on every request; each request is answered by its own.
@@ -184,15 +184,14 @@ private fun tools(settings: Settings): List<Tool> {
 	val ops = operations ?: json.decodeFromJsonElement(OperationList.serializer(), callJson(OPS_LIST, JsonObject(emptyMap())))
 		.operations.also { operations = it }
 	// tools/list already describes every tool, filtered by the settings, which ops.list is not. Two
-	// operations whose tool names collide are both left out; an operation named like one of the plugin's
-	// own tools gives way to it.
-	val own = textTools.map { it.name }.toSet()
+	// operations whose tool names collide are both left out; one of the plugin's own tools gives way to
+	// an operation named like it, whatever the settings make of that operation.
+	val hosted = ops.map { toolName(it.name) }.toSet()
 	return ops.filter { it.name != OPS_LIST && settings.allows(it.access) }
 		.map { op -> Tool(toolName(op.name), op.description, op.access, op.input) { callJsonText(op.name, it) } }
-		.filter { it.name !in own }
 		.groupBy { it.name }
 		.mapNotNull { (_, tools) -> tools.singleOrNull() }
-		.plus(textTools.filter { settings.allows(it.access) })
+		.plus(textTools.filter { it.name !in hosted && settings.allows(it.access) })
 }
 
 private fun Settings.allows(access: String): Boolean = when (access) {

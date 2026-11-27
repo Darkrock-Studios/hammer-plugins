@@ -86,8 +86,8 @@ come out with the same tag (O'Brien and Obrien), ask the writer what to call eac
 ## Check your quotes
 
 Confirm each quote appears verbatim in the scene's `markdown`. If it doesn't, find one that does or
-move the scene to unsure. A quote may leave out markdown marks such as `*`, write curly quotes
-straight, and write a run of spaces as one, and differ in nothing else. `text_find` checks one: the
+move the scene to unsure. A quote leaves out markdown marks such as `*` and `_`, may write curly
+quotes straight and a run of spaces as one, and differs in nothing else. `text_find` checks one: the
 quote as `term`, the scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It never
 matches across a paragraph break: check a quote that runs over one a paragraph at a time, and see in
 the text you read that those paragraphs follow one another in that order, with nothing left out

@@ -15,8 +15,9 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
 
-// Tools the plugin computes itself, from scene.read_many, since search finds a scene once however often a
-// term is in it, ignores case, and matches inside longer words and in titles.
+// Tools the plugin computes itself, from scene.read.many, on a Hammer with no text.count and text.find of
+// its own: search finds a scene once however often a term is in it, ignores case, and matches inside
+// longer words and in titles.
 
 private val json = Json { ignoreUnknownKeys = true }
 
@@ -229,5 +230,5 @@ private val INT_RANGE = Int.MIN_VALUE.toDouble()..Int.MAX_VALUE.toDouble()
 private const val MAX_TERMS = 50
 private const val DEFAULT_LIMIT = 50
 private const val MAX_LIMIT = 200
-/** Words a page of scene.read_many holds, outlines and notes included: few calls, and little text held at once. */
+/** Words a page of scene.read.many holds, outlines and notes included: few calls, and little text held at once. */
 private const val PAGE_WORDS = 20_000

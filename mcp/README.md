@@ -25,7 +25,7 @@ It can always read:
   are installed.
 
 `search` finds a scene once however often a word is in it, ignores case, and matches inside longer words
-and in titles, so the plugin adds two tools of its own for exact answers on a long book:
+and in titles, so there are two tools for exact answers on a long book:
 
 - `text_count` counts each of up to 50 words or phrases, giving each one's total and the scenes it's in.
 - `text_find` lists every place one appears, in story order, with about 80 characters either side, a
@@ -187,9 +187,11 @@ listed with its SHA-256 digest and size, computed when the plugin is built. It s
 from 2024-11-05 to 2026-07-28: clients of the newer revision skip `initialize`, ask `server/discover`,
 and name their version on every request, so each request is answered by the revision it names. Its tools
 are what `ops.list` returns it, less `ops.list` itself and whatever its settings leave out; settings are
-read for every message. `text_count` and `text_find` it works out itself, reading `scene.read_many` a
-page at a time and keeping only counts and the matches asked for; an operation of the same name gives
-way to them. Each call reads every scene in its scope, since `text_find`'s total is exact. A failed
+read for every message. `text_count` and `text_find` are Hammer's `text.count` and `text.find` where it
+has them. On a Hammer without, the plugin works them out itself, reading `scene.read.many` a page at a
+time and keeping only counts and the matches asked for; it reads past `*`, `~~`, `==`, and styling tags,
+but takes other markdown as text. Each call reads every scene in its scope, since `text_find`'s total is
+exact. A failed
 call, including one refused because Hammer is busy, is a tool error the agent can read. Calls go through
 the running app when it is open, and straight to the project files when it is not, with no network port
 and no token.
