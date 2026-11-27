@@ -39,7 +39,7 @@ for the writer, not a replacement.
 
 ## Pass 1: build the ledger
 
-Read with `scene_read_many`: no `group` or `ids` for the whole book, or `ids` for a focused range.
+Read with `scene_read_many`: no `group` or `ids` for the whole book, or `ids` for a range of scenes or a focused read.
 It returns scenes in story order a page at a time, each with its `path` of group names and its
 `meta`. When `next` is non-null, call again with `after: next`. Finish each page's rows before
 reading the next, and keep only ledger rows, not the text of earlier pages. For each scene, record:
@@ -74,8 +74,11 @@ Using story-world order, flag:
 - **Forgets:** an `ignorant` row after that character's `learns` row for the fact.
 - **Leak:** a fact spreading to a character with no plausible path from anyone who knew it.
 
-Over a range of scenes, a `uses` row with no `learns` row in the range is not a finding: list it under
-**Not learned in these scenes**, since it may have been learned earlier.
+Over a range of scenes, a `uses` row with no `learns` row in the range is not a finding, and nor is a
+leak whose path could lie before the range: list it under **Not learned in these scenes**, since it
+may have been learned earlier.
+
+A finding that rests on a `learns` row noted as unsure they were in the room is never Clear.
 
 If the narration itself accounts for what you would flag (it says she has forgotten, or shows he is
 lying), it is not a hole: say so in the finding's closing line.
@@ -103,13 +106,13 @@ Most serious first:
 
 ```
 ### <character>: <kind> (F<n>: <fact>)
-- Uses it in <scene name> (id <id>): "<exact quote>"
+- <Uses it | Shows ignorance of it> in <scene name> (id <id>): "<exact quote>"
 - Learns it in <scene name> (id <id>): "<exact quote>"  (or: never on the page)
-<One line on why this looks like a hole. Clear | Could be offstage | Explained on the page>
+<One line on why this looks like a hole. Clear | Could be offstage | Unsure they were there | Explained on the page>
 ```
 
-After a range of scenes, then **Not learned in these scenes**, one line each: the character, the fact,
-and the scene where they use it.
+After a range of scenes, **Not learned in these scenes** comes next, one line each: the character,
+the fact, and the scene where they use it.
 
 Then a short **Ledger** section: each fact with who learns it and where, in order, one line per
 learning. This lets the writer spot a wrong row and ask you to rerun from there. End with totals:

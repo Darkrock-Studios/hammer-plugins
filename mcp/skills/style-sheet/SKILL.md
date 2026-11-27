@@ -71,14 +71,17 @@ occurrence in the scenes' text: all the forms of one choice as `terms` in one ca
 form where you saw a rival or one is likely ("today" beside "to-day"); a compound with no likely rival
 needs no count. It matches whole words, so "till" doesn't count "still", and ignores capitals unless
 `caseSensitive` is true. Set that when the forms differ only by a capital. A hyphen or space inside a
-term is matched as written, so give each spelling.
+term is matched as written, so give each spelling. A form written as two words also matches where
+the words merely meet ("to day" in "from day to day"): look at its uses before counting them.
 
 A mark counts exactly with `wholeWord: false` when it needs no spaces to tell it by: a backtick, "--",
 "...", a figure. Spaces at a term's ends are ignored, so a spaced hyphen matches every hyphen, and
-neither tool sees italics or tells curly quotes from straight ones: take spacing, quotation marks, and
-emphasis from reading, and say in the sheet that they are by eye.
+neither tool sees italics or tells curly quotes from straight ones: take spacing, quotation marks,
+the comma before "and", and emphasis from reading, and say in the sheet that they are by eye.
 
-`text_find` lists every occurrence of one form with its scene and the text around it. Use it to see
+`text_find` lists every occurrence of one form with its scene and the text around it, 50 at a time:
+when `next` is non-null, call again with `offset: next`. Its `total` is the full count from the first
+page. Use it to see
 which uses are sentence starts, to find each departure's scenes, and to take exact quotes from.
 
 `search` can't stand in for either: it gives one hit per scene however often a form appears there,
@@ -94,7 +97,8 @@ For each choice:
 A rule that covers several words is one choice, counted in distinct words, not uses: "colour",
 "favour", and "honoured" are three words on the -our side, and "harbor" is one on the -or side,
 however many times it appears. A word's other endings and its compounds count with it: "coloured" with
-"colour", "harbormaster" with "harbor". Give both sides with their words. A word the book itself writes both ways ("to-day" and
+"colour", "harbormaster" with "harbor". The same test decides it, in words: usual with at least three words and twice the other
+side's. Give both sides with their words. A word the book itself writes both ways ("to-day" and
 "today") is its own choice, counted in uses, and counts on neither side of the rule.
 
 A form with no rival in the book is not a departure by count, however it sits with a rule. If it

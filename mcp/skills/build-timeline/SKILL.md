@@ -109,9 +109,11 @@ optional `label` of free text for the when ("Long ago", "that winter").
   no clock times), the dates say less than the order does: go manual.
 - **Manual,** otherwise. A manual timeline takes everything stated, derived, or ordered, in
   order, with the when as its label, in the text's own words, a span included ("noon to evening").
-  Scenes with nothing against it go in story order, with "story order" as their basis; a scene the
+  Scenes with nothing against it go in story order, with "story order" as their basis and no label
+  (a scene that is not story, such as a title page, stays off); a scene the
   text places earlier (a flashback) goes where the text puts it. A happening goes in only where the
-  text fixes what it comes before or after.
+  text fixes what it comes before or after closely enough to give it one slot: fixed only between two
+  things with others between them, it is unplaced.
 
 Don't mix: on a dated timeline, ordered and unplaced things stay off and are listed.
 
@@ -182,8 +184,8 @@ quotes may be written straight and a run of spaces as one. `text_find` checks on
 across a paragraph break: check a quote that runs over one a paragraph at a time, and see in the text
 you read that those paragraphs follow one another in that order, with nothing left out between them.
 After no match, find a few plain words of the passage with `text_find` and take the quote from the
-`context` it returns. If none holds the passage, the quote isn't there. It doesn't search outlines or
-notes: check a quote from one against the `meta` you read.
+`context` it returns. If none holds the passage, the quote isn't there. It doesn't search outlines,
+notes, or entries: check a quote from one against the `meta` or entry text you read.
 
 ## The plan
 

@@ -44,7 +44,7 @@ An entry is **in the scene** when it is part of what happens:
 - **Anything else** is there to be seen or used in the scene.
 
 An entry is **only mentioned** when the scene talks or thinks about it without it being there:
-remembered, discussed, planned, wished for, or named in passing. "She thought of her mother." "They
+remembered, imagined, dreamed, discussed, planned, wished for, or named in passing. "She thought of her mother." "They
 spoke of the war in the north." A letter from someone is the letter in the scene, not its writer. A
 scene that is not story (a title page, a dedication, an epigraph) has nothing in it: every name there
 is only mentioned.

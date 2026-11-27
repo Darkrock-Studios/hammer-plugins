@@ -55,7 +55,8 @@ Also decide the mode, by whose inner life the narration gives:
 - **First person,** or **close third:** one character's thoughts and sensations carry the scene, and
   anyone else's turn up in a few passages or not at all. A narrator with a voice of its own, who
   speaks to the reader or comments on the characters, doesn't change that: the scene is still that
-  character's. Don't flag such a narrator's own asides, or what it knows ahead of the story.
+  character's. Don't flag such a narrator's own asides, or what it knows ahead of the story. Its
+  asides are its own comments: another character's thoughts given as fact are still a slip.
 - **Omniscient:** the narration gives the thoughts of two or more characters freely, from the start
   of the scene to its end, and none of them carries it. Head-hopping is then a choice, not a slip: say
   so and skip the scene rather than flag every sentence.
@@ -84,11 +85,14 @@ Don't flag:
 - Inference from what the POV character observes: "He looked angry." "Her voice shook, as if she'd
   been crying."
 - Dialogue or action that reveals another character's feelings.
+- What another character plainly sees or hears in front of the POV character: "They cried out when
+  they saw her coming."
 - The POV character guessing or assuming, even wrongly.
 
 ## Check your quotes
 
-Every finding quotes the scene exactly. Before reporting, confirm each quote appears in the scene's
+Every finding quotes the scene exactly: the sentence that slips, or the part of it that is narration
+where it runs on into speech. Before reporting, confirm each quote appears in the scene's
 `markdown`. Drop any finding whose quote you can't find. Write a quote as a reader sees the text:
 without the `*`, `_`, `~~`, or `==` around styled words, the `#` or `>` that starts a line, or the
 backslash before an escaped character. Every other character stays as the scene has it, a backtick or

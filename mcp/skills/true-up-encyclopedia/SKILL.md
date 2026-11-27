@@ -78,9 +78,11 @@ has them, capitals included, so a missing alias means missed references.
 
 Report:
 
-- the name written another way: in other capitals ("the caterpillar" for Caterpillar), with a hyphen
-  for a space ("rabbit-hole" for The Rabbit Hole), or without the entry's own "The" where the entry
-  has no alias without it;
+- the name written another way, of the entry itself: in lower case ("the caterpillar" for
+  Caterpillar, but not "a caterpillar" of some other one), with a hyphen for a space ("rabbit-hole"
+  for The Rabbit Hole), or without the entry's own "The" where the entry has no alias without it. A
+  lower-case ordinary word as an alias would match every use of that word: report it with that
+  warning;
 - a nickname or short form: "Mags" for Margaret Ashby;
 - a surname or given name used alone, or with a title ("Miss Vell"), when the entry lists only the
   other. Report the form as the page has it;
@@ -91,7 +93,9 @@ Don't report:
 
 - a form that already contains the entry's name or an alias as the entry writes it: "Master Holm"
   where "Holm" is an alias;
-- an ordinary description, even if it means them every time: "the clerk", "the office", "her father".
+- an ordinary description, even if it means them every time: "the clerk", "the office", "her father";
+- the name in all capitals, for stress or in a heading;
+- a form of address, or something a character calls them once: "Miss", "you old fool".
 
 Only when the scene makes plain who or what is meant. If the form, or the name inside it, would also
 fit another entry ("Vell" or "Miss Vell", with two Vells in the encyclopedia), report it with that
@@ -112,9 +116,15 @@ with the article and without. It counts whole-word uses in the scenes' text, ign
 "the Gull" doesn't count "the gulls". An entry whose name and aliases all come to zero is unused. A
 name that is also an ordinary word (a boat called Gull) is counted where it means something else: look
 at such an entry's uses with `text_find`, as whole words in any case, and if none means the entry, it
-is unused too. A hyphen is not a space: "Rabbit Hole" doesn't count "rabbit-hole", so count the
+is unused too. That is worth doing only where the uses are few enough that all could mean something
+else. A hyphen is not a space: "Rabbit Hole" doesn't count "rabbit-hole", so count the
 hyphenated form as well. An entry found only that way is used, and the hyphenated form is a missing
-alias.
+alias. So is one the page names only by part of its name ("croquet-ground" for The Queen's Croquet
+Ground): count the telling words of a zero entry's name on their own before calling it unused. A
+single word is counted inside a hyphenated one, so "Rabbit" counts "rabbit-hole".
+
+An entry the scenes show but never name (a kitchen a chapter happens in) is still unused by this
+check: list it, with a note of where it seems to be.
 
 Without `text_count`, this check means reading the whole book and noting each entry you see named.
 `search` won't do: it matches inside longer words and matches scene titles.
@@ -163,7 +173,7 @@ quote from a `search` snippet.
 - "<alias>" for <entry name>: <n> scenes, first in <scene name>: "<exact quote>". <Also fits <entry name>>
 
 ## Unused entries
-- <entry name> (<type>): not named in any scene. <Still referenced by <scene name> | No references>
+- <entry name> (<type>): not named in any scene. <Still referenced by <scene name> | No references>. <note, if any>
 
 ## Named only by an alias
 - <entry name> (<type>): its name never appears; found only as "<alias>".

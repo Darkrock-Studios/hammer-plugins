@@ -36,7 +36,8 @@ Check each page before reading the next, and keep only your findings, not the te
 ## Compare
 
 Break the outline into its separate points: each thing it says happens, is revealed, is decided, or
-who is there. For each point, find it in the scene:
+who is there. A clause that only recalls what came before ("After drinking from the bottle, ...") is
+not a point of this scene. For each point, find it in the scene:
 
 - **On the page:** the scene does it, or near enough that a reader would say so. No finding.
 - **Missing:** the outline says it and the scene doesn't.
@@ -48,7 +49,7 @@ Then look the other way:
   when, by the end of the scene, something is known, decided, done, or lost that wasn't before, and a
   later scene could depend on it: a reveal, a decision, an agreement, a death, a verdict.
 
-One finding per turn of the story: a reveal with several proofs is one finding, and so is a verdict
+An outline none of which is in the scene is one Missing finding. One finding per turn of the story: a reveal with several proofs is one finding, and so is a verdict
 with several consequences; name them together. Known means known to a character or to the reader.
 
 How it is said, the steps on the way there, and who else is in the room are not findings, unless the
