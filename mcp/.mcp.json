@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "hammer": {
+      "command": "hammer",
+      "args": ["mcp"]
+    }
+  }
+}

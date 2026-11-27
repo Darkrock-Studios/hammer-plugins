@@ -1,0 +1,11 @@
+{
+  "name": "hammer",
+  "description": "Work with your Hammer projects: the Hammer MCP server, plus skills that answer questions about your story, check point of view and tense, track who knows what, true up references and the encyclopedia, check outlines, keep a style sheet, and build the timeline. Never writes prose.",
+  "author": {
+    "name": "Darkrock Studios"
+  },
+  "homepage": "https://github.com/Darkrock-Studios/hammer-plugins/tree/main/mcp",
+  "repository": "https://github.com/Darkrock-Studios/hammer-plugins",
+  "license": "MIT",
+  "keywords": ["writing", "fiction", "hammer", "mcp"]
+}

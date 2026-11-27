@@ -5,8 +5,9 @@ description: Check which encyclopedia entries a Hammer scene references through 
 
 # True up references
 
-Each Hammer scene lists the encyclopedia entries in it: its references. Hammer adds them by matching
-names when a scene is saved, and never removes one, so the list drifts. A character only thought of or
+Each Hammer scene lists the encyclopedia entries in it: its references. Hammer adds them when a scene
+is saved, by matching entry names and aliases as whole words, written as the entry has them, capitals
+included. It never removes one, so the list drifts. A character only thought of or
 talked about gets added ("she thought of her mother"), and one cut from the scene stays. You read each
 scene, decide which entries are really in it, and propose changes for the writer to approve.
 
@@ -36,21 +37,30 @@ An entry is **in the scene** when it is part of what happens:
 - **A character** appears: speaks, acts, is seen or heard, or is the point-of-view character. A
   character present but unnamed counts when the scene makes plain who it is ("the old keeper" in a
   scene where only Alice keeps the light).
-- **A place** is where the scene happens, or where characters go or are during it.
+- **A place** is where the scene happens, or where characters go or are during it: every place of a
+  scene that moves through several. A place the scene never names counts when the scene makes plain
+  which it is.
+- **An event** happens, in whole or in part, during the scene.
 - **Anything else** is there to be seen or used in the scene.
 
 An entry is **only mentioned** when the scene talks or thinks about it without it being there:
-remembered, discussed, planned, wished for, or named in passing. "She thought of her mother." "They
-spoke of the war in the north." A letter from someone is the letter in the scene, not its writer.
+remembered, imagined, dreamed, discussed, planned, wished for, or named in passing. "She thought of her mother." "They
+spoke of the war in the north." A letter from someone is the letter in the scene, not its writer. A
+scene that is not story (a title page, a dedication, an epigraph) has nothing in it: every name there
+is only mentioned.
 
 If you can't tell, don't propose a change for that entry; list it as unsure with your reason.
 
 ## Decide, scene by scene
 
-Look at every entry the scene confirms, dismisses, or names by name or alias:
+Look at every entry the scene confirms, dismisses, or names. Named means its name or an alias is in
+the text as Hammer would match it:
 
 - **Confirmed, or named but not yet confirmed, and only mentioned:** propose **dismiss**. Hammer adds
-  every name it finds the next time the scene is saved; dismissing stops that.
+  each name it matches the next time the scene is saved; dismissing stops that.
+- **Named, but the words mean something else** (an alias "Bill", and a "Bill" that is an invoice):
+  propose **dismiss**, noted as not the entry. The same word in other capitals than the entry's is
+  not named at all: leave it alone.
 - **Confirmed, no longer in the text at all:** no name, alias, or plain reference left. Propose
   **clear**, which forgets it, so a later mention can be matched again.
 - **Dismissed, now in the scene:** propose **confirm**. This also takes it off the dismissed list.
@@ -61,9 +71,18 @@ Leave everything else alone.
 
 ## Check your quotes
 
-Every confirm and dismiss gives a short quote from the scene as evidence. Before proposing, confirm each
-quote appears verbatim in the scene's `markdown`. Drop any proposal whose quote you can't find. A
-clear needs no quote: say the entry no longer appears.
+Every confirm and dismiss gives a short quote from the scene as evidence. Before proposing, confirm
+each quote appears in the scene's `markdown`. Drop any proposal whose quote you can't find. Write a
+quote as a reader sees the text: without the `*`, `_`, `~~`, or `==` around styled words, the `#` or
+`>` that starts a line, or the backslash before an escaped character. Every other character stays as
+the scene has it, a backtick or apostrophe used as a quotation mark included, though curly quotes may
+be written straight and a run of spaces as one. `text_find` checks one: the quote as `term`, the
+scene's id in `ids`, `wholeWord: false`, and `caseSensitive: true`. It never matches across a
+paragraph break: check a quote that runs over one a paragraph at a time, and see in the text you read
+that those paragraphs follow one another in that order, with nothing left out between them. After no
+match, find a few plain words of the passage with `text_find` and take the quote from the `context` it
+returns. If none holds the passage, the quote isn't there. A clear needs no quote: say the entry no
+longer appears.
 
 ## Propose
 
@@ -71,7 +90,7 @@ Per scene with changes:
 
 ```
 ### <scene name> (id <id>)
-- Dismiss <entry name>: "<exact quote>" (<only mentioned: remembered | discussed | ...>)
+- Dismiss <entry name>: "<exact quote>" (<only mentioned: remembered | discussed | ... | not the entry>)
 - Confirm <entry name>: "<exact quote>"
 - Clear <entry name>: no longer appears
 - Unsure <entry name>: <why>
