@@ -91,7 +91,8 @@ fit another entry ("Vell" or "Miss Vell", with two Vells in the encyclopedia), r
 warning: the bare name can't be added as an alias without matching both.
 
 Keep one row per alias, with the scenes it appears in. `text_count` gives those scenes exactly; with
-`caseSensitive: true` it counts "Father" apart from "father".
+`caseSensitive: true` it counts "Father" apart from "father", though it then misses "FATHER" and still
+counts a "Father" that only starts a sentence.
 
 ## Unused entries
 
@@ -103,7 +104,9 @@ nor `ids`. Give a name or alias that starts with "the" without it ("Harbor Seal"
 with the article and without. It counts whole-word uses in the scenes' text, ignoring capitals, so
 "the Gull" doesn't count "the gulls". An entry whose name and aliases all come to zero is unused. A
 name that is also an ordinary word (a boat called Gull) is counted where it means something else: look
-at such an entry's uses with `text_find`, and if none means the entry, it is unused too.
+at such an entry's uses with `text_find`, as whole words in any case, and if none means the entry, it
+is unused too. A hyphen is not a space: "Rabbit Hole" doesn't count "rabbit-hole", so count the
+hyphenated form as well before calling an entry unused.
 
 Without `text_count`, this check means reading the whole book and noting each entry you see named.
 `search` won't do: it matches inside longer words and matches scene titles.
@@ -128,14 +131,17 @@ skill; if you notice it, name the scenes in one closing line.
 
 ## Check your quotes
 
-Confirm every scene quote appears verbatim in its scene's `markdown`, and every entry quote in the
-entry's text. Drop any finding whose quote you can't find. A quote leaves out markdown marks such as
-`*` and `_`, may write curly quotes straight and a run of spaces as one, and differs in nothing else.
-`text_find` checks one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and
+Confirm every scene quote appears in its scene's `markdown`, and every entry quote in the entry's
+text. Drop any finding whose quote you can't find. Write a quote as a reader sees the text: without
+the `*`, `_`, `~~`, or `==` around styled words, the `#` or `>` that starts a line, or the backslash
+before an escaped character. Every other character stays as the scene has it, a backtick or apostrophe
+used as a quotation mark included, though curly quotes may be written straight and a run of spaces as
+one. `text_find` checks one: the quote as `term`, the scene's id in `ids`, `wholeWord: false`, and
 `caseSensitive: true`. It never matches across a paragraph break: check a quote that runs over one a
 paragraph at a time, and see in the text you read that those paragraphs follow one another in that
-order, with nothing left out between them. No match means the quote isn't there. Never quote from a
-`search` snippet.
+order, with nothing left out between them. After no match, find a few plain words of the passage with
+`text_find` and take the quote from the `context` it returns. If none holds the passage, the quote
+isn't there. Never quote from a `search` snippet.
 
 ## Report
 
